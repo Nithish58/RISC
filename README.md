@@ -1,1 +1,3 @@
-# RISC
+Member added:
+Nithish
+Bikash
