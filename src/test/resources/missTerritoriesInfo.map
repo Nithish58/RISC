@@ -1,0 +1,15 @@
+[Map]
+image=world.bmp
+wrap=yes
+scroll=horizontal
+author=Your name
+warn=yes
+
+[Continents]
+North America=5
+South America=2
+Africa=3
+Europe=5
+Asia=7
+Australia=2
+
