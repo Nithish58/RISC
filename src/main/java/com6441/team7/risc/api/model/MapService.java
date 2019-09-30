@@ -20,11 +20,15 @@ public class MapService {
         countries.put(country.getId(), country);
     }
 
+    public void addCountry(Collection<Country> countriesCollection){}
+
     public void removeCountryByName(String countryName) { }
 
     public void removeCountryById(int id) { }
 
     public void addContinent(Continent continent){}
+
+    public void addContinents(Collection<Continent> continentsCollection){}
 
     public void removeContinentByName(String continentName){}
 
@@ -33,6 +37,8 @@ public class MapService {
     public void addNeighboringCountriesByName(List<String> contriesName){}
 
     public void addNeighboringCountriesById(List<Integer> countriesId){}
+
+    public void addNeighboringCountries(Map<Integer, Set<Integer>> map){}
 
     public void removeNeighboringCountriesByName(String name){}
 
