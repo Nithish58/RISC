@@ -15,9 +15,6 @@ public class App {
         StateContext context = new StateContext();
 
         MapLoaderController mapLoaderController = new MapLoaderController(context, view);
-        mapLoaderController.loadMap();
-
-
 
     }
 }
