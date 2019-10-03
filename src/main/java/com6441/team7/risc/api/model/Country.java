@@ -17,6 +17,12 @@ public class Country {
         this.name = countryName.toLowerCase();
     }
 
+    public Country(Integer id, String countryName, String continentName){
+        this.id = id;
+        this.name  = countryName;
+        this.continentName = continentName;
+    }
+
 
     public Integer getId() {
         return id;

@@ -9,7 +9,7 @@ public class CommandPromptView {
         //System.out.println("welcome to the risk game. Enter the map file you would like to play: ");
     }
 
-    public String readCommand(){
+    public String receiveCommand(){
         return scanner.nextLine();
     }
 
