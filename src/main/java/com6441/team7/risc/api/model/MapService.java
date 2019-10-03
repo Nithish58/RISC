@@ -7,6 +7,7 @@ import org.jgrapht.graph.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 
@@ -19,6 +20,26 @@ public class MapService {
 
     public void addCountry(Country country) {
         countries.add(country);
+
+        String continentName = country.getContinentName();
+        int countryId = country.getId();
+
+        if(continentNameExist(continentName)){
+            continents.stream()
+                    .filter(continent -> continent.getName().equals(convertNameToKeyFormat(continentName)))
+                    .map(Continent::getId)
+                    .findFirst()
+                    .ifPresent(continentId -> {
+                        if(continentCountriesMap.containsKey(continentId)){
+                            continentCountriesMap.get(continentId).add(countryId);
+                        }
+                        else{
+                            Set<Integer> countryIdSet = new HashSet<>();
+                            countryIdSet.add(country.getId());
+                            continentCountriesMap.put(continentId, countryIdSet);
+                        }
+                    });
+        }
     }
 
     public void addCountry(Collection<Country> countriesCollection) {
@@ -37,6 +58,10 @@ public class MapService {
         Set<Integer> countriesIdSet = new HashSet<>();
         countriesIdSet.add(country.getId());
         continentCountriesMap.put(continentId, countriesIdSet);
+    }
+
+    public void addContinent(Continent continent) {
+        continents.add(continent);
     }
 
     public void addContinents(Collection<Continent> continentsCollection) {
@@ -87,16 +112,84 @@ public class MapService {
                 .isPresent();
     }
 
+
+
     public void removeCountryByName(String countryName) {
+        if(isNull(countryName)){
+            return;
+        }
+
+        Optional<Country> toBeRemoved = findCountryToBeRemoved(countryName);
+
+        toBeRemoved.ifPresent(country -> {
+            countries.remove(country);
+            removeCountryFromContinentCountryMap(country);
+            removeCountryFromAdjacentCountryMap(country);
+
+
+        });
+    }
+
+    private void removeCountryFromContinentCountryMap(Country country) {
+
+        int countryId = country.getId();
+        Optional<Integer> continentId = findCorrespondingIdByContinentName(country.getContinentName());
+
+        if(continentId.isPresent()){
+            Set<Integer> countryIdSet = continentCountriesMap.get(continentId.get());
+            countryIdSet.forEach(id -> {
+                if(id == countryId){
+                    continentCountriesMap.get(continentId.get()).remove(id);
+                }
+            });
+        }
+
+
+    }
+
+    private void removeCountryFromAdjacentCountryMap(Country country){
+        int countryId = country.getId();
+        adjacencyCountriesMap.remove(countryId);
+
+        for(Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()){
+            entry.getValue().remove(countryId);
+        }
+
+    }
+
+    private Optional<Integer> findCorrespondingIdByContinentName(String name){
+        return continents.stream()
+                .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(convertNameToKeyFormat(name)))
+                .map(Continent::getId)
+                .findFirst();
+    }
+
+    private Optional<Country> findCountryToBeRemoved(String countryName){
+        String normalizedCountryName = convertNameToKeyFormat(countryName);
+        Optional<Country> toBeRemoved = countries.stream()
+                .filter(country -> convertNameToKeyFormat(country.getCountryName()).equals(normalizedCountryName))
+                .findFirst();
+
+        return toBeRemoved;
+
     }
 
     public void removeCountryById(int id) {
     }
 
-    public void addContinent(Continent continent) {
-    }
-
     public void removeContinentByName(String continentName) {
+        if(isNull(continentName)){
+            return;
+        }
+        String normalizedContinentName = convertNameToKeyFormat(continentName);
+        Optional<Continent> toBeRemoved = continents.stream()
+                .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(normalizedContinentName))
+                .findFirst();
+        toBeRemoved.ifPresent(continent -> {
+            continents.remove(continent);
+            continentCountriesMap.remove(continent.getId());
+        });
+
     }
 
     public void removeContinentById(int id) {

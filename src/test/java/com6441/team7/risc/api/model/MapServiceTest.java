@@ -50,6 +50,11 @@ public class MapServiceTest {
         assertEquals(mapService.getAdjacencyCountriesMap().size(), 4);
     }
 
+    @Test
+    public void testRemoveCountryFromContinentCountryMap() throws Exception{
+
+    }
+
 
 
     private Map<Integer, Set<Integer>> createValidNeighboringCountries() throws Exception{

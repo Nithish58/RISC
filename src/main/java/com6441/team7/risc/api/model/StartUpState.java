@@ -5,6 +5,13 @@ import com6441.team7.risc.controller.StateContext;
 public class StartUpState implements State {
     @Override
     public void alert(StateContext context) {
-        System.out.println("start up");
+        System.out.println("startup");
     }
+
+    @Override
+    public String toString() {
+        return "startup";
+    }
+
+
 }

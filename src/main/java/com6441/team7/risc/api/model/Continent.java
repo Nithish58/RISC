@@ -14,6 +14,12 @@ public class Continent {
         this.name = name.toLowerCase();
     }
 
+    public Continent(int id, String name, int continentValue){
+        this.id = id;
+        this.name = name;
+        this.continentValue = continentValue;
+    }
+
     public String getName() {
         return name;
     }
