@@ -21,6 +21,7 @@ import com6441.team7.risc.controller.StateContext;
  * MapEditorTest class tests cases relevant with performing commands in the map editor
  * 
  */
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MapEditorTest {
 

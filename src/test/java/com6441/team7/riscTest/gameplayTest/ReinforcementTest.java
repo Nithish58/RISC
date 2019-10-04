@@ -4,11 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Scanner;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runners.MethodSorters;
 
 import com6441.team7.risc.controller.GameController;
@@ -20,6 +16,7 @@ import com6441.team7.risc.view.CommandPromptView;
  * ReinforcementTest class tests cases relevant with reinforcement phase.
  * 
  */
+@Ignore
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ReinforcementTest {
 	static CommandPromptView testView;
