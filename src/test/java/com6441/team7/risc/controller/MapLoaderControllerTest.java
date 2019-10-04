@@ -46,7 +46,7 @@ public class MapLoaderControllerTest {
     @Test
     public void receiveValidEditMapCommand() throws Exception{
         String command = "editmap " +"/Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/ameroki.map";;
-        Optional<String> result = controller.validateEditMapCommands(command);
+        Optional<String> result = controller.editMap(command);
         assertTrue(result.isPresent());
     }
 
@@ -311,18 +311,6 @@ public class MapLoaderControllerTest {
         controller.editCountries(commands);
         assertEquals(mapService.getCountries().size(), 2);
     }
-
-//    @Test
-//    public void testValidRemoveCountryCommand() throws Exception{
-//        MapService mapService = addValidContinentInfo();
-//
-//        String command = "editcountry -add China asia -add India asia -remove china";
-//        command = StringUtils.substringAfter(command, "-");
-//        String[] commands = StringUtils.split(command, "-");
-//
-//        controller.editCountries(commands);
-//        assertEquals(mapService.getCountries().size(), 1);
-//    }
 
     private MapService addValidContinentInfo(){
         MapService mapService = controller.getMapService();
