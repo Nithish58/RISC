@@ -18,4 +18,9 @@ public class StateContext {
     public void alert(){
         currentState.alert(this);
     }
+
+    public String getState(){
+        //System.out.println(currentState.toString());
+        return currentState.toString();
+    }
 }

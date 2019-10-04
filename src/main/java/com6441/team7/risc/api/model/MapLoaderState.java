@@ -8,4 +8,9 @@ public class MapLoaderState implements State {
     public void alert(StateContext context) {
         System.out.println("map loader state");
     }
+
+    @Override
+    public String toString() {
+        return "mapLoader";
+    }
 }

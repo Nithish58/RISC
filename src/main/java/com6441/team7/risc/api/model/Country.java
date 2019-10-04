@@ -1,10 +1,8 @@
 package com6441.team7.risc.api.model;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Objects;
 
 public class Country {
-
-    private static AtomicInteger atomicInt = new AtomicInteger();
     private final Integer id;
     private final String name;
     private Integer continentIdentifier;
@@ -14,15 +12,21 @@ public class Country {
     private Player player;
     private Integer soldiers;
 
-
-    public Country(String countryName){
-        id = atomicInt.incrementAndGet();
-        this.name = countryName;
-    }
-
     public Country(Integer id, String countryName) {
         this.id = id;
+        this.name = countryName.toLowerCase();
+    }
+
+    public Country(Integer id, String countryName, String continentName){
+        this.id = id;
+        this.name  = countryName;
+        this.continentName = continentName;
+    }
+
+    public Country(Integer id, String countryName, Integer continentId){
+        this.id = id;
         this.name = countryName;
+        this.continentIdentifier = continentId;
     }
 
 
@@ -46,7 +50,7 @@ public class Country {
 
 
     public Country setContinentName(String continentName){
-        this.continentName = continentName;
+        this.continentName = continentName.toLowerCase();
         return this;
     }
 
@@ -94,5 +98,19 @@ public class Country {
 
     public void removeSoldiers(int number){
         this.soldiers -= number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return Objects.equals(id, country.id)
+                && Objects.equals(name, country.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

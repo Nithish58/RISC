@@ -6,10 +6,10 @@ public class CommandPromptView {
     private Scanner scanner = new Scanner(System.in);
 
     public CommandPromptView(){
-        System.out.println("welcome to the risk game. Enter the map file you would like to play: ");
+        //System.out.println("welcome to the risk game. Enter the map file you would like to play: ");
     }
 
-    public String readCommand(){
+    public String receiveCommand(){
         return scanner.nextLine();
     }
 
