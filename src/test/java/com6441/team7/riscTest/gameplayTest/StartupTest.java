@@ -60,7 +60,7 @@ public class StartupTest {
 	@Test
 	public void test1_loadMap() {
 		System.out.printf("Testing map load.%nEnter command here: ");
-		testMap = testView.readCommand();
+		//testMap = testView.readCommand();
 		assertTrue(testMap.matches("loadmap [a-zA-Z0-9]+"));
 		testView.displayMessage(testMap);
 	}
