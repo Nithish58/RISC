@@ -23,6 +23,12 @@ public class Country {
         this.continentName = continentName;
     }
 
+    public Country(Integer id, String countryName, Integer continentId){
+        this.id = id;
+        this.name = countryName;
+        this.continentIdentifier = continentId;
+    }
+
 
     public Integer getId() {
         return id;

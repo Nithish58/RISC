@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,15 +53,18 @@ public class MapLoaderController {
                     editCountries(commands);
                     break;
                 case "editneighbor":
-                    //editNeighbor(commands);
+                    editNeighbor(commands);
                     break;
                 case "showmap":
+                    showMap();
                     break;
                 case "savemap":
                     break;
                 case "editmap":
+                    editMap(command);
                     break;
                 case "validatemap":
+                    validateMap();
                     break;
                 default:
                     throw new IllegalArgumentException("cannot recognize this command");
@@ -71,6 +73,26 @@ public class MapLoaderController {
             view.displayMessage("map editor: " + e.getMessage());
         }
 
+    }
+
+    private void showMap() {
+        mapService.printCountryInfo();
+        mapService.printContinentInfo();
+        mapService.printNeighboringCountryInfo();
+    }
+
+
+
+    private void validateMap() {
+
+        boolean connected = mapService.isStronlyConnectec();
+        if(connected){
+            State state = new StartUpState();
+            stateContext.setState(state);
+            return;
+        }
+
+        view.displayMessage("The map is not valid");
     }
 
     void editContinents(String[] s) {
@@ -193,7 +215,64 @@ public class MapLoaderController {
         }
     }
 
-    Optional<String> validateEditMapCommands(String s) {
+
+    void editNeighbor(String[] s) {
+        Arrays.stream(s).forEach(this::editNeighborFromUserInput);
+    }
+
+    void editNeighborFromUserInput(String s){
+        try {
+            String[] commands = StringUtils.split(s, " ");
+            switch (convertFormat(commands[0])) {
+                case "add":
+                    addNeighbor(commands);
+                    break;
+                case "remove":
+                    removeNeighbor(commands);
+                    break;
+                default:
+                    throw new IllegalArgumentException("The editCountry command " + s + " is not valid.");
+            }
+        } catch (IndexOutOfBoundsException e) {
+            view.displayMessage(e.getMessage());
+        }
+    }
+
+    private void addNeighbor(String[] s){
+        try {
+            String countryName = convertFormat(s[1]);
+            String neighborCountry = convertFormat(s[2]);
+
+            if (mapService.countryNameExist(countryName) && mapService.countryNameExist(neighborCountry)) {
+                mapService.addNeighboringCountries(countryName, neighborCountry);
+                return;
+            }
+
+            view.displayMessage("cannot add neighboring countries : the country does not exist");
+
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            view.displayMessage("cannot add continent, the command is not valid");
+        }
+    }
+
+    public void removeNeighbor(String[] s){
+        try{
+            String countryName = convertFormat(s[1]);
+            String neighborCountry = convertFormat(s[2]);
+
+            if (mapService.countryNameExist(countryName) && mapService.countryNameExist(neighborCountry)) {
+                mapService.removeNeighboringCountriesByName(countryName, neighborCountry);
+                return;
+            }
+
+            view.displayMessage("cannot remove neighboring countries : the country does not exist");
+
+        } catch (IndexOutOfBoundsException | NumberFormatException e) {
+            view.displayMessage("cannot add continent, the command is not valid");
+        }
+    }
+
+    Optional<String> editMap(String s) {
         System.out.println(stateContext.getState());
         String[] commands = StringUtils.split(s, " ");
 
@@ -238,13 +317,15 @@ public class MapLoaderController {
 
     boolean parseFile(String s) {
         String[] parts = StringUtils.split(s, "[");
-        if (parts.length != 5) {
-            return false;
-        }
 
-        parseRawContinents(parts[2]);
-        parseRawCountries(parts[3]);
-        parseRawNeighboringCountries(parts[4]);
+        try{
+            parseRawContinents(parts[2]);
+            parseRawCountries(parts[3]);
+            parseRawNeighboringCountries(parts[4]);
+
+         } catch (IndexOutOfBoundsException e){
+            view.displayMessage("The file is not");
+        }
 
         return mapService.isStronlyConnectec();
 
@@ -262,7 +343,7 @@ public class MapLoaderController {
                 .map(Optional::get)
                 .collect(Collectors.toSet());
 
-        mapService.addContinents(continentSet);
+        mapService.addContinent(continentSet);
 
         return continentSet;
 
@@ -273,19 +354,14 @@ public class MapLoaderController {
         try {
             String[] continentInfo = StringUtils.split(s, " ");
 
-            if (continentInfo.length != 3) {
-                throw new InvalidObjectException("continent: " + s + " is not valid for missing info");
-            }
-
             String name = convertFormat(continentInfo[0]);
             int continentValue = Integer.parseInt(continentInfo[1]);
 
             Continent continent = new Continent(continentIdGenerator.incrementAndGet(), name, continentValue);
-            continent.setColor(continentInfo[2]);
 
             return Optional.of(continent);
 
-        } catch (InvalidObjectException e) {
+        } catch (IndexOutOfBoundsException e) {
             view.displayMessage(e.getMessage());
             return Optional.empty();
         } catch (NumberFormatException e) {
@@ -313,29 +389,19 @@ public class MapLoaderController {
         try {
             String[] countryInfo = StringUtils.split(s, " ");
 
-            if (countryInfo.length != 5) {
-                throw new InvalidObjectException("country: " + s + " is not valid for missing information");
-            }
-
             int countryId = Integer.parseInt(countryInfo[0]);
             String countryName = convertFormat(countryInfo[1]);
             int continentId = Integer.parseInt(countryInfo[2]);
-            int coordinateX = Integer.parseInt(countryInfo[3]);
-            int coordinateY = Integer.parseInt(countryInfo[4]);
 
             if (!mapService.continentIdExist(continentId)) {
                 view.displayMessage("country: " + s + " contains invalid continent information");
                 return Optional.empty();
             }
 
-
-            Country country = new Country(countryId, countryName);
-            country.setContinentIdentifier(continentId);
-            country.setCoordinateX(coordinateX);
-            country.setCoordinateY(coordinateY);
+            Country country = new Country(countryId, countryName, continentId);
             return Optional.of(country);
 
-        } catch (InvalidObjectException e) {
+        } catch (IndexOutOfBoundsException e) {
             view.displayMessage(e.getMessage());
         } catch (NumberFormatException e) {
             view.displayMessage("country: " + s + " is not valid " + e.getMessage());

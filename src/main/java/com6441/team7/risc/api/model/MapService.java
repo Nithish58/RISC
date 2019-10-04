@@ -2,6 +2,8 @@ package com6441.team7.risc.api.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
+import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
 import org.jgrapht.graph.*;
 
 import java.util.*;
@@ -21,25 +23,17 @@ public class MapService {
     public void addCountry(Country country) {
         countries.add(country);
 
-        String continentName = country.getContinentName();
+        String continentName = convertNameToKeyFormat(country.getContinentName());
         int countryId = country.getId();
 
-        if(continentNameExist(continentName)){
-            continents.stream()
-                    .filter(continent -> continent.getName().equals(convertNameToKeyFormat(continentName)))
-                    .map(Continent::getId)
-                    .findFirst()
-                    .ifPresent(continentId -> {
-                        if(continentCountriesMap.containsKey(continentId)){
-                            continentCountriesMap.get(continentId).add(countryId);
-                        }
-                        else{
-                            Set<Integer> countryIdSet = new HashSet<>();
-                            countryIdSet.add(country.getId());
-                            continentCountriesMap.put(continentId, countryIdSet);
-                        }
-                    });
-        }
+
+        continents.stream()
+                .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(continentName))
+                .map(Continent::getId)
+                .findFirst()
+                .ifPresent(continentId -> continentCountriesMap.get(continentId).add(countryId));
+
+
     }
 
     public void addCountry(Collection<Country> countriesCollection) {
@@ -51,25 +45,53 @@ public class MapService {
 
     private void putCountryIntoContinentCountriesMap(Country country) {
         Integer continentId = country.getContinentIdentifier();
-        if (continentCountriesMap.containsKey(continentId)) {
-            continentCountriesMap.get(continentId).add(country.getId());
-            return;
-        }
-        Set<Integer> countriesIdSet = new HashSet<>();
-        countriesIdSet.add(country.getId());
-        continentCountriesMap.put(continentId, countriesIdSet);
+        continentCountriesMap.get(continentId).add(country.getId());
     }
 
     public void addContinent(Continent continent) {
         continents.add(continent);
+
+        if (!continentCountriesMap.containsKey(continent.getId())) {
+            continentCountriesMap.put(continent.getId(), new HashSet<>());
+        }
     }
 
-    public void addContinents(Collection<Continent> continentsCollection) {
+    public void addContinent(Collection<Continent> continentsCollection) {
         continents.addAll(continentsCollection);
+
+        Set<Integer> continentId = continentsCollection.stream()
+                .map(Continent::getId)
+                .collect(Collectors.toSet());
+
+        continentId.forEach(id -> continentCountriesMap.put(id, new HashSet<Integer>()));
+
     }
 
     public void addNeighboringCountries(Map<Integer, Set<Integer>> map) {
         map.forEach((key, value) -> adjacencyCountriesMap.put(key, value));
+    }
+
+    public void addNeighboringCountries(String country, String neighboringCountry) {
+
+        int countryId = findCorrespondingIdByCountryName(country).get();
+        int neghboringCountryId = findCorrespondingIdByCountryName(neighboringCountry).get();
+
+        if (adjacencyCountriesMap.containsKey(countryId)) {
+            adjacencyCountriesMap.get(countryId).add(neghboringCountryId);
+        } else {
+            Set<Integer> neighboringCountrySet = new HashSet<>();
+            neighboringCountrySet.add(neghboringCountryId);
+            adjacencyCountriesMap.put(countryId, neighboringCountrySet);
+        }
+    }
+
+    public void removeNeighboringCountriesByName(String country, String neighboringCountry) {
+
+        int countryId = findCorrespondingIdByCountryName(country).get();
+        int neghboringCountryId = findCorrespondingIdByCountryName(neighboringCountry).get();
+
+        adjacencyCountriesMap.get(countryId).remove(neghboringCountryId);
+
     }
 
     public Set<Country> getCountries() {
@@ -113,9 +135,8 @@ public class MapService {
     }
 
 
-
     public void removeCountryByName(String countryName) {
-        if(isNull(countryName)){
+        if (isNull(countryName)) {
             return;
         }
 
@@ -135,42 +156,39 @@ public class MapService {
         int countryId = country.getId();
         Optional<Integer> continentId = findCorrespondingIdByContinentName(country.getContinentName());
 
-        if(continentId.isPresent()){
-            Set<Integer> countryIdSet = continentCountriesMap.get(continentId.get());
-            countryIdSet.forEach(id -> {
-                if(id == countryId){
-                    continentCountriesMap.get(continentId.get()).remove(id);
-                }
-            });
-        }
-
-
+        continentCountriesMap.get(continentId.get()).remove(countryId);
     }
 
-    private void removeCountryFromAdjacentCountryMap(Country country){
+    private void removeCountryFromAdjacentCountryMap(Country country) {
         int countryId = country.getId();
         adjacencyCountriesMap.remove(countryId);
 
-        for(Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()){
+        for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
             entry.getValue().remove(countryId);
         }
 
     }
 
-    private Optional<Integer> findCorrespondingIdByContinentName(String name){
+    private Optional<Integer> findCorrespondingIdByContinentName(String name) {
         return continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(convertNameToKeyFormat(name)))
                 .map(Continent::getId)
                 .findFirst();
     }
 
-    private Optional<Country> findCountryToBeRemoved(String countryName){
+    private Optional<Integer> findCorrespondingIdByCountryName(String name) {
+        return countries.stream()
+                .filter(country -> convertNameToKeyFormat(country.getCountryName()).equals(convertNameToKeyFormat(name)))
+                .map(Country::getId)
+                .findFirst();
+    }
+
+    private Optional<Country> findCountryToBeRemoved(String countryName) {
         String normalizedCountryName = convertNameToKeyFormat(countryName);
-        Optional<Country> toBeRemoved = countries.stream()
+        return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getCountryName()).equals(normalizedCountryName))
                 .findFirst();
 
-        return toBeRemoved;
 
     }
 
@@ -178,7 +196,7 @@ public class MapService {
     }
 
     public void removeContinentByName(String continentName) {
-        if(isNull(continentName)){
+        if (isNull(continentName)) {
             return;
         }
         String normalizedContinentName = convertNameToKeyFormat(continentName);
@@ -213,10 +231,36 @@ public class MapService {
 
 
     public void addEdge(int src, List<Integer> dest) {
+        if (!directedGraph.containsVertex(src)) {
+            directedGraph.addVertex(src);
+        }
+
+        for (Integer countryId : dest) {
+            if (!directedGraph.containsVertex(countryId)) {
+                directedGraph.addVertex(countryId);
+            }
+
+        }
+
+        for (Integer country : dest) {
+            directedGraph.addEdge(src, country);
+            directedGraph.addEdge(country, src);
+        }
+
     }
 
     public boolean isStronlyConnectec() {
-        return false;
+        StrongConnectivityAlgorithm<Integer, DefaultEdge> scAlg =
+                new KosarajuStrongConnectivityInspector<>(directedGraph);
+
+        List<Graph<Integer, DefaultEdge>> stronglyConnectedSubgraphs =
+                scAlg.getStronglyConnectedComponents();
+
+        long numberOfUnconnected = stronglyConnectedSubgraphs.stream()
+                .map(Graph::vertexSet).map(Set::size).filter(n -> n != countries.size()).count();
+
+        return numberOfUnconnected == 0;
+
     }
 
     public Optional<Country> getCountryByName(String name) {
@@ -245,6 +289,38 @@ public class MapService {
 
     public Graph<Integer, DefaultEdge> getDirectedGraph() {
         return directedGraph;
+    }
+
+    public void printCountryInfo(){
+        System.out.println("[Country]");
+        countries.forEach(
+                country -> {
+                    System.out.print(country.getId() + " ");
+                    System.out.print(country.getCountryName() + " ");
+                    System.out.print(country.getContinentIdentifier() + " ");
+                    System.out.print(country.getContinentName() + " ");
+                    System.out.println("\n");
+                }
+        );
+
+    }
+
+    public void printContinentInfo(){
+        System.out.println("[Continent]");
+        continents.forEach(continent -> {
+            System.out.print(continent.getId() + " ");
+            System.out.print(continent.getName() + " ");
+            System.out.print(continent.getContinentValue() + " ");
+            System.out.println("\n");
+        });
+
+    }
+
+    public void printNeighboringCountryInfo(){
+        System.out.println("[Border]");
+        for(Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()){
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
     }
 
     private String convertNameToKeyFormat(String name) {
