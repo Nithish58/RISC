@@ -60,12 +60,12 @@ public class MapLoaderControllerTest {
 
     @Test
     public void createContinentMissingContinentPower() throws Exception{
-        String continentsInfo = "parts2: continents]\n" +
-                "azio 5 #9aff80\n" +
-                "ameroki yellow\n" +
-                "utropa 10 #a980ff\n" +
-                "amerpoll 5 red\n" +
-                "afrori 5 #ffd780\n" +
+        String continentsInfo = "parts2: continents]\r\n" +
+                "azio 5 #9aff80\r\n" +
+                "ameroki yellow\r\n" +
+                "utropa 10 #a980ff\r\n" +
+                "amerpoll 5 red\r\n" +
+                "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
         Set<Continent> continents =  controller.parseRawContinents(continentsInfo);
@@ -76,12 +76,12 @@ public class MapLoaderControllerTest {
 
     @Test
     public void createContinentWithContinentPowerNotInteger() throws Exception{
-        String continentsInfo = "parts2: continents]\n" +
-                "azio 5 #9aff80\n" +
-                "ameroki abc yellow\n" +
-                "utropa 10 #a980ff\n" +
-                "amerpoll 5 red\n" +
-                "afrori 5 #ffd780\n" +
+        String continentsInfo = "parts2: continents]\r\n" +
+                "azio 5 #9aff80\r\n" +
+                "ameroki abc yellow\r\n" +
+                "utropa 10 #a980ff\r\n" +
+                "amerpoll 5 red\r\n" +
+                "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
         Set<Continent> continents =  controller.parseRawContinents(continentsInfo);
@@ -108,12 +108,12 @@ public class MapLoaderControllerTest {
         String continentsInfo = validContinentString();
         controller.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "1 siberia 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "1 siberia 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
         Set<Country> countries =  controller.parseRawCountries(countriesInfo);
         assertEquals(countries.size(), 4);
@@ -126,12 +126,12 @@ public class MapLoaderControllerTest {
         String continentsInfo = validContinentString();
         controller.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "1 siberia 10 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "1 siberia 10 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
 
         Set<Country> countries = controller.parseRawCountries(countriesInfo);
@@ -146,12 +146,12 @@ public class MapLoaderControllerTest {
         String continentsInfo = validContinentString();
         controller.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "siberia 1 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "siberia 1 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
         Set<Country> countries =  controller.parseRawCountries(countriesInfo);
         assertEquals(countries.size(), 4);
@@ -164,12 +164,12 @@ public class MapLoaderControllerTest {
         String continentsInfo = validContinentString();
         controller.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "1 siberia one 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "1 siberia one 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
         Set<Country> countries =  controller.parseRawCountries(countriesInfo);
         assertEquals(countries.size(), 4);
@@ -186,12 +186,12 @@ public class MapLoaderControllerTest {
         String countriesInfo = validCountryString();
         controller.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1 2 3 4\n" +
-                "2 1 4 5 \n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 2 3 4\r\n" +
+                "2 1 4 5 \r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
         Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
         assertEquals(adjacencyMap.size(), 5);
 
@@ -205,12 +205,12 @@ public class MapLoaderControllerTest {
         String countriesInfo = validCountryString();
         controller.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1\n" +
-                "2 1 4 5\n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
+        String adjacencyInfo = "[borders]\r\n" +
+                "1\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
         Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
         assertEquals(adjacencyMap.size(), 4);
 
@@ -224,12 +224,12 @@ public class MapLoaderControllerTest {
         String countriesInfo = validCountryString();
         controller.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1 100\n" +
-                "2 1 4 5\n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 100\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
         Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
         assertEquals(adjacencyMap.size(), 4);
 
@@ -245,12 +245,12 @@ public class MapLoaderControllerTest {
         String countriesInfo = validCountryString();
         controller.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1 two\n" +
-                "2 1 4 5\n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 two\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
         Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
         assertEquals(adjacencyMap.size(), 4);
 
@@ -326,22 +326,22 @@ public class MapLoaderControllerTest {
     }
 
     private String validContinentString(){
-        return "parts2: continents]\n" +
-                "azio 5 #9aff80\n" +
-                "ameroki 10 yellow\n" +
-                "utropa 10 #a980ff\n" +
-                "amerpoll 5 red\n" +
-                "afrori 5 #ffd780\n" +
+        return "parts2: continents]\r\n" +
+                "azio 5 #9aff80\r\n" +
+                "ameroki 10 yellow\r\n" +
+                "utropa 10 #a980ff\r\n" +
+                "amerpoll 5 red\r\n" +
+                "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
     }
 
     private String validCountryString(){
-        return "[countries]\n" +
-                "1 siberia 1 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        return "[countries]\r\n" +
+                "1 siberia 1 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
     }
 
 
