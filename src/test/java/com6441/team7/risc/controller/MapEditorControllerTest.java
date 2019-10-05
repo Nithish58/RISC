@@ -101,7 +101,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test2_editMap() throws Exception{
 		System.out.printf("Testing map editor commands.%n");
-		testMapLoader.readFile("/home/binsar/MACS/Fall_2019/Advanced_Programming_Practices/RISK_project/RISC/src/test/resources/ameroki.map");
+		String inputCommand = "editmap "+"/home/binsar/MACS/Fall_2019/Advanced_Programming_Practices/RISK_project/RISC/src/test/resources/ameroki.map";
+		Optional<String> inputMap = testMapLoader.editMap(inputCommand);
+		assertEquals(expectedResult, inputMap.isPresent());
 		//testMapLoader object calls method to load a map
 		System.out.println(editorCommand);
 		Optional<String> editMap = testMapLoader.editMap(editorCommand);
