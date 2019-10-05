@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -34,13 +35,13 @@ public class MapEditorControllerTest {
 	private StateContext testState;
 	private MapLoaderController testMapLoader;
 	private String editorCommand;
-	private Boolean expectedResult;
+	private Integer expectedResult;
 	String testMap;
 
 	/**
 	 * Set up parameters for editor commands
 	 */
-	public MapEditorControllerTest(String editorCommand, Boolean expectedResut ) {
+	public MapEditorControllerTest(String editorCommand, int expectedResut ) {
 		this.editorCommand = editorCommand;
 		this.expectedResult = expectedResut;
 	}
@@ -50,16 +51,14 @@ public class MapEditorControllerTest {
 	@Parameterized.Parameters
 	public static Collection editorCommands() {
 		return Arrays.asList(new Object[][]{
-			{"editcontinent -add Asia 7", true},
-			{"editcontinent -add Australia 8", true},
-			{"editcontinent -remove Asia", true},
-			{"editcontinent -add Asia 7 -remove Australia", true},
-			{"editcontinent -delete Asia", false},
-			{"showmap", true},
-			{"validatemap", true}
+			{"editcontinent -add Nord_Asia 7", 1},
+			{"editcontinent -add East_Asia 8", 1},
+			{"editcontinent -remove West_Europa", 0},
+			{"editcontinent -add South_Asia 7 -remove Ost_Orient", 1}
 		});
 	}
-		
+	
+
 	/**
 	 * beginMethod() is called before every method is performed.
 	 */
@@ -94,24 +93,59 @@ public class MapEditorControllerTest {
 		assertFalse(readFile.get().isEmpty());
 	}
 	
-	
 	/**
-	 * test2_editMap() tests the map editor commands from parameterized commands taken from a list.
+	 * test2_editMap() tests the editmap command.
 	 */
 	@Test
 	public void test2_editMap() throws Exception{
-		System.out.printf("Testing map editor commands.%n");
+		System.out.printf("Testing editmap command.%n");
 		String inputCommand = "editmap "+"/home/binsar/MACS/Fall_2019/Advanced_Programming_Practices/RISK_project/RISC/src/test/resources/ameroki.map";
 		Optional<String> inputMap = testMapLoader.editMap(inputCommand);
-		assertEquals(expectedResult, inputMap.isPresent());
+		assertTrue(inputMap.isPresent());		
+	}
+	
+	/**
+	 * test3_editMapCommands() tests the map editor commands from parameterized commands taken from a list.
+	 */
+	@Test
+	public void test3_editContinentCommands() throws Exception{
+		System.out.printf("Testing map editor commands.%n");
+		String inputCommand = "editmap "+"/home/binsar/MACS/Fall_2019/Advanced_Programming_Practices/RISK_project/RISC/src/test/resources/ameroki.map";
+		testMapLoader.editMap(inputCommand);
 		//testMapLoader object calls method to load a map
 		System.out.println(editorCommand);
-		Optional<String> editMap = testMapLoader.editMap(editorCommand);
-		assertEquals(expectedResult, editMap.isPresent());
+		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		testMapLoader.editContinents(editorCommands);
+		assertSame(expectedResult, testMapLoader.getMapService().getContinents().size());
+		
+	}
+	
+	/**
+	 * test4_addOneValidContinents() tests adding one valid continent.
+	 */
+	@Ignore
+	@Test
+	public void test4_addOneValidContinents() throws Exception{
+		System.out.printf("Testing adding one valid continent.%n");
+		String inputCommand = "editcontinent -add Nord_Asia 7";
+		inputCommand = StringUtils.substringAfter(inputCommand, "-");
+		String[] inputCommands = StringUtils.split(inputCommand, "-");
+		testMapLoader.editContinents(inputCommands);
+		assertEquals(6,testMapLoader.getMapService().getContinents().size());
 		
 	}
 	
 
+	/**
+	 * test5_validateMap() tests if map is valid.
+	 */
+	@Ignore
+	@Test
+	public void test5_validateMap() {
+		System.out.printf("%nTesting map validation%n");
+	}
+	
 	/**
 	 * test4_saveMap() tests if map can be saved.
 	 */
@@ -119,17 +153,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test4_saveMap() {
 		System.out.printf("%nTesting map saving%n");
-
-	}
-	
-
-	/**
-	 * test5_validateContinent() tests if continent is valid.
-	 */
-	@Ignore
-	@Test
-	public void test5_validateContinent() {
-		System.out.printf("%nTesting continent validation%n");
+		
 
 	}
 
