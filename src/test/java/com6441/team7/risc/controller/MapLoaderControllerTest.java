@@ -1,19 +1,26 @@
 package com6441.team7.risc.controller;
 
+import com6441.team7.risc.api.exception.ContinentParsingException;
+import com6441.team7.risc.api.exception.CountryParsingException;
+import com6441.team7.risc.api.exception.NeighborParsingException;
 import com6441.team7.risc.api.model.Continent;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.view.CommandPromptView;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MapLoaderControllerTest {
 
@@ -36,18 +43,20 @@ public class MapLoaderControllerTest {
 
     @Test
     public void readExistingFile() throws Exception{
+        URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI();
+        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 
-        Optional<String> content = controller.readFile("/Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/ameroki.map");
-        assertTrue(content.isPresent());
-        assertFalse(content.get().isEmpty());
+        boolean result = controller.parseFile(file);
+        assertTrue(result);
     }
 
-
     @Test
-    public void receiveValidEditMapCommand() throws Exception{
-        String command = "editmap " +"/Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/ameroki.map";;
-        Optional<String> result = controller.editMap(command);
-        assertTrue(result.isPresent());
+    public void readNewCreatedFile() throws Exception{
+        URI uri = getClass().getClassLoader().getResource("test.map").toURI();
+        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
+
+        boolean result = controller.parseFile(file);
+        assertTrue(result);
     }
 
 
@@ -58,7 +67,7 @@ public class MapLoaderControllerTest {
         assertEquals(continents.size(), 6);
     }
 
-    @Test
+    @Test(expected=ContinentParsingException.class)
     public void createContinentMissingContinentPower() throws Exception{
         String continentsInfo = "parts2: continents]\r\n" +
                 "azio 5 #9aff80\r\n" +
@@ -68,13 +77,12 @@ public class MapLoaderControllerTest {
                 "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
-        Set<Continent> continents =  controller.parseRawContinents(continentsInfo);
-        assertEquals(continents.size(), 5);
+      controller.parseRawContinents(continentsInfo);
 
     }
 
 
-    @Test
+    @Test(expected = ContinentParsingException.class)
     public void createContinentWithContinentPowerNotInteger() throws Exception{
         String continentsInfo = "parts2: continents]\r\n" +
                 "azio 5 #9aff80\r\n" +
@@ -84,9 +92,7 @@ public class MapLoaderControllerTest {
                 "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
-        Set<Continent> continents =  controller.parseRawContinents(continentsInfo);
-        assertEquals(continents.size(), 5);
-
+        controller.parseRawContinents(continentsInfo);
     }
 
     @Test
@@ -102,7 +108,7 @@ public class MapLoaderControllerTest {
 
     }
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesMissingContinentInfo() throws Exception{
 
         String continentsInfo = validContinentString();
@@ -115,12 +121,11 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-        Set<Country> countries =  controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
+        controller.parseRawCountries(countriesInfo);
 
     }
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesWithInvalidContinentInfo() throws Exception{
 
         String continentsInfo = validContinentString();
@@ -133,14 +138,11 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-
-        Set<Country> countries = controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
-
+       controller.parseRawCountries(countriesInfo);
     }
 
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesMissingUniqueIdentifier() throws Exception{
 
         String continentsInfo = validContinentString();
@@ -153,13 +155,12 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-        Set<Country> countries =  controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
+        controller.parseRawCountries(countriesInfo);
 
     }
 
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesWithContinentIdNotInteger() throws Exception{
         String continentsInfo = validContinentString();
         controller.parseRawContinents(continentsInfo);
@@ -171,8 +172,8 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-        Set<Country> countries =  controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
+        controller.parseRawCountries(countriesInfo);
+
 
     }
 
@@ -197,7 +198,7 @@ public class MapLoaderControllerTest {
 
     }
 
-    @Test
+    @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithNoAdjacency() throws Exception{
         String continentsInfo = validContinentString();
         controller.parseRawContinents(continentsInfo);
@@ -211,12 +212,10 @@ public class MapLoaderControllerTest {
                 "3 1 5\r\n" +
                 "4 2 1\r\n" +
                 "5 2 3 4\r\n";
-        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
-        assertEquals(adjacencyMap.size(), 4);
-
+        controller.parseRawNeighboringCountries(adjacencyInfo);
     }
 
-    @Test
+    @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithInvalidCountryIdAdjacency() throws Exception{
         String continentsInfo = validContinentString();
         controller.parseRawContinents(continentsInfo);
@@ -230,13 +229,12 @@ public class MapLoaderControllerTest {
                 "3 1 5\r\n" +
                 "4 2 1\r\n" +
                 "5 2 3 4\r\n";
-        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
-        assertEquals(adjacencyMap.size(), 4);
+        controller.parseRawNeighboringCountries(adjacencyInfo);
 
     }
 
 
-    @Test
+    @Test(expected = NeighborParsingException.class)
     public void createAdjacencyCountriesWithValueNotInteger() throws Exception{
 
         String continentsInfo = validContinentString();
@@ -251,8 +249,7 @@ public class MapLoaderControllerTest {
                 "3 1 5\r\n" +
                 "4 2 1\r\n" +
                 "5 2 3 4\r\n";
-        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
-        assertEquals(adjacencyMap.size(), 4);
+        controller.parseRawNeighboringCountries(adjacencyInfo);
 
     }
 
@@ -297,7 +294,7 @@ public class MapLoaderControllerTest {
         String[] commands = StringUtils.split(command, "-");
 
         controller.editCountries(commands);
-        assertEquals(mapService.getCountries().size(), 3);
+        assertEquals(3, mapService.getCountries().size());
     }
 
     @Test
@@ -310,6 +307,31 @@ public class MapLoaderControllerTest {
 
         controller.editCountries(commands);
         assertEquals(mapService.getCountries().size(), 2);
+    }
+
+    @Test
+    public void testSaveCommand() throws Exception{
+
+        String continentsInfo = validContinentString();
+        controller.parseRawContinents(continentsInfo);
+
+        String countriesInfo = validCountryString();
+        controller.parseRawCountries(countriesInfo);
+
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 2\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
+        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
+
+        String command = "savemap /Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/test.map";
+        controller.saveMap(command);
+
+//        assertTrue(lines.isPresent());
+//        assertEquals(lines.get().size(), 21);
+
     }
 
     private MapService addValidContinentInfo(){

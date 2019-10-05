@@ -1,7 +1,7 @@
 package com6441.team7.risc.api.model;
 
+import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Continent {
     private final int id;
@@ -11,14 +11,16 @@ public class Continent {
 
     public Continent(int id, String name) {
         this.id = id;
-        this.name = name.toLowerCase();
+        this.name = name.toLowerCase(Locale.CANADA);
     }
 
     public Continent(int id, String name, int continentValue){
         this.id = id;
-        this.name = name;
+        this.name = name.toLowerCase(Locale.CANADA);
         this.continentValue = continentValue;
     }
+
+
 
     public String getName() {
         return name;
@@ -45,6 +47,8 @@ public class Continent {
     public int getId() {
         return id;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

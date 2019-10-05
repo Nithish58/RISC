@@ -12,7 +12,6 @@ public class StateContext {
 
     public void setState(State state){
         currentState = state;
-        alert();
     }
 
     public void alert(){

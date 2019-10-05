@@ -2,15 +2,10 @@ package com6441.team7.risc.api.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
-import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
-import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
 import org.jgrapht.graph.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
 
 
 public class MapService {
@@ -109,11 +104,19 @@ public class MapService {
                 .isPresent();
     }
 
+    public boolean countryNameNotExist(String countryName) {
+        return !countryNameExist(countryName);
+    }
+
     public boolean continentNameExist(String continentName) {
         return Optional.ofNullable(continentName)
                 .map(this::convertNameToKeyFormat)
                 .filter(name -> getContinentNameSet().contains(name))
                 .isPresent();
+    }
+
+    public boolean continentNameNotExist(String continentName) {
+        return !continentNameExist(continentName);
     }
 
     public boolean continentIdExist(Integer continentId) {
@@ -122,10 +125,18 @@ public class MapService {
                 .isPresent();
     }
 
+    public boolean continentIdNotExist(Integer continentId) {
+        return !continentIdExist(continentId);
+    }
+
     public boolean countryIdExist(Integer countryId) {
         return Optional.ofNullable(countryId)
                 .filter(id -> getCountryIdSet().contains(id))
                 .isPresent();
+    }
+
+    public boolean countryIdNotExist(Integer countryId) {
+        return !countryIdExist(countryId);
     }
 
     public boolean countryExist(Country country) {
@@ -169,14 +180,14 @@ public class MapService {
 
     }
 
-    private Optional<Integer> findCorrespondingIdByContinentName(String name) {
+    public Optional<Integer> findCorrespondingIdByContinentName(String name) {
         return continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(convertNameToKeyFormat(name)))
                 .map(Continent::getId)
                 .findFirst();
     }
 
-    private Optional<Integer> findCorrespondingIdByCountryName(String name) {
+    public Optional<Integer> findCorrespondingIdByCountryName(String name) {
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getCountryName()).equals(convertNameToKeyFormat(name)))
                 .map(Country::getId)
@@ -249,19 +260,19 @@ public class MapService {
 
     }
 
-    public boolean isStronlyConnectec() {
-        StrongConnectivityAlgorithm<Integer, DefaultEdge> scAlg =
-                new KosarajuStrongConnectivityInspector<>(directedGraph);
-
-        List<Graph<Integer, DefaultEdge>> stronglyConnectedSubgraphs =
-                scAlg.getStronglyConnectedComponents();
-
-        long numberOfUnconnected = stronglyConnectedSubgraphs.stream()
-                .map(Graph::vertexSet).map(Set::size).filter(n -> n != countries.size()).count();
-
-        return numberOfUnconnected == 0;
-
-    }
+//    public boolean isStronlyConnectec() {
+//        StrongConnectivityAlgorithm<Integer, DefaultEdge> scAlg =
+//                new KosarajuStrongConnectivityInspector<>(directedGraph);
+//
+//        List<Graph<Integer, DefaultEdge>> stronglyConnectedSubgraphs =
+//                scAlg.getStronglyConnectedComponents();
+//
+//        long numberOfUnconnected = stronglyConnectedSubgraphs.stream()
+//                .map(Graph::vertexSet).map(Set::size).filter(n -> n != countries.size()).count();
+//
+//        return numberOfUnconnected == 0;
+//
+//    }
 
     public Optional<Country> getCountryByName(String name) {
         return Optional.empty();
@@ -324,7 +335,7 @@ public class MapService {
     }
 
     private String convertNameToKeyFormat(String name) {
-        return StringUtils.deleteWhitespace(name).toLowerCase();
+        return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
     private Set<String> getCountryNameSet() {
