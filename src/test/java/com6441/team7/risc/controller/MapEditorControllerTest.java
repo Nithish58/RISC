@@ -392,12 +392,22 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test19_validateMap() tests if map is valid.
+	 * test021_validateMap() tests if map is valid.
 	 */
-	@Ignore
 	@Test
-	public void test019_validateMap() {
+	public void test021_validateMap() {
 		System.out.printf("%nTesting map validation%n");
+		assertTrue(testMapLoader.getMapService().isMapValid());
+	}
+	
+	/**
+	 * test022_checkGraphConnection() tests if map is a connected graph.
+	 */
+	@Test
+	public void test022_checkGraphConnection() {
+		System.out.printf("%nTesting if map is a connected graph%n");
+		//returns true if map is a connected graph.
+		assertTrue(testMapLoader.getMapService().isStronglyConnected());
 	}
 	
 	/**
@@ -405,7 +415,7 @@ public class MapEditorControllerTest {
 	 */
 	@Ignore
 	@Test
-	public void test020_saveMap() {
+	public void test024_saveMap() {
 		System.out.printf("%nTesting map saving%n");
 		try {
 			testMapLoader.saveMap("savemap");
