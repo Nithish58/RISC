@@ -6,7 +6,7 @@ Member added:
 * Jenny 
 
 October 4, 2019
-Attendees: Bikash, Binsar, Kanshav, Jenny 
+Attendees: Bikash, Binsar, Keshav, Jenny 
 
 Bikash: (By October 8th)
 Architectural documentation 
@@ -15,7 +15,7 @@ Have a basic version of Reinforcement phase
 Add Javadoc for Reinforcement phase 
 
 
-Kanshav: ( by October 9th)
+Keshav: ( by October 9th)
 Architectural documentation 
 Coding convention 
 A working version of Fortification phase 
