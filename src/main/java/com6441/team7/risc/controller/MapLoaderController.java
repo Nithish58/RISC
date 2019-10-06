@@ -6,8 +6,6 @@ import com6441.team7.risc.view.CommandPromptView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.jgrapht.Graph;
-import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,28 +22,17 @@ import static java.util.Objects.isNull;
 public class MapLoaderController {
     private AtomicInteger continentIdGenerator;
     private AtomicInteger countryIdGenerator;
-    private StateContext stateContext;
-    private CommandPromptView view;
     private MapService mapService;
+    private CommandPromptView view;
 
-    public MapLoaderController(StateContext stateContext, CommandPromptView view) {
-        this.stateContext = stateContext;
-        this.view = view;
-        this.mapService = new MapService();
+    public MapLoaderController(MapService mapService) {
+        this.mapService = mapService;
         this.continentIdGenerator = new AtomicInteger();
         this.countryIdGenerator = new AtomicInteger();
     }
 
-    public MapService loadMap() {
-        if (stateContext.getState().equals("mapLoader")) {
-            readCommand();
-        }
-        return mapService;
-    }
+    public void readCommand(String command) throws IOException {
 
-    void readCommand() {
-        try {
-            String command = view.receiveCommand();
             RiscCommand commandType = RiscCommand.parse(StringUtils.split(" ")[0]);
 
             command = StringUtils.substringAfter(command, "-");
@@ -71,16 +58,16 @@ public class MapLoaderController {
                     editMap(command);
                     break;
                 case VALIDATE_MAP:
-                    isMapValid();
+                    validateMap();
                     break;
                 default:
                     throw new IllegalArgumentException("cannot recognize this command");
             }
-        } catch (RiscGameException e) {
-                view.displayMessage(e.getMessage());
-        } catch (IOException e) {
-            view.displayMessage("Cannot read map");
-        }
+
+    }
+
+    private void validateMap() {
+        mapService.isMapValid();
     }
 
     private void showMap() {
@@ -89,31 +76,10 @@ public class MapLoaderController {
         mapService.printNeighboringCountryInfo();
     }
 
-    private boolean isMapValid() {
-        if(isStronglyConnected()){
-            setGameStartUpState();
-            return true;
-        }
-        view.displayMessage("The map is not valid");
-        return false;
-    }
 
-    private boolean isMapNotValid() {
-        return !isMapValid();
-    }
-
-    private boolean isStronglyConnected() {
-        int totalCountry = mapService.getCountries().size();
-        return new KosarajuStrongConnectivityInspector<>(mapService.getDirectedGraph())
-                .getStronglyConnectedComponents()
-                .stream()
-                .map(Graph::vertexSet)
-                .map(Set::size)
-                .allMatch(num -> num == totalCountry);
-    }
 
     public void saveMap(String command) throws IOException {
-        if (isMapNotValid()) {
+        if (mapService.isMapNotValid()) {
             throw new MapInvalidException("the map is not valid");
         }
         String filename = command.split(" ")[1];
@@ -167,7 +133,7 @@ public class MapLoaderController {
     }
 
     void  editContinents(String[] s) {
-        Arrays.stream(s).forEach(this::editContinentFromUserInput);
+       Arrays.stream(s).forEach(this::editContinentFromUserInput);
     }
 
     private void editContinentFromUserInput(String s) {
@@ -200,9 +166,20 @@ public class MapLoaderController {
             if (mapService.continentNameExist(continentName)) {
                 return;
             }
-            Continent continent = new Continent(continentIdGenerator.incrementAndGet(), continentName, continentPower);
+
+            int continentNum = mapService.getContinents().size();
+            Continent continent;
+
+            if(continentNum != 0){
+                 continent = new Continent(continentNum + 1, continentName, continentPower);
+            }
+            else{
+                continent = new Continent(continentIdGenerator.incrementAndGet(), continentName, continentPower);
+            }
+
             continent.setColor("null");
             mapService.addContinent(continent);
+
         } catch (Exception e) {
             throw new ContinentEditException("edit continent command: cannot add it is not valid", e);
         }
@@ -232,7 +209,7 @@ public class MapLoaderController {
                 removeCountry(commands);
                 break;
             default:
-                throw new CountryEditException("The editCountry command " + s + " is not valid.");
+                throw new ContinentEditException("The editCountry command " + s + " is not valid.");
         }
     }
 
@@ -249,13 +226,21 @@ public class MapLoaderController {
             return;
         }
 
-        Country country = new Country(countryIdGenerator.incrementAndGet(), countryName, continentName);
+        int countryNum = mapService.getCountries().size();
+        Country country;
+        if(countryNum == 0){
+            country = new Country(countryIdGenerator.incrementAndGet(), countryName, continentName);
+        }else{
+            country = new Country(countryNum + 1, countryName, continentName);
+        }
+
         int continentId = mapService.findCorrespondingIdByContinentName(continentName).get();
         country.setContinentIdentifier(continentId);
         country.setCoordinateX(0);
         country.setCoordinateY(0);
 
         mapService.addCountry(country);
+
     }
 
     private void removeCountry(String[] s) {
@@ -371,12 +356,6 @@ public class MapLoaderController {
         }
     }
 
-    private void setGameStartUpState() {
-        State startup = new StartUpState();
-        stateContext.setState(startup);
-        view.displayMessage("map is successfully loaded, game starts");
-    }
-
 
     boolean parseFile(String s) {
         String[] parts = StringUtils.split(s, "[");
@@ -395,7 +374,7 @@ public class MapLoaderController {
             return false;
         }
 
-        return isStronglyConnected();
+        return mapService.isStronglyConnected();
 
     }
 
@@ -545,5 +524,10 @@ public class MapLoaderController {
 
     public MapService getMapService(){
         return mapService;
+    }
+
+
+    public void setView(CommandPromptView view) {
+        this.view = view;
     }
 }

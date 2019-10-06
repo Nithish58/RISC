@@ -13,7 +13,6 @@ import org.junit.*;
 import org.junit.runners.MethodSorters;
 
 import com6441.team7.risc.controller.GameController;
-import com6441.team7.risc.controller.StateContext;
 import com6441.team7.risc.view.CommandPromptView;
 
 /**
@@ -26,7 +25,7 @@ import com6441.team7.risc.view.CommandPromptView;
 public class FortificationTest {
 	static CommandPromptView testView;
 	static GameController game;
-	static StateContext testState;
+//	static StateContext testState;
 	
 	String fortificationCommand;
 	Scanner keyboard = new Scanner(System.in);
@@ -38,9 +37,9 @@ public class FortificationTest {
 	@BeforeClass
 	public static void initializeFortificationTest() {
 		System.out.printf("Initialize fortification test%n==========%n");
-		testView = new CommandPromptView();
-		testState = new StateContext();
-		game = new GameController(testState);
+//		testView = new CommandPromptView();
+//		testState = new StateContext();
+//		game = new GameController(testState);
 	}
 	
 	/**

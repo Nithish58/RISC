@@ -22,7 +22,7 @@ import org.junit.runners.MethodSorters;
 
 import com6441.team7.risc.view.CommandPromptView;
 import com6441.team7.risc.controller.MapLoaderController;
-import com6441.team7.risc.controller.StateContext;
+//import com6441.team7.risc.controller.StateContext;
 
 /**
  * 
@@ -34,15 +34,15 @@ import com6441.team7.risc.controller.StateContext;
 public class MapEditorControllerTest {
 
 	static private CommandPromptView testCmdView;
-	static private StateContext testState;
+//	static private StateContext testState;
 	static private MapLoaderController testMapLoader;
 	String testMap;
 
 	@BeforeClass
 	public static void beginClass() {
-		testCmdView = new CommandPromptView();
-		testState = new StateContext();
-		testMapLoader = new MapLoaderController(testState, testCmdView);
+//		testCmdView = new CommandPromptView();
+//		testState = new StateContext();
+//		testMapLoader = new MapLoaderController(testState, testCmdView);
 		
 	}
 	

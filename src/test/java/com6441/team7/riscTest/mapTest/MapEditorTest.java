@@ -14,7 +14,6 @@ import org.junit.runners.MethodSorters;
 
 import com6441.team7.risc.view.CommandPromptView;
 import com6441.team7.risc.controller.MapLoaderController;
-import com6441.team7.risc.controller.StateContext;
 
 /**
  * 
@@ -26,7 +25,7 @@ import com6441.team7.risc.controller.StateContext;
 public class MapEditorTest {
 
 	static CommandPromptView testView;
-	static StateContext testState;
+//	static StateContext testState;
 	static MapLoaderController testMapLoader;
 	String testMap;
 	Scanner keyboard = new Scanner(System.in);
@@ -38,8 +37,8 @@ public class MapEditorTest {
 	@BeforeClass
 	public static void initializeEditorTest() {
 		System.out.printf("Initialize map load test%n==========%n");
-		testView = new CommandPromptView();
-		testState = new StateContext();
+//		testView = new CommandPromptView();
+//		testState = new StateContext();
 		//testMapLoader = new MapLoaderController(testState);
 	}
 	

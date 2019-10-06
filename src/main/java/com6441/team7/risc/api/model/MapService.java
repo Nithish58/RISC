@@ -2,18 +2,46 @@ package com6441.team7.risc.api.model;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
+import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
 import org.jgrapht.graph.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 
 
-public class MapService {
+public class MapService extends Observable {
     private Set<Country> countries = new HashSet<>();
     private Set<Continent> continents = new HashSet<>();
     private Map<Integer, Set<Integer>> adjacencyCountriesMap = new HashMap<>();
     private Map<Integer, Set<Integer>> continentCountriesMap = new HashMap<>();
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+    private GameState gameState;
+
+    public MapService(){
+        gameState = GameState.LOAD_MAP;
+    }
+
+    public GameState getGameState(){
+        return gameState;
+    }
+
+
+    public void setState(GameState gameState){
+        this.gameState = gameState;
+        notifyObservers(gameState);
+    }
+
+    public boolean isMapValid() {
+        if(isStronglyConnected()){
+            setState(GameState.START_UP);
+            return true;
+        }
+        return false;
+    }
+
+
+
+
 
     public void addCountry(Country country) {
         countries.add(country);
@@ -21,13 +49,13 @@ public class MapService {
         String continentName = convertNameToKeyFormat(country.getContinentName());
         int countryId = country.getId();
 
-
         continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(continentName))
                 .map(Continent::getId)
                 .findFirst()
                 .ifPresent(continentId -> continentCountriesMap.get(continentId).add(countryId));
 
+     //   view.displayMessage("country " + country.getCountryName() + " is successfully added.");
 
     }
 
@@ -49,6 +77,9 @@ public class MapService {
         if (!continentCountriesMap.containsKey(continent.getId())) {
             continentCountriesMap.put(continent.getId(), new HashSet<>());
         }
+
+       // view.displayMessage("continent " + continent.getName() + " is successfully added.");
+
     }
 
     public void addContinent(Collection<Continent> continentsCollection) {
@@ -78,6 +109,8 @@ public class MapService {
             neighboringCountrySet.add(neghboringCountryId);
             adjacencyCountriesMap.put(countryId, neighboringCountrySet);
         }
+
+      //  view.displayMessage("Neighboring countries " + country + " " + neighboringCountry + " is successfully added.");
     }
 
     public void removeNeighboringCountriesByName(String country, String neighboringCountry) {
@@ -86,6 +119,8 @@ public class MapService {
         int neghboringCountryId = findCorrespondingIdByCountryName(neighboringCountry).get();
 
         adjacencyCountriesMap.get(countryId).remove(neghboringCountryId);
+
+        //view.displayMessage("neighboring country " + neighboringCountry + " is sucessfully removed from " + country);
 
     }
 
@@ -260,20 +295,6 @@ public class MapService {
 
     }
 
-//    public boolean isStronlyConnectec() {
-//        StrongConnectivityAlgorithm<Integer, DefaultEdge> scAlg =
-//                new KosarajuStrongConnectivityInspector<>(directedGraph);
-//
-//        List<Graph<Integer, DefaultEdge>> stronglyConnectedSubgraphs =
-//                scAlg.getStronglyConnectedComponents();
-//
-//        long numberOfUnconnected = stronglyConnectedSubgraphs.stream()
-//                .map(Graph::vertexSet).map(Set::size).filter(n -> n != countries.size()).count();
-//
-//        return numberOfUnconnected == 0;
-//
-//    }
-
     public Optional<Country> getCountryByName(String name) {
         return Optional.empty();
     }
@@ -300,6 +321,22 @@ public class MapService {
 
     public Graph<Integer, DefaultEdge> getDirectedGraph() {
         return directedGraph;
+    }
+
+
+
+    public boolean isMapNotValid() {
+        return !isMapValid();
+    }
+
+    public boolean isStronglyConnected() {
+        int totalCountry = countries.size();
+        return new KosarajuStrongConnectivityInspector<>(directedGraph)
+                .getStronglyConnectedComponents()
+                .stream()
+                .map(Graph::vertexSet)
+                .map(Set::size)
+                .allMatch(num -> num == totalCountry);
     }
 
     public void printCountryInfo(){
