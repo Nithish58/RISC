@@ -59,7 +59,7 @@ public class MapEditorControllerTest {
 		System.out.printf("==========%nBeginning of method%n==========%n");
 		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
 		System.out.println(testMapLoader.getMapService().getCountries());
-		System.out.println(testMapLoader.getMapService().getDirectedGraph());
+		testMapLoader.getMapService().printNeighboringCountryInfo();
 		System.out.println("Number of continents before test: "+testMapLoader.getMapService().getContinents().size());
 		System.out.println("Number of countries before test: "+testMapLoader.getMapService().getCountries().size());
 	}
@@ -72,7 +72,7 @@ public class MapEditorControllerTest {
 		System.out.printf("%n%n==========%nEnd of method%n==========%n");
 		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
 		System.out.println(testMapLoader.getMapService().getCountries());
-		System.out.println(testMapLoader.getMapService().getDirectedGraph());
+		testMapLoader.getMapService().printNeighboringCountryInfo();
 		System.out.println("Number of continents after test: "+testMapLoader.getMapService().getContinents().size());
 		System.out.println("Number of countries after test: "+testMapLoader.getMapService().getCountries().size());
 	}
@@ -373,7 +373,6 @@ public class MapEditorControllerTest {
 	 * test015_addOneNeighbor() tests adding one neighbor of a country.
 	 * @throws Exception upon invalid values
 	 */
-	@Ignore
 	@Test
 	public void test015_addOneNeighbor() throws Exception{
 		System.out.printf("Adding one neighbor to a country%n------------%n");
