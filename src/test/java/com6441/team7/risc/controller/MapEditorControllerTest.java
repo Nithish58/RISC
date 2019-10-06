@@ -57,7 +57,7 @@ public class MapEditorControllerTest {
 	public static Collection editorCommands() {
 		return Arrays.asList(new Object[][]{
 			{"editcontinent -add Nord_Asia 7", 1},
-			{"editcontinent -add Southeast_Asia 9 -add Southwest Asia 10", 2},
+			{"editcontinent -add Southeast_Asia 9 -add Southwest_Asia 10", 2},
 			{"editcontinent -remove ulstrailia", 0},
 			{"editcontinent -add South_Asia 7 -remove Ost_Orient", 1},
 			{"editcountry -add Nordenstan Nord_Asia", 1},
