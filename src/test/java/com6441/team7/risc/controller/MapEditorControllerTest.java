@@ -57,8 +57,8 @@ public class MapEditorControllerTest {
 	@Parameterized.Parameters
 	public static Collection editorCommands() {
 		return Arrays.asList(new Object[][]{
-			{"editcontinent -add Nord_Asia 7", 1},
-			{"editcontinent -add Southeast_Asia 9 -add Northeast_Asia 10", 2},
+			{"editcontinent -add Nord_Asia 1", 7},
+			{"editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1", 2},
 			{"editcontinent -remove Nr", 0},
 			{"editcontinent -add South_Asia 7 -remove Nr", 1},
 			{"editcountry -add Nordenstan Nord_Asia", 1},
@@ -102,7 +102,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test1_readFile() throws Exception{
 		System.out.printf("%nTesting readFile method.%n");
-		URI uri = getClass().getClassLoader().getResource("eurasien.map").toURI(); 
+		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
 		//readFile contains the file content and will check if the file exists.
 		String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 		boolean readFile = testMapLoader.parseFile(file);
@@ -117,7 +117,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test2_editMap() throws Exception{
 		System.out.printf("Testing editmap command.%n");
-		URI uri = getClass().getClassLoader().getResource("eurasien.map").toURI(); 
+		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
 		String inputCommand = "editmap "+uri;
 		System.out.println(inputCommand);
 		//Execute editmap command.
@@ -131,7 +131,8 @@ public class MapEditorControllerTest {
 	@Test
 	public void test3_editCommands() throws Exception{
 		System.out.printf("Testing map editor commands.%n");
-		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());		
+		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
+		System.out.println(testMapLoader.getMapService().getCountries());
 		System.out.println(editorCommand);
 		String editorOption = StringUtils.substringBefore(editorCommand, "-");
 		editorCommand = StringUtils.substringAfter(editorCommand, "-");
