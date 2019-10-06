@@ -1,11 +1,16 @@
 package com6441.team7.risc.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -52,9 +57,14 @@ public class MapEditorControllerTest {
 	public static Collection editorCommands() {
 		return Arrays.asList(new Object[][]{
 			{"editcontinent -add Nord_Asia 7", 1},
-			{"editcontinent -add East_Asia 8", 1},
-			{"editcontinent -remove West_Europa", 0},
-			{"editcontinent -add South_Asia 7 -remove Ost_Orient", 1}
+			{"editcontinent -add Southeast_Asia 9 -add Southwest Asia 10", 2},
+			{"editcontinent -remove ulstrailia", 0},
+			{"editcontinent -add South_Asia 7 -remove Ost_Orient", 1},
+			{"editcountry -add Nordenstan Nord_Asia", 1},
+			{"editcountry -add Columbia ameroki", 1},
+			{"editcountry -add Eurasia_Kingdom Nord_Asia -add Sotoa East_Asia", 2},
+			{"editcountry -remove worrick"},
+			{"editcountry -remove Osea", 0},
 		});
 	}
 	
@@ -84,13 +94,16 @@ public class MapEditorControllerTest {
 	 * test1_readFile() tests command to load map from file.
 	 */
 
+	@Ignore
 	@Test
 	public void test1_readFile() throws Exception{
 		System.out.printf("%nTesting readFile method.%n");
+		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
 		//readFile contains the file content and will check if the file exists.
-		Optional<String> readFile = testMapLoader.readFile("/home/binsar/MACS/Fall_2019/Advanced_Programming_Practices/RISK_project/RISC/src/test/resources/ameroki.map");
-		assertTrue(readFile.isPresent());
-		assertFalse(readFile.get().isEmpty());
+		String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
+		boolean readFile = testMapLoader.parseFile(file);
+		assertTrue(readFile);
+		assertFalse(!readFile);
 	}
 	
 	/**
@@ -99,7 +112,10 @@ public class MapEditorControllerTest {
 	@Test
 	public void test2_editMap() throws Exception{
 		System.out.printf("Testing editmap command.%n");
-		String inputCommand = "editmap "+"/home/binsar/MACS/Fall_2019/Advanced_Programming_Practices/RISK_project/RISC/src/test/resources/ameroki.map";
+		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
+		String inputCommand = "editmap "+uri;
+		System.out.println(inputCommand);
+		//Execute editmap command.
 		Optional<String> inputMap = testMapLoader.editMap(inputCommand);
 		assertTrue(inputMap.isPresent());		
 	}
@@ -108,37 +124,25 @@ public class MapEditorControllerTest {
 	 * test3_editMapCommands() tests the map editor commands from parameterized commands taken from a list.
 	 */
 	@Test
-	public void test3_editContinentCommands() throws Exception{
+	public void test3_editCommands() throws Exception{
 		System.out.printf("Testing map editor commands.%n");
-		String inputCommand = "editmap "+"/home/binsar/MACS/Fall_2019/Advanced_Programming_Practices/RISK_project/RISC/src/test/resources/ameroki.map";
-		testMapLoader.editMap(inputCommand);
 		//testMapLoader object calls method to load a map
 		System.out.println(editorCommand);
+		String editorOption = StringUtils.substringBefore(editorCommand, "-");
 		editorCommand = StringUtils.substringAfter(editorCommand, "-");
 		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		if (editorOption.contains("editcontinent")) {
 		testMapLoader.editContinents(editorCommands);
 		assertSame(expectedResult, testMapLoader.getMapService().getContinents().size());
-		
+		}
+		if (editorOption.contains("editcountry")) {
+		testMapLoader.editCountries(editorCommands);
+		assertSame(expectedResult, testMapLoader.getMapService().getCountries().size());
+		}
 	}
 	
 	/**
-	 * test4_addOneValidContinents() tests adding one valid continent.
-	 */
-	@Ignore
-	@Test
-	public void test4_addOneValidContinents() throws Exception{
-		System.out.printf("Testing adding one valid continent.%n");
-		String inputCommand = "editcontinent -add Nord_Asia 7";
-		inputCommand = StringUtils.substringAfter(inputCommand, "-");
-		String[] inputCommands = StringUtils.split(inputCommand, "-");
-		testMapLoader.editContinents(inputCommands);
-		assertEquals(6,testMapLoader.getMapService().getContinents().size());
-		
-	}
-	
-
-	/**
-	 * test5_validateMap() tests if map is valid.
+	 * test4_validateMap() tests if map is valid.
 	 */
 	@Ignore
 	@Test
@@ -153,7 +157,12 @@ public class MapEditorControllerTest {
 	@Test
 	public void test4_saveMap() {
 		System.out.printf("%nTesting map saving%n");
-		
+		try {
+			testMapLoader.saveMap("savemap");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
