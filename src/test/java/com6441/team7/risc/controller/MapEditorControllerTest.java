@@ -58,14 +58,14 @@ public class MapEditorControllerTest {
 	public static Collection editorCommands() {
 		return Arrays.asList(new Object[][]{
 			{"editcontinent -add Nord_Asia 1", 7},
-			{"editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1", 2},
-			{"editcontinent -remove Nr", 0},
-			{"editcontinent -add South_Asia 7 -remove Nr", 1},
-			{"editcountry -add Nordenstan Nord_Asia", 1},
-			{"editcountry -add Columbia ameroki", 1},
-			{"editcountry -add Eurasia_Kingdom Nord_Asia -add Sotoa Northeast_Asia", 2},
-			{"editcountry -remove worrick"},
-			{"editcountry -remove Osea", 0},
+			{"editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1", 8},
+			{"editcontinent -remove Nr", 6},
+			{"editcontinent -add South_Asia 7 -remove Nr", 7},
+			{"editcountry -add Nordenstan Nord_Asia", 43},
+			{"editcountry -add Columbia ameroki", 44},
+			{"editcountry -add Eurasia_Kingdom Nord_Asia -add Sotoa Northeast_Asia", 46},
+			{"editcountry -remove worrick", 45},
+			{"editcountry -remove Osea", 45},
 		});
 	}
 	
@@ -84,6 +84,8 @@ public class MapEditorControllerTest {
 	@Before
 	public void beginMethod() {
 		System.out.printf("==========%nBeginning of method%n==========%n");
+		System.out.println("Number of continents before test: "+testMapLoader.getMapService().getContinents().size());
+		System.out.println("Number of countries before test: "+testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -92,6 +94,8 @@ public class MapEditorControllerTest {
 	@After
 	public void endMethod() {
 		System.out.printf("%n%n==========%nEnd of method%n==========%n");
+		System.out.println("Number of continents after test: "+testMapLoader.getMapService().getContinents().size());
+		System.out.println("Number of countries after test: "+testMapLoader.getMapService().getCountries().size());
 	}
 	
 	
