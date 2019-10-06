@@ -59,6 +59,7 @@ public class MapEditorControllerTest {
 		System.out.printf("==========%nBeginning of method%n==========%n");
 		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
 		System.out.println(testMapLoader.getMapService().getCountries());
+		System.out.println(testMapLoader.getMapService().getDirectedGraph());
 		System.out.println("Number of continents before test: "+testMapLoader.getMapService().getContinents().size());
 		System.out.println("Number of countries before test: "+testMapLoader.getMapService().getCountries().size());
 	}
@@ -71,6 +72,7 @@ public class MapEditorControllerTest {
 		System.out.printf("%n%n==========%nEnd of method%n==========%n");
 		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
 		System.out.println(testMapLoader.getMapService().getCountries());
+		System.out.println(testMapLoader.getMapService().getDirectedGraph());
 		System.out.println("Number of continents after test: "+testMapLoader.getMapService().getContinents().size());
 		System.out.println("Number of countries after test: "+testMapLoader.getMapService().getCountries().size());
 	}
@@ -365,6 +367,29 @@ public class MapEditorControllerTest {
 		String[] editorCommands = StringUtils.split(editorCommand, "-");
 		testMapLoader.editCountries(editorCommands);
 		assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+	}
+	
+	/**
+	 * test015_addOneNeighbor() tests adding one neighbor of a country.
+	 * @throws Exception upon invalid values
+	 */
+	@Ignore
+	@Test
+	public void test015_addOneNeighbor() throws Exception{
+		System.out.printf("Adding one neighbor to a country%n------------%n");
+		//size of country list before one country is added
+		//int initCountrySize = testMapLoader.getMapService().getCountries().size();
+		//Expected size of country list after one country is added
+		//int expectedCountrySize = initCountrySize+1;
+		//Set the command string to add one country
+		String editorCommand = "editneighbor -add nordennavic northern_utropa";
+		System.out.println(editorCommand);
+		//Retrieve substring(s) after every dash(es)
+		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		//Create an array of substrings for param.
+		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		testMapLoader.editCountries(editorCommands);
+		//assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
