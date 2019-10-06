@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -36,9 +37,9 @@ import com6441.team7.risc.controller.StateContext;
 @RunWith(Parameterized.class)
 public class MapEditorControllerTest {
 
-	private CommandPromptView testCmdView;
-	private StateContext testState;
-	private MapLoaderController testMapLoader;
+	static private CommandPromptView testCmdView;
+	static private StateContext testState;
+	static private MapLoaderController testMapLoader;
 	private String editorCommand;
 	private Integer expectedResult;
 	String testMap;
@@ -57,28 +58,32 @@ public class MapEditorControllerTest {
 	public static Collection editorCommands() {
 		return Arrays.asList(new Object[][]{
 			{"editcontinent -add Nord_Asia 7", 1},
-			{"editcontinent -add Southeast_Asia 9 -add Southwest_Asia 10", 2},
-			{"editcontinent -remove ulstrailia", 0},
-			{"editcontinent -add South_Asia 7 -remove Ost_Orient", 1},
+			{"editcontinent -add Southeast_Asia 9 -add Northeast_Asia 10", 2},
+			{"editcontinent -remove Nr", 0},
+			{"editcontinent -add South_Asia 7 -remove Nr", 1},
 			{"editcountry -add Nordenstan Nord_Asia", 1},
 			{"editcountry -add Columbia ameroki", 1},
-			{"editcountry -add Eurasia_Kingdom Nord_Asia -add Sotoa East_Asia", 2},
+			{"editcountry -add Eurasia_Kingdom Nord_Asia -add Sotoa Northeast_Asia", 2},
 			{"editcountry -remove worrick"},
 			{"editcountry -remove Osea", 0},
 		});
 	}
 	
 
+	@BeforeClass
+	public static void beginClass() {
+		testCmdView = new CommandPromptView();
+		testState = new StateContext();
+		testMapLoader = new MapLoaderController(testState, testCmdView);
+		
+	}
+	
 	/**
 	 * beginMethod() is called before every method is performed.
 	 */
 	@Before
 	public void beginMethod() {
 		System.out.printf("==========%nBeginning of method%n==========%n");
-		System.out.printf("Initialize map load test%n==========%n");
-		testCmdView = new CommandPromptView();
-		testState = new StateContext();
-		testMapLoader = new MapLoaderController(testState, testCmdView);
 	}
 	
 	/**
@@ -94,14 +99,14 @@ public class MapEditorControllerTest {
 	 * test1_readFile() tests command to load map from file.
 	 */
 
-	@Ignore
 	@Test
 	public void test1_readFile() throws Exception{
 		System.out.printf("%nTesting readFile method.%n");
-		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
+		URI uri = getClass().getClassLoader().getResource("eurasien.map").toURI(); 
 		//readFile contains the file content and will check if the file exists.
 		String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 		boolean readFile = testMapLoader.parseFile(file);
+		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
 		assertTrue(readFile);
 		assertFalse(!readFile);
 	}
@@ -112,7 +117,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test2_editMap() throws Exception{
 		System.out.printf("Testing editmap command.%n");
-		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
+		URI uri = getClass().getClassLoader().getResource("eurasien.map").toURI(); 
 		String inputCommand = "editmap "+uri;
 		System.out.println(inputCommand);
 		//Execute editmap command.
@@ -126,7 +131,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test3_editCommands() throws Exception{
 		System.out.printf("Testing map editor commands.%n");
-		//testMapLoader object calls method to load a map
+		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());		
 		System.out.println(editorCommand);
 		String editorOption = StringUtils.substringBefore(editorCommand, "-");
 		editorCommand = StringUtils.substringAfter(editorCommand, "-");
