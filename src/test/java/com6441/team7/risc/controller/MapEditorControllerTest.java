@@ -76,10 +76,11 @@ public class MapEditorControllerTest {
 	}
 	
 	
+
 	/**
 	 * test1_readFile() tests command to load map from file.
+	 * @throws Exception upon invalid values
 	 */
-
 	@Test
 	public void test001_readFile() throws Exception{
 		System.out.printf("%nTesting readFile method.%n");
@@ -94,6 +95,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test2_editMap() checks if the editmap command is valid.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test002_editMap() throws Exception{
@@ -108,6 +110,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test3_addOneContinent() tests adding one continent to the continent list.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test003_addOneContinent() throws Exception{
@@ -131,6 +134,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test4_addTwoContinents() tests adding two continents to the continent list in one command.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test004_addTwoContinents() throws Exception{
@@ -151,6 +155,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test5_removeOneContinent() tests deleting one continent.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test005_removeOneContinent() throws Exception{
@@ -171,6 +176,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test6_removeTwoContinents() tests removing continents from the continent list in one command.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test006_removeTwoContinents() throws Exception{
@@ -191,6 +197,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test7_addOneContinentRemoveOneContinent() tests adding and removing one continent from the continent list in one command.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test007_addOneContinentRemoveOneContinent() throws Exception{
@@ -211,6 +218,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test8_addTwoContinentsRemoveTwoContinents() tests adding and removing two continents from the continent list in one command.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test008_addTwoContinentsRemoveTwosContinents() throws Exception{
@@ -231,6 +239,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test9_addOneCountry() tests adding one country to the country list.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test009_addOneCountry() throws Exception{
@@ -252,6 +261,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test10_addTwoCountries() tests adding one country to the country list.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test010_addTwoCountries() throws Exception{
@@ -273,6 +283,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test011_removeOneCountry() tests removing one country from the country list.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test011_removeOneCountry() throws Exception{
@@ -294,6 +305,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test012_removeTwoCountries() tests removing two countries from the country list.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test011_removeTwoCountries() throws Exception{
@@ -315,6 +327,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test013_addOneCountryRemoveOneCountry() tests adding and removing one country from the country list in one command.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test013_addOneCountryRemoveOneCountry() throws Exception{
@@ -335,6 +348,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test014_addTwoCountriesRemoveTwoCountries() tests adding and removing two countries from the country list in one command.
+	 * @throws Exception upon invalid values
 	 */
 	@Test
 	public void test014_addTwoCountriesRemoveTwoCountries() throws Exception{
