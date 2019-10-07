@@ -204,6 +204,8 @@ public class MapService extends Observable {
                 .ifPresent(continentId -> continentCountriesMap.get(continentId).remove(countryId));
     }
 
+
+
     private void removeCountryFromAdjacentCountryMap(Country country) {
         int countryId = country.getId();
         adjacencyCountriesMap.remove(countryId);
@@ -227,6 +229,14 @@ public class MapService extends Observable {
                 .map(Country::getId)
                 .findFirst();
     }
+
+    public Optional<String> findCorrespondingNameByContidentId(Integer id){
+        return continents.stream()
+                .filter(continent -> continent.getId() == id)
+                .map(Continent::getName)
+                .findFirst();
+    }
+
 
     private Optional<Country> findCountryToBeRemoved(String countryName) {
         String normalizedCountryName = convertNameToKeyFormat(countryName);
@@ -355,6 +365,7 @@ public class MapService extends Observable {
                     System.out.print(country.getCountryName() + " ");
                     System.out.print(country.getContinentIdentifier() + " ");
                     System.out.print(country.getContinentName() + " ");
+                    System.out.println("\n");
                 }
         );
 
@@ -366,6 +377,7 @@ public class MapService extends Observable {
             System.out.print(continent.getId() + " ");
             System.out.print(continent.getName() + " ");
             System.out.print(continent.getContinentValue() + " ");
+            System.out.println("\n");
         });
 
     }
