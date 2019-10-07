@@ -15,10 +15,15 @@ public class MapService extends Observable {
     private Map<Integer, Set<Integer>> adjacencyCountriesMap = new HashMap<>();
     private Map<Integer, Set<Integer>> continentCountriesMap = new HashMap<>();
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
-    private GameState gameState;
+    private GameState gameState = GameState.LOAD_MAP;
 
     public MapService(){
-        gameState = GameState.LOAD_MAP;
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        super.addObserver(observer);
+        setState(gameState);
     }
 
     public GameState getGameState(){
@@ -28,18 +33,18 @@ public class MapService extends Observable {
 
     public void setState(GameState gameState){
         this.gameState = gameState;
+        setChanged();
         notifyObservers(gameState);
     }
 
     public boolean isMapValid() {
         if(isStronglyConnected()){
             setState(GameState.START_UP);
+            System.out.println("the map is successfully loaded.");
             return true;
         }
         return false;
     }
-
-
 
 
 
@@ -200,9 +205,8 @@ public class MapService extends Observable {
     private void removeCountryFromContinentCountryMap(Country country) {
 
         int countryId = country.getId();
-        Optional<Integer> continentId = findCorrespondingIdByContinentName(country.getContinentName());
-
-        continentCountriesMap.get(continentId.get()).remove(countryId);
+        findCorrespondingIdByContinentName(country.getContinentName())
+                .ifPresent(continentId -> continentCountriesMap.get(continentId).remove(countryId));
     }
 
     private void removeCountryFromAdjacentCountryMap(Country country) {
@@ -276,7 +280,7 @@ public class MapService extends Observable {
     }
 
 
-    public void addEdge(int src, List<Integer> dest) {
+    public void addEdge(int src, Set<Integer> dest) {
         if (!directedGraph.containsVertex(src)) {
             directedGraph.addVertex(src);
         }
@@ -330,6 +334,12 @@ public class MapService extends Observable {
     }
 
     public boolean isStronglyConnected() {
+
+        for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
+            Set<Integer> set = new HashSet<>(entry.getValue());
+            addEdge(entry.getKey(), set);
+        }
+
         int totalCountry = countries.size();
         return new KosarajuStrongConnectivityInspector<>(directedGraph)
                 .getStronglyConnectedComponents()

@@ -16,6 +16,8 @@ public class App {
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
         CommandPromptView view = new CommandPromptView(mapLoaderController, gameController);
         mapLoaderController.setView(view);
+        mapService.addObserver(view);
+        view.receiveCommand();
 
     }
 }

@@ -19,12 +19,11 @@ public class CommandPromptView implements Observer {
     public CommandPromptView(MapLoaderController mapLoaderController, GameController gameController) {
         this.mapLoaderController = mapLoaderController;
         this.gameController = gameController;
+        System.out.println("welcome to domination game");
     }
 
 
     public void receiveCommand() {
-
-
         while (true) {
             try {
                 String command = scanner.nextLine();
