@@ -310,7 +310,7 @@ public class MapEditorControllerTest {
 	 * @throws Exception upon invalid values
 	 */
 	@Test
-	public void test011_removeTwoCountries() throws Exception{
+	public void test012_removeTwoCountries() throws Exception{
 		System.out.printf("Removing two countries%n------------%n");
 		//size of country list before two countries are removed
 		int initCountrySize = testMapLoader.getMapService().getCountries().size();
@@ -387,7 +387,7 @@ public class MapEditorControllerTest {
 		editorCommand = StringUtils.substringAfter(editorCommand, "-");
 		//Create an array of substrings for param.
 		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editCountries(editorCommands);
+		testMapLoader.editNeighbor(editorCommands);
 		//assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
 	}
 	
