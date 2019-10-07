@@ -397,7 +397,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test021_validateMap() {
 		System.out.printf("%nTesting map validation%n");
-		assertTrue(testMapLoader.getMapService().isMapValid());
+		assertTrue("This map is invalid", testMapLoader.getMapService().isMapValid());
 	}
 	
 	/**
