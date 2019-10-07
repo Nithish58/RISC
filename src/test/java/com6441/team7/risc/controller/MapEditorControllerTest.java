@@ -379,11 +379,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test015_addOneNeighbor() throws Exception{
 		System.out.printf("Adding one neighbor to a country%n------------%n");
-		//size of country list before one country is added
-		//int initCountrySize = testMapLoader.getMapService().getCountries().size();
-		//Expected size of country list after one country is added
-		//int expectedCountrySize = initCountrySize+1;
-		//Set the command string to add one country
+		//Set the command string to add one neighbor
 		String editorCommand = "editneighbor -add nordennavic northern_utropa";
 		System.out.println(editorCommand);
 		//Retrieve substring(s) after every dash(es)
@@ -397,10 +393,164 @@ public class MapEditorControllerTest {
 		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
 		//get neighbor ID
 		Optional<Integer> neighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("northern_utropa");
+		//get pair of country and neighbor
+		Set<Integer> countryNeighborPair = borders.get(countryId.get());
 		//Check if map object contains both country ID and neighbor ID
 		assertTrue("Country is not found",borders.containsKey(countryId.get()));
-		assertTrue("Neighbor country is not found", borders.values().stream().anyMatch(val -> val.contains(neighborId.get())));
-
+		assertTrue("Neighbor country is not found", countryNeighborPair.contains(neighborId.get()));
+	}
+	
+	/**
+	 * test016_addTwoNeighbors() tests adding two neighbors for one or two countries in one command.
+	 * @throws Exception upon invalid values
+	 */
+	@Test
+	public void test016_addTwoNeighbors() throws Exception{
+		System.out.printf("Adding two neighbors to one country%n------------%n");
+		//Set the command string to add two neighbors
+		String editorCommand = "editneighbor -add fiji japan -add fiji western_united_states";
+		System.out.println(editorCommand);
+		//Retrieve substring(s) after every dash(es)
+		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		//Create an array of substrings for param.
+		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		testMapLoader.editNeighbor(editorCommands);
+		//create map object from adjacency list
+		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		//get country ID
+		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("fiji");
+		//get neighbor ID
+		Optional<Integer> neighborOneId = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
+		Optional<Integer> neighborTwoId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		//get pair of country and neighbor
+		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		//Check if map object contains both country ID and neighbor ID
+		assertTrue("Country is not found",borders.containsKey(countryId.get()));
+		assertTrue("First neighbor country is not found", countryNeighborPair.contains(neighborOneId.get()));
+		assertTrue("Second neighbor country is not found", countryNeighborPair.contains(neighborTwoId.get()));
+	}
+	
+	/**
+	 * test017_removeOneNeighbor() tests removing one neighbor from a country.
+	 * @throws Exception upon invalid values
+	 */
+	@Test
+	public void test017_removeOneNeighbor() throws Exception{
+		System.out.printf("Removing one neighbor from a country%n------------%n");
+		//Set the command string to remove one neighbor
+		String editorCommand = "editneighbor -remove tungu south_afrori";
+		System.out.println(editorCommand);
+		//Retrieve substring(s) after every dash(es)
+		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		//Create an array of substrings for param.
+		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		testMapLoader.editNeighbor(editorCommands);
+		//create map object from adjacency list
+		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		//get country ID
+		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("tungu");
+		//get neighbor ID
+		Optional<Integer> neighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("south_afrori");
+		//get pair of country and neighbor
+		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		//Check if map object contains both country ID and neighbor ID
+		assertTrue("Country is not found",borders.containsKey(countryId.get()));
+		assertFalse("Neighbor country is found", countryNeighborPair.contains(neighborId.get()));
+	}
+	
+	/**
+	 * test018_removeTwoNeighbors() tests removing two neighbors from one or two countries in one command.
+	 * @throws Exception upon invalid values
+	 */
+	@Test
+	public void test018_removeTwoNeighbors() throws Exception{
+		System.out.printf("Removing two neighbors from one country%n------------%n");
+		//Set the command string to remove two neighbors
+		String editorCommand = "editneighbor -remove western_united_states great_britain -remove western_united_states teramar";
+		System.out.println(editorCommand);
+		//Retrieve substring(s) after every dash(es)
+		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		//Create an array of substrings for param.
+		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		testMapLoader.editNeighbor(editorCommands);
+		//create map object from adjacency list
+		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		//get country ID
+		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		//get neighbor ID
+		Optional<Integer> firstNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("great_britain");
+		Optional<Integer> secondNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("teramar");
+		//get pair of country and neighbor
+		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		//Check if map object contains both country ID and neighbor ID
+		assertTrue("Country is not found",borders.containsKey(countryId.get()));
+		assertFalse("First neighbor country is found", countryNeighborPair.contains(firstNeighborId.get()));
+		assertFalse("Second neighbor country is found", countryNeighborPair.contains(secondNeighborId.get()));
+	}
+	
+	/**
+	 * test019_addOneNeighborRemoveOneNeighbor() tests adding and removing one neighbor in one command.
+	 * @throws Exception upon invalid values
+	 */
+	@Test
+	public void test019_addOneNeighborRemoveOneNeighbor() throws Exception{
+		System.out.printf("Adding and removing one neighbor from one country%n------------%n");
+		//Set the command string to remove two neighbors
+		String editorCommand = "editneighbor -add western_united_states pero -remove western_united_states central_ameroki";
+		System.out.println(editorCommand);
+		//Retrieve substring(s) after every dash(es)
+		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		//Create an array of substrings for param.
+		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		testMapLoader.editNeighbor(editorCommands);
+		//create map object from adjacency list
+		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		//get country ID
+		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		//get neighbor ID
+		Optional<Integer> addedNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("pero");
+		Optional<Integer> removedNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("central_ameroki");
+		//get pair of country and neighbor
+		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		//Check if map object contains both country ID and neighbor ID
+		assertTrue("Country is not found",borders.containsKey(countryId.get()));
+		assertTrue("First neighbor country is not found", countryNeighborPair.contains(addedNeighborId.get()));
+		assertFalse("Second neighbor country is found", countryNeighborPair.contains(removedNeighborId.get()));
+	}
+	
+	/**
+	 * test020_addTwoNeighborsRemoveTwoNeighbors() tests adding and removing two neighbors in one command.
+	 * @throws Exception upon invalid values
+	 */
+	@Test
+	public void test020_addOneNeighborsRemoveTwoNeighbors() throws Exception{
+		System.out.printf("Adding and removing two neighbors from one country%n------------%n");
+		//Set the command string to remove two neighbors
+		String editorCommand = "editneighbor -add senadlavin japan -add senadlavin argentina -remove senadlavin ireland -remove senadlavin western_united_states";
+		System.out.println(editorCommand);
+		//Retrieve substring(s) after every dash(es)
+		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		//Create an array of substrings for param.
+		String[] editorCommands = StringUtils.split(editorCommand, "-");
+		testMapLoader.editNeighbor(editorCommands);
+		//create map object from adjacency list
+		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		//get country ID
+		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("senadlavin");
+		//get neighbor ID
+		Optional<Integer> addedFirstNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
+		Optional<Integer> addedSecondNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("argentina");
+		Optional<Integer> removedFirstNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("ireland");
+		Optional<Integer> removedSecondNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		//get pair of country and neighbor
+		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		System.out.println("Array is"+countryNeighborPair);
+		//Check if map object contains both country ID and neighbor ID
+		assertTrue("Country is not found",borders.containsKey(countryId.get()));
+		assertTrue("First added neighbor country is not found", countryNeighborPair.contains(addedFirstNeighborId.get()));
+		assertTrue("Second added neighbor country is not found", countryNeighborPair.contains(addedSecondNeighborId.get()));
+		assertFalse("First removed neighbor country is found", countryNeighborPair.contains(removedFirstNeighborId.get()));
+		assertFalse("Second removed neighbor country is found", countryNeighborPair.contains(removedSecondNeighborId.get()));
 	}
 	
 	/**
