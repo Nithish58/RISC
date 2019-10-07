@@ -52,6 +52,7 @@ public class CommandPromptView implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof GameState) {
             gameState = (GameState) arg;
+            System.out.println("game state being changed to " + gameState.getName());
         }
     }
 }

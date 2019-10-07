@@ -38,12 +38,7 @@ public class MapService extends Observable {
     }
 
     public boolean isMapValid() {
-        if(isStronglyConnected()){
-            setState(GameState.START_UP);
-            System.out.println("the map is successfully loaded.");
-            return true;
-        }
-        return false;
+        return isStronglyConnected();
     }
 
 
@@ -335,6 +330,9 @@ public class MapService extends Observable {
 
     public boolean isStronglyConnected() {
 
+        if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
+            return false;
+        }
         for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
             Set<Integer> set = new HashSet<>(entry.getValue());
             addEdge(entry.getKey(), set);
@@ -357,7 +355,6 @@ public class MapService extends Observable {
                     System.out.print(country.getCountryName() + " ");
                     System.out.print(country.getContinentIdentifier() + " ");
                     System.out.print(country.getContinentName() + " ");
-                    System.out.println("\n");
                 }
         );
 
@@ -369,7 +366,6 @@ public class MapService extends Observable {
             System.out.print(continent.getId() + " ");
             System.out.print(continent.getName() + " ");
             System.out.print(continent.getContinentValue() + " ");
-            System.out.println("\n");
         });
 
     }

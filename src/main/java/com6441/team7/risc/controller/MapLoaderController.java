@@ -74,13 +74,15 @@ public class MapLoaderController {
 
     }
 
-    private void validateMap() {
+    private boolean validateMap() {
 
         if(mapService.isMapValid()){
             view.displayMessage("map is valid");
+            return true;
         }
         else{
             view.displayMessage("map is not valid");
+            return false;
         }
     }
 
@@ -389,7 +391,11 @@ public class MapLoaderController {
             parseRawCountries(parts[3]);
             parseRawNeighboringCountries(parts[4]);
 
-            validateMap();
+            boolean isValid = validateMap();
+
+            if(isValid){
+                mapService.setState(GameState.START_UP);
+            }
 
         } catch (Exception e) {
             view.displayMessage(e.getMessage());
