@@ -30,8 +30,10 @@ public class CommandPromptView implements Observer {
                 switch (gameState) {
                     case LOAD_MAP:
                         mapLoaderController.readCommand(command);
+                        break;
                     case START_UP:
-                        //gameController.startUp(command);
+                        gameController.startUp(command);
+                        break;
                     case FORTIFY:
                         //gameController.fortify(command);
                     case REINFORCE:

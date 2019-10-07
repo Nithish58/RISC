@@ -113,6 +113,7 @@ public class MapLoaderController {
         File file = new File(filename);
         FileUtils.writeStringToFile(file, stringBuilder.toString(), StandardCharsets.UTF_8.name());
         view.displayMessage("the map is successfully saved.");
+        mapService.setState(GameState.START_UP);
     }
 
     private String getContinentString() {
@@ -244,9 +245,11 @@ public class MapLoaderController {
         }
 
         int countryNum = mapService.getCountries().size();
+
         Country country;
         if (countryNum == 0) {
             country = new Country(countryIdGenerator.incrementAndGet(), countryName, continentName);
+
         } else {
             country = new Country(countryNum + 1, countryName, continentName);
         }
@@ -387,15 +390,12 @@ public class MapLoaderController {
                 throw new MissingInfoException("The map is not valid");
             }
 
+            //parseMapGraphInfo(parts[1]);
             parseRawContinents(parts[2]);
             parseRawCountries(parts[3]);
             parseRawNeighboringCountries(parts[4]);
 
-            boolean isValid = validateMap();
-
-            if(isValid){
-                mapService.setState(GameState.START_UP);
-            }
+            validateMap();
 
         } catch (Exception e) {
             view.displayMessage(e.getMessage());
@@ -478,9 +478,11 @@ public class MapLoaderController {
                 throw new CountryParsingException("country: " + s + " contains invalid continent information");
             }
 
+            String continentName = mapService.findCorrespondingNameByContidentId(continentId).get();
             Country country = new Country(countryId, countryName, continentId);
             country.setCoordinateX(coordinateX);
             country.setCoordinateY(coordinateY);
+            country.setContinentName(continentName);
 
             return country;
 
