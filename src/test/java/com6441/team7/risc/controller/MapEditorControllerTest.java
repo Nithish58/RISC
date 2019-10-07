@@ -6,7 +6,10 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -388,7 +391,16 @@ public class MapEditorControllerTest {
 		//Create an array of substrings for param.
 		String[] editorCommands = StringUtils.split(editorCommand, "-");
 		testMapLoader.editNeighbor(editorCommands);
-		//assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+		//create map object from adjacency list
+		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		//get country ID
+		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
+		//get neighbor ID
+		Optional<Integer> neighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("northern_utropa");
+		//Check if map object contains both country ID and neighbor ID
+		assertTrue("Country is not found",borders.containsKey(countryId.get()));
+		assertTrue("Neighbor country is not found", borders.values().stream().anyMatch(val -> val.contains(neighborId.get())));
+
 	}
 	
 	/**
@@ -407,7 +419,7 @@ public class MapEditorControllerTest {
 	public void test022_checkGraphConnection() {
 		System.out.printf("%nTesting if map is a connected graph%n");
 		//returns true if map is a connected graph.
-		assertTrue(testMapLoader.getMapService().isStronglyConnected());
+		assertTrue("This map is not a connected graph", testMapLoader.getMapService().isStronglyConnected());
 	}
 	
 	/**
