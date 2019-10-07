@@ -42,7 +42,7 @@ public class MapEditorControllerTest {
 //	static private StateContext testState;
 	static private MapLoaderController testMapLoader;
 	static private GameController testGameController;
-	String testMap;
+	String test_map;
 
 	@BeforeClass
 	public static void beginClass() {
@@ -106,11 +106,11 @@ public class MapEditorControllerTest {
 	public void test002_editMap() throws Exception{
 		System.out.printf("Testing editmap command.%n");
 		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
-		String inputCommand = "editmap "+uri;
-		System.out.println(inputCommand);
+		String inputcommand = "editmap "+uri;
+		System.out.println(inputcommand);
 		//Execute editmap command.
-		Optional<String> inputMap = testMapLoader.editMap(inputCommand);
-		assertTrue(inputMap.isPresent());		
+		Optional<String> inputmap = testMapLoader.editMap(inputcommand);
+		assertTrue(inputmap.isPresent());		
 	}
 	
 	/**
@@ -121,20 +121,20 @@ public class MapEditorControllerTest {
 	public void test003_addOneContinent() throws Exception{
 		System.out.printf("Adding one continent%n------------%n");
 		//size of continent list before one continent is added
-		int initContinentSize = testMapLoader.getMapService().getContinents().size();
+		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		//Expected size of continent list after one continent is added
-		int expectedContinentSize = initContinentSize+1;
+		int expectedcontinentsize = initcontinentsize+1;
 		//Set the command string to add one continent
-		String editorCommand = "editcontinent -add Nord_Asia 1";
-		System.out.println(editorCommand);
+		String editorcommand = "editcontinent -add Nord_Asia 1";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editContinents(editorCommands);
-		assertSame(expectedContinentSize, testMapLoader.getMapService().getContinents().size());
-		//testMapLoader.editCountries(editorCommands);
-		//assertSame(expectedContinentSize, testMapLoader.getMapService().getCountries().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editContinents(editorcommands);
+		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		//testMapLoader.editCountries(editorcommands);
+		//assertSame(expectedcontinentsize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -145,17 +145,17 @@ public class MapEditorControllerTest {
 	public void test004_addTwoContinents() throws Exception{
 		System.out.printf("Adding two continents%n------------%n");
 		//size of continent list before one continent is added
-		int initContinentSize = testMapLoader.getMapService().getContinents().size();
+		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		//expected size of continent list after two continent is added
-		int expectedContinentSize = initContinentSize+2;
-		String editorCommand = "editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1";
-		System.out.println(editorCommand);
+		int expectedcontinentsize = initcontinentsize+2;
+		String editorcommand = "editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editContinents(editorCommands);
-		assertSame(expectedContinentSize, testMapLoader.getMapService().getContinents().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editContinents(editorcommands);
+		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -166,17 +166,17 @@ public class MapEditorControllerTest {
 	public void test005_removeOneContinent() throws Exception{
 		System.out.printf("Removing one continent%n------------%n");
 		//size of continent list before one continent is removed
-		int initContinentSize = testMapLoader.getMapService().getContinents().size();
+		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		//expected size of continent list after one continent is removed
-		int expectedContinentSize = initContinentSize-1;
-		String editorCommand = "editcontinent -remove ulstrailia";
-		System.out.println(editorCommand);
+		int expectedcontinentsize = initcontinentsize-1;
+		String editorcommand = "editcontinent -remove ulstrailia";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editContinents(editorCommands);
-		assertSame(expectedContinentSize, testMapLoader.getMapService().getContinents().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editContinents(editorcommands);
+		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -187,17 +187,17 @@ public class MapEditorControllerTest {
 	public void test006_removeTwoContinents() throws Exception{
 		System.out.printf("Removing two continents%n------------%n");
 		//size of continent list before two continents are removed
-		int initContinentSize = testMapLoader.getMapService().getContinents().size();
+		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		//expected size of continent list after two continents are removed
-		int expectedContinentSize = initContinentSize-2;
-		String editorCommand = "editcontinent -remove ameroki 1 -remove amerpoll 1";
-		System.out.println(editorCommand);
+		int expectedcontinentsize = initcontinentsize-2;
+		String editorcommand = "editcontinent -remove ameroki 1 -remove amerpoll 1";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editContinents(editorCommands);
-		assertSame(expectedContinentSize, testMapLoader.getMapService().getContinents().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editContinents(editorcommands);
+		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -208,17 +208,17 @@ public class MapEditorControllerTest {
 	public void test007_addOneContinentRemoveOneContinent() throws Exception{
 		System.out.printf("Adding and removing one continent%n------------%n");
 		//size of continent list before after one continent is added and one continent is removed
-		int initContinentSize = testMapLoader.getMapService().getContinents().size();
+		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		//expected size of continent list after one continent is added and one countinent is removed
-		int expectedContinentSize = initContinentSize;
-		String editorCommand = "editcontinent -add NordWest_Asia 9 -remove Southeast_Asia";
-		System.out.println(editorCommand);
+		int expectedcontinentsize = initcontinentsize;
+		String editorcommand = "editcontinent -add NordWest_Asia 9 -remove Southeast_Asia";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editContinents(editorCommands);
-		assertSame(expectedContinentSize, testMapLoader.getMapService().getContinents().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editContinents(editorcommands);
+		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -229,17 +229,17 @@ public class MapEditorControllerTest {
 	public void test008_addTwoContinentsRemoveTwosContinents() throws Exception{
 		System.out.printf("Adding and removing two continents%n------------%n");
 		//size of continent list before after one country is added and one country is removed
-		int initContinentSize = testMapLoader.getMapService().getContinents().size();
+		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		//expected size of continent list after one country is added and one country is removed
-		int expectedContinentSize = initContinentSize;
-		String editorCommand = "editcontinent -add NordEast_Europe 4 -add SouthWest_Europe 3 -remove utropa -remove afrori";
-		System.out.println(editorCommand);
+		int expectedcontinentsize = initcontinentsize;
+		String editorcommand = "editcontinent -add NordEast_Europe 4 -add SouthWest_Europe 3 -remove utropa -remove afrori";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editContinents(editorCommands);
-		assertSame(expectedContinentSize, testMapLoader.getMapService().getContinents().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editContinents(editorcommands);
+		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -250,18 +250,18 @@ public class MapEditorControllerTest {
 	public void test009_addOneCountry() throws Exception{
 		System.out.printf("Adding one country%n------------%n");
 		//size of country list before one country is added
-		int initCountrySize = testMapLoader.getMapService().getCountries().size();
+		int initcountrysize = testMapLoader.getMapService().getCountries().size();
 		//Expected size of country list after one country is added
-		int expectedCountrySize = initCountrySize+1;
+		int expectedcountrysize = initcountrysize+1;
 		//Set the command string to add one country
-		String editorCommand = "editcountry -add Nordenstan Nord_Asia";
-		System.out.println(editorCommand);
+		String editorcommand = "editcountry -add Nordenstan Nord_Asia";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editCountries(editorCommands);
-		assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editCountries(editorcommands);
+		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -272,18 +272,18 @@ public class MapEditorControllerTest {
 	public void test010_addTwoCountries() throws Exception{
 		System.out.printf("Adding two countries%n------------%n");
 		//size of country list before one country is added
-		int initCountrySize = testMapLoader.getMapService().getCountries().size();
+		int initcountrysize = testMapLoader.getMapService().getCountries().size();
 		//Expected size of country list after one country is added
-		int expectedCountrySize = initCountrySize+2;
+		int expectedcountrysize = initcountrysize+2;
 		//Set the command string to add two countries
-		String editorCommand = "editcountry -add Nordennavic NordEast_Europe -add United_Islands Northeast_Asia";
-		System.out.println(editorCommand);
+		String editorcommand = "editcountry -add Nordennavic NordEast_Europe -add United_Islands Northeast_Asia";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editCountries(editorCommands);
-		assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editCountries(editorcommands);
+		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -294,18 +294,18 @@ public class MapEditorControllerTest {
 	public void test011_removeOneCountry() throws Exception{
 		System.out.printf("Removing one country%n------------%n");
 		//size of country list before one country is removed
-		int initCountrySize = testMapLoader.getMapService().getCountries().size();
+		int initcountrysize = testMapLoader.getMapService().getCountries().size();
 		//Expected size of country list after one country is removed
-		int expectedCountrySize = initCountrySize-1;
+		int expectedcountrysize = initcountrysize-1;
 		//Set the command string to remove one country
-		String editorCommand = "editcountry -remove united_islands";
-		System.out.println(editorCommand);
+		String editorcommand = "editcountry -remove united_islands";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editCountries(editorCommands);
-		assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editCountries(editorcommands);
+		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -316,18 +316,18 @@ public class MapEditorControllerTest {
 	public void test012_removeTwoCountries() throws Exception{
 		System.out.printf("Removing two countries%n------------%n");
 		//size of country list before two countries are removed
-		int initCountrySize = testMapLoader.getMapService().getCountries().size();
+		int initcountrysize = testMapLoader.getMapService().getCountries().size();
 		//Expected size of country list after two countries are removed
-		int expectedCountrySize = initCountrySize-2;
+		int expectedcountrysize = initcountrysize-2;
 		//Set the command string to remove two countries
-		String editorCommand = "editcountry -remove maganar -remove pero";
-		System.out.println(editorCommand);
+		String editorcommand = "editcountry -remove maganar -remove pero";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editCountries(editorCommands);
-		assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editCountries(editorcommands);
+		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -338,17 +338,17 @@ public class MapEditorControllerTest {
 	public void test013_addOneCountryRemoveOneCountry() throws Exception{
 		System.out.printf("Adding and removing one country%n------------%n");
 		//size of country list before after one country is added and one country is removed
-		int initCountrySize = testMapLoader.getMapService().getCountries().size();
+		int initcountrysize = testMapLoader.getMapService().getCountries().size();
 		//expected size of country list after one country is added and one country is removed
-		int expectedCountrySize = initCountrySize;
-		String editorCommand = "editcountry -add Fiji azio -remove Nordenstan";
-		System.out.println(editorCommand);
+		int expectedcountrysize = initcountrysize;
+		String editorcommand = "editcountry -add Fiji azio -remove Nordenstan";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editCountries(editorCommands);
-		assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editCountries(editorcommands);
+		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -359,17 +359,17 @@ public class MapEditorControllerTest {
 	public void test014_addTwoCountriesRemoveTwoCountries() throws Exception{
 		System.out.printf("Adding and removing two countries%n------------%n");
 		//size of country list before after two countries are added and two countries are removed
-		int initCountrySize = testMapLoader.getMapService().getCountries().size();
+		int initcountrysize = testMapLoader.getMapService().getCountries().size();
 		//expected size of country list after two countries are added and two countries are removed
-		int expectedCountrySize = initCountrySize;
-		String editorCommand = "editcountry -add Sky_Republic Nord Asia -add Edmonton Alberta -remove vinenlant -remove heal";
-		System.out.println(editorCommand);
+		int expectedcountrysize = initcountrysize;
+		String editorcommand = "editcountry -add Sky_Republic Nord Asia -add Edmonton Alberta -remove vinenlant -remove heal";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editCountries(editorCommands);
-		assertSame(expectedCountrySize, testMapLoader.getMapService().getCountries().size());
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editCountries(editorcommands);
+		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
 	}
 	
 	/**
@@ -380,24 +380,24 @@ public class MapEditorControllerTest {
 	public void test015_addOneNeighbor() throws Exception{
 		System.out.printf("Adding one neighbor to a country%n------------%n");
 		//Set the command string to add one neighbor
-		String editorCommand = "editneighbor -add nordennavic northern_utropa";
-		System.out.println(editorCommand);
+		String editorcommand = "editneighbor -add nordennavic northern_utropa";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editNeighbor(editorCommands);
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editNeighbor(editorcommands);
 		//create map object from adjacency list
 		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get country ID
-		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
+		Optional<Integer> countryid = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
 		//get neighbor ID
-		Optional<Integer> neighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("northern_utropa");
+		Optional<Integer> neighborid = testMapLoader.getMapService().findCorrespondingIdByCountryName("northern_utropa");
 		//get pair of country and neighbor
-		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		Set<Integer> pair = borders.get(countryid.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders.containsKey(countryId.get()));
-		assertTrue("Neighbor country is not found", countryNeighborPair.contains(neighborId.get()));
+		assertTrue("Country is not found",borders.containsKey(countryid.get()));
+		assertTrue("Neighbor country is not found", pair.contains(neighborid.get()));
 	}
 	
 	/**
@@ -408,26 +408,26 @@ public class MapEditorControllerTest {
 	public void test016_addTwoNeighbors() throws Exception{
 		System.out.printf("Adding two neighbors to one country%n------------%n");
 		//Set the command string to add two neighbors
-		String editorCommand = "editneighbor -add fiji japan -add fiji western_united_states";
-		System.out.println(editorCommand);
+		String editorcommand = "editneighbor -add fiji japan -add fiji western_united_states";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editNeighbor(editorCommands);
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editNeighbor(editorcommands);
 		//create map object from adjacency list
 		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get country ID
-		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("fiji");
+		Optional<Integer> countryid = testMapLoader.getMapService().findCorrespondingIdByCountryName("fiji");
 		//get neighbor ID
-		Optional<Integer> neighborOneId = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
-		Optional<Integer> neighborTwoId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		Optional<Integer> firstneighbor = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
+		Optional<Integer> secondneighbor = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
 		//get pair of country and neighbor
-		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		Set<Integer> pair = borders.get(countryid.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders.containsKey(countryId.get()));
-		assertTrue("First neighbor country is not found", countryNeighborPair.contains(neighborOneId.get()));
-		assertTrue("Second neighbor country is not found", countryNeighborPair.contains(neighborTwoId.get()));
+		assertTrue("Country is not found",borders.containsKey(countryid.get()));
+		assertTrue("First neighbor country is not found", pair.contains(firstneighbor.get()));
+		assertTrue("Second neighbor country is not found", pair.contains(secondneighbor.get()));
 	}
 	
 	/**
@@ -438,24 +438,24 @@ public class MapEditorControllerTest {
 	public void test017_removeOneNeighbor() throws Exception{
 		System.out.printf("Removing one neighbor from a country%n------------%n");
 		//Set the command string to remove one neighbor
-		String editorCommand = "editneighbor -remove tungu south_afrori";
-		System.out.println(editorCommand);
+		String editorcommand = "editneighbor -remove tungu south_afrori";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editNeighbor(editorCommands);
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editNeighbor(editorcommands);
 		//create map object from adjacency list
 		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get country ID
-		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("tungu");
+		Optional<Integer> countryid = testMapLoader.getMapService().findCorrespondingIdByCountryName("tungu");
 		//get neighbor ID
-		Optional<Integer> neighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("south_afrori");
+		Optional<Integer> neighborid = testMapLoader.getMapService().findCorrespondingIdByCountryName("south_afrori");
 		//get pair of country and neighbor
-		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		Set<Integer> pair = borders.get(countryid.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders.containsKey(countryId.get()));
-		assertFalse("Neighbor country is found", countryNeighborPair.contains(neighborId.get()));
+		assertTrue("Country is not found",borders.containsKey(countryid.get()));
+		assertFalse("Neighbor country is found", pair.contains(neighborid.get()));
 	}
 	
 	/**
@@ -466,26 +466,26 @@ public class MapEditorControllerTest {
 	public void test018_removeTwoNeighbors() throws Exception{
 		System.out.printf("Removing two neighbors from one country%n------------%n");
 		//Set the command string to remove two neighbors
-		String editorCommand = "editneighbor -remove western_united_states great_britain -remove western_united_states teramar";
-		System.out.println(editorCommand);
+		String editorcommand = "editneighbor -remove western_united_states great_britain -remove western_united_states teramar";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editNeighbor(editorCommands);
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editNeighbor(editorcommands);
 		//create map object from adjacency list
 		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get country ID
-		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		Optional<Integer> countryid = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
 		//get neighbor ID
-		Optional<Integer> firstNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("great_britain");
-		Optional<Integer> secondNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("teramar");
+		Optional<Integer> firstneighborid = testMapLoader.getMapService().findCorrespondingIdByCountryName("great_britain");
+		Optional<Integer> secondneighborid = testMapLoader.getMapService().findCorrespondingIdByCountryName("teramar");
 		//get pair of country and neighbor
-		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		Set<Integer> pair = borders.get(countryid.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders.containsKey(countryId.get()));
-		assertFalse("First neighbor country is found", countryNeighborPair.contains(firstNeighborId.get()));
-		assertFalse("Second neighbor country is found", countryNeighborPair.contains(secondNeighborId.get()));
+		assertTrue("Country is not found",borders.containsKey(countryid.get()));
+		assertFalse("First neighbor country is found", pair.contains(firstneighborid.get()));
+		assertFalse("Second neighbor country is found", pair.contains(secondneighborid.get()));
 	}
 	
 	/**
@@ -496,26 +496,26 @@ public class MapEditorControllerTest {
 	public void test019_addOneNeighborRemoveOneNeighbor() throws Exception{
 		System.out.printf("Adding and removing one neighbor from one country%n------------%n");
 		//Set the command string to remove two neighbors
-		String editorCommand = "editneighbor -add western_united_states pero -remove western_united_states central_ameroki";
-		System.out.println(editorCommand);
+		String editorcommand = "editneighbor -add western_united_states pero -remove western_united_states central_ameroki";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editNeighbor(editorCommands);
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editNeighbor(editorcommands);
 		//create map object from adjacency list
 		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get country ID
-		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		Optional<Integer> countryid = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
 		//get neighbor ID
 		Optional<Integer> addedNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("pero");
 		Optional<Integer> removedNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("central_ameroki");
 		//get pair of country and neighbor
-		Set<Integer> countryNeighborPair = borders.get(countryId.get());
+		Set<Integer> pair = borders.get(countryid.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders.containsKey(countryId.get()));
-		assertTrue("First neighbor country is not found", countryNeighborPair.contains(addedNeighborId.get()));
-		assertFalse("Second neighbor country is found", countryNeighborPair.contains(removedNeighborId.get()));
+		assertTrue("Country is not found",borders.containsKey(countryid.get()));
+		assertTrue("First neighbor country is not found", pair.contains(addedNeighborId.get()));
+		assertFalse("Second neighbor country is found", pair.contains(removedNeighborId.get()));
 	}
 	
 	/**
@@ -526,31 +526,31 @@ public class MapEditorControllerTest {
 	public void test020_addOneNeighborsRemoveTwoNeighbors() throws Exception{
 		System.out.printf("Adding and removing two neighbors from one country%n------------%n");
 		//Set the command string to remove two neighbors
-		String editorCommand = "editneighbor -add senadlavin japan -add senadlavin argentina -remove senadlavin ireland -remove senadlavin western_united_states";
-		System.out.println(editorCommand);
+		String editorcommand = "editneighbor -add senadlavin japan -add senadlavin argentina -remove senadlavin ireland -remove senadlavin western_united_states";
+		System.out.println(editorcommand);
 		//Retrieve substring(s) after every dash(es)
-		editorCommand = StringUtils.substringAfter(editorCommand, "-");
+		editorcommand = StringUtils.substringAfter(editorcommand, "-");
 		//Create an array of substrings for param.
-		String[] editorCommands = StringUtils.split(editorCommand, "-");
-		testMapLoader.editNeighbor(editorCommands);
+		String[] editorcommands = StringUtils.split(editorcommand, "-");
+		testMapLoader.editNeighbor(editorcommands);
 		//create map object from adjacency list
 		Map<Integer, Set<Integer>> borders = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get country ID
-		Optional<Integer> countryId = testMapLoader.getMapService().findCorrespondingIdByCountryName("senadlavin");
+		Optional<Integer> countryid = testMapLoader.getMapService().findCorrespondingIdByCountryName("senadlavin");
 		//get neighbor ID
-		Optional<Integer> addedFirstNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
-		Optional<Integer> addedSecondNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("argentina");
-		Optional<Integer> removedFirstNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("ireland");
-		Optional<Integer> removedSecondNeighborId = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
+		Optional<Integer> firstnewneighbor = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
+		Optional<Integer> secondnewneighbor = testMapLoader.getMapService().findCorrespondingIdByCountryName("argentina");
+		Optional<Integer> firstremovedneighbor = testMapLoader.getMapService().findCorrespondingIdByCountryName("ireland");
+		Optional<Integer> secondremovedneighbor = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
 		//get pair of country and neighbor
-		Set<Integer> countryNeighborPair = borders.get(countryId.get());
-		System.out.println("Array is"+countryNeighborPair);
+		Set<Integer> pair = borders.get(countryid.get());
+		System.out.println("Array is"+pair);
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders.containsKey(countryId.get()));
-		assertTrue("First added neighbor country is not found", countryNeighborPair.contains(addedFirstNeighborId.get()));
-		assertTrue("Second added neighbor country is not found", countryNeighborPair.contains(addedSecondNeighborId.get()));
-		assertFalse("First removed neighbor country is found", countryNeighborPair.contains(removedFirstNeighborId.get()));
-		assertFalse("Second removed neighbor country is found", countryNeighborPair.contains(removedSecondNeighborId.get()));
+		assertTrue("Country is not found",borders.containsKey(countryid.get()));
+		assertTrue("First added neighbor country is not found", pair.contains(firstnewneighbor.get()));
+		assertTrue("Second added neighbor country is not found", pair.contains(secondnewneighbor.get()));
+		assertFalse("First removed neighbor country is found", pair.contains(firstremovedneighbor.get()));
+		assertFalse("Second removed neighbor country is found", pair.contains(secondremovedneighbor.get()));
 	}
 	
 	/**
