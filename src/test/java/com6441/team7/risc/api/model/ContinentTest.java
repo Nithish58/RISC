@@ -22,7 +22,7 @@ public class ContinentTest {
 	private String color;
 	private int hashId;
 	
-	static Continent continent;
+	private Continent continent;
 	@BeforeClass
 	public static void initClass() {
 		System.out.println("Initialize Continent Test");
@@ -67,6 +67,10 @@ public class ContinentTest {
 	
 	@Test
 	public void test3_setContinentValue() {
+		id = 43;
+		name = "Scandinavia";
+		continentValue = 3;
+		continent = new Continent(id, name, continentValue);
 		continentValue=7;
 		continent.setContinentValue(continentValue);
 		assertEquals(continentValue, continent.getContinentValue());
@@ -74,6 +78,10 @@ public class ContinentTest {
 	
 	@Test
 	public void test4_setColor() {
+		id = 43;
+		name = "Scandinavia";
+		continentValue = 3;
+		continent = new Continent(id, name, continentValue);
 		color = "red";
 		continent.setColor(color);
 		assertSame(color, continent.getColor());
@@ -81,6 +89,10 @@ public class ContinentTest {
 	
 	@Test
 	public void test5_hash() {
+		id = 43;
+		name = "Scandinavia";
+		continentValue = 3;
+		continent = new Continent(id, name, continentValue);
 		id = continent.getId();
 		hashId = Objects.hash(id);
 		assertEquals(hashId, continent.hashCode());
