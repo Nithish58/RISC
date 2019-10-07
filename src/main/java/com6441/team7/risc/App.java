@@ -1,8 +1,8 @@
 package com6441.team7.risc;
 
-import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.api.model.MapService;
+import com6441.team7.risc.controller.GameController;
 import com6441.team7.risc.controller.MapLoaderController;
-import com6441.team7.risc.controller.StateContext;
 import com6441.team7.risc.view.CommandPromptView;
 
 /**
@@ -11,10 +11,13 @@ import com6441.team7.risc.view.CommandPromptView;
  */
 public class App {
     public static void main( String[] args ) {
-        CommandPromptView view = new CommandPromptView();
-        StateContext context = new StateContext();
-
-        MapLoaderController mapLoaderController = new MapLoaderController(context, view);
+        MapService mapService = new MapService();
+        GameController gameController = new GameController();
+        MapLoaderController mapLoaderController = new MapLoaderController(mapService);
+        CommandPromptView view = new CommandPromptView(mapLoaderController, gameController);
+        mapLoaderController.setView(view);
+        mapService.addObserver(view);
+        view.receiveCommand();
 
     }
 }

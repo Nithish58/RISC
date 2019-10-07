@@ -3,22 +3,45 @@ package com6441.team7.risc.api.model;
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
-import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
 import org.jgrapht.graph.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
 
 
-public class MapService {
+public class MapService extends Observable {
     private Set<Country> countries = new HashSet<>();
     private Set<Continent> continents = new HashSet<>();
     private Map<Integer, Set<Integer>> adjacencyCountriesMap = new HashMap<>();
     private Map<Integer, Set<Integer>> continentCountriesMap = new HashMap<>();
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+    private GameState gameState = GameState.LOAD_MAP;
+
+    public MapService(){
+    }
+
+    @Override
+    public void addObserver(Observer observer) {
+        super.addObserver(observer);
+        setState(gameState);
+    }
+
+    public GameState getGameState(){
+        return gameState;
+    }
+
+
+    public void setState(GameState gameState){
+        this.gameState = gameState;
+        setChanged();
+        notifyObservers(gameState);
+    }
+
+    public boolean isMapValid() {
+        return isStronglyConnected();
+    }
+
+
 
     public void addCountry(Country country) {
         countries.add(country);
@@ -26,13 +49,13 @@ public class MapService {
         String continentName = convertNameToKeyFormat(country.getContinentName());
         int countryId = country.getId();
 
-
         continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(continentName))
                 .map(Continent::getId)
                 .findFirst()
                 .ifPresent(continentId -> continentCountriesMap.get(continentId).add(countryId));
 
+     //   view.displayMessage("country " + country.getCountryName() + " is successfully added.");
 
     }
 
@@ -54,6 +77,9 @@ public class MapService {
         if (!continentCountriesMap.containsKey(continent.getId())) {
             continentCountriesMap.put(continent.getId(), new HashSet<>());
         }
+
+       // view.displayMessage("continent " + continent.getName() + " is successfully added.");
+
     }
 
     public void addContinent(Collection<Continent> continentsCollection) {
@@ -83,6 +109,8 @@ public class MapService {
             neighboringCountrySet.add(neghboringCountryId);
             adjacencyCountriesMap.put(countryId, neighboringCountrySet);
         }
+
+      //  view.displayMessage("Neighboring countries " + country + " " + neighboringCountry + " is successfully added.");
     }
 
     public void removeNeighboringCountriesByName(String country, String neighboringCountry) {
@@ -91,6 +119,8 @@ public class MapService {
         int neghboringCountryId = findCorrespondingIdByCountryName(neighboringCountry).get();
 
         adjacencyCountriesMap.get(countryId).remove(neghboringCountryId);
+
+        //view.displayMessage("neighboring country " + neighboringCountry + " is sucessfully removed from " + country);
 
     }
 
@@ -109,11 +139,19 @@ public class MapService {
                 .isPresent();
     }
 
+    public boolean countryNameNotExist(String countryName) {
+        return !countryNameExist(countryName);
+    }
+
     public boolean continentNameExist(String continentName) {
         return Optional.ofNullable(continentName)
                 .map(this::convertNameToKeyFormat)
                 .filter(name -> getContinentNameSet().contains(name))
                 .isPresent();
+    }
+
+    public boolean continentNameNotExist(String continentName) {
+        return !continentNameExist(continentName);
     }
 
     public boolean continentIdExist(Integer continentId) {
@@ -122,10 +160,18 @@ public class MapService {
                 .isPresent();
     }
 
+    public boolean continentIdNotExist(Integer continentId) {
+        return !continentIdExist(continentId);
+    }
+
     public boolean countryIdExist(Integer countryId) {
         return Optional.ofNullable(countryId)
                 .filter(id -> getCountryIdSet().contains(id))
                 .isPresent();
+    }
+
+    public boolean countryIdNotExist(Integer countryId) {
+        return !countryIdExist(countryId);
     }
 
     public boolean countryExist(Country country) {
@@ -154,9 +200,8 @@ public class MapService {
     private void removeCountryFromContinentCountryMap(Country country) {
 
         int countryId = country.getId();
-        Optional<Integer> continentId = findCorrespondingIdByContinentName(country.getContinentName());
-
-        continentCountriesMap.get(continentId.get()).remove(countryId);
+        findCorrespondingIdByContinentName(country.getContinentName())
+                .ifPresent(continentId -> continentCountriesMap.get(continentId).remove(countryId));
     }
 
     private void removeCountryFromAdjacentCountryMap(Country country) {
@@ -169,14 +214,14 @@ public class MapService {
 
     }
 
-    private Optional<Integer> findCorrespondingIdByContinentName(String name) {
+    public Optional<Integer> findCorrespondingIdByContinentName(String name) {
         return continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(convertNameToKeyFormat(name)))
                 .map(Continent::getId)
                 .findFirst();
     }
 
-    private Optional<Integer> findCorrespondingIdByCountryName(String name) {
+    public Optional<Integer> findCorrespondingIdByCountryName(String name) {
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getCountryName()).equals(convertNameToKeyFormat(name)))
                 .map(Country::getId)
@@ -230,7 +275,7 @@ public class MapService {
     }
 
 
-    public void addEdge(int src, List<Integer> dest) {
+    public void addEdge(int src, Set<Integer> dest) {
         if (!directedGraph.containsVertex(src)) {
             directedGraph.addVertex(src);
         }
@@ -246,20 +291,6 @@ public class MapService {
             directedGraph.addEdge(src, country);
             directedGraph.addEdge(country, src);
         }
-
-    }
-
-    public boolean isStronlyConnectec() {
-        StrongConnectivityAlgorithm<Integer, DefaultEdge> scAlg =
-                new KosarajuStrongConnectivityInspector<>(directedGraph);
-
-        List<Graph<Integer, DefaultEdge>> stronglyConnectedSubgraphs =
-                scAlg.getStronglyConnectedComponents();
-
-        long numberOfUnconnected = stronglyConnectedSubgraphs.stream()
-                .map(Graph::vertexSet).map(Set::size).filter(n -> n != countries.size()).count();
-
-        return numberOfUnconnected == 0;
 
     }
 
@@ -291,6 +322,31 @@ public class MapService {
         return directedGraph;
     }
 
+
+
+    public boolean isMapNotValid() {
+        return !isMapValid();
+    }
+
+    public boolean isStronglyConnected() {
+
+        if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
+            return false;
+        }
+        for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
+            Set<Integer> set = new HashSet<>(entry.getValue());
+            addEdge(entry.getKey(), set);
+        }
+
+        int totalCountry = countries.size();
+        return new KosarajuStrongConnectivityInspector<>(directedGraph)
+                .getStronglyConnectedComponents()
+                .stream()
+                .map(Graph::vertexSet)
+                .map(Set::size)
+                .allMatch(num -> num == totalCountry);
+    }
+
     public void printCountryInfo(){
         System.out.println("[Country]");
         countries.forEach(
@@ -299,7 +355,6 @@ public class MapService {
                     System.out.print(country.getCountryName() + " ");
                     System.out.print(country.getContinentIdentifier() + " ");
                     System.out.print(country.getContinentName() + " ");
-                    System.out.println("\n");
                 }
         );
 
@@ -311,7 +366,6 @@ public class MapService {
             System.out.print(continent.getId() + " ");
             System.out.print(continent.getName() + " ");
             System.out.print(continent.getContinentValue() + " ");
-            System.out.println("\n");
         });
 
     }
@@ -324,7 +378,7 @@ public class MapService {
     }
 
     private String convertNameToKeyFormat(String name) {
-        return StringUtils.deleteWhitespace(name).toLowerCase();
+        return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
     private Set<String> getCountryNameSet() {

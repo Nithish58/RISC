@@ -1,6 +1,10 @@
 package com6441.team7.risc.api.model;
 
+import java.util.Locale;
 import java.util.Objects;
+
+import static com6441.team7.risc.api.RiscContants.EOL;
+import static com6441.team7.risc.api.RiscContants.WHITESPACE;
 
 public class Country {
     private final Integer id;
@@ -10,22 +14,22 @@ public class Country {
     private Integer coordinateX;
     private Integer coordinateY;
     private Player player;
-    private Integer soldiers;
+    private int soldiers = 0;
 
     public Country(Integer id, String countryName) {
         this.id = id;
-        this.name = countryName.toLowerCase();
+        this.name = countryName.toLowerCase(Locale.CANADA);
     }
 
     public Country(Integer id, String countryName, String continentName){
         this.id = id;
-        this.name  = countryName;
+        this.name  = countryName.toLowerCase(Locale.CANADA);
         this.continentName = continentName;
     }
 
     public Country(Integer id, String countryName, Integer continentId){
         this.id = id;
-        this.name = countryName;
+        this.name = countryName.toLowerCase(Locale.CANADA);
         this.continentIdentifier = continentId;
     }
 
@@ -50,7 +54,7 @@ public class Country {
 
 
     public Country setContinentName(String continentName){
-        this.continentName = continentName.toLowerCase();
+        this.continentName = continentName.toLowerCase(Locale.CANADA);
         return this;
     }
 
@@ -112,5 +116,14 @@ public class Country {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return id + WHITESPACE +
+                name + WHITESPACE +
+                continentIdentifier + WHITESPACE +
+                coordinateX + WHITESPACE +
+                coordinateY + EOL;
     }
 }

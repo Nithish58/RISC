@@ -4,11 +4,15 @@ import static org.junit.Assert.*;
 
 import java.util.Scanner;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
 import com6441.team7.risc.controller.GameController;
-import com6441.team7.risc.controller.StateContext;
 import com6441.team7.risc.view.CommandPromptView;
 
 /**
@@ -21,7 +25,7 @@ import com6441.team7.risc.view.CommandPromptView;
 public class ReinforcementTest {
 	static CommandPromptView testView;
 	static GameController game;
-	static StateContext testState;
+//	static StateContext testState;
 	
 	String reinforcementCommand;
 	Scanner keyboard = new Scanner(System.in);
@@ -33,9 +37,9 @@ public class ReinforcementTest {
 	@BeforeClass
 	public static void initializeReinforcementTest() {
 		System.out.printf("Initialize reinforcement test%n==========%n");
-		testView = new CommandPromptView();
-		testState = new StateContext();
-		game = new GameController(testState);
+//		testView = new CommandPromptView();
+//		testState = new StateContext();
+//		game = new GameController(testState);
 	}
 	
 	/**

@@ -1,178 +1,176 @@
 package com6441.team7.risc.controller;
 
+import com6441.team7.risc.api.exception.ContinentParsingException;
+import com6441.team7.risc.api.exception.CountryParsingException;
+import com6441.team7.risc.api.exception.NeighborParsingException;
 import com6441.team7.risc.api.model.Continent;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.view.CommandPromptView;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MapLoaderControllerTest {
 
-    private MapLoaderController controller;
-    private StateContext context;
+    private MapLoaderController mapLoaderController;
     private CommandPromptView view;
+    private MapService mapService;
+    private GameController gameController;
 
     @Before
     public void setUp() throws Exception {
-        context = new StateContext();
-        view = new CommandPromptView();
-        controller = new MapLoaderController(context, view);
-    }
-
-    @After
-    public void tearDown() {
-
+        view = new CommandPromptView( mapLoaderController, gameController);
+        mapService = new MapService();
+        mapLoaderController = new MapLoaderController(mapService);
+        mapLoaderController.setView(view);
     }
 
 
     @Test
     public void readExistingFile() throws Exception{
+        URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI();
+        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 
-        Optional<String> content = controller.readFile("/Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/ameroki.map");
-        assertTrue(content.isPresent());
-        assertFalse(content.get().isEmpty());
+        boolean result = mapLoaderController.parseFile(file);
+        assertTrue(result);
     }
 
-
     @Test
-    public void receiveValidEditMapCommand() throws Exception{
-        String command = "editmap " +"/Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/ameroki.map";;
-        Optional<String> result = controller.editMap(command);
-        assertTrue(result.isPresent());
+    public void readNewCreatedFile() throws Exception{
+        URI uri = getClass().getClassLoader().getResource("test.map").toURI();
+        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
+
+        boolean result = mapLoaderController.parseFile(file);
+        assertTrue(result);
     }
 
 
     @Test
     public void createContinentFromValidContinentInfo() throws Exception{
         String continentsInfo = validContinentString();
-        Set<Continent> continents =  controller.parseRawContinents(continentsInfo);
+        Set<Continent> continents =  mapLoaderController.parseRawContinents(continentsInfo);
         assertEquals(continents.size(), 6);
     }
 
-    @Test
+    @Test(expected=ContinentParsingException.class)
     public void createContinentMissingContinentPower() throws Exception{
-        String continentsInfo = "parts2: continents]\n" +
-                "azio 5 #9aff80\n" +
-                "ameroki yellow\n" +
-                "utropa 10 #a980ff\n" +
-                "amerpoll 5 red\n" +
-                "afrori 5 #ffd780\n" +
+        String continentsInfo = "parts2: continents]\r\n" +
+                "azio 5 #9aff80\r\n" +
+                "ameroki yellow\r\n" +
+                "utropa 10 #a980ff\r\n" +
+                "amerpoll 5 red\r\n" +
+                "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
-        Set<Continent> continents =  controller.parseRawContinents(continentsInfo);
-        assertEquals(continents.size(), 5);
+      mapLoaderController.parseRawContinents(continentsInfo);
 
     }
 
 
-    @Test
+    @Test(expected = ContinentParsingException.class)
     public void createContinentWithContinentPowerNotInteger() throws Exception{
-        String continentsInfo = "parts2: continents]\n" +
-                "azio 5 #9aff80\n" +
-                "ameroki abc yellow\n" +
-                "utropa 10 #a980ff\n" +
-                "amerpoll 5 red\n" +
-                "afrori 5 #ffd780\n" +
+        String continentsInfo = "parts2: continents]\r\n" +
+                "azio 5 #9aff80\r\n" +
+                "ameroki abc yellow\r\n" +
+                "utropa 10 #a980ff\r\n" +
+                "amerpoll 5 red\r\n" +
+                "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
-        Set<Continent> continents =  controller.parseRawContinents(continentsInfo);
-        assertEquals(continents.size(), 5);
-
+        mapLoaderController.parseRawContinents(continentsInfo);
     }
 
     @Test
     public void createCountriesFromValidCountryInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
 
-        Set<Country> countries =  controller.parseRawCountries(countriesInfo);
+        Set<Country> countries =  mapLoaderController.parseRawCountries(countriesInfo);
         assertEquals(countries.size(), 5);
 
     }
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesMissingContinentInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "1 siberia 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "1 siberia 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
-        Set<Country> countries =  controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
+        mapLoaderController.parseRawCountries(countriesInfo);
 
     }
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesWithInvalidContinentInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "1 siberia 10 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "1 siberia 10 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
-
-        Set<Country> countries = controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
-
+       mapLoaderController.parseRawCountries(countriesInfo);
     }
 
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesMissingUniqueIdentifier() throws Exception{
 
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "siberia 1 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "siberia 1 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
-        Set<Country> countries =  controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
+        mapLoaderController.parseRawCountries(countriesInfo);
 
     }
 
 
-    @Test
+    @Test(expected = CountryParsingException.class)
     public void createCountriesWithContinentIdNotInteger() throws Exception{
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
-        String countriesInfo = "[countries]\n" +
-                "1 siberia one 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        String countriesInfo = "[countries]\r\n" +
+                "1 siberia one 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
 
-        Set<Country> countries =  controller.parseRawCountries(countriesInfo);
-        assertEquals(countries.size(), 4);
+        mapLoaderController.parseRawCountries(countriesInfo);
+
 
     }
 
@@ -181,78 +179,74 @@ public class MapLoaderControllerTest {
     public void createAdjascencyCountriesWithValidInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        controller.parseRawCountries(countriesInfo);
+        mapLoaderController.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1 2 3 4\n" +
-                "2 1 4 5 \n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
-        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 2 3 4\r\n" +
+                "2 1 4 5 \r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
+        Map<Integer, Set<Integer>> adjacencyMap = mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
         assertEquals(adjacencyMap.size(), 5);
 
     }
 
-    @Test
+    @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithNoAdjacency() throws Exception{
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        controller.parseRawCountries(countriesInfo);
+        mapLoaderController.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1\n" +
-                "2 1 4 5\n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
-        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
-        assertEquals(adjacencyMap.size(), 4);
-
+        String adjacencyInfo = "[borders]\r\n" +
+                "1\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
+        mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
     }
 
-    @Test
+    @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithInvalidCountryIdAdjacency() throws Exception{
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        controller.parseRawCountries(countriesInfo);
+        mapLoaderController.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1 100\n" +
-                "2 1 4 5\n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
-        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
-        assertEquals(adjacencyMap.size(), 4);
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 100\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
+        mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
 
     }
 
 
-    @Test
+    @Test(expected = NeighborParsingException.class)
     public void createAdjacencyCountriesWithValueNotInteger() throws Exception{
 
         String continentsInfo = validContinentString();
-        controller.parseRawContinents(continentsInfo);
+        mapLoaderController.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        controller.parseRawCountries(countriesInfo);
+        mapLoaderController.parseRawCountries(countriesInfo);
 
-        String adjacencyInfo = "[borders]\n" +
-                "1 two\n" +
-                "2 1 4 5\n" +
-                "3 1 5\n" +
-                "4 2 1\n" +
-                "5 2 3 4\n";
-        Map<Integer, Set<Integer>> adjacencyMap = controller.parseRawNeighboringCountries(adjacencyInfo);
-        assertEquals(adjacencyMap.size(), 4);
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 two\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
+        mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
 
     }
 
@@ -263,8 +257,8 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        controller.editContinents(commands);
-        assertEquals(controller.getMapService().getContinents().size(),2);
+        mapLoaderController.editContinents(commands);
+        assertEquals(mapLoaderController.getMapService().getContinents().size(),2);
     }
 
     @Test
@@ -273,8 +267,8 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        controller.editContinents(commands);
-        assertEquals(controller.getMapService().getContinents().size(), 2);
+        mapLoaderController.editContinents(commands);
+        assertEquals(mapLoaderController.getMapService().getContinents().size(), 2);
 
     }
 
@@ -284,8 +278,8 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        controller.editContinents(commands);
-        assertEquals(controller.getMapService().getContinents().size(), 2);
+        mapLoaderController.editContinents(commands);
+        assertEquals(mapLoaderController.getMapService().getContinents().size(), 2);
 
     }
 
@@ -296,8 +290,8 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        controller.editCountries(commands);
-        assertEquals(mapService.getCountries().size(), 3);
+        mapLoaderController.editCountries(commands);
+        assertEquals(3, mapService.getCountries().size());
     }
 
     @Test
@@ -308,12 +302,37 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        controller.editCountries(commands);
+        mapLoaderController.editCountries(commands);
         assertEquals(mapService.getCountries().size(), 2);
     }
 
+    @Test
+    public void testSaveCommand() throws Exception{
+
+        String continentsInfo = validContinentString();
+        mapLoaderController.parseRawContinents(continentsInfo);
+
+        String countriesInfo = validCountryString();
+        mapLoaderController.parseRawCountries(countriesInfo);
+
+        String adjacencyInfo = "[borders]\r\n" +
+                "1 2\r\n" +
+                "2 1 4 5\r\n" +
+                "3 1 5\r\n" +
+                "4 2 1\r\n" +
+                "5 2 3 4\r\n";
+        Map<Integer, Set<Integer>> adjacencyMap = mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
+
+        String command = "savemap /Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/test.map";
+        mapLoaderController.saveMap(command);
+
+//        assertTrue(lines.isPresent());
+//        assertEquals(lines.get().size(), 21);
+
+    }
+
     private MapService addValidContinentInfo(){
-        MapService mapService = controller.getMapService();
+        MapService mapService = mapLoaderController.getMapService();
         Continent asia = new Continent(1, "asia", 5);
         Continent america = new Continent(2, "america", 6);
         Continent africa = new Continent(3, "africa", 4);
@@ -326,22 +345,22 @@ public class MapLoaderControllerTest {
     }
 
     private String validContinentString(){
-        return "parts2: continents]\n" +
-                "azio 5 #9aff80\n" +
-                "ameroki 10 yellow\n" +
-                "utropa 10 #a980ff\n" +
-                "amerpoll 5 red\n" +
-                "afrori 5 #ffd780\n" +
+        return "parts2: continents]\r\n" +
+                "azio 5 #9aff80\r\n" +
+                "ameroki 10 yellow\r\n" +
+                "utropa 10 #a980ff\r\n" +
+                "amerpoll 5 red\r\n" +
+                "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
     }
 
     private String validCountryString(){
-        return "[countries]\n" +
-                "1 siberia 1 329 152\n" +
-                "2 worrick 1 308 199\n" +
-                "3 yazteck 1 284 260\n" +
-                "4 kongrolo 1 278 295\n" +
-                "5 china 1 311 350\n";
+        return "[countries]\r\n" +
+                "1 siberia 1 329 152\r\n" +
+                "2 worrick 1 308 199\r\n" +
+                "3 yazteck 1 284 260\r\n" +
+                "4 kongrolo 1 278 295\r\n" +
+                "5 china 1 311 350\r\n";
     }
 
 
