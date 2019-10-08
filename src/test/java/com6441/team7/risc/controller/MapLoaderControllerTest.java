@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 public class MapLoaderControllerTest {
@@ -53,6 +54,7 @@ public class MapLoaderControllerTest {
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 
         boolean result = mapLoaderController.parseFile(file);
+
         assertTrue(result);
     }
 
