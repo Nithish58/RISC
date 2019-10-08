@@ -102,6 +102,13 @@ public class MapService extends Observable {
         int countryId = findCorrespondingIdByCountryName(country).get();
         int neghboringCountryId = findCorrespondingIdByCountryName(neighboringCountry).get();
 
+        addNeighboringCountry(countryId, neghboringCountryId);
+        addNeighboringCountry(neghboringCountryId, countryId);
+
+        //  view.displayMessage("Neighboring countries " + country + " " + neighboringCountry + " is successfully added.");
+    }
+
+    private void addNeighboringCountry(int countryId, int neghboringCountryId) {
         if (adjacencyCountriesMap.containsKey(countryId)) {
             adjacencyCountriesMap.get(countryId).add(neghboringCountryId);
         } else {
@@ -109,9 +116,8 @@ public class MapService extends Observable {
             neighboringCountrySet.add(neghboringCountryId);
             adjacencyCountriesMap.put(countryId, neighboringCountrySet);
         }
-
-      //  view.displayMessage("Neighboring countries " + country + " " + neighboringCountry + " is successfully added.");
     }
+
 
     public void removeNeighboringCountriesByName(String country, String neighboringCountry) {
 
