@@ -269,6 +269,20 @@ public class MapService extends Observable {
             continentCountriesMap.remove(continent.getId());
         });
 
+        if(toBeRemoved.isPresent()){
+            List<Country> countriesToBeRemoved = countries.stream()
+                    .filter(country -> convertNameToKeyFormat(country.getContinentName()).equals(normalizedContinentName))
+                    .collect(Collectors.toList());
+
+            countries.removeAll(countriesToBeRemoved);
+
+            List<Integer> countriesId = countriesToBeRemoved.stream()
+                    .map(Country::getId)
+                    .collect(Collectors.toList());
+
+            adjacencyCountriesMap.keySet().removeAll(countriesId);
+
+        }
     }
 
     public void removeContinentById(int id) {

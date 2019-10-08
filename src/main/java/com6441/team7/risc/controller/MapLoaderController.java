@@ -20,6 +20,10 @@ import static com6441.team7.risc.api.RiscContants.EOL;
 import static com6441.team7.risc.api.RiscContants.WHITESPACE;
 import static java.util.Objects.isNull;
 
+/**
+ * This class handles the map editor commands. so
+ */
+
 public class MapLoaderController {
     private AtomicInteger continentIdGenerator;
     private AtomicInteger countryIdGenerator;
@@ -209,7 +213,11 @@ public class MapLoaderController {
             Continent continent;
 
             if (continentNum != 0) {
-                continent = new Continent(continentNum + 1, continentName, continentPower);
+                int largestId = mapService.getContinents().stream()
+                        .max(Comparator.comparing(Continent::getId))
+                        .get().getId();
+
+                continent = new Continent(largestId + 1, continentName, continentPower);
             } else {
                 continent = new Continent(continentIdGenerator.incrementAndGet(), continentName, continentPower);
             }
@@ -271,7 +279,10 @@ public class MapLoaderController {
             country = new Country(countryIdGenerator.incrementAndGet(), countryName, continentName);
 
         } else {
-            country = new Country(countryNum + 1, countryName, continentName);
+            int largestId = mapService.getCountries().stream()
+                    .max(Comparator.comparing(Country::getId))
+                    .get().getId();
+            country = new Country(largestId + 1, countryName, continentName);
         }
 
         int continentId = mapService.findCorrespondingIdByContinentName(continentName).get();
