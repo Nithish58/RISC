@@ -10,117 +10,117 @@ map eurasien.gif
 crd eurasien.cards
 prv eurasien.jpg
 
-[continents]
-West_Europa 8 green
-Nord_Afrika 6 orange
-West_Orient 7 yellow
-Ost_Orient 7 magenta
-Schwarzmeerregion 8 blue
+[continent]
+west_europa 8 green
+nord_afrika 6 orange
+west_orient 7 yellow
+ost_orient 7 magenta
+schwarzmeerregion 8 blue
 
 [countries]
-1 Portugal 1 8 190
-2 Spanien 1 59 162
-3 Frankreich 1 106 52
-4 Deutschland 1 164 4
-5 Schweiz 1 142 52
-6 Oesterreich 1 216 20
-7 Italien 1 177 86
-8 Slowenien 1 212 40
-9 Ungarn 1 246 45
-10 Slowakei 1 252 4
-11 Tschechien 1 201 5
-12 Marokko 2 56 232
-13 Mauretanien 2 11 327
-14 Algerien 2 110 299
-15 Mali 2 58 377
-16 Tunesien 2 163 237
-17 Libyen 2 233 298
-18 Niger 2 170 400
-19 Tschad 2 235 375
-20 Aegypten 2 328 293
-21 Sudan 2 351 394
-22 Griechenland 3 267 152
-23 Tuerkei 3 354 139
-24 Syrien 3 397 217
-25 Irak 3 454 252
-26 Israel 3 369 244
-27 Jordanien 3 385 254
-28 Kuwait 3 478 272
-29 Saudi_Arabien 3 454 362
-30 Jemen 3 449 420
-31 Oman 3 536 395
-32 Arabische_Emirate 3 528 337
-33 Iran 4 544 255
-34 Pakistan 4 661 268
-35 Afghanistan 4 617 234
-36 Turkmenistan 4 575 139
-37 Usbekistzan 4 558 91
-38 Kasachstan 4 537 18
-39 Aserbaidschan 4 479 134
-40 Armenien 4 450 132
-41 Georgien 4 444 113
-42 Kroatien 5 212 79
-43 Bosnien 5 230 79
-44 Serbien 5 257 86
-45 Montenegro 5 242 101
-46 Albanien 5 248 128
-47 Mazedonien 5 263 115
-48 Bulgarien 5 290 98
-49 Rumaenien 5 288 41
-50 Moldawien 5 320 37
-51 Ukraine 5 348 8
-52 Libanon 3 381 218
+1 portugal 1 8 190
+2 spanien 1 59 162
+3 frankreich 1 106 52
+4 deutschland 1 164 4
+5 schweiz 1 142 52
+6 oesterreich 1 216 20
+7 italien 1 177 86
+8 slowenien 1 212 40
+9 ungarn 1 246 45
+10 slowakei 1 252 4
+11 tschechien 1 201 5
+12 marokko 2 56 232
+13 mauretanien 2 11 327
+14 algerien 2 110 299
+15 mali 2 58 377
+16 tunesien 2 163 237
+17 libyen 2 233 298
+18 niger 2 170 400
+19 tschad 2 235 375
+20 aegypten 2 328 293
+21 sudan 2 351 394
+22 griechenland 3 267 152
+23 tuerkei 3 354 139
+24 syrien 3 397 217
+25 irak 3 454 252
+26 israel 3 369 244
+27 jordanien 3 385 254
+28 kuwait 3 478 272
+29 saudi_arabien 3 454 362
+30 jemen 3 449 420
+31 oman 3 536 395
+32 arabische_emirate 3 528 337
+33 iran 4 544 255
+34 pakistan 4 661 268
+35 afghanistan 4 617 234
+36 turkmenistan 4 575 139
+37 usbekistzan 4 558 91
+38 kasachstan 4 537 18
+39 aserbaidschan 4 479 134
+40 armenien 4 450 132
+41 georgien 4 444 113
+42 kroatien 5 212 79
+43 bosnien 5 230 79
+44 serbien 5 257 86
+45 montenegro 5 242 101
+46 albanien 5 248 128
+47 mazedonien 5 263 115
+48 bulgarien 5 290 98
+49 rumaenien 5 288 41
+50 moldawien 5 320 37
+51 ukraine 5 348 8
+52 libanon 3 381 218
 
 [borders]
-1 2 12
-2 1 3 12
-3 2 4 5 7
-4 3 5 6 11
-5 3 4 6 7
-6 4 5 7 8 9 10 11
-7 3 5 6 8 16
-8 6 7 9 42
-9 6 8 10 42 44 49 51
-10 6 9 11 51
-11 4 6 10
-12 1 2 13 14
-13 12 14 15
-14 12 13 15 16 17 18
-15 13 14 18
-16 7 14 17
-17 14 16 18 19 20 21 22
-18 15 14 17 19
-19 18 17 21
-20 17 21 26
-21 17 19 20
-22 17 23 46 47 48 52
-23 22 24 25 33 40 41 48 51
-24 23 25 26 27 52
-25 23 24 27 29 28 33
-26 20 24 27 52
-27 24 25 26 29
-28 25 29 33
-29 25 27 28 30 31 32
-30 29 31
-31 29 30 32 33
-32 29 31
-33 23 25 28 31 34 35 36 39 40
-34 33 35
-35 33 34 36 37
+1 2 12 
+2 1 3 12 
+3 2 4 5 7 
+4 3 5 6 11 
+5 3 4 6 7 
+6 4 5 7 8 9 10 11 
+7 16 3 5 6 8 
+8 6 7 9 42 
+9 49 51 6 8 10 42 44 
+10 51 6 9 11 
+11 4 6 10 
+12 1 2 13 14 
+13 12 14 15 
+14 16 17 18 12 13 15 
+15 18 13 14 
+16 17 7 14 
+17 16 18 19 20 21 22 14 
+18 17 19 14 15 
+19 17 18 21 
+20 17 21 26 
+21 17 19 20 
+22 48 17 52 23 46 47 
+23 48 33 51 22 24 40 25 41 
+24 52 23 25 26 27 
+25 33 23 24 27 28 29 
+26 20 52 24 27 
+27 24 25 26 29 
+28 33 25 29 
+29 32 25 27 28 30 31 
+30 29 31 
+31 32 33 29 30 
+32 29 31 
+33 34 35 36 23 39 40 25 28 31 
+34 33 35 
+35 33 34 36 37 
 36 33 35 37 38 39 
-37 35 36 38
-38 36 37
-39 33 36 40 41
-40 23 33 39 41
-41 23 39 40
-42 8 9 43 44
-43 42 44 45
-44 9 42 43 45 46 47 48 49
-45 43 44 46
-46 22 44 45 47
-47 22 44 46 48
-48 22 23 44 47 49
-49 9 44 48 50 51
-50 49 51
-51 9 10 23 49 50
-52 22 24 26    
+37 35 36 38 
+38 36 37 
+39 33 36 40 41 
+40 33 23 39 41 
+41 23 39 40 
+42 8 9 43 44 
+43 42 44 45 
+44 48 49 9 42 43 45 46 47 
+45 43 44 46 
+46 22 44 45 47 
+47 48 22 44 46 
+48 49 22 23 44 47 
+49 48 50 51 9 44 
+50 49 51 
+51 49 50 23 9 10 
+52 22 24 26 
