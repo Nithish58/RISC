@@ -11,6 +11,19 @@ import com6441.team7.risc.view.CommandPromptView;
  */
 public class App {
     public static void main( String[] args ) {
+    	
+    	/*
+    	 * NEED TO CHANGE ORDER:
+    	 * NOTES AND JOEY SPECIFICALLY SAID THAT:
+    	 * CREATE MODEL FIRST
+    	 * THEN CREATE VIEW
+    	 * THEN CONTROLLER
+    	 * 
+    	 * EVEN THOUGH IT DOESN'T MATTER, LET'S ADHERE TO WHAT HE SAYS
+    	 * BECAUSE HE LIKES TO REMOVE MARKS FOR UNECESSARY THINGS...
+    	 */
+    	
+    	
         MapService mapService = new MapService();
         GameController gameController = new GameController();
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
