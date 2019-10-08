@@ -166,10 +166,10 @@ public class MapEditorControllerTest {
 		newcountrystr2a = "Nordennavic"; countrycontinentstr2a = "NordEast_Europe"; newcountrystr2b = "Northeast_Asia"; 
 		newcountrystr2b = "United_Islands"; countrycontinentstr2b = "Northeast_Asia";//two countrys to be added
 		delcountrystr1 = "united_islands"; //one country to be removed
-		delcountrystr2a = "maganar"; delcountrystr2b = "pero"; //two countrys to be deleted
+		delcountrystr2a = "yazteck"; delcountrystr2b = "kongrolo"; //two countrys to be deleted
 		newcountrystr3 = "Fiji"; countrycontinentstr3="azio"; delcountrystr3 = "Nordenstan"; //countrys to be added and deleted one each in a line
 		newcountrystr4a= "Sky_Republic"; countrycontinentstr4a="Nord_Asia"; 
-		newcountrystr4b = "Ocean_Republic"; countrycontinentstr4b="Northeast_Asia"; delcountrystr4a="vinenlant"; delcountrystr4b="heal"; 
+		newcountrystr4b = "Ocean_Republic"; countrycontinentstr4b="Northeast_Asia"; delcountrystr4a="sluci"; delcountrystr4b="kancheria"; 
 		expectedcountrysize1 = initcountrysize+1;
 		editorcommand7 = "editcountry -add "+newcountrystr1+" "+countrycontinentstr1;
 		editorcommand7 = StringUtils.substringAfter(editorcommand7, "-");
@@ -199,42 +199,42 @@ public class MapEditorControllerTest {
 		 * The followings are for neighbor adding test:
 		 * 
 		 */
-		editorcommand13 = "editneighbor -add nordennavic northern_utropa";
+		editorcommand13 = "editneighbor -add nordennavic siberia";
 		editorcommand13 = StringUtils.substringAfter(editorcommand13, "-");
 		editorcommands13 = StringUtils.split(editorcommand13, "-");
 		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
-		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName("northern_utropa");
-		editorcommand14 = "editneighbor -add fiji japan -add fiji western_united_states";
+		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName("siberia");
+		editorcommand14 = "editneighbor -add fiji japan -add fiji india";
 		editorcommand14 = StringUtils.substringAfter(editorcommand14, "-");
 		editorcommands14 = StringUtils.split(editorcommand14, "-");
 		country2 = testMapLoader.getMapService().findCorrespondingIdByCountryName("fiji");
 		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
-		neighbor2b = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
-		editorcommand15 = "editneighbor -remove tungu south_afrori";
+		neighbor2b = testMapLoader.getMapService().findCorrespondingIdByCountryName("india");
+		editorcommand15 = "editneighbor -remove siberia worrick";
 		editorcommand15 = StringUtils.substringAfter(editorcommand15, "-");
 		editorcommands15 = StringUtils.split(editorcommand15, "-");
-		country3 = testMapLoader.getMapService().findCorrespondingIdByCountryName("tungu");
-		neighbor3 = testMapLoader.getMapService().findCorrespondingIdByCountryName("south_afrori");
-		editorcommand16 = "editneighbor -remove western_united_states great_britain -remove western_united_states teramar";
+		country3 = testMapLoader.getMapService().findCorrespondingIdByCountryName("siberia");
+		neighbor3 = testMapLoader.getMapService().findCorrespondingIdByCountryName("worrick");
+		editorcommand16 = "editneighbor -remove worrick india -remove worrick nordennavic";
 		editorcommand16 = StringUtils.substringAfter(editorcommand16, "-");
 		editorcommands16 = StringUtils.split(editorcommand16, "-");
-		country4 = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
-		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName("great_britain");
-		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName("teramar");
-		editorcommand17 = "editneighbor -add western_united_states japan -remove western_united_states central_ameroki";
+		country4 = testMapLoader.getMapService().findCorrespondingIdByCountryName("worrick");
+		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName("india");
+		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
+		editorcommand17 = "editneighbor -add japan afganistan -remove japan fiji";
 		editorcommand17 = StringUtils.substringAfter(editorcommand17, "-");
 		editorcommands17 = StringUtils.split(editorcommand17, "-");
-		country5 = testMapLoader.getMapService().findCorrespondingIdByCountryName("western_united_states");
-		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
-		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName("central_ameroki");
-		editorcommand18 = "editneighbor -add senadlavin japan -add senadlavin argentina -remove senadlavin ireland -remove senadlavin western_united_states";
+		country5 = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
+		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName("afganistan");
+		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName("fiji");
+		editorcommand18 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
 		editorcommand18 = StringUtils.substringAfter(editorcommand18, "-");
 		editorcommands18 = StringUtils.split(editorcommand18, "-");
-		country6 = testMapLoader.getMapService().findCorrespondingIdByCountryName("senadlavin");
-		neighbor6a = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
-		neighbor6b = testMapLoader.getMapService().findCorrespondingIdByCountryName("argentina");
-		neighbor6c = testMapLoader.getMapService().findCorrespondingIdByCountryName("ireland");
-		neighbor6d = testMapLoader.getMapService().findCorrespondingIdByCountryName("senadlavin");
+		country6 = testMapLoader.getMapService().findCorrespondingIdByCountryName("china");
+		neighbor6a = testMapLoader.getMapService().findCorrespondingIdByCountryName("sky_republic");
+		neighbor6b = testMapLoader.getMapService().findCorrespondingIdByCountryName("ocean_republic");
+		neighbor6c = testMapLoader.getMapService().findCorrespondingIdByCountryName("middle_east");
+		neighbor6d = testMapLoader.getMapService().findCorrespondingIdByCountryName("heal");
 	}
 	
 	/**
