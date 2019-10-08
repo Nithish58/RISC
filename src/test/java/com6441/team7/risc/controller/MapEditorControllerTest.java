@@ -46,11 +46,15 @@ public class MapEditorControllerTest {
 	
 	//define test params
 	URI uri;
-	String file, inputcommand, editorcommand1, editorcommand2, editorcommand3, editorcommand4, 
+	String mapname, file, inputcommand, editorcommand1, editorcommand2, editorcommand3, editorcommand4, 
 		editorcommand5, editorcommand6, editorcommand7, editorcommand8,	editorcommand9, 
 		editorcommand10, editorcommand11, editorcommand12, editorcommand13, editorcommand14,
 		editorcommand15, editorcommand16, editorcommand17, editorcommand18, editorcommand19, 
-		editorcommand20;
+		editorcommand20, newcontinentstr1, newcontinentstr2a, newcontinentstr2b, delcontinentstr1, delcontinentstr2a,
+		delcontinentstr2b, newcontinentstr3, delcontinentstr3, newcontinentstr4a, newcontinentstr4b, 
+		delcontinentstr4a, delcontinentstr4b, newcountrystr1, newcountrystr2a, newcountrystr2b, delcountrystr1, delcountrystr2a,
+		delcountrystr2b, newcountrystr3, delcountrystr3, newcountrystr4a, newcountrystr4b, 
+		delcountrystr4a, delcountrystr4b;
 	String[] editorcommands1, editorcommands2, editorcommands3, editorcommands4, editorcommands5,
 		editorcommands6, editorcommands7, editorcommands8, editorcommands9, editorcommands10,
 		editorcommands11, editorcommands12, editorcommands13, editorcommands14, editorcommands15,
@@ -84,6 +88,8 @@ public class MapEditorControllerTest {
 	@Before
 	public void beginMethod() throws Exception{
 		System.out.printf("==========%nBeginning of method%n==========%n");
+		mapname = "ameroki.map";
+		System.out.println("Map name is : "+mapname);
 		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
 		System.out.println(testMapLoader.getMapService().getCountries());
 		testMapLoader.getMapService().printNeighboringCountryInfo();
@@ -92,7 +98,7 @@ public class MapEditorControllerTest {
 		/**
 		 * URI variable uri is assigned URI parameter for reading file and executing editmap command
 		 */
-		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
+		URI uri = getClass().getClassLoader().getResource(mapname).toURI(); 
 		/**
 		 * file reads the file retrieved from the uri as string.
 		 * it uses UTF-8 charsets.
@@ -117,28 +123,34 @@ public class MapEditorControllerTest {
 		 * <li>editorcommand contains the editcontinent commands.
 		 * <li>editorcommands is an array that contains the split string for parameters
 		 */
-		expectedcontinentsize1 = initcontinentsize + 1;
-		editorcommand1 = "editcontinent -add Nord_Asia 1";
+		newcontinentstr1 = "Nord_Asia"; //one continent to be added
+		newcontinentstr2a = "Southeast_Asia"; newcontinentstr2b = "Northeast_Asia"; //two continents to be added
+		delcontinentstr1 = "ulstrailia"; //one continent to be removed
+		delcontinentstr2a = "ameroki"; delcontinentstr2b = "amerpoll"; //two continents to be deleted
+		newcontinentstr3 = "NordWest_Asia"; delcontinentstr3 = "Southeast_Asia"; //continents to be added and deleted one each in a line
+		newcontinentstr4a= "NordEast_Europe"; newcontinentstr4b = "SouthWest_Europe"; delcontinentstr4a="utropa"; delcontinentstr4b="afrori"; 
+		expectedcontinentsize1 = initcontinentsize + 1; //continent size is expected to increase by one after adding one continent
+		editorcommand1 = "editcontinent -add "+newcontinentstr1+" 1";
 		editorcommand1 = StringUtils.substringAfter(editorcommand1, "-");
 		editorcommands1 = StringUtils.split(editorcommand1, "-");
 		expectedcontinentsize2 = initcontinentsize + 2;
-		editorcommand2 = "editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1";
+		editorcommand2 = "editcontinent -add "+newcontinentstr2a+" 1 -add "+newcontinentstr2b+" 1";
 		editorcommand2 = StringUtils.substringAfter(editorcommand2, "-");
 		editorcommands2 = StringUtils.split(editorcommand2, "-");
 		expectedcontinentsize3 = initcontinentsize - 1;
-		editorcommand3 = "editcontinent -remove ulstrailia";
+		editorcommand3 = "editcontinent -remove "+delcontinentstr1;
 		editorcommand3 = StringUtils.substringAfter(editorcommand3, "-");
 		editorcommands3 = StringUtils.split(editorcommand3, "-");
 		expectedcontinentsize4 = initcontinentsize - 2;
-		editorcommand4 = "editcontinent -remove ameroki 1 -remove amerpoll 1";
+		editorcommand4 = "editcontinent -remove "+delcontinentstr2a+" 1 -remove "+delcontinentstr2b+" 1";
 		editorcommand4 = StringUtils.substringAfter(editorcommand4, "-");
 		editorcommands4 = StringUtils.split(editorcommand4, "-");
 		expectedcontinentsize5 = initcontinentsize;
-		editorcommand5 = "editcontinent -add NordWest_Asia 9 -remove Southeast_Asia";
+		editorcommand5 = "editcontinent -add "+newcontinentstr3+" 9 -remove "+delcontinentstr3;
 		editorcommand5 = StringUtils.substringAfter(editorcommand5, "-");
 		editorcommands5 = StringUtils.split(editorcommand5, "-");
 		expectedcontinentsize6 = initcontinentsize;
-		editorcommand6 = "editcontinent -add NordEast_Europe 4 -add SouthWest_Europe 3 -remove utropa -remove afrori";
+		editorcommand6 = "editcontinent -add  "+newcontinentstr4a+" 4 -add "+newcontinentstr4b+" 3 -remove "+delcontinentstr4a+" -remove "+delcontinentstr4b;
 		editorcommand6 = StringUtils.substringAfter(editorcommand6, "-");
 		editorcommands6 = StringUtils.split(editorcommand6, "-");
 		/**
