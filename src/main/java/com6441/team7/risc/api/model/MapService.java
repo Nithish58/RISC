@@ -8,7 +8,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import static java.util.Objects.isNull;
 
-
+/**
+ * this class is used to store game map of countries, continents, neighboring countries
+ *
+ */
 public class MapService extends Observable {
     private Set<Country> countries = new HashSet<>();
     private Set<Continent> continents = new HashSet<>();
@@ -198,8 +201,6 @@ public class MapService extends Observable {
             countries.remove(country);
             removeCountryFromContinentCountryMap(country);
             removeCountryFromAdjacentCountryMap(country);
-
-
         });
     }
 
@@ -267,22 +268,44 @@ public class MapService extends Observable {
         toBeRemoved.ifPresent(continent -> {
             continents.remove(continent);
             continentCountriesMap.remove(continent.getId());
+            removeNeighboringCountryByContinentName(continent.getId());
+            removeCountryByContinentName(continent.getName());
+
+
         });
 
-        if(toBeRemoved.isPresent()){
-            List<Country> countriesToBeRemoved = countries.stream()
-                    .filter(country -> convertNameToKeyFormat(country.getContinentName()).equals(normalizedContinentName))
-                    .collect(Collectors.toList());
+    }
 
-            countries.removeAll(countriesToBeRemoved);
 
-            List<Integer> countriesId = countriesToBeRemoved.stream()
-                    .map(Country::getId)
-                    .collect(Collectors.toList());
+    private void removeCountryByContinentName(String name){
+        List<Country> toBeRemoved = findCountryByContinentName(name);
+        countries.removeAll(toBeRemoved);
+    }
 
-            adjacencyCountriesMap.keySet().removeAll(countriesId);
 
-        }
+    private List<Country> findCountryByContinentName(String name){
+        return countries.stream()
+                .filter(country -> convertNameToKeyFormat(country.getContinentName()).equals(convertNameToKeyFormat(name)))
+                .collect(Collectors.toList());
+    }
+
+    private List<Integer> findCountryIdByContinentName(int id){
+
+        List<Integer> countryId =  countries.stream()
+                .filter(country -> country.getContinentIdentifier() == id)
+                .map(Country::getId)
+                .collect(Collectors.toList());
+
+        return countryId;
+    }
+
+    private void removeNeighboringCountryByContinentName(int id){
+        findCountryIdByContinentName(id)
+                .forEach(countryId -> {
+                    adjacencyCountriesMap.remove(countryId);
+                    adjacencyCountriesMap.entrySet().stream().map(Map.Entry::getValue)
+                            .forEach(countrySet -> countrySet.remove(countryId));
+                });
     }
 
     public void removeContinentById(int id) {
