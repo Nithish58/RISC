@@ -55,7 +55,10 @@ public class MapEditorControllerTest {
 		delcontinentstr4a, delcontinentstr4b, newcountrystr1, countrycontinentstr1, newcountrystr2a, countrycontinentstr2a,
 		newcountrystr2b, countrycontinentstr2b, delcountrystr1, delcountrystr2a, delcountrystr2b, newcountrystr3, 
 		countrycontinentstr3, delcountrystr3, newcountrystr4a, newcountrystr4b, countrycontinentstr4a, countrycontinentstr4b,
-		delcountrystr4a, delcountrystr4b;
+		delcountrystr4a, delcountrystr4b, countrystr1, neighborstr1, countrystr2a, neighborstr2a, countrystr2b, neighborstr2b,
+		countrystr3, neighborstr3, countrystr4a, neighborstr4a, countrystr4b, neighborstr4b,
+		countrystr5a, neighborstr5a, countrystr5b, neighborstr5b, countrystr6a, neighborstr6a, countrystr6b, neighborstr6b,
+		countrystr6c, neighborstr6c, countrystr6d, neighborstr6d;
 	String[] editorcommands1, editorcommands2, editorcommands3, editorcommands4, editorcommands5,
 		editorcommands6, editorcommands7, editorcommands8, editorcommands9, editorcommands10,
 		editorcommands11, editorcommands12, editorcommands13, editorcommands14, editorcommands15,
@@ -66,11 +69,11 @@ public class MapEditorControllerTest {
 		expectedcountrysize3, expectedcountrysize4, expectedcountrysize5
 		, expectedcountrysize6;
 	Optional<String> inputmap;
-	Optional<Integer> country1, neighbor1, country2, neighbor2a, neighbor2b, country3, neighbor3,
-		country4, neighbor4a, neighbor4b, country5, neighbor5a, neighbor5b,
-		country6, neighbor6a, neighbor6b, neighbor6c, neighbor6d;
+	Optional<Integer> country1, neighbor1, country2a, neighbor2a, country2b, neighbor2b, country3, neighbor3,
+		country4a, neighbor4a, country4b, neighbor4b, country5a, neighbor5a, country5b, neighbor5b,
+		country6a, country6b, country6c, country6d, neighbor6a, neighbor6b, neighbor6c, neighbor6d;
 	Map<Integer, Set<Integer>> borders1, borders2, borders3, borders4, borders5, borders6;
-	Set<Integer> pair1, pair2, pair3, pair4, pair5, pair6;
+	Set<Integer> pair1, pair2a, pair2b, pair3, pair4a, pair4b, pair5a, pair5b, pair6a, pair6b, pair6c, pair6d;
 
 	String message;
 	@BeforeClass
@@ -85,6 +88,7 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * beginMethod() is called before every method is performed.
+	 * @throws Exception on encountering invalid values
 	 */
 	@Before
 	public void beginMethod() throws Exception{
@@ -199,42 +203,55 @@ public class MapEditorControllerTest {
 		 * The followings are for neighbor adding test:
 		 * 
 		 */
-		editorcommand13 = "editneighbor -add nordennavic siberia";
+		countrystr1 = "nordennavic"; neighborstr1 = "siberia";
+		countrystr2a = "fiji"; neighborstr2a = "japan"; countrystr2b = "fiji"; neighborstr2b = "india";
+		countrystr3 = "siberia"; neighborstr3 = "worrick";
+		countrystr4a = "worrick"; neighborstr4a = "india"; countrystr4b = "worrick"; neighborstr4b = "nordennavic";
+		countrystr5a = "japan"; neighborstr5a = "afganistan"; countrystr5b = "japan"; neighborstr5b = "fiji";
+		countrystr6a = "china"; neighborstr6a = "sky_republic"; countrystr6b = "china"; neighborstr6b = "ocean_republic";
+		countrystr6c = "china"; neighborstr6c = "middle_east"; countrystr6d = "china"; neighborstr6d = "heal";
+		editorcommand13 = "editneighbor -add "+countrystr1+" "+ neighborstr1;
 		editorcommand13 = StringUtils.substringAfter(editorcommand13, "-");
 		editorcommands13 = StringUtils.split(editorcommand13, "-");
-		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
-		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName("siberia");
-		editorcommand14 = "editneighbor -add fiji japan -add fiji india";
+		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr1);
+		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr1);
+		editorcommand14 = "editneighbor -add "+countrystr2a+" "+neighborstr2a+" -add "+countrystr2b+" "+neighborstr2b;
 		editorcommand14 = StringUtils.substringAfter(editorcommand14, "-");
 		editorcommands14 = StringUtils.split(editorcommand14, "-");
-		country2 = testMapLoader.getMapService().findCorrespondingIdByCountryName("fiji");
-		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
-		neighbor2b = testMapLoader.getMapService().findCorrespondingIdByCountryName("india");
-		editorcommand15 = "editneighbor -remove siberia worrick";
+		country2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2a);
+		country2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2b);
+		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2a);
+		neighbor2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2b);
+		editorcommand15 = "editneighbor -remove "+countrystr3+" "+neighborstr3;
 		editorcommand15 = StringUtils.substringAfter(editorcommand15, "-");
 		editorcommands15 = StringUtils.split(editorcommand15, "-");
-		country3 = testMapLoader.getMapService().findCorrespondingIdByCountryName("siberia");
-		neighbor3 = testMapLoader.getMapService().findCorrespondingIdByCountryName("worrick");
-		editorcommand16 = "editneighbor -remove worrick india -remove worrick nordennavic";
+		country3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr3);
+		neighbor3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr3);
+		editorcommand16 = "editneighbor -remove "+countrystr4a+" "+neighborstr4a+" -remove "+countrystr4b+" "+neighborstr4b;
 		editorcommand16 = StringUtils.substringAfter(editorcommand16, "-");
 		editorcommands16 = StringUtils.split(editorcommand16, "-");
-		country4 = testMapLoader.getMapService().findCorrespondingIdByCountryName("worrick");
-		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName("india");
-		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName("nordennavic");
-		editorcommand17 = "editneighbor -add japan afganistan -remove japan fiji";
+		country4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4a);
+		country4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4b);
+		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4a);
+		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4b);
+		editorcommand17 = "editneighbor -add "+countrystr5a+" "+neighborstr5a+"-remove "+countrystr5b+" "+neighborstr5b;
 		editorcommand17 = StringUtils.substringAfter(editorcommand17, "-");
 		editorcommands17 = StringUtils.split(editorcommand17, "-");
-		country5 = testMapLoader.getMapService().findCorrespondingIdByCountryName("japan");
-		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName("afganistan");
-		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName("fiji");
+		country5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5a);
+		country5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5b);
+		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5a);
+		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5b);
 		editorcommand18 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
 		editorcommand18 = StringUtils.substringAfter(editorcommand18, "-");
 		editorcommands18 = StringUtils.split(editorcommand18, "-");
-		country6 = testMapLoader.getMapService().findCorrespondingIdByCountryName("china");
-		neighbor6a = testMapLoader.getMapService().findCorrespondingIdByCountryName("sky_republic");
-		neighbor6b = testMapLoader.getMapService().findCorrespondingIdByCountryName("ocean_republic");
-		neighbor6c = testMapLoader.getMapService().findCorrespondingIdByCountryName("middle_east");
-		neighbor6d = testMapLoader.getMapService().findCorrespondingIdByCountryName("heal");
+		country6a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6a);
+		country6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6b);
+		country6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6c);
+		country6d = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6d);
+		neighbor6a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6a);
+		neighbor6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6b);
+		neighbor6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6c);
+		neighbor6d = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6d);
 	}
 	
 	/**
@@ -446,11 +463,12 @@ public class MapEditorControllerTest {
 		borders2 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		testMapLoader.editNeighbor(editorcommands14);
 		//get pair of country and neighbor
-		pair2 = borders2.get(country2.get());
+		pair2a = borders2.get(country2a.get());
+		pair2b = borders2.get(country2b.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders2.containsKey(country2.get()));
-		assertTrue("First neighbor country is not found", pair2.contains(neighbor2a.get()));
-		assertTrue("Second neighbor country is not found", pair2.contains(neighbor2b.get()));
+		assertTrue("Country is not found",borders2.containsKey(country2a.get()));
+		assertTrue("First neighbor country is not found", pair2a.contains(neighbor2a.get()));
+		assertTrue("Second neighbor country is not found", pair2b.contains(neighbor2b.get()));
 	}
 	
 	/**
@@ -482,11 +500,13 @@ public class MapEditorControllerTest {
 		testMapLoader.editNeighbor(editorcommands16);
 		borders4 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get pair of country and neighbor
-		Set<Integer> pair4 = borders4.get(country4.get());
+		pair4a = borders4.get(country4a.get());
+		pair4b = borders4.get(country4b.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders4.containsKey(country4.get()));
-		assertFalse("First neighbor country is found", pair4.contains(neighbor4a.get()));
-		assertFalse("Second neighbor country is found", pair4.contains(neighbor4a.get()));
+		assertTrue("Country is not found",borders4.containsKey(country4a.get()));
+		assertTrue("Country is not found",borders4.containsKey(country4b.get()));
+		assertFalse("First neighbor country is found", pair4a.contains(neighbor4a.get()));
+		assertFalse("Second neighbor country is found", pair4b.contains(neighbor4b.get()));
 	}
 	
 	/**
@@ -502,11 +522,13 @@ public class MapEditorControllerTest {
 		//create map object from adjacency list
 		borders5 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get pair of country and neighbor
-		pair5 = borders5.get(country5.get());
+		pair5a = borders5.get(country5a.get());
+		pair5b = borders5.get(country5b.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders5.containsKey(country5.get()));
-		assertTrue("First neighbor country is not found", pair5.contains(neighbor5a.get()));
-		assertFalse("Second neighbor country is found", pair5.contains(neighbor5b.get()));
+		assertTrue("Country is not found",borders5.containsKey(country5a.get()));
+		assertTrue("Country is not found",borders5.containsKey(country5b.get()));
+		assertTrue("First neighbor country is not found", pair5a.contains(neighbor5a.get()));
+		assertFalse("Second neighbor country is found", pair5b.contains(neighbor5b.get()));
 	}
 	
 	/**
@@ -522,13 +544,19 @@ public class MapEditorControllerTest {
 		//create map object from adjacency list
 		borders6 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get pair of country and neighbor
-		pair6 = borders6.get(country6.get());
+		pair6a = borders6.get(country6a.get());
+		pair6b = borders6.get(country6b.get());
+		pair6c = borders6.get(country6c.get());
+		pair6d = borders6.get(country6d.get());
 		//Check if map object contains both country ID and neighbor ID
-		assertTrue("Country is not found",borders6.containsKey(country6.get()));
-		assertTrue("First added neighbor country is not found", pair6.contains(neighbor6a.get()));
-		assertTrue("Second added neighbor country is not found", pair6.contains(neighbor6b.get()));
-		assertFalse("First removed neighbor country is found", pair6.contains(neighbor6c.get()));
-		assertFalse("Second removed neighbor country is found", pair6.contains(neighbor6d.get()));
+		assertTrue("Country is not found",borders6.containsKey(country6a.get()));
+		assertTrue("Country is not found",borders6.containsKey(country6b.get()));
+		assertTrue("Country is not found",borders6.containsKey(country6c.get()));
+		assertTrue("Country is not found",borders6.containsKey(country6d.get()));
+		assertTrue("First added neighbor country is not found", pair6a.contains(neighbor6a.get()));
+		assertTrue("Second added neighbor country is not found", pair6b.contains(neighbor6b.get()));
+		assertFalse("First removed neighbor country is found", pair6c.contains(neighbor6c.get()));
+		assertFalse("Second removed neighbor country is found", pair6d.contains(neighbor6d.get()));
 	}
 	
 	/**
