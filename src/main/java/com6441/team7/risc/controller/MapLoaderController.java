@@ -6,12 +6,9 @@ import com6441.team7.risc.view.CommandPromptView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import sun.tools.java.SyntaxError;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.*;
@@ -28,11 +25,15 @@ public class MapLoaderController {
     private AtomicInteger countryIdGenerator;
     private MapService mapService;
     private CommandPromptView view;
+    private MapGraph mapGraph;
+    private MapIntro mapIntro;
 
     public MapLoaderController(MapService mapService) {
         this.mapService = mapService;
         this.continentIdGenerator = new AtomicInteger();
         this.countryIdGenerator = new AtomicInteger();
+        this.mapGraph = new MapGraph();
+        this.mapIntro = new MapIntro();
     }
 
     public void readCommand(String command) throws IOException {
@@ -98,16 +99,27 @@ public class MapLoaderController {
             throw new MapInvalidException("the map is not valid, cannot be saved");
         }
         String filename = command.split(" ")[1];
+
+        String mapIntro = getMapIntroString();
+        if(mapIntro.length() == 0){
+            mapIntro = filename;
+        }
         StringBuilder stringBuilder =
                 new StringBuilder()
-                        .append(filename)
-                        .append("\r\n")
-                        .append("[files]\r\n")
-                        .append("[continent]\r\n")
+                        .append(mapIntro)
+                        .append("[files]")
+                        .append(EOL)
+                        .append(getMapGraphString())
+                        .append("[continent]")
+                        .append(EOL)
                         .append(getContinentString())
-                        .append("[countries]\r\n")
+                        .append(EOL)
+                        .append("[countries]")
+                        .append(EOL)
                         .append(getCountryString())
-                        .append("[borders]\r\n")
+                        .append(EOL)
+                        .append("[borders]")
+                        .append(EOL)
                         .append(getBorderString());
 
         File file = new File(filename);
@@ -116,12 +128,20 @@ public class MapLoaderController {
         mapService.setState(GameState.START_UP);
     }
 
+    private String getMapIntroString(){
+        return mapIntro.getMapIntro();
+    }
+
+    private String getMapGraphString(){
+        return mapGraph.getMapGraph();
+    }
+
     private String getContinentString() {
         StringBuilder stringBuilder = new StringBuilder();
         mapService.getContinents().forEach(continent -> {
             stringBuilder.append(continent.getName()).append(" ");
             stringBuilder.append(continent.getContinentValue()).append(" ");
-            stringBuilder.append(continent.getColor()).append("\r\n");
+            stringBuilder.append(continent.getColor()).append(EOL);
 
         });
 
@@ -390,7 +410,8 @@ public class MapLoaderController {
                 throw new MissingInfoException("The map is not valid");
             }
 
-            //parseMapGraphInfo(parts[1]);
+            parseMapIntro(parts[0]);
+            parseMapGraphInfo(parts[1]);
             parseRawContinents(parts[2]);
             parseRawCountries(parts[3]);
             parseRawNeighboringCountries(parts[4]);
@@ -406,11 +427,20 @@ public class MapLoaderController {
 
     }
 
+    void parseMapIntro(String part){
+        mapIntro.setMapIntro(part);
+    }
+
+    void parseMapGraphInfo(String part){
+
+        mapGraph.setMapGraph(StringUtils.substringAfter(part, "]\r\n"));
+    }
+
 
     Set<Continent> parseRawContinents(String part) {
         String continentInfo = StringUtils.substringAfter(part, "]\r\n");
 
-        Set<Continent> continentSet = Optional.of(StringUtils.split(continentInfo, "\r\n"))
+        Set<Continent> continentSet = Optional.of(StringUtils.split(continentInfo, EOL))
                 .map(Arrays::stream)
                 .orElseGet(Stream::empty)
                 .map(this::createContinentFromRaw)
@@ -450,7 +480,7 @@ public class MapLoaderController {
 
     Set<Country> parseRawCountries(String part) {
         String countryInfo = StringUtils.substringAfter(part, "]\r\n");
-        Set<Country> countrySet = Optional.of(StringUtils.split(countryInfo, "\r\n"))
+        Set<Country> countrySet = Optional.of(StringUtils.split(countryInfo, EOL))
                 .map(Arrays::stream)
                 .orElseGet(Stream::empty)
                 .map(this::createCountryFromRaw)
@@ -495,7 +525,7 @@ public class MapLoaderController {
 
         String borderInfo = StringUtils.substringAfter(part, "]");
 
-        String[] adjacencyInfo = StringUtils.split(borderInfo, "\n\r");
+        String[] adjacencyInfo = StringUtils.split(borderInfo, EOL);
         Map<Integer, Set<Integer>> adjacencyMap = new HashMap<>();
 
         Arrays.stream(adjacencyInfo)
