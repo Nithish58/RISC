@@ -43,7 +43,24 @@ public class MapEditorControllerTest {
 	static private MapLoaderController testMapLoader;
 	static private GameController testGameController;
 	String test_map;
+	
+	//define test params
+	URI uri;
+	String file, inputcommand, editorcommand1, editorcommand2, editorcommand3, editorcommand4, 
+		editorcommand5, editorcommand6, editorcommand7, editorcommand8,	editorcommand9, 
+		editorcommand10, editorcommand11, editorcommand12, editorcommand13, editorcommand14,
+		editorcommand15, editorcommand16, editorcommand17, editorcommand18, editorcommand19, 
+		editorcommand20;
+	String[] editorcommands1, editorcommands2, editorcommands3, editorcommands4, editorcommands5,
+		editorcommands6, editorcommands7, editorcommands8, editorcommands9, editorcommands10,
+		editorcommands11, editorcommands12, editorcommands13, editorcommands14, editorcommands15,
+		editorcommands16, editorcommands17, editorcommands18, editorcommands19, editorcommands20;
+	int initcontinentsize, expectedcontinentsize1, expectedcontinentsize2,
+		expectedcontinentsize3, expectedcontinentsize4, expectedcontinentsize5
+		, expectedcontinentsize6;
+	Optional<String> inputmap;
 
+	String message;
 	@BeforeClass
 	public static void beginClass() {
 		testCmdView = new CommandPromptView(testMapLoader, testGameController);
@@ -58,13 +75,65 @@ public class MapEditorControllerTest {
 	 * beginMethod() is called before every method is performed.
 	 */
 	@Before
-	public void beginMethod() {
+	public void beginMethod() throws Exception{
 		System.out.printf("==========%nBeginning of method%n==========%n");
 		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
 		System.out.println(testMapLoader.getMapService().getCountries());
 		testMapLoader.getMapService().printNeighboringCountryInfo();
 		System.out.println("Number of continents before test: "+testMapLoader.getMapService().getContinents().size());
 		System.out.println("Number of countries before test: "+testMapLoader.getMapService().getCountries().size());
+		/**
+		 * URI variable uri is assigned URI parameter for reading file and executing editmap command
+		 */
+		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
+		/**
+		 * file reads the file retrieved from the uri as string.
+		 * it uses UTF-8 charsets.
+		 */
+		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
+		/**
+		 * The followings are for test case 002 : executing editmap
+		 */
+		inputcommand = "editmap "+uri;
+		inputmap = testMapLoader.editMap(inputcommand);
+		//size of continent list before one continent is added
+		/**
+		 * The followings are for test cases on editing continent
+		 * initcontinentsize defines the size of continent before continent edit 
+		 * operation is performed.
+		 */
+		initcontinentsize = testMapLoader.getMapService().getContinents().size();
+		/**
+		 * The followings are for the test cases of editing continent
+		 * expectedcontinentsize is the expected size of continent list
+		 * after edit operation
+		 * editorcommand contains the editcontinent commands.
+		 * editorcommands is an array that contains the split string for parameters
+		 */
+		expectedcontinentsize1 = initcontinentsize + 1;
+		editorcommand1 = "editcontinent -add Nord_Asia 1";
+		editorcommand1 = StringUtils.substringAfter(editorcommand1, "-");
+		editorcommands1 = StringUtils.split(editorcommand1, "-");
+		expectedcontinentsize2 = initcontinentsize + 2;
+		editorcommand2 = "editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1";
+		editorcommand2 = StringUtils.substringAfter(editorcommand2, "-");
+		editorcommands2 = StringUtils.split(editorcommand2, "-");
+		expectedcontinentsize3 = initcontinentsize - 1;
+		editorcommand3 = "editcontinent -remove ulstrailia";
+		editorcommand3 = StringUtils.substringAfter(editorcommand3, "-");
+		editorcommands3 = StringUtils.split(editorcommand3, "-");
+		expectedcontinentsize4 = initcontinentsize - 2;
+		editorcommand4 = "editcontinent -remove ameroki 1 -remove amerpoll 1";
+		editorcommand4 = StringUtils.substringAfter(editorcommand4, "-");
+		editorcommands4 = StringUtils.split(editorcommand4, "-");
+		expectedcontinentsize5 = initcontinentsize;
+		editorcommand5 = "editcontinent -add NordWest_Asia 9 -remove Southeast_Asia";
+		editorcommand5 = StringUtils.substringAfter(editorcommand5, "-");
+		editorcommands5 = StringUtils.split(editorcommand5, "-");
+		expectedcontinentsize6 = initcontinentsize;
+		editorcommand6 = "editcontinent -add NordEast_Europe 4 -add SouthWest_Europe 3 -remove utropa -remove afrori";
+		editorcommand6 = StringUtils.substringAfter(editorcommand6, "-");
+		editorcommands6 = StringUtils.split(editorcommand6, "-");
 	}
 	
 	/**
@@ -88,14 +157,8 @@ public class MapEditorControllerTest {
 	 */
 	@Test
 	public void test001_readFile() throws Exception{
-		System.out.printf("%nTesting readFile method.%n");
-		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
-		//readFile contains the file content and will check if the file exists.
-		String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-		boolean readFile = testMapLoader.parseFile(file);
-		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
-		assertTrue(readFile);
-		assertFalse(!readFile);
+		message = "The map is not valid";
+		assertTrue(message, testMapLoader.parseFile(file));
 	}
 	
 	/**
@@ -105,11 +168,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test002_editMap() throws Exception{
 		System.out.printf("Testing editmap command.%n");
-		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
-		String inputcommand = "editmap "+uri;
-		System.out.println(inputcommand);
-		//Execute editmap command.
-		Optional<String> inputmap = testMapLoader.editMap(inputcommand);
+		message = "Invalid command.";
 		assertTrue(inputmap.isPresent());		
 	}
 	
@@ -120,21 +179,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test003_addOneContinent() throws Exception{
 		System.out.printf("Adding one continent%n------------%n");
-		//size of continent list before one continent is added
-		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
-		//Expected size of continent list after one continent is added
-		int expectedcontinentsize = initcontinentsize+1;
-		//Set the command string to add one continent
-		String editorcommand = "editcontinent -add Nord_Asia 1";
-		System.out.println(editorcommand);
-		//Retrieve substring(s) after every dash(es)
-		editorcommand = StringUtils.substringAfter(editorcommand, "-");
-		//Create an array of substrings for param.
-		String[] editorcommands = StringUtils.split(editorcommand, "-");
-		testMapLoader.editContinents(editorcommands);
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
-		//testMapLoader.editCountries(editorcommands);
-		//assertSame(expectedcontinentsize, testMapLoader.getMapService().getCountries().size());
+		System.out.println(editorcommand1);
+		testMapLoader.editContinents(editorcommands1);
+		assertSame(expectedcontinentsize1, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -144,18 +191,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test004_addTwoContinents() throws Exception{
 		System.out.printf("Adding two continents%n------------%n");
-		//size of continent list before one continent is added
-		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
-		//expected size of continent list after two continent is added
-		int expectedcontinentsize = initcontinentsize+2;
-		String editorcommand = "editcontinent -add Southeast_Asia 1 -add Northeast_Asia 1";
-		System.out.println(editorcommand);
-		//Retrieve substring(s) after every dash(es)
-		editorcommand = StringUtils.substringAfter(editorcommand, "-");
-		//Create an array of substrings for param.
-		String[] editorcommands = StringUtils.split(editorcommand, "-");
-		testMapLoader.editContinents(editorcommands);
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		System.out.println(editorcommand2);
+		testMapLoader.editContinents(editorcommands2);
+		assertSame(expectedcontinentsize2, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -165,18 +203,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test005_removeOneContinent() throws Exception{
 		System.out.printf("Removing one continent%n------------%n");
-		//size of continent list before one continent is removed
-		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
-		//expected size of continent list after one continent is removed
-		int expectedcontinentsize = initcontinentsize-1;
-		String editorcommand = "editcontinent -remove ulstrailia";
-		System.out.println(editorcommand);
-		//Retrieve substring(s) after every dash(es)
-		editorcommand = StringUtils.substringAfter(editorcommand, "-");
-		//Create an array of substrings for param.
-		String[] editorcommands = StringUtils.split(editorcommand, "-");
-		testMapLoader.editContinents(editorcommands);
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		System.out.println(editorcommand3);
+		testMapLoader.editContinents(editorcommands3);
+		assertSame(expectedcontinentsize3, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -186,18 +215,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test006_removeTwoContinents() throws Exception{
 		System.out.printf("Removing two continents%n------------%n");
-		//size of continent list before two continents are removed
-		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
-		//expected size of continent list after two continents are removed
-		int expectedcontinentsize = initcontinentsize-2;
-		String editorcommand = "editcontinent -remove ameroki 1 -remove amerpoll 1";
-		System.out.println(editorcommand);
-		//Retrieve substring(s) after every dash(es)
-		editorcommand = StringUtils.substringAfter(editorcommand, "-");
-		//Create an array of substrings for param.
-		String[] editorcommands = StringUtils.split(editorcommand, "-");
-		testMapLoader.editContinents(editorcommands);
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		System.out.println(editorcommand4);
+		testMapLoader.editContinents(editorcommands4);
+		assertSame(expectedcontinentsize4, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -207,18 +227,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test007_addOneContinentRemoveOneContinent() throws Exception{
 		System.out.printf("Adding and removing one continent%n------------%n");
-		//size of continent list before after one continent is added and one continent is removed
-		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
-		//expected size of continent list after one continent is added and one countinent is removed
-		int expectedcontinentsize = initcontinentsize;
-		String editorcommand = "editcontinent -add NordWest_Asia 9 -remove Southeast_Asia";
-		System.out.println(editorcommand);
-		//Retrieve substring(s) after every dash(es)
-		editorcommand = StringUtils.substringAfter(editorcommand, "-");
-		//Create an array of substrings for param.
-		String[] editorcommands = StringUtils.split(editorcommand, "-");
-		testMapLoader.editContinents(editorcommands);
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		System.out.println(editorcommand5);
+		testMapLoader.editContinents(editorcommands5);
+		assertSame(expectedcontinentsize5, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
@@ -228,18 +239,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test008_addTwoContinentsRemoveTwosContinents() throws Exception{
 		System.out.printf("Adding and removing two continents%n------------%n");
-		//size of continent list before after one country is added and one country is removed
-		int initcontinentsize = testMapLoader.getMapService().getContinents().size();
-		//expected size of continent list after one country is added and one country is removed
-		int expectedcontinentsize = initcontinentsize;
-		String editorcommand = "editcontinent -add NordEast_Europe 4 -add SouthWest_Europe 3 -remove utropa -remove afrori";
-		System.out.println(editorcommand);
-		//Retrieve substring(s) after every dash(es)
-		editorcommand = StringUtils.substringAfter(editorcommand, "-");
-		//Create an array of substrings for param.
-		String[] editorcommands = StringUtils.split(editorcommand, "-");
-		testMapLoader.editContinents(editorcommands);
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		System.out.println(editorcommand6);
+		testMapLoader.editContinents(editorcommands6);
+		assertSame(expectedcontinentsize6, testMapLoader.getMapService().getContinents().size());
 	}
 	
 	/**
