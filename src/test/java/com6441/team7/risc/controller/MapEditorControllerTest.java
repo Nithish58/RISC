@@ -52,8 +52,9 @@ public class MapEditorControllerTest {
 		editorcommand15, editorcommand16, editorcommand17, editorcommand18, editorcommand19, 
 		editorcommand20, newcontinentstr1, newcontinentstr2a, newcontinentstr2b, delcontinentstr1, delcontinentstr2a,
 		delcontinentstr2b, newcontinentstr3, delcontinentstr3, newcontinentstr4a, newcontinentstr4b, 
-		delcontinentstr4a, delcontinentstr4b, newcountrystr1, newcountrystr2a, newcountrystr2b, delcountrystr1, delcountrystr2a,
-		delcountrystr2b, newcountrystr3, delcountrystr3, newcountrystr4a, newcountrystr4b, 
+		delcontinentstr4a, delcontinentstr4b, newcountrystr1, countrycontinentstr1, newcountrystr2a, countrycontinentstr2a,
+		newcountrystr2b, countrycontinentstr2b, delcountrystr1, delcountrystr2a, delcountrystr2b, newcountrystr3, 
+		countrycontinentstr3, delcountrystr3, newcountrystr4a, newcountrystr4b, countrycontinentstr4a, countrycontinentstr4b,
 		delcountrystr4a, delcountrystr4b;
 	String[] editorcommands1, editorcommands2, editorcommands3, editorcommands4, editorcommands5,
 		editorcommands6, editorcommands7, editorcommands8, editorcommands9, editorcommands10,
@@ -161,28 +162,37 @@ public class MapEditorControllerTest {
 		 * <li>editorcommands is an array that contains the split string for parameters
 		 */
 		initcountrysize = testMapLoader.getMapService().getCountries().size();
+		newcountrystr1 = "Nordenstan"; countrycontinentstr1 = "Nord_Asia";//one country to be added
+		newcountrystr2a = "Nordennavic"; countrycontinentstr2a = "NordEast_Europe"; newcountrystr2b = "Northeast_Asia"; 
+		newcountrystr2b = "United_Islands"; countrycontinentstr2b = "Northeast_Asia";//two countrys to be added
+		delcountrystr1 = "united_islands"; //one country to be removed
+		delcountrystr2a = "maganar"; delcountrystr2b = "pero"; //two countrys to be deleted
+		newcountrystr3 = "Fiji"; countrycontinentstr3="azio"; delcountrystr3 = "Nordenstan"; //countrys to be added and deleted one each in a line
+		newcountrystr4a= "Sky_Republic"; countrycontinentstr4a="Nord_Asia"; 
+		newcountrystr4b = "Ocean_Republic"; countrycontinentstr4b="Northeast_Asia"; delcountrystr4a="vinenlant"; delcountrystr4b="heal"; 
 		expectedcountrysize1 = initcountrysize+1;
-		editorcommand7 = "editcountry -add Nordenstan Nord_Asia";
+		editorcommand7 = "editcountry -add "+newcountrystr1+" "+countrycontinentstr1;
 		editorcommand7 = StringUtils.substringAfter(editorcommand7, "-");
 		editorcommands7 = StringUtils.split(editorcommand7, "-");
 		expectedcountrysize2 = initcountrysize+2;
-		editorcommand8 = "editcountry -add Nordennavic NordEast_Europe -add United_Islands Northeast_Asia";
+		editorcommand8 = "editcountry -add "+newcountrystr2a+" "+countrycontinentstr2a+" -add  "+newcountrystr2b+" "+countrycontinentstr2b;
 		editorcommand8 = StringUtils.substringAfter(editorcommand8, "-");
 		editorcommands8 = StringUtils.split(editorcommand8, "-");
 		expectedcountrysize3 = initcountrysize-1;
-		editorcommand9 = "editcountry -remove united_islands";
+		editorcommand9 = "editcountry -remove "+delcountrystr1;
 		editorcommand9 = StringUtils.substringAfter(editorcommand9, "-");
 		editorcommands9 = StringUtils.split(editorcommand9, "-");
 		expectedcountrysize4 = initcountrysize-2;
-		editorcommand10 = "editcountry -remove maganar -remove pero";
+		editorcommand10 = "editcountry -remove  "+delcountrystr2a+" -remove "+delcountrystr2b;
 		editorcommand10 = StringUtils.substringAfter(editorcommand10, "-");
 		editorcommands10 = StringUtils.split(editorcommand10, "-");
 		expectedcountrysize5 = initcountrysize;
-		editorcommand11 = "editcountry -add Fiji azio -remove Nordenstan";
+		editorcommand11 = "editcountry -add "+newcountrystr3+" "+countrycontinentstr3+" -remove "+delcountrystr3;
 		editorcommand11 = StringUtils.substringAfter(editorcommand11, "-");
 		editorcommands11 = StringUtils.split(editorcommand11, "-");
 		expectedcountrysize6 = initcountrysize;
-		editorcommand12 = "editcountry -add Sky_Republic Nord_Asia -add Ocean_Republic Northeast_Asia -remove vinenlant -remove heal";
+		editorcommand12 = "editcountry -add "+newcountrystr4a+" "+countrycontinentstr4a
+					+" -add "+newcountrystr4b+" "+countrycontinentstr4b+" -remove "+delcountrystr4a+" -remove "+delcountrystr4b;
 		editorcommand12 = StringUtils.substringAfter(editorcommand12, "-");
 		editorcommands12 = StringUtils.split(editorcommand12, "-");
 		/**
