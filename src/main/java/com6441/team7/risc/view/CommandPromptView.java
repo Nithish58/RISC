@@ -16,13 +16,20 @@ public class CommandPromptView implements Observer {
     private MapLoaderController mapLoaderController;
     private GameController gameController;
     
-    //Track for 1st Turn
-    int count=1;
+    private boolean loadMapFirstLineOutput;
+    private boolean editMapPhaseEntered;
 
     public CommandPromptView(MapLoaderController mapLoaderController, GameController gameController) {
     	
         this.mapLoaderController = mapLoaderController;
         this.gameController = gameController;
+        
+        //Initial Game State is LoadMap
+        this.gameState=this.mapLoaderController
+        		.getMapService().getGameState();
+        
+        this.loadMapFirstLineOutput=false;
+        this.editMapPhaseEntered=false;
         
         System.out.println("Welcome To Domination Game");
     }
@@ -34,27 +41,43 @@ public class CommandPromptView implements Observer {
             	
             	String command="";
             	
-                if(count==1) {
+                if(gameState==GameState.LOAD_MAP) {
                 	
-                	System.out.println("Do you want to Edit A Map or Load A Map Directly?"
-                			+ " Press 1 to Edit, Else Press any other key to Load");
-                	
-                	 command=scanner.nextLine();
-                	
-                	if(command.equalsIgnoreCase("1")) {
-                		
-                		gameState=GameState.LOAD_MAP;               		
+                	if(!loadMapFirstLineOutput) {
+                      	System.out.println("Do you want to Edit A Map or Load A Map Directly?\n"
+                      						+ "Press 1 to Edit, Else Press any other key to Load");
+                      	this.loadMapFirstLineOutput=true;
+                      	
                 	}
                 	
-                	gameState=GameState.START_UP;
-                	count=2;
+                	else System.out.print("Enter next Command: (LoadMap Phase)  ");
+                	
+                	 command=scanner.nextLine();
+                	 
+                  	
+                 	if(command.equalsIgnoreCase("1") ) {
+                 		
+                 		this.gameState=GameState.LOAD_MAP;
+                 		this.editMapPhaseEntered=true;
+                 		continue;
+                 	}
+                 	
+                 	else {
+                 		if(!editMapPhaseEntered) {
+                 			this.gameState=GameState.START_UP;
+                 			continue;
+                 		}
+                 		
+                 	}
+                 	
                 }
             	
                 else {
                 	
-                	System.out.println("Enter next Command:");
+                	System.out.println("Enter next Command ("+this.gameState+"): ");
                 	 command = scanner.nextLine();
                 }
+                
                 
                     switch (gameState) {
                         case LOAD_MAP:

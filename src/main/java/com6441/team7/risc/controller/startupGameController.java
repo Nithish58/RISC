@@ -47,6 +47,8 @@ public class startupGameController {
 	
 	
 	private boolean boolMapLoaded;
+	
+	
 	private boolean boolGamePlayerAdded;
 	private boolean boolAllGamePlayersAdded;
 	
@@ -63,7 +65,9 @@ public class startupGameController {
 	public startupGameController(MapService mapService,
 			ArrayList<Player> players, Player currentPlayer) {
 		
-		boolMapLoaded=false;
+		this.boolMapLoaded=false;
+		
+		
 		boolAllGamePlayersAdded=false;
 		boolGamePlayerAdded=false;
 			
@@ -97,18 +101,23 @@ public class startupGameController {
         	
         	if(!boolMapLoaded) {
         		String fileName=StringUtils.split(command, WHITESPACE)[1];       		
-        		loadMap(command);       		
+        		loadMap(command);        		
         	}
         	
         	else {
-        		System.out.println("Load Map First");
+        		
+        		if(boolMapLoaded) {
+        			String fileName=StringUtils.split(command, WHITESPACE)[1];       		
+            		loadMap(command);
+        		}
+        		else System.out.println("Load Map First");
         	}
         	
         	break;
         	
         case GAME_PLAYER:
         	
-        	if(boolMapLoaded && !(boolAllGamePlayersAdded)) {
+        	if(boolMapLoaded && (!boolAllGamePlayersAdded)) {
         		editPlayer(commands);
         	}
         	
@@ -121,13 +130,14 @@ public class startupGameController {
         case POPULATE_COUNTRY:
         	
         	if(boolMapLoaded) {
+        		
         		if(!players.isEmpty()) {
+        			
         			boolAllGamePlayersAdded=true;
         			this.boolStartUpPhaseOver.set(true);
-                	populateCountries();
-                	
-                	
+                	populateCountries();               	
         		}
+        		
         		else {
         			
         			System.out.println("No Player Added. Add 1 player atleast");
@@ -205,11 +215,15 @@ public class startupGameController {
     		for(int i=0;i<players.size();i++) {
     			if(players.get(i).getName().equals(playerName)) {
     				nameFound=true;
+    				System.out.println("Player Already Exists. Try different name");
     				break;
     			}
     		}
     		
-    		if(!nameFound) players.add(new Player(playerName));
+    		if(!nameFound) {
+    			players.add(new Player(playerName));
+    			System.out.println("Player Added");
+    		}
     		
     	}
     	
@@ -305,6 +319,9 @@ public class startupGameController {
                 throw new MissingInfoException("The map is not valid");
             }
 
+            //Clear MapService:
+            this.mapService.clearMapService();;
+            
             //parseMapGraphInfo(parts[1]);
             parseRawContinents(parts[2]);
             parseRawCountries(parts[3]);
@@ -316,6 +333,7 @@ public class startupGameController {
 
         } catch (Exception e) {
             //view.displayMessage(e.getMessage());
+        	System.out.println(e.getMessage());
         	 System.out.println("PROBLEM LOADING FILE");
             boolMapLoaded=false;
             return false;

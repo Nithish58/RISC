@@ -68,7 +68,17 @@ public class MapLoaderController {
             case VALIDATE_MAP:
                 validateMap();
                 break;
+                
+                //Added by Keshav
+            case EXIT_MAPEDIT:
+            	if(!validateMap()) {
+            		System.out.println("Map Not Valid");
+            	}
+            	this.mapService.setState(GameState.START_UP);
+                break;
+                
             default:
+            	//this.mapService.setState(GameState.LOAD_MAP);
                 throw new IllegalArgumentException("cannot recognize this command");
         }
 
@@ -113,7 +123,8 @@ public class MapLoaderController {
         File file = new File(filename);
         FileUtils.writeStringToFile(file, stringBuilder.toString(), StandardCharsets.UTF_8.name());
         view.displayMessage("the map is successfully saved.");
-        mapService.setState(GameState.START_UP);
+        
+    //    mapService.setState(GameState.START_UP);
     }
 
     private String getContinentString() {

@@ -20,8 +20,12 @@ public enum RiscCommand {
     PLACE_ALL("place_all"),
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
-    UNKNOWN("unkonwn");
+    UNKNOWN("unkonwn"),
+	
+	//Added By keshav
+	EXIT_MAPEDIT("exitmapedit");
 
+	
     private String name;
 
 
