@@ -2,6 +2,7 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.model.Continent;
 import com6441.team7.risc.api.model.Country;
+import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.view.CommandPromptView;
@@ -34,10 +35,15 @@ public class reinforceGameController {
      * Sole constructor
      * @param player this parameter is the player who is requesting to reinforce new armiees.
      */
-    public reinforceGameController(Player player){
-        this.mapService = new MapService();
-        this.player = player;
+    public reinforceGameController(Player currentPlayer, MapService mapService){
+       // this.mapService = new MapService();
+    	this.mapService=mapService;
+        this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
+        
+        System.out.println("Reinforcement:" + currentPlayer.getName());
+        
+        this.mapService.setState(GameState.FORTIFY);
     }
 
     /**
@@ -62,5 +68,6 @@ public class reinforceGameController {
         return playerCountries;
 
     }
+
 
 }

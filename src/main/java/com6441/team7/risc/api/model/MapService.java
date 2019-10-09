@@ -10,14 +10,17 @@ import static java.util.Objects.isNull;
 
 
 public class MapService extends Observable {
+	
     private Set<Country> countries = new HashSet<>();
     private Set<Continent> continents = new HashSet<>();
     private Map<Integer, Set<Integer>> adjacencyCountriesMap = new HashMap<>();
     private Map<Integer, Set<Integer>> continentCountriesMap = new HashMap<>();
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
-    private GameState gameState = GameState.LOAD_MAP;
+    
+    private GameState gameState = GameState.LOAD_MAP;  
 
     public MapService(){
+
     }
 
     @Override
@@ -410,4 +413,5 @@ public class MapService extends Observable {
     private Set<Integer> getContinentIdSet() {
         return continents.stream().map(Continent::getId).collect(Collectors.toSet());
     }
+    
 }
