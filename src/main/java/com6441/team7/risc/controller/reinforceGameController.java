@@ -47,6 +47,11 @@ public class reinforceGameController {
     public int getReinforcedArmiesCount(){
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
+        //game rule 3
+        if (player.hasDifferentCardsCategory() || player.hasSameCardsCategory()){
+            this.reinforcedArmiesCount += 5;
+            player.removeCards();
+        }
 
         return this.reinforcedArmiesCount;
     }

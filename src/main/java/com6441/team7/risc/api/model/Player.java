@@ -53,12 +53,12 @@ public class Player {
         return hasDifferentCardsCategory() || hasSameCardsCategory();
     }
 
-    private boolean hasSameCardsCategory(){
+    public boolean hasSameCardsCategory(){
         return Stream.of(Card.ARTILLERY, Card.CAVALRY, Card.INFANTRY)
                 .anyMatch(this::hasSameCardCategory);
     }
 
-    private boolean hasDifferentCardsCategory(){
+    public boolean hasDifferentCardsCategory(){
         return new HashSet<>(cardList).size() >= CARD_CATEGORY_NUMBER;
     }
 
