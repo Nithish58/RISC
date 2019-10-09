@@ -46,7 +46,7 @@ public class MapEditorControllerTest {
 	
 	//define test params
 	URI uri;
-	String mapname, file, inputcommand, editorcommand1, editorcommand2, editorcommand3, editorcommand4, 
+	String mapname, file, savename, inputcommand, editorcommand1, editorcommand2, editorcommand3, editorcommand4, 
 		editorcommand5, editorcommand6, editorcommand7, editorcommand8,	editorcommand9, 
 		editorcommand10, editorcommand11, editorcommand12, editorcommand13, editorcommand14,
 		editorcommand15, editorcommand16, editorcommand17, editorcommand18, editorcommand19, 
@@ -87,7 +87,22 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * beginMethod() is called before every method is performed.
+	 * <p>
+	 * beginMethod() is called before every method is performed. It prints list of countinents, countries, and borders.
+	 * Test params are set here.
+	 * <ul>
+	 * <li><b>mapname</b> contains the map file to be loaded for testing.
+	 * <li><b>URI uri</b> is set as the URI of the filename.
+	 * <li><b>file</b> reads the file as string using UTF-8 character sets.
+	 * </ul>
+	 * </p> 
+	 * <p>
+	 * The followings are for editmap execution test case.
+	 * <ul>
+	 * <li><b>inputcommand</b> defines the editmap command in form of <i>editmap filename</i>.
+	 * <li><b>inputmap</b> returns the <i>editmap</i> execution to be passed on to <i>test002_editMap()</i>
+	 * </ul>
+	 * </p>
 	 * @throws Exception on encountering invalid values
 	 */
 	@Before
@@ -239,10 +254,12 @@ public class MapEditorControllerTest {
 		neighbor6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6b);
 		neighbor6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6c);
 		neighbor6d = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6d);
+		//the following is for saving file
+		savename = "edittedmap.map";
 	}
 	
 	/**
-	 * endMethod() is called after every method is performed.
+	 * endMethod() is called after every method is performed. It prints the number
 	 */
 	@After
 	public void endMethod() {
@@ -559,33 +576,36 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test021_validateMap() tests if map is valid.
+	 * test021_invalidateMap() tests if map is invalid.
 	 */
 	@Test
-	public void test021_validateMap() {
-		System.out.printf("%nTesting map validation%n");
+	public void test021_invalidateMap() {
+		System.out.printf("%nInvalidating map%n");
+		assertTrue("This map is valid", testMapLoader.getMapService().isMapNotValid());
+	}
+	
+	/**
+	 * test022_validateMap() tests if map is valid.
+	 */
+	@Ignore
+	@Test
+	public void test022_validateMap() {
+		System.out.printf("%nValidating map%n");
 		assertTrue("This map is invalid", testMapLoader.getMapService().isMapValid());
 	}
 	
 	/**
-	 * test022_checkGraphConnection() tests if map is a connected graph.
-	 */
-	@Test
-	public void test022_checkGraphConnection() {
-		System.out.printf("%nTesting if map is a connected graph%n");
-		//returns true if map is a connected graph.
-		assertTrue("This map is not a connected graph", testMapLoader.getMapService().isStronglyConnected());
-	}
-	
-	/**
-	 * test4_saveMap() tests if map can be saved.
+	 * test23_saveMap() tests if map can be saved.
 	 */
 	@Ignore
 	@Test
-	public void test024_saveMap() {
+	public void test023_saveMap() {
 		System.out.printf("%nTesting map saving%n");
+		message = "Map is invalid";
 		try {
-			testMapLoader.saveMap("savemap");
+			testMapLoader.saveMap("savemap "+savename);
+			file = FileUtils.readFileToString(new File(savename), StandardCharsets.UTF_8);
+			assertTrue(message, testMapLoader.parseFile(file));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
