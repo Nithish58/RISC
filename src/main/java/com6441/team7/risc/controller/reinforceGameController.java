@@ -48,18 +48,25 @@ public class reinforceGameController {
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
 
-
         return this.reinforcedArmiesCount;
     }
 
     /**
-     *
+     * To know all the countries a player have
      * @return list of all countries of player
      */
-    public List<Country> allCountriesOfPlayer(){
-        List<Country> playerCountries = mapService.getCountries().stream().filter(country ->
-                country.getPlayer().getName().equals(player.getName())).collect(Collectors.toList());
-        return playerCountries;
+    private List<Country> allCountriesOfPlayer(){
+        return mapService.getCountries().stream().filter(country ->country.getPlayer().getName().
+                equals(player.getName())).collect(Collectors.toList());
+
+    }
+
+    /**
+     * TO know all the continent a player have
+     * @return list of continents in which player country is located
+     */
+    private Set<String> continentOccuppiedByPlayer(){
+        return allCountriesOfPlayer().stream().map(Country::getContinentName).collect(Collectors.toSet());
 
     }
 
