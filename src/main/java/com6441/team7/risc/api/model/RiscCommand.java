@@ -5,6 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * different commands the game accepts
+ */
 public enum RiscCommand {
     EDIT_MAP("editmap"),
     EDIT_COUNTRY("editcountry"),

@@ -1,5 +1,8 @@
 package com6441.team7.risc.api.model;
 
+/**
+ * This class stores basic information of map
+ */
 public class MapIntro {
 
     private String mapIntro;
