@@ -43,7 +43,8 @@ public class fortifyGameController {
 		public void validation() {
 			/*
 			 * Validity checks: 
-			 * -Game State 
+			 * -Game State
+			 * -Both countries are adjacent 
 			 * -Both countries belong to player
 			 * -minimum num of armies/soldiers in source country
 			 */
@@ -56,6 +57,12 @@ public class fortifyGameController {
 			} catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("Not right Game state");
+			}
+			
+			try {
+				
+			} catch (Exception e) {
+				System.out.println("Countries not adjacent to each other");
 			}
 			
 			
