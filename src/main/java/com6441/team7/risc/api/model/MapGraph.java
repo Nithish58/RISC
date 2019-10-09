@@ -1,7 +1,8 @@
 package com6441.team7.risc.api.model;
 
-import java.util.List;
-
+/**
+ * This class stores graph information
+ */
 public class MapGraph {
     private String mapGraph;
 

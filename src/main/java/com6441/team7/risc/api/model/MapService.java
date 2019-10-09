@@ -13,15 +13,38 @@ import static java.util.Objects.isNull;
  *
  */
 public class MapService extends Observable {
+
+    /**
+     * a set of countries
+     */
     private Set<Country> countries = new HashSet<>();
+
+    /**
+     * a set of continents
+     */
     private Set<Continent> continents = new HashSet<>();
+
+    /**
+     * store each country ID, and its neighbor countries ID
+     */
     private Map<Integer, Set<Integer>> adjacencyCountriesMap = new HashMap<>();
+
+    /**
+     * store each continent ID, and its belonging countries ID
+     */
     private Map<Integer, Set<Integer>> continentCountriesMap = new HashMap<>();
+
+    /**
+     * store countries as a connected graph
+     */
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+
+    /**
+     * the state of the game
+     */
     private GameState gameState = GameState.LOAD_MAP;
 
-    public MapService(){
-    }
+    public MapService(){}
 
     @Override
     public void addObserver(Observer observer) {
@@ -34,18 +57,29 @@ public class MapService extends Observable {
     }
 
 
+    /**
+     * set game state
+     * @param gameState
+     */
     public void setState(GameState gameState){
         this.gameState = gameState;
         setChanged();
         notifyObservers(gameState);
     }
 
+    /**
+     * check if map is valid
+     * @return true if map is valid, false if map is invalid
+     */
     public boolean isMapValid() {
         return isStronglyConnected();
     }
 
 
-
+    /**
+     * add one country
+     * @param country
+     */
     public void addCountry(Country country) {
         countries.add(country);
 
@@ -62,6 +96,10 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * add a collection of countries
+     * @param countriesCollection
+     */
     public void addCountry(Collection<Country> countriesCollection) {
         countriesCollection.forEach(country -> {
             countries.add(country);
@@ -69,11 +107,19 @@ public class MapService extends Observable {
         });
     }
 
+    /**
+     * add countryId to corresponding countinentId Set
+     * @param country
+     */
     private void putCountryIntoContinentCountriesMap(Country country) {
         Integer continentId = country.getContinentIdentifier();
         continentCountriesMap.get(continentId).add(country.getId());
     }
 
+    /**
+     * add a continent
+     * @param continent
+     */
     public void addContinent(Continent continent) {
         continents.add(continent);
 
@@ -85,6 +131,10 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * add a collection of continents
+     * @param continentsCollection
+     */
     public void addContinent(Collection<Continent> continentsCollection) {
         continents.addAll(continentsCollection);
 
@@ -96,10 +146,19 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * add collection of countries id and its neighboring countries id
+     * @param map
+     */
     public void addNeighboringCountries(Map<Integer, Set<Integer>> map) {
         map.forEach((key, value) -> adjacencyCountriesMap.put(key, value));
     }
 
+    /**
+     * add a neighborhood with country name and its neighboring country name
+     * @param country
+     * @param neighboringCountry
+     */
     public void addNeighboringCountries(String country, String neighboringCountry) {
 
         int countryId = findCorrespondingIdByCountryName(country).get();
@@ -111,6 +170,11 @@ public class MapService extends Observable {
         //  view.displayMessage("Neighboring countries " + country + " " + neighboringCountry + " is successfully added.");
     }
 
+    /**
+     * add a neighborhood with countryId and its neighboring country id
+     * @param countryId
+     * @param neghboringCountryId
+     */
     private void addNeighboringCountry(int countryId, int neghboringCountryId) {
         if (adjacencyCountriesMap.containsKey(countryId)) {
             adjacencyCountriesMap.get(countryId).add(neghboringCountryId);
@@ -121,13 +185,19 @@ public class MapService extends Observable {
         }
     }
 
-
+    /**
+     * remove a neighborhood with countryName and neighboringCountryName
+     * @param country
+     * @param neighboringCountry
+     */
     public void removeNeighboringCountriesByName(String country, String neighboringCountry) {
 
         int countryId = findCorrespondingIdByCountryName(country).get();
         int neghboringCountryId = findCorrespondingIdByCountryName(neighboringCountry).get();
 
         adjacencyCountriesMap.get(countryId).remove(neghboringCountryId);
+
+        adjacencyCountriesMap.get(neghboringCountryId).remove(countryId);
 
         //view.displayMessage("neighboring country " + neighboringCountry + " is sucessfully removed from " + country);
 
@@ -141,6 +211,11 @@ public class MapService extends Observable {
         return continents;
     }
 
+    /**
+     * check if a country name exists
+     * @param countryName
+     * @return
+     */
     public boolean countryNameExist(String countryName) {
         return Optional.ofNullable(countryName)
                 .map(this::convertNameToKeyFormat)
@@ -148,10 +223,20 @@ public class MapService extends Observable {
                 .isPresent();
     }
 
+    /**
+     * check if a country name does not exist
+     * @param countryName
+     * @return
+     */
     public boolean countryNameNotExist(String countryName) {
         return !countryNameExist(countryName);
     }
 
+    /**
+     * check if a continent name exist
+     * @param continentName
+     * @return
+     */
     public boolean continentNameExist(String continentName) {
         return Optional.ofNullable(continentName)
                 .map(this::convertNameToKeyFormat)
@@ -159,37 +244,70 @@ public class MapService extends Observable {
                 .isPresent();
     }
 
+    /**
+     * check if a continent name not exist
+     * @param continentName
+     * @return
+     */
     public boolean continentNameNotExist(String continentName) {
         return !continentNameExist(continentName);
     }
 
+    /**
+     * check if a continent ID exist
+     * @param continentId
+     * @return
+     */
     public boolean continentIdExist(Integer continentId) {
         return Optional.ofNullable(continentId)
                 .filter(id -> getContinentIdSet().contains(id))
                 .isPresent();
     }
 
+    /**
+     * check if a continent id not exist
+     * @param continentId
+     * @return
+     */
     public boolean continentIdNotExist(Integer continentId) {
         return !continentIdExist(continentId);
     }
 
+    /**
+     * check if a country id exist
+     * @param countryId
+     * @return
+     */
     public boolean countryIdExist(Integer countryId) {
         return Optional.ofNullable(countryId)
                 .filter(id -> getCountryIdSet().contains(id))
                 .isPresent();
     }
 
+    /**
+     * check if a country id not exist
+     * @param countryId
+     * @return
+     */
     public boolean countryIdNotExist(Integer countryId) {
         return !countryIdExist(countryId);
     }
 
+    /**
+     * check if a country exist
+     * @param country
+     * @return
+     */
     public boolean countryExist(Country country) {
         return Optional.ofNullable(country)
                 .filter(c -> countryNameExist(c.getCountryName()) || countryIdExist(c.getId()))
                 .isPresent();
     }
 
-
+    /**
+     * remove a country by country name
+     * @param countryName
+     */
     public void removeCountryByName(String countryName) {
         if (isNull(countryName)) {
             return;
@@ -204,6 +322,10 @@ public class MapService extends Observable {
         });
     }
 
+    /**
+     * remove a country id from continentCountryMap
+     * @param country
+     */
     private void removeCountryFromContinentCountryMap(Country country) {
 
         int countryId = country.getId();
@@ -212,7 +334,10 @@ public class MapService extends Observable {
     }
 
 
-
+    /**
+     * remove country id from neighboring countries
+     * @param country
+     */
     private void removeCountryFromAdjacentCountryMap(Country country) {
         int countryId = country.getId();
         adjacencyCountriesMap.remove(countryId);
@@ -223,6 +348,11 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * find continent id by given continent name
+     * @param name
+     * @return if continent exist, will return its ID, if not, return empty
+     */
     public Optional<Integer> findCorrespondingIdByContinentName(String name) {
         return continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(convertNameToKeyFormat(name)))
@@ -230,6 +360,11 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
+    /**
+     * find country id by given country name
+     * @param name
+     * @return if country exist, will return its ID, if not, return empty
+     */
     public Optional<Integer> findCorrespondingIdByCountryName(String name) {
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getCountryName()).equals(convertNameToKeyFormat(name)))
@@ -237,6 +372,11 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
+    /**
+     * find continent name by given continent id
+     * @param id
+     * @return if continent exist, will return its name, if not, return empty
+     */
     public Optional<String> findCorrespondingNameByContidentId(Integer id){
         return continents.stream()
                 .filter(continent -> continent.getId() == id)
@@ -244,7 +384,11 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
-
+    /**
+     * find country to be removed by its name
+     * @param countryName
+     * @return if country exist, will return the country, if not, return empty
+     */
     private Optional<Country> findCountryToBeRemoved(String countryName) {
         String normalizedCountryName = convertNameToKeyFormat(countryName);
         return countries.stream()
@@ -257,6 +401,11 @@ public class MapService extends Observable {
     public void removeCountryById(int id) {
     }
 
+    /**
+     * remove a continent by a given name, if continent exist, remove from continents, contries, neighboring map
+     * @param continentName
+     * @return
+     */
     public void removeContinentByName(String continentName) {
         if (isNull(continentName)) {
             return;
@@ -268,7 +417,7 @@ public class MapService extends Observable {
         toBeRemoved.ifPresent(continent -> {
             continents.remove(continent);
             continentCountriesMap.remove(continent.getId());
-            removeNeighboringCountryByContinentName(continent.getId());
+            removeNeighboringCountryByContinentId(continent.getId());
             removeCountryByContinentName(continent.getName());
 
 
@@ -277,19 +426,34 @@ public class MapService extends Observable {
     }
 
 
+    /**
+     * remove countries that belong to a specific continent
+     * @param name continent name
+     * @return
+     */
     private void removeCountryByContinentName(String name){
         List<Country> toBeRemoved = findCountryByContinentName(name);
         countries.removeAll(toBeRemoved);
     }
 
 
+    /**
+     * find countries that belong to a specific continent
+     * @param name continent name
+     * @return
+     */
     private List<Country> findCountryByContinentName(String name){
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getContinentName()).equals(convertNameToKeyFormat(name)))
                 .collect(Collectors.toList());
     }
 
-    private List<Integer> findCountryIdByContinentName(int id){
+    /**
+     * find countries id that belong to a specific continent
+     * @param id continent id
+     * @return list of countries id
+     */
+    private List<Integer> findCountryIdByContinentId(int id){
 
         List<Integer> countryId =  countries.stream()
                 .filter(country -> country.getContinentIdentifier() == id)
@@ -299,8 +463,13 @@ public class MapService extends Observable {
         return countryId;
     }
 
-    private void removeNeighboringCountryByContinentName(int id){
-        findCountryIdByContinentName(id)
+    /**
+     * remove countries in the neighboring list given a continent id
+     * @param id continent id
+     * @return
+     */
+    private void removeNeighboringCountryByContinentId(int id){
+        findCountryIdByContinentId(id)
                 .forEach(countryId -> {
                     adjacencyCountriesMap.remove(countryId);
                     adjacencyCountriesMap.entrySet().stream().map(Map.Entry::getValue)
@@ -328,6 +497,11 @@ public class MapService extends Observable {
     }
 
 
+    /**
+     * build the graph based on the list of countries id
+     * @param src
+     * @param dest
+     */
     public void addEdge(int src, Set<Integer> dest) {
         if (!directedGraph.containsVertex(src)) {
             directedGraph.addVertex(src);
@@ -376,11 +550,18 @@ public class MapService extends Observable {
     }
 
 
-
+    /**
+     * check if the map is strongly connected
+     * @return
+     */
     public boolean isMapNotValid() {
         return !isMapValid();
     }
 
+    /**
+     * check if the map is strongly connected
+     * @return
+     */
     public boolean isStronglyConnected() {
 
         if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
@@ -399,6 +580,7 @@ public class MapService extends Observable {
                 .map(Set::size)
                 .allMatch(num -> num == totalCountry);
     }
+
 
     public void printCountryInfo(){
         System.out.println("[Country]");
@@ -432,6 +614,11 @@ public class MapService extends Observable {
         }
     }
 
+    /**
+     * delete white spaces and make received name to lower case
+     * @param name
+     * @return
+     */
     private String convertNameToKeyFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }

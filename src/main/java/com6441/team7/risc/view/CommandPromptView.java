@@ -3,13 +3,14 @@ package com6441.team7.risc.view;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.controller.GameController;
 import com6441.team7.risc.controller.MapLoaderController;
-
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
+/**
+ * This class receives user input and call different controller according to the game state
+ */
 public class CommandPromptView implements Observer {
     private Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
     private GameState gameState;
@@ -23,6 +24,9 @@ public class CommandPromptView implements Observer {
     }
 
 
+    /**
+     * receive user input. send the user command to different controller according to game state
+     */
     public void receiveCommand() {
         while (true) {
             try {
@@ -46,10 +50,19 @@ public class CommandPromptView implements Observer {
 
     }
 
+    /**
+     * display message to users
+     * @param string
+     */
     public void displayMessage(String string) {
         System.out.println(string);
     }
 
+    /**
+     * update the game state
+     * @param o
+     * @param arg
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof GameState) {
