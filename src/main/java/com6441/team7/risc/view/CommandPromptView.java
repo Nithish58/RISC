@@ -3,6 +3,7 @@ package com6441.team7.risc.view;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.controller.GameController;
 import com6441.team7.risc.controller.MapLoaderController;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,7 +37,7 @@ public class CommandPromptView implements Observer {
                         mapLoaderController.readCommand(command);
                         break;
                     case START_UP:
-                        gameController.startUp(command);
+                        //gameController.readCommand(command);
                         break;
                     case FORTIFY:
                         //gameController.fortify(command);
