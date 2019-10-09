@@ -33,6 +33,11 @@ public class MapLoaderController {
         this.mapService = mapService;
         this.continentIdGenerator = new AtomicInteger();
         this.countryIdGenerator = new AtomicInteger();
+        
+        this.mapService.mapId=5;
+        
+        System.out.println("After CHange:" + this.mapService.mapId);
+        
     }
 
     public void readCommand(String command) throws IOException {

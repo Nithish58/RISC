@@ -27,10 +27,13 @@ public class App {
         MapService mapService = new MapService();
         GameController gameController = new GameController();
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
+        
         CommandPromptView view = new CommandPromptView(mapLoaderController, gameController);
         mapLoaderController.setView(view);
         mapService.addObserver(view);
         view.receiveCommand();
+        
+        System.out.println("After Change:" + mapService.mapId);
 
     }
 }

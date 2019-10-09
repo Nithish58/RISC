@@ -15,9 +15,17 @@ public class MapService extends Observable {
     private Map<Integer, Set<Integer>> adjacencyCountriesMap = new HashMap<>();
     private Map<Integer, Set<Integer>> continentCountriesMap = new HashMap<>();
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
+    
     private GameState gameState = GameState.LOAD_MAP;
+    
+    static int counter=0;
+    
+    public int mapId=-1;
 
     public MapService(){
+    	counter++;
+    	this.mapId=counter;
+    	System.out.println(mapId);
     }
 
     @Override

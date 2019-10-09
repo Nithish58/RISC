@@ -20,7 +20,7 @@ public enum RiscCommand {
     PLACE_ALL("place_all"),
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
-    UNKNOWN("unkonwn");
+    UNKNOWN("unknown");
 
     private String name;
 
