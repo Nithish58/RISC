@@ -3,6 +3,9 @@ package com6441.team7.risc.api.model;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * This class stores continent information
+ */
 public class Continent {
     private final int id;
     private final String name;
