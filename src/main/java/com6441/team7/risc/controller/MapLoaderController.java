@@ -131,6 +131,7 @@ public class MapLoaderController {
         StringBuilder stringBuilder =
                 new StringBuilder()
                         .append(mapIntro)
+                        .append(EOL)
                         .append("[files]")
                         .append(EOL)
                         .append(getMapGraphString())

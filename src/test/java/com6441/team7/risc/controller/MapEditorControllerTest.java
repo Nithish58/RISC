@@ -565,7 +565,7 @@ public class MapEditorControllerTest {
 	@Test
 	public void test021_validateMap() {
 		System.out.printf("%nTesting map validation%n");
-		assertTrue("This map is invalid", testMapLoader.getMapService().isMapValid());
+		assertTrue("This map is invalid", testMapLoader.getMapService().isMapNotValid());
 	}
 	
 	/**
@@ -575,7 +575,7 @@ public class MapEditorControllerTest {
 	public void test022_checkGraphConnection() {
 		System.out.printf("%nTesting if map is a connected graph%n");
 		//returns true if map is a connected graph.
-		assertTrue("This map is not a connected graph", testMapLoader.getMapService().isStronglyConnected());
+		assertTrue("This map is not a connected graph", !testMapLoader.getMapService().isStronglyConnected());
 	}
 	
 	/**
