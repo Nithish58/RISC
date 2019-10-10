@@ -60,8 +60,8 @@ public class MapEditorControllerTest {
 		countrystr5a, neighborstr5a, countrystr5b, neighborstr5b, countrystr6a, neighborstr6a, countrystr6b, neighborstr6b,
 		countrystr6c, neighborstr6c, countrystr6d, neighborstr6d;
 	String[] continentcommands1, continentcommands2, continentcommands3, continentcommands4, continentcommands5,
-		continentcommands6, editorcommands7, editorcommands8, editorcommands9, editorcommands10,
-		editorcommands11, editorcommands12, editorcommands13, editorcommands14, editorcommands15,
+		continentcommands6, countrycommands1, countrycommands2, countrycommands3, countrycommands4,
+		countrycommands5, countrycommands6, editorcommands13, editorcommands14, editorcommands15,
 		editorcommands16, editorcommands17, editorcommands18, editorcommands19, editorcommands20;
 	int initcontinentsize, initcountrysize, expectedcontinentsize1, expectedcontinentsize2,
 		expectedcontinentsize3, expectedcontinentsize4, expectedcontinentsize5
@@ -198,23 +198,23 @@ public class MapEditorControllerTest {
 		newcountrystr4b = "Ocean_Republic"; countrycontinentstr4b="Northeast_Asia"; delcountrystr4a="sluci"; delcountrystr4b="kancheria"; 
 		countrycommand1 = "editcountry -add "+newcountrystr1+" "+countrycontinentstr1;
 		countrycommand1 = StringUtils.substringAfter(countrycommand1, "-");
-		editorcommands7 = StringUtils.split(countrycommand1, "-");
+		countrycommands1 = StringUtils.split(countrycommand1, "-");
 		countrycommand2 = "editcountry -add "+newcountrystr2a+" "+countrycontinentstr2a+" -add  "+newcountrystr2b+" "+countrycontinentstr2b;
 		countrycommand2 = StringUtils.substringAfter(countrycommand2, "-");
-		editorcommands8 = StringUtils.split(countrycommand2, "-");
+		countrycommands2 = StringUtils.split(countrycommand2, "-");
 		countrycommand3 = "editcountry -remove "+delcountrystr1;
 		countrycommand3 = StringUtils.substringAfter(countrycommand3, "-");
-		editorcommands9 = StringUtils.split(countrycommand3, "-");
+		countrycommands3 = StringUtils.split(countrycommand3, "-");
 		countrycommand4 = "editcountry -remove  "+delcountrystr2a+" -remove "+delcountrystr2b;
 		countrycommand4 = StringUtils.substringAfter(countrycommand4, "-");
-		editorcommands10 = StringUtils.split(countrycommand4, "-");
+		countrycommands4 = StringUtils.split(countrycommand4, "-");
 		countrycommand5 = "editcountry -add "+newcountrystr3+" "+countrycontinentstr3+" -remove "+delcountrystr3;
 		countrycommand5 = StringUtils.substringAfter(countrycommand5, "-");
-		editorcommands11 = StringUtils.split(countrycommand5, "-");
+		countrycommands5 = StringUtils.split(countrycommand5, "-");
 		countrycommand6 = "editcountry -add "+newcountrystr4a+" "+countrycontinentstr4a
 					+" -add "+newcountrystr4b+" "+countrycontinentstr4b+" -remove "+delcountrystr4a+" -remove "+delcountrystr4b;
 		countrycommand6 = StringUtils.substringAfter(countrycommand6, "-");
-		editorcommands12 = StringUtils.split(countrycommand6, "-");
+		countrycommands6 = StringUtils.split(countrycommand6, "-");
 		/**
 		 * The followings are for neighbor adding test:
 		 */
@@ -393,7 +393,7 @@ public class MapEditorControllerTest {
 	public void test009_addOneCountry() throws Exception{
 		System.out.printf("Adding one country%n------------%n");
 		System.out.println(countrycommand1);
-		testMapLoader.editCountries(editorcommands7);
+		testMapLoader.editCountries(countrycommands1);
 		expectedcountrysize1 = initcountrysize+1; //Country list size is expected to increase by 1
 		assertSame(expectedcountrysize1, testMapLoader.getMapService().getCountries().size());
 	}
@@ -406,7 +406,7 @@ public class MapEditorControllerTest {
 	public void test010_addTwoCountries() throws Exception{
 		System.out.printf("Adding two countries%n------------%n");
 		System.out.println(countrycommand2);
-		testMapLoader.editCountries(editorcommands8);
+		testMapLoader.editCountries(countrycommands2);
 		expectedcountrysize2 = initcountrysize+2; //Country list size is expected to increase by 2
 		assertSame(expectedcountrysize2, testMapLoader.getMapService().getCountries().size());
 	}
@@ -421,7 +421,7 @@ public class MapEditorControllerTest {
 		//size of country list before one country is removed
 		System.out.println(countrycommand3);
 		expectedcountrysize3 = initcountrysize-1; //Country list size is expected to decrease by 1
-		testMapLoader.editCountries(editorcommands9);
+		testMapLoader.editCountries(countrycommands3);
 		assertSame(expectedcountrysize3, testMapLoader.getMapService().getCountries().size());
 	}
 	
@@ -433,7 +433,7 @@ public class MapEditorControllerTest {
 	public void test012_removeTwoCountries() throws Exception{
 		System.out.printf("Removing two countries%n------------%n");
 		System.out.println(countrycommand4);
-		testMapLoader.editCountries(editorcommands10);
+		testMapLoader.editCountries(countrycommands4);
 		expectedcountrysize4 = initcountrysize-2; //Country list size is expected to decrease by 2
 		assertSame(expectedcountrysize4, testMapLoader.getMapService().getCountries().size());
 	}
@@ -446,7 +446,7 @@ public class MapEditorControllerTest {
 	public void test013_addOneCountryRemoveOneCountry() throws Exception{
 		System.out.printf("Adding and removing one country%n------------%n");
 		System.out.println(countrycommand5);
-		testMapLoader.editCountries(editorcommands11);
+		testMapLoader.editCountries(countrycommands5);
 		expectedcountrysize5 = initcountrysize; //Country list size should remian the same
 		assertSame(expectedcountrysize5, testMapLoader.getMapService().getCountries().size());
 	}
@@ -459,7 +459,7 @@ public class MapEditorControllerTest {
 	public void test014_addTwoCountriesRemoveTwoCountries() throws Exception{
 		System.out.printf("Adding and removing two countries%n------------%n");
 		System.out.println(countrycommand6);
-		testMapLoader.editCountries(editorcommands12);
+		testMapLoader.editCountries(countrycommands6);
 		expectedcountrysize6 = initcountrysize; //Country list size should remain the same
 		assertSame(expectedcountrysize6, testMapLoader.getMapService().getCountries().size());
 	}
