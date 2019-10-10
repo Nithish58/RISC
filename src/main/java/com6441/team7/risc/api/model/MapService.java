@@ -204,6 +204,23 @@ public class MapService extends Observable {
 
     }
 
+    public void emptyMap(){
+
+        if(directedGraph.vertexSet().size() != 0){
+
+            Set<Integer> set = adjacencyCountriesMap.keySet();
+            directedGraph.removeAllVertices(set);
+
+        }
+
+        countries.clear();
+        continents.clear();
+        continentCountriesMap.keySet().clear();
+        adjacencyCountriesMap.keySet().clear();
+
+
+    }
+
     public Set<Country> getCountries() {
         return countries;
     }
