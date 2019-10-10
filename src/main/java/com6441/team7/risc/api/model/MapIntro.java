@@ -5,7 +5,7 @@ package com6441.team7.risc.api.model;
  */
 public class MapIntro {
 
-    private String mapIntro;
+    private String mapIntro = "";
 
     public String getMapIntro() {
         return mapIntro;

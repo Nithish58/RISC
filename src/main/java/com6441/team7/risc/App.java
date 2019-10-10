@@ -12,8 +12,8 @@ import com6441.team7.risc.view.CommandPromptView;
 public class App {
     public static void main( String[] args ) {
         MapService mapService = new MapService();
-        GameController gameController = new GameController();
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
+        GameController gameController = new GameController();
         CommandPromptView view = new CommandPromptView(mapLoaderController, gameController);
         mapLoaderController.setView(view);
         mapService.addObserver(view);
