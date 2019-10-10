@@ -1,4 +1,7 @@
 package com6441.team7.risc.api.model;
+/**
+ *
+ */
 
 import java.util.Locale;
 import java.util.Objects;

@@ -435,6 +435,10 @@ public class MapLoaderController {
      * @return if map has contents, will return map file name, else return empty
      */
     Optional<String> editMap(String s) {
+
+        mapService.emptyMap();
+        continentIdGenerator.set(0);
+        countryIdGenerator.set(0);
         String[] commands = StringUtils.split(s, " ");
 
         if (commands.length != 2) {
