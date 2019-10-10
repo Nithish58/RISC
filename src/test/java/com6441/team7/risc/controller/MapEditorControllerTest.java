@@ -294,6 +294,9 @@ public class MapEditorControllerTest {
 
 	/**
 	 * test1_readFile() tests command to load map from file.
+	 * <p>The method receives the <i>file</i>param from the context
+	 * and then it is parsed. The runner passes the test if the result
+	 * returns true.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
