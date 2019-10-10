@@ -48,10 +48,9 @@ public class MapEditorControllerTest {
 	URI uri;
 	String mapname, file, savename, inputcommand, continentcommand1, continentcommand2, continentcommand3, continentcommand4, 
 		continentcommand5, continentcommand6, countrycommand1, countrycommand2,	countrycommand3, 
-		countrycommand4, countrycommand5, countrycommand6, editorcommand13, editorcommand14,
-		editorcommand15, editorcommand16, editorcommand17, editorcommand18, editorcommand19, 
-		editorcommand20, newcontinentstr1, newcontinentstr2a, newcontinentstr2b, delcontinentstr1, delcontinentstr2a,
-		delcontinentstr2b, newcontinentstr3, delcontinentstr3, newcontinentstr4a, newcontinentstr4b, 
+		countrycommand4, countrycommand5, countrycommand6, neighborcommand1, neighborcommand2,
+		neighborcommand3, neighborcommand4, neighborcommand5, neighborcommand6, newcontinentstr1, newcontinentstr2a, newcontinentstr2b, 
+		delcontinentstr1, delcontinentstr2a,delcontinentstr2b, newcontinentstr3, delcontinentstr3, newcontinentstr4a, newcontinentstr4b, 
 		delcontinentstr4a, delcontinentstr4b, newcountrystr1, countrycontinentstr1, newcountrystr2a, countrycontinentstr2a,
 		newcountrystr2b, countrycontinentstr2b, delcountrystr1, delcountrystr2a, delcountrystr2b, newcountrystr3, 
 		countrycontinentstr3, delcountrystr3, newcountrystr4a, newcountrystr4b, countrycontinentstr4a, countrycontinentstr4b,
@@ -61,8 +60,8 @@ public class MapEditorControllerTest {
 		countrystr6c, neighborstr6c, countrystr6d, neighborstr6d;
 	String[] continentcommands1, continentcommands2, continentcommands3, continentcommands4, continentcommands5,
 		continentcommands6, countrycommands1, countrycommands2, countrycommands3, countrycommands4,
-		countrycommands5, countrycommands6, editorcommands13, editorcommands14, editorcommands15,
-		editorcommands16, editorcommands17, editorcommands18, editorcommands19, editorcommands20;
+		countrycommands5, countrycommands6, neighborcommands1, neighborcommands2, neighborcommands3,
+		neighborcommands4, neighborcommands5, neighborcommands6;
 	int initcontinentsize, initcountrysize, expectedcontinentsize1, expectedcontinentsize2,
 		expectedcontinentsize3, expectedcontinentsize4, expectedcontinentsize5
 		, expectedcontinentsize6, expectedcountrysize1, expectedcountrysize2,
@@ -112,13 +111,20 @@ public class MapEditorControllerTest {
 	 * <li><b>delcontinentstr<i>n</i></b> set continent name to be removed for test <i>n</i> on continent edit tests.
 	 * </ul>
 	 * </p>
-	 * 	 * <p>
+	 * <p>
 	 * The followings are for country editing command tests
 	 * <ul>
 	 * <li><b>initcountrysize</b> retrieves the recent size of the country list. 
 	 * It is used alongside with <i>expectedcountrysize</i> to calculate the expected result for assertion.
 	 * <li><b>newcountrystr<i>n</i></b> set country name to be added for test <i>n</i> on country edit tests.
 	 * <li><b>delcountrystr<i>n</i></b> set country name to be removed for test <i>n</i> on country edit tests.
+	 * </ul>
+	 * </p>
+	 * <p>
+	 * The followings are for neighbor editing command tests
+	 * <ul>
+	 * <li><b>countrystr<i>n</i></b> set the countries involved in neighbor edit testing.
+	 * <li><b>neighborcommand<i>n</i></b> executes neighbor edit command for test <i>n</i> on neighbor edit tests. 
 	 * </ul>
 	 * </p>
 	 * @throws Exception on encountering invalid values
@@ -225,40 +231,40 @@ public class MapEditorControllerTest {
 		countrystr5a = "japan"; neighborstr5a = "afganistan"; countrystr5b = "japan"; neighborstr5b = "fiji";
 		countrystr6a = "china"; neighborstr6a = "sky_republic"; countrystr6b = "china"; neighborstr6b = "ocean_republic";
 		countrystr6c = "china"; neighborstr6c = "middle_east"; countrystr6d = "china"; neighborstr6d = "heal";
-		editorcommand13 = "editneighbor -add "+countrystr1+" "+ neighborstr1;
-		editorcommand13 = StringUtils.substringAfter(editorcommand13, "-");
-		editorcommands13 = StringUtils.split(editorcommand13, "-");
+		neighborcommand1 = "editneighbor -add "+countrystr1+" "+ neighborstr1;
+		neighborcommand1 = StringUtils.substringAfter(neighborcommand1, "-");
+		neighborcommands1 = StringUtils.split(neighborcommand1, "-");
 		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr1);
 		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr1);
-		editorcommand14 = "editneighbor -add "+countrystr2a+" "+neighborstr2a+" -add "+countrystr2b+" "+neighborstr2b;
-		editorcommand14 = StringUtils.substringAfter(editorcommand14, "-");
-		editorcommands14 = StringUtils.split(editorcommand14, "-");
+		neighborcommand2 = "editneighbor -add "+countrystr2a+" "+neighborstr2a+" -add "+countrystr2b+" "+neighborstr2b;
+		neighborcommand2 = StringUtils.substringAfter(neighborcommand2, "-");
+		neighborcommands2 = StringUtils.split(neighborcommand2, "-");
 		country2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2a);
 		country2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2b);
 		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2a);
 		neighbor2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2b);
-		editorcommand15 = "editneighbor -remove "+countrystr3+" "+neighborstr3;
-		editorcommand15 = StringUtils.substringAfter(editorcommand15, "-");
-		editorcommands15 = StringUtils.split(editorcommand15, "-");
+		neighborcommand3 = "editneighbor -remove "+countrystr3+" "+neighborstr3;
+		neighborcommand3 = StringUtils.substringAfter(neighborcommand3, "-");
+		neighborcommands3 = StringUtils.split(neighborcommand3, "-");
 		country3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr3);
 		neighbor3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr3);
-		editorcommand16 = "editneighbor -remove "+countrystr4a+" "+neighborstr4a+" -remove "+countrystr4b+" "+neighborstr4b;
-		editorcommand16 = StringUtils.substringAfter(editorcommand16, "-");
-		editorcommands16 = StringUtils.split(editorcommand16, "-");
+		neighborcommand4 = "editneighbor -remove "+countrystr4a+" "+neighborstr4a+" -remove "+countrystr4b+" "+neighborstr4b;
+		neighborcommand4 = StringUtils.substringAfter(neighborcommand4, "-");
+		neighborcommands4 = StringUtils.split(neighborcommand4, "-");
 		country4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4a);
 		country4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4b);
 		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4a);
 		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4b);
-		editorcommand17 = "editneighbor -add "+countrystr5a+" "+neighborstr5a+"-remove "+countrystr5b+" "+neighborstr5b;
-		editorcommand17 = StringUtils.substringAfter(editorcommand17, "-");
-		editorcommands17 = StringUtils.split(editorcommand17, "-");
+		neighborcommand5 = "editneighbor -add "+countrystr5a+" "+neighborstr5a+"-remove "+countrystr5b+" "+neighborstr5b;
+		neighborcommand5 = StringUtils.substringAfter(neighborcommand5, "-");
+		neighborcommands5 = StringUtils.split(neighborcommand5, "-");
 		country5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5a);
 		country5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5b);
 		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5a);
 		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5b);
-		editorcommand18 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
-		editorcommand18 = StringUtils.substringAfter(editorcommand18, "-");
-		editorcommands18 = StringUtils.split(editorcommand18, "-");
+		neighborcommand6 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
+		neighborcommand6 = StringUtils.substringAfter(neighborcommand6, "-");
+		neighborcommands6 = StringUtils.split(neighborcommand6, "-");
 		country6a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6a);
 		country6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6b);
 		country6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6c);
@@ -471,9 +477,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test015_addOneNeighbor() throws Exception{
 		System.out.printf("Adding one neighbor to a country%n------------%n");
-		System.out.println(editorcommand13);
+		System.out.println(neighborcommand1);
 		borders1 = testMapLoader.getMapService().getAdjacencyCountriesMap();
-		testMapLoader.editNeighbor(editorcommands13);
+		testMapLoader.editNeighbor(neighborcommands1);
 		pair1 = borders1.get(country1.get());
 		//Check if map object contains both country ID and neighbor ID
 		assertTrue("Country is not found",borders1.containsKey(country1.get()));
@@ -488,9 +494,9 @@ public class MapEditorControllerTest {
 	public void test016_addTwoNeighbors() throws Exception{
 		System.out.printf("Adding two neighbors to one country%n------------%n");
 		//Set the command string to add two neighbors
-		System.out.println(editorcommand14);
+		System.out.println(neighborcommand2);
 		borders2 = testMapLoader.getMapService().getAdjacencyCountriesMap();
-		testMapLoader.editNeighbor(editorcommands14);
+		testMapLoader.editNeighbor(neighborcommands2);
 		//get pair of country and neighbor
 		pair2a = borders2.get(country2a.get());
 		pair2b = borders2.get(country2b.get());
@@ -507,9 +513,9 @@ public class MapEditorControllerTest {
 	@Test
 	public void test017_removeOneNeighbor() throws Exception{
 		System.out.printf("Removing one neighbor from a country%n------------%n");
-		System.out.println(editorcommand15);
+		System.out.println(neighborcommand3);
 		borders3 = testMapLoader.getMapService().getAdjacencyCountriesMap();
-		testMapLoader.editNeighbor(editorcommands15);
+		testMapLoader.editNeighbor(neighborcommands3);
 		//get pair of country and neighbor
 		pair3 = borders3.get(country3.get());
 		//Check if map object contains both country ID and neighbor ID
@@ -525,8 +531,8 @@ public class MapEditorControllerTest {
 	public void test018_removeTwoNeighbors() throws Exception{
 		System.out.printf("Removing two neighbors from one country%n------------%n");
 		//Set the command string to remove two neighbors
-		System.out.println(editorcommand16);
-		testMapLoader.editNeighbor(editorcommands16);
+		System.out.println(neighborcommand4);
+		testMapLoader.editNeighbor(neighborcommands4);
 		borders4 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get pair of country and neighbor
 		pair4a = borders4.get(country4a.get());
@@ -546,8 +552,8 @@ public class MapEditorControllerTest {
 	public void test019_addOneNeighborRemoveOneNeighbor() throws Exception{
 		System.out.printf("Adding and removing one neighbor from one country%n------------%n");
 		//Set the command string to remove two neighbors
-		System.out.println(editorcommand17);
-		testMapLoader.editNeighbor(editorcommands17);
+		System.out.println(neighborcommand5);
+		testMapLoader.editNeighbor(neighborcommands5);
 		//create map object from adjacency list
 		borders5 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get pair of country and neighbor
@@ -568,8 +574,8 @@ public class MapEditorControllerTest {
 	public void test020_addTwoNeighborsRemoveTwoNeighbors() throws Exception{
 		System.out.printf("Adding and removing two neighbors from one country%n------------%n");
 		//Set the command string to remove two neighbors
-		System.out.println(editorcommand18);
-		testMapLoader.editNeighbor(editorcommands18);
+		System.out.println(neighborcommand6);
+		testMapLoader.editNeighbor(neighborcommands6);
 		//create map object from adjacency list
 		borders6 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		//get pair of country and neighbor
