@@ -67,6 +67,8 @@ public class MapEditorControllerTest {
 		, expectedcontinentsize6, expectedcountrysize1, expectedcountrysize2,
 		expectedcountrysize3, expectedcountrysize4, expectedcountrysize5
 		, expectedcountrysize6;
+	static int  testCounter;
+	boolean mapIsRead;
 	Optional<String> inputmap;
 	Optional<Integer> country1, neighbor1, country2a, neighbor2a, country2b, neighbor2b, country3, neighbor3,
 		country4a, neighbor4a, country4b, neighbor4b, country5a, neighbor5a, country5b, neighbor5b,
@@ -77,6 +79,7 @@ public class MapEditorControllerTest {
 	String message;
 	@BeforeClass
 	public static void beginClass() {
+		testCounter = 0;
 		testCmdView = new CommandPromptView(testMapLoader, testGameController);
 //		testState = new StateContext();
 		testMapService = new MapService();
@@ -148,11 +151,14 @@ public class MapEditorControllerTest {
 		 * it uses UTF-8 charsets.
 		 */
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-		/**
-		 * The followings are for test case 002 : executing editmap
-		 */
+
+		if (testCounter < 3) {
 		inputcommand = "editmap "+uri;
-		inputmap = testMapLoader.editMap(inputcommand);
+		testMapLoader.parseFile(file);
+		if(testCounter < 2) {
+			inputmap = testMapLoader.editMap(inputcommand);
+		}
+		}
 		//size of continent list before one continent is added
 		initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		/**
@@ -275,6 +281,7 @@ public class MapEditorControllerTest {
 		neighbor6d = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6d);
 		//the following is for saving file
 		savename = "edittedmap.map";
+		//incrementing the testcounter
 	}
 	
 	/**
@@ -288,6 +295,7 @@ public class MapEditorControllerTest {
 		testMapLoader.getMapService().printNeighboringCountryInfo();
 		System.out.println("Number of continents after test: "+testMapLoader.getMapService().getContinents().size());
 		System.out.println("Number of countries after test: "+testMapLoader.getMapService().getCountries().size());
+		testCounter++;
 	}
 	
 	
