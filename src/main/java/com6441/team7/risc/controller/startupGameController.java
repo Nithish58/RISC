@@ -1,6 +1,6 @@
 package com6441.team7.risc.controller;
 
-import static com6441.team7.risc.api.RiscContants.WHITESPACE;
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 import static java.util.Objects.isNull;
 
 import java.io.File;

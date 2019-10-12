@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 /**
- *
+ * This class stores continent information
  */
 public class Continent {
     private final int id;

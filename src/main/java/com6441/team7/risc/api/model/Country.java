@@ -3,9 +3,12 @@ package com6441.team7.risc.api.model;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com6441.team7.risc.api.RiscContants.EOL;
-import static com6441.team7.risc.api.RiscContants.WHITESPACE;
+import static com6441.team7.risc.api.RiscConstants.EOL;
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
+/**
+ * This class stores country information
+ */
 public class Country {
     private final Integer id;
     private final String name;
