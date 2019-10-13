@@ -1,5 +1,11 @@
 package com6441.team7.risc.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
@@ -14,27 +20,33 @@ import com6441.team7.risc.api.model.Player;
  */
 public class fortifyGameController {
 	
+		private MapService mapService;
+		private Optional<Country> fromCountry;
+		private Optional<Country> toCountry;
 		private Player player;
-		private Country fromCountry;
-		private Country toCountry;
-		private int num;
+		private Integer num;
+		private String []orders;
 		GameState fortifyState;
+		Set<Integer> neighbouringCountries;
+		Set<Country> countryList;
 		
 		/*
 		 * Constructor with parameters
 		 */
-		public fortifyGameController(Country fromCountry, Country toCountry, int num){
-			this.fromCountry = fromCountry;
-			this.toCountry = toCountry;
-			this.num = num;
+		public fortifyGameController(Player player, MapService mapService){
+			this.mapService = mapService;
+			this.player = player;
 		}
 		
-		/*
-		 * Skipping fortify phase
-		 */
-		public fortifyGameController() {
-			this.fortifyState = GameState.REINFORCE;
-			//Need to be reinforcement, but to next state.
+		public void readCommand(String command) throws IOException {
+			this.orders = command.split(" ");
+			if (orders[1] == "none") {
+				fortifyState = GameState.REINFORCE;
+			} else {
+				this.fromCountry = mapService.getCountryByName(orders[1]);
+				this.toCountry = mapService.getCountryByName(orders[2]);
+				this.num = Integer.parseInt(orders[3]);
+			}
 		}
 		
 		/*
@@ -60,7 +72,11 @@ public class fortifyGameController {
 			}
 			
 			try {
-				
+				Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
+				Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountry.toString());
+				Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.toString());
+				neighbouringCountries =  adjacentCountriesList.get(fromId);
+				assert(neighbouringCountries.contains(toId));
 			} catch (Exception e) {
 				System.out.println("Countries not adjacent to each other");
 			}
