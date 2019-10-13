@@ -33,14 +33,17 @@ public class reinforceGameController {
 
     /**
      * Sole constructor
-     * @param player this parameter is the player who is requesting to reinforce new armiees.
+     * @param currentPlayer this parameter is the player who is requesting to reinforce new armiees.
+     * @param mapService this reflects the mapService of current player.
      */
-    public reinforceGameController(Player player, MapService mapService){
-        this.mapService =  mapService;
-        this.player = player;
-        this.reinforcedArmiesCount = 0;
 
-        System.out.println("Reinforcement:" + this.player.getName());
+    public reinforceGameController(Player currentPlayer, MapService mapService){
+       // this.mapService = new MapService();
+    	this.mapService=mapService;
+        this.player = currentPlayer;
+        this.reinforcedArmiesCount = 0;
+        
+        System.out.println("Reinforcement:" + currentPlayer.getName());
 
         this.mapService.setState(GameState.FORTIFY);
     }
@@ -82,5 +85,6 @@ public class reinforceGameController {
     public List<Country> listOfCountriesInContinent(Continent continent){
         return mapService.getCountries().stream().filter(country -> country.getContinentName().equals(continent.getName())).collect(Collectors.toList());
     }
+
 
 }

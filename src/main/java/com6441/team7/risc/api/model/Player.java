@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * store player information
+ */
 public class Player {
     private String name;
     private int armies;

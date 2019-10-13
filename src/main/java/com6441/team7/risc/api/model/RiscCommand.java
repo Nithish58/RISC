@@ -5,6 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * different commands the game accepts
+ */
 public enum RiscCommand {
     EDIT_MAP("editmap"),
     EDIT_COUNTRY("editcountry"),
@@ -20,8 +23,12 @@ public enum RiscCommand {
     PLACE_ALL("place_all"),
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
-    UNKNOWN("unkonwn");
+    UNKNOWN("unkonwn"),
+	
+	//Added By keshav
+	EXIT_MAPEDIT("exitmapedit");
 
+	
     private String name;
 
 
