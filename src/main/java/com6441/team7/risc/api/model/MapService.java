@@ -462,7 +462,7 @@ public class MapService extends Observable {
      * @param name continent name
      * @return
      */
-    private List<Country> findCountryByContinentName(String name){
+    public List<Country> findCountryByContinentName(String name){
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getContinentName()).equals(convertNameToKeyFormat(name)))
                 .collect(Collectors.toList());
