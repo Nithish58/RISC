@@ -59,6 +59,17 @@ public class reinforceGameController {
             this.reinforcedArmiesCount += 5;
             player.removeCards();
         }
+        // Game rule 2 continentValue
+        for (String item: continentOccuppiedByPlayer()){
+            if (listOfCountriesInContinentOfPlayer(item).containsAll(mapService.findCountryByContinentName(item))){
+                for (Continent continent:mapService.getContinents()){
+                    if (continent.getName().equals(item)){
+                        reinforcedArmiesCount += continent.getContinentValue();
+                    }
+                }
+            }
+
+        }
 
         return this.reinforcedArmiesCount;
     }
@@ -78,11 +89,21 @@ public class reinforceGameController {
      * @return list of continents in which player country is located
      */
     private Set<String> continentOccuppiedByPlayer(){
-        return allCountriesOfPlayer().stream().map(Country::getContinentName).collect(Collectors.toSet());
+        return allCountriesOfPlayer().stream().map(Country::getCountryName).collect(Collectors.toSet());
+//        Set<Continent> playerContinents = new HashSet<>();
+//        for (Country country:allCountriesOfPlayer()){
+//            playerContinents.add(country.);
+//        }
 
     }
-    public List<Country> listOfCountriesInContinent(Continent continent){
-        return mapService.getCountries().stream().filter(country -> country.getContinentName().equals(continent.getName())).collect(Collectors.toList());
+
+    /**
+     * To store all the countries of specific continents of player.
+     * @param continentName continent whose country list has to be found.
+     * @return list of countries that is specific continent.
+     */
+    public List<Country> listOfCountriesInContinentOfPlayer(String continentName ){
+        return allCountriesOfPlayer().stream().filter(country -> country.getContinentName().equals(continentName)).collect(Collectors.toList());
     }
 
 }
