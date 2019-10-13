@@ -33,7 +33,8 @@ public class reinforceGameController {
 
     /**
      * Sole constructor
-     * @param player this parameter is the player who is requesting to reinforce new armiees.
+     * @param currentPlayer this parameter is the player who is requesting to reinforce new armies.
+     * @param mapService the mapService store current information of currentPlayer.
      */
     public reinforceGameController(Player currentPlayer, MapService mapService){
        // this.mapService = new MapService();
