@@ -33,18 +33,16 @@ public class reinforceGameController {
 
     /**
      * Sole constructor
-     * @param currentPlayer this parameter is the player who is requesting to reinforce new armiees.
-     * @param mapService this reflects the mapService of current player.
+     * @param player this parameter is the player who is requesting to reinforce new armiees.
      */
-
     public reinforceGameController(Player currentPlayer, MapService mapService){
-        // this.mapService = new MapService();
-        this.mapService=mapService;
+       // this.mapService = new MapService();
+    	this.mapService=mapService;
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
-
+        
         System.out.println("Reinforcement:" + currentPlayer.getName());
-
+        
         this.mapService.setState(GameState.FORTIFY);
     }
 
@@ -55,35 +53,20 @@ public class reinforceGameController {
     public int getReinforcedArmiesCount(){
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
-        //game rule 3
-        if (player.hasDifferentCardsCategory() || player.hasSameCardsCategory()){
-            this.reinforcedArmiesCount += 5;
-            player.removeCards();
-        }
+
 
         return this.reinforcedArmiesCount;
     }
 
     /**
-     * To know all the countries a player have
+     *
      * @return list of all countries of player
      */
-    private List<Country> allCountriesOfPlayer(){
-        return mapService.getCountries().stream().filter(country ->country.getPlayer().getName().
-                equals(player.getName())).collect(Collectors.toList());
+    public List<Country> allCountriesOfPlayer(){
+        List<Country> playerCountries = mapService.getCountries().stream().filter(country ->
+                country.getPlayer().getName().equals(player.getName())).collect(Collectors.toList());
+        return playerCountries;
 
-    }
-
-    /**
-     * TO know all the continent a player have
-     * @return list of continents in which player country is located
-     */
-    private Set<String> continentOccuppiedByPlayer(){
-        return allCountriesOfPlayer().stream().map(Country::getContinentName).collect(Collectors.toSet());
-
-    }
-    public List<Country> listOfCountriesInContinent(Continent continent){
-        return mapService.getCountries().stream().filter(country -> country.getContinentName().equals(continent.getName())).collect(Collectors.toList());
     }
 
 
