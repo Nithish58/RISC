@@ -37,21 +37,20 @@ public class reinforceGameController {
      * @param mapService the mapService store current information of currentPlayer.
      */
     public reinforceGameController(Player currentPlayer, MapService mapService){
-        // this.mapService = new MapService();
         this.mapService=mapService;
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
 
-        System.out.println("Reinforcement:" + currentPlayer.getName());
+        System.out.println("Reinforcement: " + currentPlayer.getName());
 
         this.mapService.setState(GameState.FORTIFY);
     }
 
     /**
-     *
+     * To get total number of reinforced armies of player
      * @return total number of reinforced armies of a player.
      */
-    public int getReinforcedArmiesCount(){
+    private void getReinforcedArmiesCount(){
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
         //game rule 3
@@ -70,8 +69,31 @@ public class reinforceGameController {
             }
 
         }
+        System.out.println("You have " + reinforcedArmiesCount +"extra armies");
+    }
 
-        return this.reinforcedArmiesCount;
+    /**
+     * Reinforce the extra armies
+     * @param country country where extra armies are added
+     * @param num the number of armies
+     */
+    public void reinforce(Country country, int num){
+        getReinforcedArmiesCount();
+        while (reinforcedArmiesCount !=0){
+            if (allCountriesOfPlayer().contains(country)){
+                if (num > reinforcedArmiesCount || num < reinforcedArmiesCount){
+                    System.out.println("Sorry, your extra armies number should be in range 1 -"+ reinforcedArmiesCount);
+                }else{
+                    System.out.println("The "+ country +"has" + country.getSoldiers()+" soldiers");
+                    country.addSoldiers(num);
+                    System.out.println("After reinforcement, the "+ country +"has" + country.getSoldiers()+" soldiers");
+                    reinforcedArmiesCount -= num;
+                }
+            }else{
+                System.out.println("Sorry! couldn't find the country");
+            }
+            System.out.println("The reinforcement phase completed");
+        }
     }
 
     /**
@@ -90,11 +112,6 @@ public class reinforceGameController {
      */
     private Set<String> continentOccuppiedByPlayer(){
         return allCountriesOfPlayer().stream().map(Country::getCountryName).collect(Collectors.toSet());
-//        Set<Continent> playerContinents = new HashSet<>();
-//        for (Country country:allCountriesOfPlayer()){
-//            playerContinents.add(country.);
-//        }
-
     }
 
     /**
