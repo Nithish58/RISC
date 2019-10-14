@@ -219,6 +219,15 @@ public class MapService extends Observable {
         continents.clear();
         continentCountriesMap.keySet().clear();
         adjacencyCountriesMap.keySet().clear();
+        
+        
+        //Keshav Code
+        
+     //   countries = new HashSet<>();
+     //   continents=new HashSet<>();
+     //   adjacencyCountriesMap = new HashMap<>();
+     //   continentCountriesMap = new HashMap<>();
+        
 
 
     }
@@ -660,21 +669,6 @@ public class MapService extends Observable {
 
     private Set<Integer> getContinentIdSet() {
         return continents.stream().map(Continent::getId).collect(Collectors.toSet());
-    }
-    
-    public void clearMapService() {
-    	
-    	countries.removeAll(countries);
-    	continents.removeAll(continents);
-    	adjacencyCountriesMap.clear();
-    	continentCountriesMap.clear();
-    	
-    	countries = new HashSet<>();
-        continents = new HashSet<>();
-        adjacencyCountriesMap = new HashMap<>();
-        continentCountriesMap = new HashMap<>();
-       directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
-        
     }
     
 }

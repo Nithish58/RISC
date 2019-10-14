@@ -4,13 +4,17 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
@@ -21,6 +25,8 @@ public class GameController {
 	private startupGameController startupPhaseController;
 	private reinforceGameController reinforcementGameController;
 	private fortifyGameController fortificationGameController;
+	
+	private MapLoaderController mapLoaderController;
 	
 	private MapService mapService;
 	
@@ -40,7 +46,9 @@ public class GameController {
 	
 	private int numPlayers;
 	
-	public GameController(MapService mapService) {
+	public GameController(MapLoaderController mapController,MapService mapService) {
+		
+		this.mapLoaderController=mapController;
 		
 		this.mapService=mapService;
 		this.gameState=this.mapService.getGameState();
@@ -52,8 +60,8 @@ public class GameController {
 		
 		boolStartUpPhaseOver=new AtomicBoolean(false);
 		
-		startupPhaseController=new startupGameController(this.mapService, this.players,
-				this.currentPlayer);
+		startupPhaseController=new startupGameController(this.mapLoaderController,this.mapService,
+																	this.players);
 		
 		//reinforcementGameController=new reinforceGameController();
 		//fortificationGameController=new fortifyGameController();
@@ -108,29 +116,5 @@ public class GameController {
         }
   
     }
-
-	
-    /*
-	 * public void startUpPhase(String command){
-	 * 
-	 * //this.mapService.setState(GameState.START_UP);
-	 * 
-	 * System.out.println("Start Up Ends"); }
-	 * 
-	 * 
-	 * public void reinforcementPhase(String command) {
-	 * 
-	 * //this.mapService.setState(GameState.REINFORCE);
-	 * 
-	 * 
-	 * }
-	 * 
-	 * public void fortificationPhase(String command) {
-	 * 
-	 * //this.mapService.setState(GameState.FORTIFY);
-	 * 
-	 * 
-	 * }
-	 */
-	
+    	
 }

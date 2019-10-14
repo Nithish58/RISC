@@ -116,7 +116,7 @@ public class MapLoaderController {
     /**
      * show all countries, all continents, and their neighbors of the map
      */
-    private void showMap() {
+    public void showMap() {
         mapService.printCountryInfo();
         mapService.printContinentInfo();
         mapService.printNeighboringCountryInfo();
@@ -475,7 +475,7 @@ public class MapLoaderController {
      * @param name the map file name
      * @return if map has contents, will return string, else return empty
      */
-    Optional<String> readFile(String name){
+    public Optional<String> readFile(String name){
         try {
             URI uri = Paths.get(name).toUri();
             String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8.name());
@@ -737,7 +737,7 @@ public class MapLoaderController {
     }
 
     /**
-     * delte whitespace and lower cases the string
+     * delete whitespace and lower cases the string
      * @param name
      * @return
      */

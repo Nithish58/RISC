@@ -20,14 +20,16 @@ public enum RiscCommand {
     GAME_PLAYER("gameplayer"),
     POPULATE_COUNTRY("populatecountries"),
     PLACE_ARMY("placearmy"),
-    PLACE_ALL("place_all"),
+    PLACE_ALL("placeall"),
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
     UNKNOWN("unkonwn"),
 	
 	//Added By keshav
-	EXIT_MAPEDIT("exitmapedit");
-
+	EXIT_MAPEDIT("exitmapedit"),
+	SHOW_PLAYER("showplayer")
+	
+	;
 	
     private String name;
 
