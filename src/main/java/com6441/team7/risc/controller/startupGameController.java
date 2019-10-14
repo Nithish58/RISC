@@ -47,6 +47,28 @@ import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.RiscCommand;
 
+/**
+ * 
+ * This class implements the different StartUpPhase Functions of the game.
+ * It also focuses on ensuring that commands are run in the order they are intended too.
+ * Consequently, it carries out many checks to enforce order when users enter commands.
+ * For example, it does not allow countries to be populated before a player has been added.
+ * Another example is that it does not allow more players to be added/removed after countries have been populated.
+ * 
+ * Some important functions this class implements are:
+ * <ul>
+ * <li>Allowing the loading of an existing game map to play.</li>
+ * <li>Adding/Removing Game Players</li>
+ * <li>Enforcing checks on player limits. Maximum of 9 players allowed for this game.</li>
+ * <li>Determining number of initial armies allocated to each player.</li>
+ * <li>Randomly assigning countries to players initially</li>
+ * <li>Allowing players to place armies on their countries in a round-robin fashion.</li>
+ * <li>Providing a placeall function to speedup the army placement process</li>
+ * </ul>
+ * 
+ * @author Keshav
+ *
+ */
 public class startupGameController {
 	
 	private MapLoaderController mapLoaderController;
@@ -63,15 +85,19 @@ public class startupGameController {
 	
 	private AtomicBoolean boolStartUpPhaseOver;
 	
-	//private Player currentPlayer;
 	int currentPlayerIndex;
 	
 	private MapService mapService;
 	
-	//private LinkedHashMap<String, Player> players;
-	
 	private ArrayList<Player> players;
 	
+	/**
+	 * This is the constructor of the startup controller.
+	 * @param mapController Used for calling some file parsing and map loading methods that had already been used in the map loading phase.
+	 * @param mapService Main map is passed as a reference.
+	 * @param players list of all players passed as reference as well.
+	 * 
+	 */
 	public startupGameController(MapLoaderController mapController ,MapService mapService,
 			ArrayList<Player> players) {
 		
@@ -88,14 +114,20 @@ public class startupGameController {
 		
 		this.players=players; 
 		
-		//this.currentPlayer=currentPlayer;
-		
-	//	this.continentIdGenerator = new AtomicInteger();
-     //   this.countryIdGenerator = new AtomicInteger();
 		
 	}
 	
-
+/**
+ * This method "routes" different commands to their respective functions.
+ * <ul>
+ * <li>It first analyses the commands itself and check for their validity.</li>
+ * <li> If valid, it calls their functions </li>
+ * 
+ * </ul>
+ * @param command String of user command
+ * @param boolStartUpPhaseOver true if start up phase is over (when all armies placed). This boolean value then allows switching to next state.
+ * 
+ */
 	public void readCommand(String command, AtomicBoolean boolStartUpPhaseOver) {
 		
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -150,7 +182,6 @@ public class startupGameController {
         		if(!players.isEmpty()) {
         			
         			boolAllGamePlayersAdded=true;
-        			//this.boolStartUpPhaseOver.set(true);
                 	populateCountries();               	
         		}
         		
@@ -165,8 +196,7 @@ public class startupGameController {
         		System.out.println("Load a Map first");
         		
         		if(players.isEmpty()) System.out.println("No Player Added. Add 1 player atleast");
-        		
-        		//System.out.println("Load Map First");
+
         	}
         	
         	break;
@@ -215,7 +245,12 @@ public class startupGameController {
 	//Assign randomly countries to players
 	//Calculate number of initial soldiers allocated to players based on numPlayers
 	//Assign 1 army to each country and decrement from a player's total
-	
+	/**
+	 * This method randomly assigns countries to players.
+	 * The random technique used in this method is shuffling the list of countries 3 times so that they are no
+	 * longer in order of id. This is done by using a stack.
+	 * The countries which are mixed and no longer in order are then allocated to players in round-robin fashion.
+	 */
 	private void populateCountries() {
 		
 		if(!boolCountriesPopulated) {
@@ -308,10 +343,29 @@ public class startupGameController {
 		
 	}
 	
+	/**
+	 * This method determines the initial number of armies allocated to each player.
+	 * The rules are an approved adaptation of Hasbro 1 by Mr Joey Paquet.
+	 * They are as follows:
+	 * <ul>
+	 * <li>2 Players: 40 armies</li>
+	 * <li>3 Players: 35 armies</li>
+	 * <li>4 Players: 30 armies</li>
+	 * <li>...</li>
+	 *</ul>
+	 *This pattern goes on until a maximum of 9 players with 5 armies each.
+	 * 
+	 * @param numPlayers
+	 * @return number of intial armies allocated to each player
+	 */
 	private int determineNumInitialArmies(int numPlayers) {
 		return 40-((numPlayers-2)*5);
 	}
 	
+	/**
+	 * Set the number of initial armies for every player respectively.
+	 * @param numArmies number of initial armies allocated
+	 */
 	private void assignInitialArmies(int numArmies) {
 		
 		for(Player p: players) {
