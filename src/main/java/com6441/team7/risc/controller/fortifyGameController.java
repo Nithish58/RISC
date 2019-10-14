@@ -21,8 +21,8 @@ import com6441.team7.risc.api.model.Player;
 public class fortifyGameController {
 	
 		private MapService mapService;
-		private Optional<Country> fromCountry;
-		private Optional<Country> toCountry;
+		private Country fromCountry;
+		private Country toCountry;
 		private Player player;
 		private Integer num;
 		private String []orders;
@@ -40,14 +40,12 @@ public class fortifyGameController {
 		
 		public void readCommand(String command) throws IOException {
 			this.orders = command.split(" ");
-			//this should use .equals instead of ==
-			if (orders[1] == "none") {
+			if (orders[1].equals(new String("none"))){
 				fortifyState = GameState.REINFORCE;
 			} else {
-				this.fromCountry = mapService.getCountryByName(orders[1]);
-				this.toCountry = mapService.getCountryByName(orders[2]);
+				this.fromCountry = mapService.getCountryByName(orders[1]).get();
+				this.toCountry = mapService.getCountryByName(orders[2]).get();
 				this.num = Integer.parseInt(orders[3]);
-				//Is fortify() called after this?
 			}
 		}
 		
@@ -102,13 +100,6 @@ public class fortifyGameController {
 		 */
 		public void fortify() {
 			validation();
-			//The method getSoldiers() is undefined for the type Optional<Country>
 			toCountry.setSoldiers(fromCountry.getSoldiers() - num);
 		}
-		
-		/*
-		 * Perhaps a method to get and return map service should
-		 * be created here so that the map service can be accessed
-		 * through this controller
-		 */
 }
