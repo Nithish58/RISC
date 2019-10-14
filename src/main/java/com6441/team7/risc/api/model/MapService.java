@@ -555,6 +555,12 @@ public class MapService extends Observable {
     }
 
     public Optional<Country> getCountryById(int id) {
+    	
+    	//Modified By Keshav
+    	for(Country c:countries) {
+    		if(c.getId()==id) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 
@@ -563,6 +569,12 @@ public class MapService extends Observable {
     }
 
     public Optional<Continent> getContinentById(int id) {
+    	
+    	//Modified By Keshav
+    	for(Continent c:continents) {
+    		if(c.getId()==id) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 

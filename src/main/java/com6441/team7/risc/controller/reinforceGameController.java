@@ -5,10 +5,15 @@ import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
+import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.view.CommandPromptView;
+
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <h1>The Reinforcement phase</h1>
@@ -30,20 +35,84 @@ public class reinforceGameController {
     private MapService mapService;
     private CommandPromptView view;
     private int reinforcedArmiesCount;
+    private startupGameController startupGameController;
+    
+    private String command="";
 
     /**
      * Sole constructor
      * @param currentPlayer this parameter is the player who is requesting to reinforce new armies.
      * @param mapService the mapService store current information of currentPlayer.
      */
-    public reinforceGameController(Player currentPlayer, MapService mapService){
+    public reinforceGameController(Player currentPlayer, MapService mapService,
+    								startupGameController sgc, String command){
         this.mapService=mapService;
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
+        this.command=command;
+        
+        this.startupGameController=sgc;
 
-        System.out.println("Reinforcement: " + currentPlayer.getName());
+        System.out.println("Reinforcement Phase for " + currentPlayer.getName());
 
-        this.mapService.setState(GameState.FORTIFY);
+        //Modified By Keshav
+        getReinforcedArmiesCount();
+        
+        while(reinforcedArmiesCount>0) {
+        	
+        	readCommand();
+        	
+        	//trialdecrement just for testing...delete it when u correct ur reinforcement method
+        	reinforcedArmiesCount-=2;
+        }
+        
+        
+       // this.mapService.setState(GameState.FORTIFY);
+    }
+    
+    private void readCommand() {
+    	
+    	RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
+
+      
+        	
+            switch(commandType) {
+        	
+            case REINFORCE:
+            	
+            	try {
+            		
+            		 String[] arrCommand =command.split("\\s+");
+
+            		
+                    if(arrCommand.length!=3) {
+                    	System.out.println("Invalid Reinforcement Command.");
+                    }
+                    
+                    else {
+                		//reinforce(arrCommand[1],Integer.parseInt(arrCommand[2]));
+                		
+                		//**Change your reinforcement param to countryName instead of country bikas
+                		//then search and get the country by countryname
+                		//also already called getarmies count
+                		//just decrement....
+                    	
+                    }
+            		
+            	}
+            	catch(NumberFormatException e) {}
+            	break;
+            	
+            case SHOW_MAP:
+            	startupGameController.showMapFull();
+            	break;
+            	
+            	default:
+            		throw new IllegalArgumentException("Cannot recognize this command. Try Again");
+        
+        	
+        }
+
     }
 
     /**
@@ -69,7 +138,7 @@ public class reinforceGameController {
             }
 
         }
-        System.out.println("You have " + reinforcedArmiesCount +"extra armies");
+        System.out.println("You have " + reinforcedArmiesCount +" extra armies");
     }
 
     /**

@@ -71,7 +71,9 @@ public class GameController {
 
     public void readCommand(String command) throws IOException {
     	
+    	
         if(!boolStartUpPhaseOver.get()) {        	
+        	
         	
         	if(!boolStartUpPhaseSet) {
         		this.mapService.setState(GameState.START_UP);
@@ -82,21 +84,19 @@ public class GameController {
         }
         
         else {
-        		
+        	
             	if(this.mapService.getGameState()==GameState.REINFORCE) {
             		
             		//reinforcementGameController.readCommand(command)
             		
-            		//System.out.println("REINFORCE:"+this.currentPlayer.getName());
-            		//reinforcementGameController=new reinforceGameController(this.currentPlayer,
-            		//		this.mapService);
-            		
             		this.currentPlayer=players.get(currentPlayerIndex);
             		
-            		//System.out.println("REINFORCE:"+this.currentPlayer.getName());
+            		System.out.println("REINFORCE:"+this.currentPlayer.getName());
             		
             		reinforcementGameController=new reinforceGameController(this.currentPlayer,
-            													this.mapService);
+            													this.mapService,
+            													startupPhaseController,
+            													command);
             		
             	}
             	
@@ -105,16 +105,21 @@ public class GameController {
             		fortificationGameController=new fortifyGameController(this.currentPlayer,
             				this.mapService);
             		
-            		if(currentPlayerIndex==players.size()-1) {
-            			currentPlayerIndex=0;
-            		}
-            		
-            		else currentPlayerIndex++;            		 
-            		
+            		switchNextPlayer();
+
             	}
 
         }
   
+    }
+    
+    private void switchNextPlayer() {
+		
+		if(currentPlayerIndex==players.size()-1) {
+			currentPlayerIndex=0;
+		}
+		
+		else currentPlayerIndex++;    
     }
     	
 }

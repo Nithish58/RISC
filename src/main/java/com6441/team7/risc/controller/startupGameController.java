@@ -26,6 +26,7 @@ import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -189,10 +190,16 @@ public class startupGameController {
         	showPlayer();
         	break;
         	
+        case SHOW_MAP:
+        	if(boolCountriesPopulated) showMapFull();
+        	
+        	else showMap();
+        	
+        	break;
+        	
         default:
             throw new IllegalArgumentException("cannot recognize this command");
-        	
-        
+
         }
         
 	}
@@ -289,8 +296,6 @@ public class startupGameController {
 				System.out.println("\nCurrent Player:"+players.get(this.currentPlayerIndex).getName());
 				
 			}
-				
-			//this.mapService.setState(GameState.REINFORCE);
 
 		}
 		
@@ -576,6 +581,7 @@ public class startupGameController {
     	System.out.println("All Players Placed.");
     	showAllPlayers();
     	
+    	this.boolStartUpPhaseOver.set(true);
     	this.mapService.setState(GameState.REINFORCE);
     }
     
@@ -603,24 +609,52 @@ public class startupGameController {
         		System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()
         						+"\t\t\t"+c.getSoldiers());
         	}
+
+    	}
+
+    }
+    
+    public void showMapFull() {
+    	
+    	for(Map.Entry<Integer, Set<Integer>> item :
+    						mapService.getContinentCountriesMap().entrySet()) {
     		
+    		int key=(int) item.getKey();
+    		   		
     		
+    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
+    		Continent currentContinent= (Continent) optionalContinent.get();
+    		
+    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+    		System.out.println();
+    		
+    		Set<Integer> value=item.getValue();
+    		
+    		for(Integer i:value) {
+    			//For Each Country In Continent, Get details + Adjacency Countries
+    			Optional<Country> optionalCountry=mapService.getCountryById(i);
+    			
+    			Country currentCountry=optionalCountry.get();
+    			String strCountryOutput="";
+    			
+    			strCountryOutput+=currentCountry.getCountryName()+" "+currentCountry.getPlayer().getName()+
+    					" "+currentCountry.getSoldiers()+" soldiers ";
+    			
+    			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
+    			
+    			for(Integer j:adjCountryList) {
+    				strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName();
+    			}
+    			System.out.println(strCountryOutput+"\n");
+    		}
     		
     		
     	}
-    	
 
-    	
     }
     
     
 }
-
-
-
-
-
-
 
 
 
