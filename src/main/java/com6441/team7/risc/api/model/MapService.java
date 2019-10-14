@@ -551,6 +551,11 @@ public class MapService extends Observable {
     }
 
     public Optional<Country> getCountryByName(String name) {
+    	
+    	for(Country c:countries) {
+    		if(c.getCountryName().equalsIgnoreCase(name)) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 
@@ -565,6 +570,11 @@ public class MapService extends Observable {
     }
 
     public Optional<Continent> getContinentByName(String name) {
+    	
+    	for(Continent c:continents) {
+    		if(c.getName().equalsIgnoreCase(name)) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 

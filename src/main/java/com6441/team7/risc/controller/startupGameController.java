@@ -277,7 +277,7 @@ public class startupGameController {
 				int numInitialArmies=determineNumInitialArmies(numPlayers);
 				assignInitialArmies(numInitialArmies);
 				
-				System.out.println(numInitialArmies);
+				System.out.println("Number of Initial Armies:"+numInitialArmies+"\n");
 				
 				Stack<Country> stackCountry=new Stack<>();
 				
@@ -415,7 +415,7 @@ public class startupGameController {
         		
         		if(!nameFound) {
         			players.add(new Player(playerName));
-        			System.out.println("Player Added");
+        			System.out.println("Player Added: "+playerName);
         		}
         		
         		
@@ -448,7 +448,7 @@ public class startupGameController {
     			if(players.get(i).getName().equals(playerName)) {
     				nameFound=true;
     				players.remove(i);
-    				System.out.println("Player Removed");
+    				System.out.println("Player Removed: "+playerName);
     				break;
     			}
     		}
@@ -680,8 +680,6 @@ public class startupGameController {
     
     public void showMapFull() {
     	
-    	System.out.println("Entered Showmap");
-    	
     	for(Map.Entry<Integer, Set<Integer>> item :
     						mapService.getContinentCountriesMap().entrySet()) {
     		
@@ -709,7 +707,9 @@ public class startupGameController {
     			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
     			
     			for(Integer j:adjCountryList) {
-    				strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName();
+    				strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
+    						"("+mapService.getCountryById(j).get().getPlayer().getName()+
+    						","+mapService.getCountryById(j).get().getSoldiers()+")";
     			}
     			
     			System.out.println(strCountryOutput+"\n");
