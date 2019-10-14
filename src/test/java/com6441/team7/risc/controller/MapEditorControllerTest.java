@@ -27,12 +27,10 @@ import org.junit.runners.MethodSorters;
 import com6441.team7.risc.view.CommandPromptView;
 import com6441.team7.risc.controller.MapLoaderController;
 import com6441.team7.risc.api.model.MapService;
-//import com6441.team7.risc.controller.StateContext;
 
 /**
  * 
  * MapEditorTest class tests cases relevant with the controller components of the map editor.
- * @author Binsar Hutapea
  * 
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -81,7 +79,6 @@ public class MapEditorControllerTest {
 	public static void beginClass() {
 		testCounter = 0;
 		testCmdView = new CommandPromptView(testMapLoader, testGameController);
-//		testState = new StateContext();
 		testMapService = new MapService();
 		testMapLoader = new MapLoaderController(testMapService);
 		testMapLoader.setView(testCmdView);
