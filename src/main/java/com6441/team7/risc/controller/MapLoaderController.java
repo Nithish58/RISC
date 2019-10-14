@@ -27,8 +27,11 @@ import static java.util.Objects.isNull;
  */
 
 public class MapLoaderController {
+	
+	//Modified to public by keshav
     private AtomicInteger continentIdGenerator;
     private AtomicInteger countryIdGenerator;
+    
     private MapService mapService;
     private CommandPromptView view;
     private MapGraph mapGraph;
@@ -752,5 +755,14 @@ public class MapLoaderController {
 
     public void setView(CommandPromptView view) {
         this.view = view;
+    }
+    
+    //2 SETTER METHODS ADDED BY KESHAV
+    public void setContinentIdGenerator(int num) {
+    	this.continentIdGenerator.set(num);
+    }
+    
+    public void setCountryIdGenerator(int num) {
+    	this.countryIdGenerator.set(num);
     }
 }

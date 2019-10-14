@@ -103,8 +103,17 @@ public class reinforceGameController {
             	catch(NumberFormatException e) {}
             	break;
             	
+            	
             case SHOW_MAP:
             	startupGameController.showMapFull();
+            	break;
+            	
+            case SHOW_PLAYER:
+            	showPlayer(player);
+            	break;
+            	
+            case SHOW_ALL_PLAYERS:
+            	startupGameController.showAllPlayers();
             	break;
             	
             	default:
@@ -115,7 +124,8 @@ public class reinforceGameController {
 
     }
 
-    /**
+
+	/**
      * To get total number of reinforced armies of player
      * @return total number of reinforced armies of a player.
      */
@@ -191,5 +201,28 @@ public class reinforceGameController {
     public List<Country> listOfCountriesInContinentOfPlayer(String continentName ){
         return allCountriesOfPlayer().stream().filter(country -> country.getContinentName().equals(continentName)).collect(Collectors.toList());
     }
+    
+
+    private void showPlayer(Player p) {
+    	Collections.sort(p.countryPlayerList, new Comparator<Country>() {
+
+			@Override
+			public int compare(Country c1, Country c2) {
+
+				return c1.getContinentName().compareTo(c2.getContinentName());
+			}
+    		
+    	}
+    	);
+    	
+    	System.out.println("Current Player: "+p.getName()+
+    			" , Num Armies Remaining: "+p.getArmies());
+    	
+    	System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
+    	
+    	for(Country c:p.countryPlayerList) {
+    		System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+    	}
+	}
 
 }

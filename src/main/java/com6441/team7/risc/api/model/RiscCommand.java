@@ -23,11 +23,13 @@ public enum RiscCommand {
     PLACE_ALL("placeall"),
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
-    UNKNOWN("unkonwn"),
+    UNKNOWN("unknown"),
 	
 	//Added By keshav
 	EXIT_MAPEDIT("exitmapedit"),
-	SHOW_PLAYER("showplayer")
+	SHOW_PLAYER("showplayer"),
+	SHOW_ALL_PLAYERS("showallplayers")
+	
 	
 	;
 	

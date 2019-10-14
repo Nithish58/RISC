@@ -175,7 +175,7 @@ public class startupGameController {
         	
         	String[] strArr=StringUtils.split(command, WHITESPACE);
         	
-        	if(strArr.length!=2) System.out.println("Invalide Placearmy command");
+        	if(strArr.length!=2) System.out.println("Invalid Placearmy command");
         	else {
         		placeArmy(strArr[1]);
         	}
@@ -190,7 +190,12 @@ public class startupGameController {
         	showPlayer();
         	break;
         	
+        case SHOW_ALL_PLAYERS:
+        	showAllPlayers();
+        	break;
+        	
         case SHOW_MAP:
+        	
         	if(boolCountriesPopulated) showMapFull();
         	
         	else showMap();
@@ -271,8 +276,6 @@ public class startupGameController {
 					
 				}
 				
-				
-				System.out.println(mapService.getCountries().size());
 				
 				for(Country c:mapService.getCountries()) {
 					System.out.println(c.getId()+" "+c.getCountryName()+" "+c.getPlayer().getName()
@@ -423,6 +426,8 @@ public class startupGameController {
 
 	        if (command.toLowerCase(Locale.CANADA).equals("loadmap")) {
 	            //readFile(path);
+	        	this.mapLoaderController.setContinentIdGenerator(0);
+	            this.mapLoaderController.setCountryIdGenerator(0);
 	        	mapService.emptyMap();
 	        	mapLoaderController.readFile(path);
 	        
@@ -473,29 +478,7 @@ public class startupGameController {
     	return 0;
     }
     
-    public void showPlayer() {
-    	
-    	Collections.sort(players.get(currentPlayerIndex).countryPlayerList, new Comparator<Country>() {
 
-			@Override
-			public int compare(Country c1, Country c2) {
-
-				return c1.getContinentName().compareTo(c2.getContinentName());
-			}
-    		
-    	}
-    	);
-    	
-    	System.out.println("Current Player: "+players.get(currentPlayerIndex).getName()+
-    			" , Num Armies Remaining: "+players.get(currentPlayerIndex).getArmies());
-    	
-    	System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-    	
-    	for(Country c:players.get(currentPlayerIndex).countryPlayerList) {
-    		System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
-    	}
-    	
-    }
     
     public void placeArmy(String countryName) {
     	
@@ -614,7 +597,36 @@ public class startupGameController {
 
     }
     
+    
+    public void showPlayer() {
+    	
+    	Collections.sort(players.get(currentPlayerIndex).countryPlayerList, new Comparator<Country>() {
+
+			@Override
+			public int compare(Country c1, Country c2) {
+
+				return c1.getContinentName().compareTo(c2.getContinentName());
+			}
+    		
+    	}
+    	);
+    	
+    	System.out.println("Current Player: "+players.get(currentPlayerIndex).getName()+
+    			" , Num Armies Remaining: "+players.get(currentPlayerIndex).getArmies());
+    	
+    	System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
+    	
+    	for(Country c:players.get(currentPlayerIndex).countryPlayerList) {
+    		System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+    	}
+    	
+    }
+    
+    
+    
     public void showMapFull() {
+    	
+    	System.out.println("Entered Showmap");
     	
     	for(Map.Entry<Integer, Set<Integer>> item :
     						mapService.getContinentCountriesMap().entrySet()) {
@@ -645,6 +657,7 @@ public class startupGameController {
     			for(Integer j:adjCountryList) {
     				strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName();
     			}
+    			
     			System.out.println(strCountryOutput+"\n");
     		}
     		
@@ -655,208 +668,3 @@ public class startupGameController {
     
     
 }
-
-
-
-/*
-Optional<String> readFile(String name){
-    try {
-        URI uri = Paths.get(name).toUri();
-        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8.name());
-        
-        if(parseFile(file)) {
-        	boolMapLoaded=true;
-        }
-      //NEED TO UPDATE BOOLFILENAME
-        
-        return Optional.of(file);           
-
-    } catch (IOException|NullPointerException e) {
-        //createFile(name);
-    	System.out.println("File Not Found");
-    }
-
-    return Optional.empty();
-}
-
-boolean parseFile(String s) {
-    String[] parts = StringUtils.split(s, "[");
-
-    try {
-        if (parts.length != 5) {
-            throw new MissingInfoException("The map is not valid");
-        }
-
-        //Clear MapService:
-        //this.mapService.clearMapService();;
-        
-        //parseMapGraphInfo(parts[1]);
-        parseRawContinents(parts[2]);
-        parseRawCountries(parts[3]);
-        parseRawNeighboringCountries(parts[4]);
-        
-       showMap();
-        
-        validateMap();
-
-    } catch (Exception e) {
-        //view.displayMessage(e.getMessage());
-    	System.out.println(e.getMessage());
-    	 System.out.println("PROBLEM LOADING FILE");
-        boolMapLoaded=false;
-        return false;
-    }
-
-    return mapService.isStronglyConnected();
-
-}
-
-
-
-Set<Continent> parseRawContinents(String part) {
-    String continentInfo = StringUtils.substringAfter(part, "]\r\n");
-
-    Set<Continent> continentSet = Optional.of(StringUtils.split(continentInfo, "\r\n"))
-            .map(Arrays::stream)
-            .orElseGet(Stream::empty)
-            .map(this::createContinentFromRaw)
-            .collect(Collectors.toSet());
-
-    mapService.addContinent(continentSet);
-
-    return continentSet;
-
-}
-
-private Continent createContinentFromRaw(String s) {
-
-    try {
-
-        String[] continentInfo = StringUtils.split(s, " ");
-
-        if (isNull(continentInfo) || continentInfo.length != 3) {
-            throw new ContinentParsingException("continent: " + s + " is not valid ");
-        }
-
-        String name = convertFormat(continentInfo[0]);
-        int continentValue = Integer.parseInt(continentInfo[1]);
-        String color = convertFormat(continentInfo[2]);
-
-        Continent continent = new Continent(continentIdGenerator.incrementAndGet(), name, continentValue);
-        continent.setColor(color);
-
-        return continent;
-
-    } catch (NumberFormatException e) {
-        throw new ContinentParsingException(e);
-    }
-
-}
-
-
-
-Set<Country> parseRawCountries(String part) {
-    String countryInfo = StringUtils.substringAfter(part, "]\r\n");
-    Set<Country> countrySet = Optional.of(StringUtils.split(countryInfo, "\r\n"))
-            .map(Arrays::stream)
-            .orElseGet(Stream::empty)
-            .map(this::createCountryFromRaw)
-            .collect(Collectors.toSet());
-
-    mapService.addCountry(countrySet);
-    return countrySet;
-}
-
-
-
-private Country createCountryFromRaw(String s) {
-    try {
-        String[] countryInfo = StringUtils.split(s, " ");
-
-        if (countryInfo.length != 5) {
-            throw new CountryParsingException("country: " + s + " is not valid.");
-        }
-
-        int countryId = Integer.parseInt(countryInfo[0]);
-        String countryName = convertFormat(countryInfo[1]);
-        int continentId = Integer.parseInt(countryInfo[2]);
-        int coordinateX = Integer.parseInt(countryInfo[3]);
-        int coordinateY = Integer.parseInt(countryInfo[4]);
-
-        if (mapService.continentIdNotExist(continentId)) {
-            throw new CountryParsingException("country: " + s + " contains invalid continent information");
-        }
-
-        String continentName = mapService.findCorrespondingNameByContidentId(continentId).get();
-        Country country = new Country(countryId, countryName, continentId);
-        country.setCoordinateX(coordinateX);
-        country.setCoordinateY(coordinateY);
-        country.setContinentName(continentName);
-
-        return country;
-
-    } catch (NumberFormatException e) {
-        throw new CountryParsingException(e);
-    }
-}
-
-
-
-Map<Integer, Set<Integer>> parseRawNeighboringCountries(String part) {
-
-    String borderInfo = StringUtils.substringAfter(part, "]");
-
-    String[] adjacencyInfo = StringUtils.split(borderInfo, "\n\r");
-    Map<Integer, Set<Integer>> adjacencyMap = new HashMap<>();
-
-    Arrays.stream(adjacencyInfo)
-            .map(this::createAdjacencyCountriesFromRaw)
-            .forEach(list -> {
-                int countryId = list.get(0);
-                Set<Integer> adjacencyId = new HashSet<>(list.subList(1, list.size()));
-                adjacencyMap.put(countryId, adjacencyId);
-            });
-
-    mapService.addNeighboringCountries(adjacencyMap);
-
-    return adjacencyMap;
-}
-
-
-
-private List<Integer> createAdjacencyCountriesFromRaw(String s) {
-    List<String> adjacency = Arrays.asList(StringUtils.split(s, " "));
-
-    throwWhenNoNeighboringCountry(s, adjacency);
-    throwWhenNeighbouringCountriesIdInvalid(s, adjacency);
-
-    return adjacency.stream()
-            .map(Integer::parseInt)
-            .collect(Collectors.toList());
-}
-
-private void throwWhenNeighbouringCountriesIdInvalid(String s, List<String> adjacency) {
-    adjacency.stream()
-            .map(rawInt -> {
-                if (!NumberUtils.isDigits(rawInt)) {
-                    throw new NeighborParsingException("adjacency: " + s + " Element " + rawInt + "is not valid");
-                }
-                return Integer.parseInt(rawInt);
-            })
-            .filter(this::isCountryIdNotValid)
-            .findFirst()
-            .ifPresent(invalidId -> {
-                throw new NeighborParsingException("adjacency: " + s + " is not valid for the country id does not exist");
-            });
-}
-
-private void throwWhenNoNeighboringCountry(String s, List<String> adjacency) {
-    if (adjacency.size() <= 1) {
-        throw new NeighborParsingException("adjacency: " + s + " is not valid for not having adjacent countries ");
-    }
-}
-
-private boolean isCountryIdNotValid(int id) {
-    return !mapService.countryIdExist(id);
-}
-*/ 
