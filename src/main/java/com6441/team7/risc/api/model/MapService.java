@@ -17,8 +17,7 @@ public class MapService extends Observable {
 
     /**
      * a set of countries
-     */
-	
+     */	
     private Set<Country> countries = new HashSet<>();
 
     /**

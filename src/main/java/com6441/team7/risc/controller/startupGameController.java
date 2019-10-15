@@ -584,6 +584,8 @@ public class startupGameController {
         		if(boolStartUpPhaseOver.get()) {
         			System.out.println("All Armies Placed.\n.");
         			this.mapService.setState(GameState.REINFORCE);
+        			System.out.println("Player Turn: "+players.get(0).getName());
+        			
         		}
         		
         		else {
@@ -628,6 +630,8 @@ public class startupGameController {
     	
     	this.boolStartUpPhaseOver.set(true);
     	this.mapService.setState(GameState.REINFORCE);
+    	
+    	System.out.println("Player Turn: "+players.get(0).getName());
     }
     
     public void showAllPlayers() {
@@ -722,8 +726,7 @@ public class startupGameController {
     			
     			System.out.println(strCountryOutput+"\n");
     		}
-    		
-    		
+
     	}
 
     }

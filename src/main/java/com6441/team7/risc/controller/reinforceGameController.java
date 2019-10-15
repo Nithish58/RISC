@@ -63,7 +63,8 @@ public class reinforceGameController {
         	readCommand();
         	
         	//trialdecrement just for testing...delete it when u correct ur reinforcement method
-        	reinforcedArmiesCount-=2;
+        	this.reinforcedArmiesCount=this.reinforcedArmiesCount-2;
+        	System.out.println("Decremented, "+this.reinforcedArmiesCount);
         }
         
         
@@ -105,7 +106,9 @@ public class reinforceGameController {
             	
             	
             case SHOW_MAP:
+            	
             	startupGameController.showMapFull();
+
             	break;
             	
             case SHOW_PLAYER:
