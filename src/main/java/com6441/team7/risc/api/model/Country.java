@@ -107,6 +107,11 @@ public class Country {
         this.soldiers -= number;
     }
 
+    /**
+     * It will compare this country with another country.
+     * @param o object with which it will be compared.
+     * @return true or false depending upon comparision.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
