@@ -153,12 +153,17 @@ public class startupGameController {
         	
         	else {
         		
-        		if(boolMapLoaded) {
+        		if(boolMapLoaded && !boolCountriesPopulated) {
         			
         			String fileName=StringUtils.split(command, WHITESPACE)[1];       		
             		loadMap(command);
         		}
-        		else System.out.println("Load Map First");
+        		else {
+        			if(!boolMapLoaded) System.out.println("Load Map First");
+        			
+        			else if(boolCountriesPopulated) System.out.println("Countries already populated. Cannot "
+        					+ "load new map now.");
+        		}
         	}
         	
         	break;
@@ -170,7 +175,10 @@ public class startupGameController {
         	}
         	
         	else {
-        		System.out.println("You are past adding phase.All Players Added/Removed");
+        		
+        		if(!boolMapLoaded) System.out.println("Load Map First.");
+        		
+        		else if(boolAllGamePlayersAdded)	System.out.println("You are past adding phase.All Players Added/Removed");
         	}
         	
         	break;
