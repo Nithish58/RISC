@@ -5,10 +5,15 @@ import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
+import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.view.CommandPromptView;
+
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <h1>The Reinforcement phase</h1>
@@ -30,29 +35,95 @@ public class reinforceGameController {
     private MapService mapService;
     private CommandPromptView view;
     private int reinforcedArmiesCount;
+    private startupGameController startupGameController;
+
+    private String command="";
 
     /**
      * Sole constructor
-     * @param currentPlayer this parameter is the player who is requesting to reinforce new armiees.
-     * @param mapService this reflects the mapService of current player.
+     * @param currentPlayer this parameter is the player who is requesting to reinforce new armies.
+     * @param mapService the mapService store current information of currentPlayer.
      */
-
-    public reinforceGameController(Player currentPlayer, MapService mapService){
-       // this.mapService = new MapService();
-    	this.mapService=mapService;
+    public reinforceGameController(Player currentPlayer, MapService mapService,
+                                   startupGameController sgc, String command){
+        this.mapService=mapService;
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
-        
-        System.out.println("Reinforcement:" + currentPlayer.getName());
+        this.command=command;
 
-        this.mapService.setState(GameState.FORTIFY);
+        this.startupGameController=sgc;
+
+        System.out.println("Reinforcement Phase for " + currentPlayer.getName());
+
+        //Modified By Keshav
+        getReinforcedArmiesCount();
+
+        while(reinforcedArmiesCount>0) {
+
+            readCommand();
+
+            //trialdecrement just for testing...delete it when u correct ur reinforcement method
+            //reinforcedArmiesCount-=2;
+        }
+
+
+        // this.mapService.setState(GameState.FORTIFY);
     }
 
+    private void readCommand() {
+
+        RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
+
+
+
+        switch(commandType) {
+
+            case REINFORCE:
+
+                try {
+
+                    String[] arrCommand =command.split("\\s+");
+
+
+                    if(arrCommand.length!=3) {
+                        System.out.println("Invalid Reinforcement Command.");
+                    }
+
+                    else {
+                        reinforce(arrCommand[1],Integer.parseInt(arrCommand[2]));
+                    }
+
+                }
+                catch(NumberFormatException e) {}
+                break;
+
+
+            case SHOW_MAP:
+                startupGameController.showMapFull();
+                break;
+
+            case SHOW_PLAYER:
+                showPlayer(player);
+                break;
+
+            case SHOW_ALL_PLAYERS:
+                startupGameController.showAllPlayers();
+                break;
+
+            default:
+                throw new IllegalArgumentException("Cannot recognize this command. Try Again");
+
+
+        }
+
+    }
+
+
     /**
-     *
+     * To get total number of reinforced armies of player
      * @return total number of reinforced armies of a player.
      */
-    public int getReinforcedArmiesCount(){
+    private void getReinforcedArmiesCount(){
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
         //game rule 3
@@ -60,8 +131,47 @@ public class reinforceGameController {
             this.reinforcedArmiesCount += 5;
             player.removeCards();
         }
+        // Game rule 2 continentValue
+        for (String item: continentOccuppiedByPlayer()){
+            if (listOfCountriesInContinentOfPlayer(item).containsAll(mapService.findCountryByContinentName(item))){
+                for (Continent continent:mapService.getContinents()){
+                    if (continent.getName().equals(item)){
+                        reinforcedArmiesCount += continent.getContinentValue();
+                    }
+                }
+            }
 
-        return this.reinforcedArmiesCount;
+        }
+        System.out.println("You have " + reinforcedArmiesCount +" extra armies");
+    }
+
+
+    /**
+     * Reinforce the extra armies
+     * @param countryName country where extra armies are added
+     * @param num the number of armies
+     */
+    public void reinforce(String countryName, int num){
+        if (mapService.getCountryByName(countryName).isPresent()){
+            Country country = mapService.getCountryByName(countryName).get();
+            if (allCountriesOfPlayer().contains(country)){
+                if (num > reinforcedArmiesCount || num < reinforcedArmiesCount){
+                    System.out.println("Sorry, your extra armies number should be in range 1 - "+ reinforcedArmiesCount);
+                }else{
+                    System.out.println("The "+ country +"has" + country.getSoldiers()+" soldiers");
+                    country.addSoldiers(num);
+                    System.out.println("After reinforcement, the "+ country +"has" + country.getSoldiers()+" soldiers");
+                    reinforcedArmiesCount -= num;
+                }
+
+            }else{
+                System.out.println(country + " belongs to other player.");
+            }
+
+        }else{
+            System.out.println("Sorry, country is not in world map");
+        }
+
     }
 
     /**
@@ -79,12 +189,39 @@ public class reinforceGameController {
      * @return list of continents in which player country is located
      */
     private Set<String> continentOccuppiedByPlayer(){
-        return allCountriesOfPlayer().stream().map(Country::getContinentName).collect(Collectors.toSet());
-
-    }
-    public List<Country> listOfCountriesInContinent(Continent continent){
-        return mapService.getCountries().stream().filter(country -> country.getContinentName().equals(continent.getName())).collect(Collectors.toList());
+        return allCountriesOfPlayer().stream().map(Country::getCountryName).collect(Collectors.toSet());
     }
 
+    /**
+     * To store all the countries of specific continents of player.
+     * @param continentName continent whose country list has to be found.
+     * @return list of countries that is specific continent.
+     */
+    public List<Country> listOfCountriesInContinentOfPlayer(String continentName ){
+        return allCountriesOfPlayer().stream().filter(country -> country.getContinentName().equals(continentName)).collect(Collectors.toList());
+    }
+
+
+    private void showPlayer(Player p) {
+        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
+
+                    @Override
+                    public int compare(Country c1, Country c2) {
+
+                        return c1.getContinentName().compareTo(c2.getContinentName());
+                    }
+
+                }
+        );
+
+        System.out.println("Current Player: "+p.getName()+
+                " , Num Armies Remaining: "+p.getArmies());
+
+        System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
+
+        for(Country c:p.countryPlayerList) {
+            System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+        }
+    }
 
 }

@@ -15,11 +15,16 @@ public class Player {
     private List<Card> cardList;
     private int tradeInTimes;
     private static final int CARD_CATEGORY_NUMBER = 3;
+    
+    //ADDED BY KESHAV
+    public List<Country> countryPlayerList;
 
     public Player(String name) {
         this.armies = 0;
         this.name = name;
         this.cardList = new ArrayList<>();
+        
+        this.countryPlayerList=new ArrayList<>();
     }
 
     public String getName() {

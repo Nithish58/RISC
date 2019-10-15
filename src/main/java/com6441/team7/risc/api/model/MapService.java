@@ -17,8 +17,7 @@ public class MapService extends Observable {
 
     /**
      * a set of countries
-     */
-	
+     */	
     private Set<Country> countries = new HashSet<>();
 
     /**
@@ -219,6 +218,15 @@ public class MapService extends Observable {
         continents.clear();
         continentCountriesMap.keySet().clear();
         adjacencyCountriesMap.keySet().clear();
+        
+        
+        //Keshav Code
+        
+     //   countries = new HashSet<>();
+     //   continents=new HashSet<>();
+     //   adjacencyCountriesMap = new HashMap<>();
+     //   continentCountriesMap = new HashMap<>();
+        
 
 
     }
@@ -462,7 +470,7 @@ public class MapService extends Observable {
      * @param name continent name
      * @return
      */
-    private List<Country> findCountryByContinentName(String name){
+    public List<Country> findCountryByContinentName(String name){
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getContinentName()).equals(convertNameToKeyFormat(name)))
                 .collect(Collectors.toList());
@@ -542,18 +550,40 @@ public class MapService extends Observable {
     }
 
     public Optional<Country> getCountryByName(String name) {
+    	
+    	for(Country c:countries) {
+    		if(c.getCountryName().equalsIgnoreCase(name)) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 
     public Optional<Country> getCountryById(int id) {
+    	
+    	//Modified By Keshav
+    	for(Country c:countries) {
+    		if(c.getId()==id) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 
     public Optional<Continent> getContinentByName(String name) {
+    	
+    	for(Continent c:continents) {
+    		if(c.getName().equalsIgnoreCase(name)) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 
     public Optional<Continent> getContinentById(int id) {
+    	
+    	//Modified By Keshav
+    	for(Continent c:continents) {
+    		if(c.getId()==id) return Optional.of(c);
+    	}
+    	
         return Optional.empty();
     }
 
@@ -660,21 +690,6 @@ public class MapService extends Observable {
 
     private Set<Integer> getContinentIdSet() {
         return continents.stream().map(Continent::getId).collect(Collectors.toSet());
-    }
-    
-    public void clearMapService() {
-    	
-    	countries.removeAll(countries);
-    	continents.removeAll(continents);
-    	adjacencyCountriesMap.clear();
-    	continentCountriesMap.clear();
-    	
-    	countries = new HashSet<>();
-        continents = new HashSet<>();
-        adjacencyCountriesMap = new HashMap<>();
-        continentCountriesMap = new HashMap<>();
-       directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
-        
     }
     
 }
