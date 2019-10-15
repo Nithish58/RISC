@@ -102,4 +102,5 @@ public class fortifyGameController {
 			validation();
 			toCountry.setSoldiers(fromCountry.getSoldiers() - num);
 		}
+
 }

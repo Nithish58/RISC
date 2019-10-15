@@ -8,6 +8,9 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * the tests for MapService class
+ */
 public class MapServiceTest {
     private MapService mapService;
 
@@ -17,6 +20,12 @@ public class MapServiceTest {
         mapService = new MapService();
     }
 
+    /**
+     * call createValidContinents method to add 5 continents to the continentSet in mapService
+     * pass the test if the size of continents in mapService is 5.
+     * pass the test if the continentCountriesMap has 5 keys for the continents.
+     * @throws Exception
+     */
     @Test
     public void testAddContinentSet() throws Exception{
         Set<Continent> continentSet = createValidContinents();
@@ -25,6 +34,12 @@ public class MapServiceTest {
         assertEquals(mapService.getContinentCountriesMap().size(), continentSet.size());
     }
 
+    /**
+     * add two continents to the mapService
+     * pass the test if continentSet size is 2
+     * pass the test if continentCountriesMap has 2 keys for 2 continents.
+     * @throws Exception
+     */
     @Test
     public void testAddSingleContinent() throws Exception{
         Continent asia = new Continent(1, "asia", 5);
@@ -37,6 +52,12 @@ public class MapServiceTest {
         assertEquals(mapService.getContinentCountriesMap().size(), 2);
 
     }
+
+    /**
+     * add three continents and four countries to the mapService
+     * pass the test if mapService has three continents and four countries.
+     * @throws Exception
+     */
     @Test
     public void testAddCountrySet() throws Exception{
         Set<Continent> continentSet = createValidContinents();
@@ -50,6 +71,11 @@ public class MapServiceTest {
 
     }
 
+    /**
+     * add three continents and two countries
+     * pass the tests if the number of continents is 3 and number of countries is 2.
+     * @throws Exception
+     */
     @Test
     public void testAddSingleCountry() throws Exception{
         Set<Continent> continentSet = createValidContinents();
@@ -65,6 +91,11 @@ public class MapServiceTest {
         assertEquals(mapService.getContinentCountriesMap().size(),3);
     }
 
+    /**
+     * add three continents, four countries and add four neighboring info in adjacencyCountriesMap
+     * pass the tests if the number of adjacencyCountriesMap is 4
+     * @throws Exception
+     */
     @Test
     public void testAddNeighboringCountriesSet() throws Exception{
         Set<Continent> continentSet = createValidContinents();
@@ -79,6 +110,14 @@ public class MapServiceTest {
         assertEquals(mapService.getAdjacencyCountriesMap().size(), 4);
     }
 
+    /**
+     * add 3 continents, 4 countries and 4 neighboring countries information
+     * remove a country china from mapService
+     * pass the test if the number of countries is 3
+     * pass the test if the continentMap does not contain id of china
+     * pass the test if the adjacencyCountriesMap does not contain id of china
+     * @throws Exception
+     */
     @Test
     public void testRemoveCountryByName() throws Exception{
 
@@ -92,6 +131,11 @@ public class MapServiceTest {
     }
 
 
+    /**
+     * add a neighboring country china with us
+     * pass the test if china neighboring countries is 2
+     * @throws Exception
+     */
     @Test
     public void testAddNeighboringCountry() throws Exception{
         mapService = createValidContinentCountryNeighbor();
@@ -103,6 +147,11 @@ public class MapServiceTest {
         }
     }
 
+    /**
+     * remove neighboring country from siberia with india
+     * pass the tests if the number of adjacency for siberia is 1.
+     * @throws Exception
+     */
     @Test
     public void testRemoveNeighboringCountry() throws Exception{
         mapService = createValidContinentCountryNeighbor();
@@ -111,7 +160,10 @@ public class MapServiceTest {
 
     }
 
-
+    /**
+     * create valid continent, countries and neighboring countries and add it to the mapService
+     * @return
+     */
     private MapService createValidContinentCountryNeighbor() {
         Continent continent1 = new Continent(1, "asia" , 5);
         Continent continent2 = new Continent(2, "america", 6);
@@ -142,6 +194,11 @@ public class MapServiceTest {
         return mapService;
     }
 
+    /**
+     * create valid neighboring information
+     * @return map
+     * @throws Exception
+     */
     private Map<Integer, Set<Integer>> createValidNeighboringCountries() throws Exception{
         Map<Integer, Set<Integer>> neighboringCountryMap = new HashMap<>();
         Set<Integer> set1 = new HashSet<>(Arrays.asList(2,3));
@@ -159,6 +216,11 @@ public class MapServiceTest {
 
     }
 
+    /**
+     * add three continents to continentSet in mapService
+     * @return a set of continents
+     * @throws Exception
+     */
     private Set<Continent> createValidContinents() throws Exception{
         Set<Continent> continentSet = new HashSet<>();
         Continent continent1 = new Continent(1, "azio", 5);
@@ -172,6 +234,11 @@ public class MapServiceTest {
         return continentSet;
     }
 
+    /**
+     * add four countries to countrySet in mapService
+     * @return a set of countries
+     * @throws Exception
+     */
     private Set<Country> createValidCountries() throws Exception{
         Set<Country> countrySet = new HashSet<>();
         Country country1 = new Country(1, "siberia", 1);

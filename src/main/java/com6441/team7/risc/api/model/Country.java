@@ -3,9 +3,12 @@ package com6441.team7.risc.api.model;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com6441.team7.risc.api.RiscContants.EOL;
-import static com6441.team7.risc.api.RiscContants.WHITESPACE;
+import static com6441.team7.risc.api.RiscConstants.EOL;
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
+/**
+ * This class stores country information
+ */
 public class Country {
     private final Integer id;
     private final String name;
@@ -104,6 +107,11 @@ public class Country {
         this.soldiers -= number;
     }
 
+    /**
+     * It will compare this country with another country.
+     * @param o object with which it will be compared.
+     * @return true or false depending upon comparision.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
