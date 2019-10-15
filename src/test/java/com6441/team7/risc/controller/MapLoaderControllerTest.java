@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 public class MapLoaderControllerTest {
@@ -31,9 +32,9 @@ public class MapLoaderControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        view = new CommandPromptView( mapLoaderController, gameController);
         mapService = new MapService();
         mapLoaderController = new MapLoaderController(mapService);
+        view = new CommandPromptView( mapLoaderController, gameController);
         mapLoaderController.setView(view);
     }
 
@@ -53,6 +54,7 @@ public class MapLoaderControllerTest {
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 
         boolean result = mapLoaderController.parseFile(file);
+
         assertTrue(result);
     }
 
@@ -306,30 +308,6 @@ public class MapLoaderControllerTest {
         assertEquals(mapService.getCountries().size(), 2);
     }
 
-    @Test
-    public void testSaveCommand() throws Exception{
-
-        String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
-
-        String countriesInfo = validCountryString();
-        mapLoaderController.parseRawCountries(countriesInfo);
-
-        String adjacencyInfo = "[borders]\r\n" +
-                "1 2\r\n" +
-                "2 1 4 5\r\n" +
-                "3 1 5\r\n" +
-                "4 2 1\r\n" +
-                "5 2 3 4\r\n";
-        Map<Integer, Set<Integer>> adjacencyMap = mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
-
-        String command = "savemap /Users/xinjiezeng/eclipse-workspace/RISC/src/test/resources/test.map";
-        mapLoaderController.saveMap(command);
-
-//        assertTrue(lines.isPresent());
-//        assertEquals(lines.get().size(), 21);
-
-    }
 
     private MapService addValidContinentInfo(){
         MapService mapService = mapLoaderController.getMapService();

@@ -5,6 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.Locale;
 
+/**
+ * different commands the game accepts
+ */
 public enum RiscCommand {
     EDIT_MAP("editmap"),
     EDIT_COUNTRY("editcountry"),
@@ -17,11 +20,19 @@ public enum RiscCommand {
     GAME_PLAYER("gameplayer"),
     POPULATE_COUNTRY("populatecountries"),
     PLACE_ARMY("placearmy"),
-    PLACE_ALL("place_all"),
+    PLACE_ALL("placeall"),
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
-    UNKNOWN("unkonwn");
-
+    UNKNOWN("unknown"),
+	
+	//Added By keshav
+	EXIT_MAPEDIT("exitmapedit"),
+	SHOW_PLAYER("showplayer"),
+	SHOW_ALL_PLAYERS("showallplayers")
+	
+	
+	;
+	
     private String name;
 
 

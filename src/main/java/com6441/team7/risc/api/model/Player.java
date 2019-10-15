@@ -6,17 +6,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * store player information
+ */
 public class Player {
     private String name;
     private int armies;
     private List<Card> cardList;
     private int tradeInTimes;
     private static final int CARD_CATEGORY_NUMBER = 3;
+    
+    //ADDED BY KESHAV
+    public List<Country> countryPlayerList;
 
     public Player(String name) {
         this.armies = 0;
         this.name = name;
         this.cardList = new ArrayList<>();
+        
+        this.countryPlayerList=new ArrayList<>();
     }
 
     public String getName() {
@@ -53,12 +61,12 @@ public class Player {
         return hasDifferentCardsCategory() || hasSameCardsCategory();
     }
 
-    private boolean hasSameCardsCategory(){
+    public boolean hasSameCardsCategory(){
         return Stream.of(Card.ARTILLERY, Card.CAVALRY, Card.INFANTRY)
                 .anyMatch(this::hasSameCardCategory);
     }
 
-    private boolean hasDifferentCardsCategory(){
+    public boolean hasDifferentCardsCategory(){
         return new HashSet<>(cardList).size() >= CARD_CATEGORY_NUMBER;
     }
 
