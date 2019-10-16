@@ -46,6 +46,7 @@ public class fortifyGameController {
 				this.fromCountry = mapService.getCountryByName(orders[1]).get();
 				this.toCountry = mapService.getCountryByName(orders[2]).get();
 				this.num = Integer.parseInt(orders[3]);
+				fortifyState = GameState.REINFORCE;
 			}
 		}
 		
@@ -89,7 +90,7 @@ public class fortifyGameController {
 			}
 			
 			try {
-				assert(fromCountry.getSoldiers()>1);
+				assert(fromCountry.getSoldiers()>num);
 			} catch (Exception e) {
 				System.out.println("Not enough soldiers in source country");
 			}
@@ -100,7 +101,8 @@ public class fortifyGameController {
 		 */
 		public void fortify() {
 			validation();
-			toCountry.addSoldiers(fromCountry.getSoldiers() - num);
+			toCountry.addSoldiers(num);
+			fromCountry.setSoldiers(fromCountry.getSoldiers()-num);
 		}
 
 }
