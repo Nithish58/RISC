@@ -100,10 +100,7 @@ public class FortifyGameController {
 	            	   ("Cannot recognize this command in Fortification Phase. Try Again");
 			
 			}
-			
-			
-			
-			
+
 		}
 			
 		
