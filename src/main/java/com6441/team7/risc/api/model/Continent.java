@@ -1,7 +1,4 @@
 package com6441.team7.risc.api.model;
-/**
- *
- */
 
 import java.util.Locale;
 import java.util.Objects;
@@ -10,15 +7,27 @@ import java.util.Objects;
  * This class stores continent information
  */
 public class Continent {
+
+    /**
+     * It reflects the ID of continents in a given map
+     */
     private final int id;
+
+    /**
+     * The name of Continent
+     */
     private final String name;
+
+    /**
+     * The continent value in the map
+     */
     private int continentValue;
     private String color;
 
     /**
-     *
-     * @param id
-     * @param name
+     *Constructor to initialize continent with id and name as parameter.
+     * @param id The id given to new continent
+     * @param name The name given to new continent
      */
     public Continent(int id, String name) {
         this.id = id;
@@ -26,10 +35,10 @@ public class Continent {
     }
 
     /**
-     *
-     * @param id
-     * @param name
-     * @param continentValue
+     * Constructor to initialize contonent with id, name and continentValue as paramater
+     * @param id The id given to new continent
+     * @param name The name given to new continent
+     * @param continentValue the power of continent
      */
     public Continent(int id, String name, int continentValue){
         this.id = id;
@@ -39,7 +48,7 @@ public class Continent {
 
 
     /**
-     *
+     *Getter method to get continent name
      * @return
      */
     public String getName() {
@@ -47,9 +56,9 @@ public class Continent {
     }
 
     /**
-     *
-     * @param continentValue
-     * @return
+     *setter method to set continent value
+     * @param continentValue the power of continent
+     * @return continent
      */
     public Continent setContinentValue(int continentValue) {
         this.continentValue = continentValue;
@@ -57,8 +66,8 @@ public class Continent {
     }
 
     /**
-     * This method is to get continent value.
-     * @return
+     * Getter method to get continent value.
+     * @return continent value
      */
     public int getContinentValue() {
         return continentValue;

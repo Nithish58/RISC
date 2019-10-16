@@ -23,6 +23,11 @@ import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.view.CommandPromptView;
 
+/**
+ * 
+ * This test class handles fortification phase
+ *
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FortifyGameControllerTest {
 	static MapService mapService;
