@@ -536,8 +536,9 @@ public class startupGameController {
     }
 
     
-    private int endGame() {
-    	return 0;
+    private void endGame() {
+    	System.out.println("Game Ends");
+    	System.exit(0);;
     }
     
 
