@@ -45,36 +45,51 @@ public class reinforceGameController {
      * @param mapService the mapService store current information of currentPlayer.
      */
     public reinforceGameController(Player currentPlayer, MapService mapService,
-                                   startupGameController sgc, String command){
+                                   startupGameController sgc, String cmd){
         this.mapService=mapService;
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
-        this.command=command;
+        this.command=cmd;
 
         this.startupGameController=sgc;
-
-        System.out.println("Reinforcement Phase for " + currentPlayer.getName());
-
-        //Modified By Keshav
+        
         getReinforcedArmiesCount();
 
-        while(reinforcedArmiesCount>0) {
+        int countTurns=0;
+        
+        Scanner inputReinforcementScanner=new Scanner(System.in);
+                
+        do {
+        	
+        	if(reinforcedArmiesCount==0) break;
+        	
+        	System.out.println("You have " + reinforcedArmiesCount +" extra armies");
+        	
+        	if(countTurns!=0) {
+        		
+        		System.out.println("You must place all armies to proceed to next phase.");
+        		String strInput=inputReinforcementScanner.nextLine();
+        		this.command=new String(strInput);
+        		
+        		
+        	}
+        	
 
-            readCommand();
+        	readCommand();
 
-            //trialdecrement just for testing...delete it when u correct ur reinforcement method
-            //reinforcedArmiesCount-=2;
-        }
-
-
-        // this.mapService.setState(GameState.FORTIFY);
+        	countTurns++;
+        	
+        }while(reinforcedArmiesCount>0);
+        
+        this.mapService.setState(GameState.FORTIFY);
+        
+        return;
+        
     }
 
     private void readCommand() {
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
-
-
 
         switch(commandType) {
 
@@ -103,7 +118,7 @@ public class reinforceGameController {
                 break;
 
             case SHOW_PLAYER:
-                showPlayer(player);
+            	showPlayerReinforcement(player);
                 break;
 
             case SHOW_ALL_PLAYERS:
@@ -111,9 +126,11 @@ public class reinforceGameController {
                 break;
 
             default:
-                throw new IllegalArgumentException("Cannot recognize this command. Try Again");
-
-
+                //throw new IllegalArgumentException("Cannot recognize this command in reeinforcement. Try Again"
+                //									+"\nCommand: "+command);
+            	System.out.println("Cannot recognize this command in reinforcement. Try Again");
+            	System.out.println("Command: "+command);
+            	
         }
 
     }
@@ -142,7 +159,8 @@ public class reinforceGameController {
             }
 
         }
-        System.out.println("You have " + reinforcedArmiesCount +" extra armies");
+        
+    //    System.out.println("You have " + reinforcedArmiesCount +" extra armies");
     }
 
 
@@ -155,17 +173,18 @@ public class reinforceGameController {
         if (mapService.getCountryByName(countryName).isPresent()){
             Country country = mapService.getCountryByName(countryName).get();
             if (allCountriesOfPlayer().contains(country)){
-                if (num > reinforcedArmiesCount || num < reinforcedArmiesCount){
+                if (num > reinforcedArmiesCount || num <= 0){
                     System.out.println("Sorry, your extra armies number should be in range 1 - "+ reinforcedArmiesCount);
                 }else{
-                    System.out.println("The "+ country +"has" + country.getSoldiers()+" soldiers");
+                    System.out.println(countryName +" had " + country.getSoldiers()+" soldiers");
                     country.addSoldiers(num);
-                    System.out.println("After reinforcement, the "+ country +"has" + country.getSoldiers()+" soldiers");
+                    System.out.println("After reinforcement, "+ countryName +" has " + country.getSoldiers()+" soldiers");
                     reinforcedArmiesCount -= num;
+                   // System.out.println("Number of soldiers remaining: "+reinforcedArmiesCount);
                 }
 
             }else{
-                System.out.println(country + " belongs to other player.");
+                System.out.println(countryName + " belongs to other player.");
             }
 
         }else{
@@ -202,7 +221,7 @@ public class reinforceGameController {
     }
 
 
-    private void showPlayer(Player p) {
+    private void showPlayerReinforcement(Player p) {
         Collections.sort(p.countryPlayerList, new Comparator<Country>() {
 
                     @Override
@@ -214,8 +233,7 @@ public class reinforceGameController {
                 }
         );
 
-        System.out.println("Current Player: "+p.getName()+
-                " , Num Armies Remaining: "+p.getArmies());
+        System.out.println("Current Player: "+p.getName());
 
         System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
 

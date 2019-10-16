@@ -1,8 +1,5 @@
 package com6441.team7.risc.controller;
 
-
-
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,50 +20,90 @@ import com6441.team7.risc.api.model.Player;
  */
 public class fortifyGameController {
 	
-	MapService mapService;
-	Player currentPlayer;
-	
-	public fortifyGameController(Player currentPlayer, MapService mapService) {
+		private MapService mapService;
+		private Country fromCountry;
+		private Country toCountry;
+		private Player player;
+		private Integer num;
+		private String []orders;
+		GameState fortifyState;
+		Set<Integer> neighbouringCountries;
+		Set<Country> countryList;
 		
-		this.currentPlayer=currentPlayer;
-		this.mapService=mapService;
+		/*
+		 * Constructor with parameters
+		 */
+		public fortifyGameController(Player player, MapService mapService){
+			this.mapService = mapService;
+			this.player = player;
+		}
 		
+		public void readCommand(String command) throws IOException {
+			this.orders = command.split(" ");
+			if (orders[1].equals("none")){
+				fortifyState = GameState.REINFORCE;
+			} else {
+				this.fromCountry = mapService.getCountryByName(orders[1]).get();
+				this.toCountry = mapService.getCountryByName(orders[2]).get();
+				this.num = Integer.parseInt(orders[3]);
+				fortify();
+				fortifyState = GameState.REINFORCE;
+			}
+		}
 		
-		System.out.println("Fortification Skipped for "+this.currentPlayer.getName());
-		System.out.println();
-		System.out.println();
-		
-		this.mapService.setState(GameState.REINFORCE);
-	}
+		/*
+		 * 
+		 */
+		public void validation() {
+			/*
+			 * Validity checks: 
+			 * -Game State
+			 * -Both countries are adjacent 
+			 * -Both countries belong to player
+			 * -minimum num of armies/soldiers in source country
+			 */
+			
+			
+			// Is the exception correct? 
+			try {
+				assert(fortifyState.getName().equals(GameState.FORTIFY.toString()));
 
-
-	//DONT FORGET TO CHANGE STATE TO REINFORCEMENT AGAIN IN MAPSERVICE AFTER END OF LAST METHOD
+			} catch (Exception e) {
+				// TODO: handle exception
+				System.out.println("Not right Game state");
+			}
+			
+			try {
+				Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
+				Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountry.toString());
+				Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.toString());
+				neighbouringCountries =  adjacentCountriesList.get(fromId);
+				assert(neighbouringCountries.contains(toId));
+			} catch (Exception e) {
+				System.out.println("Countries not adjacent to each other");
+			}
+			
+			
+			try {
+				assert(fromCountry.getPlayer().equals(toCountry.getPlayer()));
+			} catch (Exception e) {
+				System.out.println("Check if both are same player's countries");
+			}
+			
+			try {
+				assert(fromCountry.getSoldiers()>num);
+			} catch (Exception e) {
+				System.out.println("Not enough soldiers in source country");
+			}
+		}
+		
+		/*
+		 * After validation comes fortifying
+		 */
+		public void fortify() {
+			validation();
+			toCountry.addSoldiers(num);
+			fromCountry.setSoldiers(fromCountry.getSoldiers()-num);
+		}
 
 }
-
-
-
-/*
-
-MapService mapService;
-Player currentPlayer;
-
-
-public fortifyGameController(Player currentPlayer, MapService mapService) {
-	
-	this.currentPlayer=currentPlayer;
-	this.mapService=mapService;
-	
-	
-	System.out.println("Fortification:"+this.currentPlayer.getName());
-	System.out.println();
-	System.out.println();
-	
-	this.mapService.setState(GameState.REINFORCE);
-}
-
-
-//DONT FORGET TO CHANGE STATE TO REINFORCEMENT AGAIN IN MAPSERVICE AFTER END OF LAST METHOD
-//DONT FORGET TO CHANGE CURRENT PLAYER TO NEXT PLAYER IN ARRAYLIST and CHECK IF END OF ARRAYLIST,
-//CURRENT PLAYER GOES BACK TO BEING FIRST PLAYER (Circular)
-*/
