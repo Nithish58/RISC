@@ -112,7 +112,7 @@ public class Country {
     }
 
     /**
-     * getter methods to get continent Id of country
+     * To get continent Id of country
      * @return continent Id
      */
     public Integer getContinentIdentifier() {
