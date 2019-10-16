@@ -65,7 +65,16 @@ public class FortifyGameController {
 			
 			
 		}
-		
+
+	/**
+	 * read command from user, if it is fortify, call determineFortificationAndFortify method
+	 * if the command is showMap, call showMapFull()
+	 * if the command is showPlayer, call showPlayerFortificationPhase method
+	 * if the command is showPlayerAllCountries, call showPlayerAllCountriesFortification();
+	 * else throw exception
+	 * @param command
+	 * @throws IOException
+	 */
 		public void readCommand(String command) throws IOException{
 			
 			this.orders=command.split("\\s+");
@@ -102,9 +111,15 @@ public class FortifyGameController {
 			}
 
 		}
-			
-		
-		private void determineFortificationAndFortify(String command) {
+
+	/**
+	 * validate the command, if the command format is valid, check the command type
+	 * if the command is none, do nothing and exit reinforce phase
+	 * if the command is country and num, validat the country info and soldier info,
+	 * move the soldier from these two countries
+	 * @param command
+	 */
+	private void determineFortificationAndFortify(String command) {
 		
 			this.orders=command.split("\\s+");
 			
@@ -151,8 +166,9 @@ public class FortifyGameController {
 		
 
 		
-		/*
+		/**
 		 * After validation comes fortifying
+		 * show before and after fortification information of country and soldiers
 		 */
 		public void fortify() {
 			
@@ -234,8 +250,11 @@ public class FortifyGameController {
 			}			
 			
 		}
-		
-		private void checkCountryOwnership() {
+
+	/**
+	 * check the country owned by the current player
+	 */
+	private void checkCountryOwnership() {
 			
 			if(!(fromCountry.getPlayer().getName().equalsIgnoreCase
 					(toCountry.getPlayer().getName()))) {
@@ -244,8 +263,11 @@ public class FortifyGameController {
 			}
 			
 		}
-		
-		private void checkNumSoldiers() {
+
+	/**
+	 * check the number of soldiers for the current player
+	 */
+	private void checkNumSoldiers() {
 			
 			if(!(fromCountry.getSoldiers()>num)) {
 				System.out.println("Not enough soldiers in origin country");
@@ -253,9 +275,12 @@ public class FortifyGameController {
 			}
 			
 		}
-		
-	    
-	    private void showPlayerFortificationPhase(Player p) {
+
+	/**
+	 * show current player information, the countries its occupy and corresponding soldiers
+	 * @param p
+	 */
+	private void showPlayerFortificationPhase(Player p) {
 	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
 
 	                    @Override
@@ -297,7 +322,12 @@ public class FortifyGameController {
 	            System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
 	        }
 	    }
-	    
+
+
+	/**
+	 * show current player and countries information in the fortification
+	 *
+	 */
 	    private void showPlayerCountriesFortification() {
 	    	Player currentPlayer=this.player;
 	    	
@@ -351,7 +381,12 @@ public class FortifyGameController {
 
 	    	}
 	    }
-	    
+
+
+	/**
+	 * show players and all countries in fortification phase
+	 * @param p
+	 */
 	    private void showPlayerAllCountriesFortification() {
 	    	
 	    	Player currentPlayer=player;
