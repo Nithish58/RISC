@@ -85,15 +85,8 @@ public class GameController {
 
 
 		this.startupPhaseController=new StartupGameController(this.mapLoaderController,this.mapService,
-<<<<<<< HEAD
 				this.players);
 
-		//reinforcementGameController=new reinforceGameController();
-		//fortificationGameController=new fortifyGameController();
-=======
-																	this.players);
-
->>>>>>> 7648b1d2685b5befde47d1739a895076db4035b7
 
 	}
 
@@ -110,7 +103,6 @@ public class GameController {
 	 * @param command Accepts a String of command as parameter and then splits it to evaluate and redirect that command to one state.
 	 *
 	 */
-<<<<<<< HEAD
 	public void readCommand(String command) throws IOException {
 
 		if(!boolStartUpPhaseOver.get()) {
@@ -146,7 +138,8 @@ public class GameController {
 						this.mapService,
 						this.startupPhaseController,
 						command,
-						this.boolFortificationPhaseOver);
+						this.boolFortificationPhaseOver,
+						view);
 
 				switchNextPlayer();
 
@@ -187,89 +180,7 @@ public class GameController {
 
 	public void setView(CommandPromptView v) {
 		this.view=v;
+		this.startupPhaseController.setView(v);
 	}
 
 }
-=======
-    public void readCommand(String command) throws IOException {
-    	
-        if(!boolStartUpPhaseOver.get()) {        	
-        	
-        	
-        	if(!boolStartUpPhaseSet) {
-        		this.mapService.setState(GameState.START_UP);
-        		this.boolStartUpPhaseSet=true;
-        	}
-        	
-        	startupPhaseController.readCommand(command, this.boolStartUpPhaseOver);
-        }
-        
-        else {
-        	
-            	if(this.mapService.getGameState()==GameState.REINFORCE) {
-            		
-            		//reinforcementGameController.readCommand(command)
-            		
-            		this.currentPlayer=players.get(currentPlayerIndex);
-            		
-            		reinforcementGameController=new ReinforceGameController(this.currentPlayer,
-            													this.mapService,
-            													startupPhaseController,
-            													command,
-            													view);
-            		
-            	}
-            	
-            	else if(this.mapService.getGameState()==GameState.FORTIFY) {
-            		
-            		fortificationGameController=new FortifyGameController(this.currentPlayer,
-            																this.mapService,
-            																this.startupPhaseController,
-            																command,
-            																this.boolFortificationPhaseOver,
-            																view);
-            	
-            		switchNextPlayer();
-            			
-            	}
-
-        }
-  
-    }
-    
-    /**
-     * This method keeps track of the currentPlayerIndex and switches to the next player as soon as a player's
-     * turn is over.
-     * 
-     */
-    
-    private void switchNextPlayer() {
-		
-    	if(boolFortificationPhaseOver.get()) {
-    		
-    		if(currentPlayerIndex==players.size()-1) {
-    			currentPlayerIndex=0;
-    		}
-    		
-    		else currentPlayerIndex++;  
-    		
-    		this.currentPlayer=players.get(currentPlayerIndex);
-    		view.displayMessage("\nPlayer Turn: "+currentPlayer.getName());
-    		
-    	}
-    	
-    	boolFortificationPhaseOver.set(false);
-
-    }
-    
-    public CommandPromptView getView() {
-    	return view;
-    }
-    
-    public void setView(CommandPromptView v) {
-    	this.view=v;
-    	this.startupPhaseController.setView(v);
-    }
-    	
-}
->>>>>>> 7648b1d2685b5befde47d1739a895076db4035b7
