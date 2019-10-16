@@ -36,7 +36,6 @@ public class ReinforceGameController {
     private CommandPromptView view;
     private int reinforcedArmiesCount;
     private StartupGameController startupGameController;
-
     private String command="";
     
     /**
@@ -58,7 +57,6 @@ public class ReinforceGameController {
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
         this.command=cmd;
-
         this.startupGameController=sgc;
         
         getReinforcedArmiesCount();
@@ -158,9 +156,34 @@ public class ReinforceGameController {
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
         //game rule 3
-        if (player.hasDifferentCardsCategory() || player.hasSameCardsCategory()){
-            this.reinforcedArmiesCount += 5;
-            player.removeCards();
+        if (player.getCardList().size()>=3){
+            if (player.getCardList().size()>=5){
+                System.out.println("you have "+player.getCardList().size()+" which is greater than or equal to 5 cards");
+                if (player.meetTradeInCondition()){
+                    this.reinforcedArmiesCount += 5*player.getTradeInTimes();
+                    player.removeCards();
+                    System.out.println("3 cards removed");
+                }
+            }else{
+                System.out.println("you have "+player.getCardList().size()+" which is less than 5 cards");
+                System.out.println("Do you want to trade in your cards: Yes/No");
+                Scanner read = new Scanner(System.in);
+                 String cmd = read.nextLine();
+                switch (cmd.toLowerCase()){
+                    case "yes":
+                        if (player.meetTradeInCondition()){
+                            this.reinforcedArmiesCount += 5*player.getTradeInTimes();
+                            player.removeCards();
+                            System.out.println("3 cards removed");
+                            System.out.println("Remaining cards: "+ player.getCardList().size());
+                        }
+                        break;
+                    case "no":
+                        break;
+                    default:
+                        System.out.println("write yes/no");
+                }
+            }
         }
         // Game rule 2 continentValue
         for (String item: continentOccuppiedByPlayer()){
@@ -188,7 +211,7 @@ public class ReinforceGameController {
         if (mapService.getCountryByName(countryName).isPresent()){
         	
             Country country = mapService.getCountryByName(countryName).get();
-            
+
             if (allCountriesOfPlayer().contains(country)){
             	
                 if (num > reinforcedArmiesCount || num <= 0){

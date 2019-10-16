@@ -151,7 +151,7 @@ public class GameController {
      * turn is over.
      * 
      */
-    
+
     private void switchNextPlayer() {
 		
     	if(boolFortificationPhaseOver.get()) {
