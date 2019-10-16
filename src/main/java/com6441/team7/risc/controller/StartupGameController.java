@@ -105,8 +105,6 @@ public class StartupGameController {
 		
 		this.mapLoaderController=mapController;
 		
-		if(view==null) System.out.println("NULL VIEW");
-		
 		this.boolMapLoaded=false;
 		
 		

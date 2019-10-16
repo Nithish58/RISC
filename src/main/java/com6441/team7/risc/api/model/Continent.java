@@ -22,6 +22,10 @@ public class Continent {
      * The continent value in the map
      */
     private int continentValue;
+    
+    /**
+     * Continent color value
+     */
     private String color;
 
     /**
@@ -35,7 +39,7 @@ public class Continent {
     }
 
     /**
-     * Constructor to initialize contonent with id, name and continentValue as paramater
+     * Constructor to initialize continent with id, name and continentValue as paramater
      * @param id The id given to new continent
      * @param name The name given to new continent
      * @param continentValue the power of continent
