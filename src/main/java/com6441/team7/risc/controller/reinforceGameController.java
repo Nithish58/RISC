@@ -140,7 +140,7 @@ public class reinforceGameController {
      * To get total number of reinforced armies of player
      * @return total number of reinforced armies of a player.
      */
-    private void getReinforcedArmiesCount(){
+    public void getReinforcedArmiesCount(){
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
         //game rule 3

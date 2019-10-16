@@ -1,4 +1,8 @@
+
+
 package com6441.team7.risc.controller;
+
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -6,10 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
+import com6441.team7.risc.api.model.RiscCommand;
 
 /**
  * <h1>The fortify phase</>
@@ -36,20 +43,56 @@ public class fortifyGameController {
 		public fortifyGameController(Player player, MapService mapService){
 			this.mapService = mapService;
 			this.player = player;
+			
+			
+			
 		}
 		
+		public void readCommand(String command) throws IOException{
+			
+			this.orders=command.split("\\s+");
+			
+			RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
+			
+			
+			
+			
+			
+			
+		}
+		
+		/*
 		public void readCommand(String command) throws IOException {
 			this.orders = command.split(" ");
 			if (orders[1].equals("none")){
-				fortifyState = GameState.REINFORCE;
+				
+				//fortifyState = GameState.REINFORCE;
+				System.out.println("Fortification Phase Over.");
+				
+				this.mapService.setState(GameState.REINFORCE);
+				
 			} else {
+				
 				this.fromCountry = mapService.getCountryByName(orders[1]).get();
+				
 				this.toCountry = mapService.getCountryByName(orders[2]).get();
-				this.num = Integer.parseInt(orders[3]);
+				
+				try {
+					this.num = Integer.parseInt(orders[3]);
+				}
+				catch(NumberFormatException e) {
+					System.out.println(e);
+				}
+				
 				fortify();
+				
 				fortifyState = GameState.REINFORCE;
+				
 			}
 		}
+		
+		*/
+		
 		
 		/*
 		 * 
@@ -90,20 +133,29 @@ public class fortifyGameController {
 				System.out.println("Check if both are same player's countries");
 			}
 			
+			
 			try {
 				assert(fromCountry.getSoldiers()>num);
 			} catch (Exception e) {
 				System.out.println("Not enough soldiers in source country");
 			}
+			
 		}
 		
 		/*
 		 * After validation comes fortifying
 		 */
 		public void fortify() {
+			
 			validation();
 			toCountry.addSoldiers(num);
-			fromCountry.setSoldiers(fromCountry.getSoldiers()-num);
+			//fromCountry.setSoldiers(fromCountry.getSoldiers()-num);
+			fromCountry.removeSoldiers(num);
+			
+			System.out.println("Before Fortification: "+fromCountry.getCountryName()+"-"+
+								fromCountry.getSoldiers()+" , "+
+								toCountry.getCountryName()+"-"+toCountry.getSoldiers());
+			
 		}
 
 }

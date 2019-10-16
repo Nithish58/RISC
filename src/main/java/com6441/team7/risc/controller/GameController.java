@@ -119,7 +119,7 @@ public class GameController {
             		
             		this.currentPlayer=players.get(currentPlayerIndex);
             		
-            		new reinforceGameController(this.currentPlayer,
+            		reinforcementGameController=new reinforceGameController(this.currentPlayer,
             													this.mapService,
             													startupPhaseController,
             													command);
@@ -128,11 +128,11 @@ public class GameController {
             	
             	else if(this.mapService.getGameState()==GameState.FORTIFY) {
             		
-            	//	fortificationGameController=new fortifyGameController(this.currentPlayer,
-            	//			this.mapService);
+            		fortificationGameController=new fortifyGameController(this.currentPlayer,
+            				this.mapService);
             	
             		switchNextPlayer();
-            		this.mapService.setState(GameState.REINFORCE);
+            		//this.mapService.setState(GameState.REINFORCE);
 
             	}
 
