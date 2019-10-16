@@ -161,8 +161,8 @@ public class ReinforceGameController {
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
         //game rule 3
-        if (player.hasDifferentCardsCategory() || player.hasSameCardsCategory()){
-            this.reinforcedArmiesCount += 5;
+        if (player.meetTradeInCondition()){
+            this.reinforcedArmiesCount += (5*player.getTradeInTimes());
             player.removeCards();
         }
         // Game rule 2 continentValue
