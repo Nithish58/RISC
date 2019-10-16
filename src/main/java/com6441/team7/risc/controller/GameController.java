@@ -100,7 +100,6 @@ public class GameController {
 	 */
     public void readCommand(String command) throws IOException {
     	
-    	
         if(!boolStartUpPhaseOver.get()) {        	
         	
         	
@@ -120,9 +119,7 @@ public class GameController {
             		
             		this.currentPlayer=players.get(currentPlayerIndex);
             		
-            		System.out.println("REINFORCE:"+this.currentPlayer.getName());
-            		
-            		reinforcementGameController=new reinforceGameController(this.currentPlayer,
+            		new reinforceGameController(this.currentPlayer,
             													this.mapService,
             													startupPhaseController,
             													command);
@@ -131,10 +128,11 @@ public class GameController {
             	
             	else if(this.mapService.getGameState()==GameState.FORTIFY) {
             		
-            		fortificationGameController=new fortifyGameController(this.currentPlayer,
-            				this.mapService);
-            		
+            	//	fortificationGameController=new fortifyGameController(this.currentPlayer,
+            	//			this.mapService);
+            	
             		switchNextPlayer();
+            		this.mapService.setState(GameState.REINFORCE);
 
             	}
 
@@ -147,13 +145,18 @@ public class GameController {
      * turn is over.
      * 
      */
+    
     private void switchNextPlayer() {
 		
 		if(currentPlayerIndex==players.size()-1) {
 			currentPlayerIndex=0;
 		}
 		
-		else currentPlayerIndex++;    
+		else currentPlayerIndex++;  
+		
+		this.currentPlayer=players.get(currentPlayerIndex);
+		System.out.println("\nPlayer Turn: "+currentPlayer.getName());
     }
+    
     	
 }

@@ -80,6 +80,7 @@ public class CommandPromptView implements Observer {
                 else {
                 	
                 	System.out.println("Enter next Command ("+this.gameState+"): ");
+                	
                 	 command = scanner.nextLine();
                 }
                 
@@ -93,9 +94,11 @@ public class CommandPromptView implements Observer {
                             break;
                         case FORTIFY:
                         	 gameController.readCommand(command);
+                        	 break;
                             //gameController.fortify(command);
                         case REINFORCE:
                         	 gameController.readCommand(command);
+                        	 break;
                             //gameController.reinforce(command);
 
                     }
