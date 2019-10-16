@@ -25,3 +25,5 @@
 
 12. Maploader modifications discuss with jenny: + comments for new methods
 changed showmap...added showfile...added get set methods for country and continent id generator
+
+13. FOUND MAJOR BUG IN EDITMAP**********
