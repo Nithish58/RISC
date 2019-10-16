@@ -770,6 +770,9 @@ public class MapLoaderController {
     	this.countryIdGenerator.set(num);
     }
 
+    /**
+     * show map information with continents, each country relates to continents and its neighboring countries
+     */
     public void showMapFull() {
 
     	for(Map.Entry<Integer, Set<Integer>> item :

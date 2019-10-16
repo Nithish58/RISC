@@ -1,5 +1,8 @@
 package com6441.team7.risc.api.exception;
 
+/**
+ * create an self-defined exception if errors happen in editcontinent
+ */
 public class ContinentEditException extends RiscGameException{
     public ContinentEditException(Exception rootCause) {
         super(rootCause);

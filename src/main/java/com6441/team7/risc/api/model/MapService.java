@@ -45,25 +45,15 @@ public class MapService extends Observable {
      */
     private GameState gameState = GameState.LOAD_MAP;
 
-    /**
-     * empty constructor
-     */
+
     public MapService(){}
 
-    /**
-     * The observer
-     * @param observer
-     */
     @Override
     public void addObserver(Observer observer) {
         super.addObserver(observer);
         setState(gameState);
     }
 
-    /**
-     * To get the state of game
-     * @return game's state
-     */
     public GameState getGameState(){
         return gameState;
     }
@@ -456,7 +446,7 @@ public class MapService extends Observable {
     }
 
     /**
-     * remove country
+     * rremove country
      * @param id id of country
      */
     public void removeCountryById(int id) {
@@ -568,10 +558,7 @@ public class MapService extends Observable {
     public void removeNeighboringCountriesByName(String name) {
     }
 
-    /**
-     * To remove neighboring countries by name
-     * @param id id of country
-     */
+
     public void removeNeighboringCountriesById(int id) {
     }
 
@@ -631,11 +618,11 @@ public class MapService extends Observable {
      * @return Optional.of(country) if id exist else Optional.empty()
      */
     public Optional<Country> getCountryByName(String name) {
-    	
+
     	for(Country c:countries) {
     		if(c.getCountryName().equalsIgnoreCase(name)) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
@@ -645,12 +632,12 @@ public class MapService extends Observable {
      * @return Optional.of(country) if id exist else Optional.empty()
      */
     public Optional<Country> getCountryById(int id) {
-    	
+
     	//Modified By Keshav
     	for(Country c:countries) {
     		if(c.getId()==id) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
@@ -660,11 +647,11 @@ public class MapService extends Observable {
      * @return Optional.of(continent) if id exist else Optional.empty()
      */
     public Optional<Continent> getContinentByName(String name) {
-    	
+
     	for(Continent c:continents) {
     		if(c.getName().equalsIgnoreCase(name)) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
@@ -674,12 +661,12 @@ public class MapService extends Observable {
      * @return Optional.of(continent) if id exist else Optional.empty()
      */
     public Optional<Continent> getContinentById(int id) {
-    	
+
     	//Modified By Keshav
     	for(Continent c:continents) {
     		if(c.getId()==id) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
@@ -704,7 +691,7 @@ public class MapService extends Observable {
      * @return directed graph
      */
     public Graph<Integer, DefaultEdge> getDirectedGraph() {
-    	
+
         return directedGraph;
     }
 
@@ -725,7 +712,7 @@ public class MapService extends Observable {
 
     	//Added By Keshav
     	//if(countries.size()==0) return false;
-    	
+
         if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
             return false;
         }

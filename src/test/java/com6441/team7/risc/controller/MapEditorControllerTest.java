@@ -108,8 +108,8 @@ public class MapEditorControllerTest {
 	 * <ul>
 	 * <li><b>initcontinentsize</b> retrieves the recent size of the continent list. 
 	 * It is used alongside with <i>expectedcontinentsize</i> to calculate the expected result for assertion.
-	 * <li><b>newcontinentstr<i>n</i></b> set continent name to be added for test <i>n</i> on continent edit tests.
-	 * <li><b>delcontinentstr<i>n</i></b> set continent name to be removed for test <i>n</i> on continent edit tests.
+	 * <li><b>newcontinentstr<i>n</i></b> set continent name to be added for test <i>n</i> on continent adding tests.
+	 * <li><b>delcontinentstr<i>n</i></b> set continent name to be removed for test <i>n</i> on continent removal tests.
 	 * </ul>
 	 * </p>
 	 * <p>
@@ -117,8 +117,8 @@ public class MapEditorControllerTest {
 	 * <ul>
 	 * <li><b>initcountrysize</b> retrieves the recent size of the country list. 
 	 * It is used alongside with <i>expectedcountrysize</i> to calculate the expected result for assertion.
-	 * <li><b>newcountrystr<i>n</i></b> set country name to be added for test <i>n</i> on country edit tests.
-	 * <li><b>delcountrystr<i>n</i></b> set country name to be removed for test <i>n</i> on country edit tests.
+	 * <li><b>newcountrystr<i>n</i></b> set country name to be added for test <i>n</i> on country adding tests.
+	 * <li><b>delcountrystr<i>n</i></b> set country name to be removed for test <i>n</i> on country removal tests.
 	 * </ul>
 	 * </p>
 	 * <p>
@@ -149,85 +149,100 @@ public class MapEditorControllerTest {
 		 * it uses UTF-8 charsets.
 		 */
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-
+		//if the testCounter is not less than 3, the editmap command and map parsing must be skipped.
+		//This so that the subsequent tests won't be impacted by it.
 		if (testCounter < 3) {
 		inputcommand = "editmap "+uri;
 		testMapLoader.parseFile(file);
+		//if the testCounter is not less than 2, the editMap() method in the controller
+		//must be skipped. This so that the subsequent tests won't be impacted by it.
 		if(testCounter < 2) {
 			inputmap = testMapLoader.editMap(inputcommand);
 		}
 		}
 		//size of continent list before one continent is added
 		initcontinentsize = testMapLoader.getMapService().getContinents().size();
-		/**
-		 * The followings are for the test cases of editing continent
-		 * expectedcontinentsize is the expected size of continent list
-		 * after edit operation
-		 * continentcommand contains the editcontinent commands.
-		 * continentcommands is an array that contains the split string for parameters
-		 */
+		// The followings are for the test cases of editing continent
+		//expectedcontinentsize is the expected size of continent list
+		//after edit operation
+		//continentcommand contains the editcontinent commands.
+		//continentcommands is an array that contains the split string for parameters
 		newcontinentstr1 = "Nord_Asia"; //one continent to be added
 		newcontinentstr2a = "Southeast_Asia"; newcontinentstr2b = "Northeast_Asia"; //two continents to be added
+		
 		delcontinentstr1 = "ulstrailia"; //one continent to be removed
 		delcontinentstr2a = "ameroki"; delcontinentstr2b = "amerpoll"; //two continents to be deleted
+		
 		newcontinentstr3 = "NordWest_Asia"; delcontinentstr3 = "Southeast_Asia"; //continents to be added and deleted one each in a line
 		newcontinentstr4a= "NordEast_Europe"; newcontinentstr4b = "SouthWest_Europe"; delcontinentstr4a="utropa"; delcontinentstr4b="afrori"; 
+		//continentcommand1 and continentcommands1 are for adding one continent
 		continentcommand1 = "editcontinent -add "+newcontinentstr1+" 1";
 		continentcommand1 = StringUtils.substringAfter(continentcommand1, "-");
 		continentcommands1 = StringUtils.split(continentcommand1, "-");
+		//continentcommand2 and continentcommands2 are for adding two continents
 		continentcommand2 = "editcontinent -add "+newcontinentstr2a+" 1 -add "+newcontinentstr2b+" 1";
 		continentcommand2 = StringUtils.substringAfter(continentcommand2, "-");
 		continentcommands2 = StringUtils.split(continentcommand2, "-");
+		//continentcommand3 and continentcommands3 are for removing one continent
 		continentcommand3 = "editcontinent -remove "+delcontinentstr1;
 		continentcommand3 = StringUtils.substringAfter(continentcommand3, "-");
 		continentcommands3 = StringUtils.split(continentcommand3, "-");
+		//continentcommand4 and continentcommands4 are for removing two continents
 		continentcommand4 = "editcontinent -remove "+delcontinentstr2a+" 1 -remove "+delcontinentstr2b+" 1";
 		continentcommand4 = StringUtils.substringAfter(continentcommand4, "-");
 		continentcommands4 = StringUtils.split(continentcommand4, "-");
+		//continentcommand5 and continentcommands5 are for adding and removing one continent
 		continentcommand5 = "editcontinent -add "+newcontinentstr3+" 9 -remove "+delcontinentstr3;
 		continentcommand5 = StringUtils.substringAfter(continentcommand5, "-");
 		continentcommands5 = StringUtils.split(continentcommand5, "-");
+		//continentcommand6 and continentcommands6 are for adding and removing two continents
 		continentcommand6 = "editcontinent -add  "+newcontinentstr4a+" 4 -add "+newcontinentstr4b+" 3 -remove "+delcontinentstr4a+" -remove "+delcontinentstr4b;
 		continentcommand6 = StringUtils.substringAfter(continentcommand6, "-");
 		continentcommands6 = StringUtils.split(continentcommand6, "-");
-		/**
-		 * The followings are for the test cases of editing countries
-		 * expectedcountrysize is the expected size of country list
-		 * after edit operation
-		 * <li>editorcommand contains the editcountry commands.
-		 * <li>editorcommands is an array that contains the split string for parameters
-		 */
+		
+		// The followings are for the test cases of editing continent
+		//expectedcountrysize is the expected size of continent list
+		//after edit operation
+		//countrycommand contains the editcountry commands.
+		//countrycommands is an array that contains the split string for parameters
 		initcountrysize = testMapLoader.getMapService().getCountries().size();
+		
 		newcountrystr1 = "Nordenstan"; countrycontinentstr1 = "Nord_Asia";//one country to be added
 		newcountrystr2a = "Nordennavic"; countrycontinentstr2a = "NordEast_Europe"; newcountrystr2b = "Northeast_Asia"; 
 		newcountrystr2b = "United_Islands"; countrycontinentstr2b = "Northeast_Asia";//two countrys to be added
+		
 		delcountrystr1 = "united_islands"; //one country to be removed
 		delcountrystr2a = "yazteck"; delcountrystr2b = "kongrolo"; //two countrys to be deleted
+		
 		newcountrystr3 = "Fiji"; countrycontinentstr3="azio"; delcountrystr3 = "Nordenstan"; //countrys to be added and deleted one each in a line
 		newcountrystr4a= "Sky_Republic"; countrycontinentstr4a="Nord_Asia"; 
 		newcountrystr4b = "Ocean_Republic"; countrycontinentstr4b="Northeast_Asia"; delcountrystr4a="sluci"; delcountrystr4b="kancheria"; 
+		//countrycommand1 and countrycommands1 are for adding one country
 		countrycommand1 = "editcountry -add "+newcountrystr1+" "+countrycontinentstr1;
 		countrycommand1 = StringUtils.substringAfter(countrycommand1, "-");
 		countrycommands1 = StringUtils.split(countrycommand1, "-");
+		//countrycommand2 and countrycommands2 are for adding two countries
 		countrycommand2 = "editcountry -add "+newcountrystr2a+" "+countrycontinentstr2a+" -add  "+newcountrystr2b+" "+countrycontinentstr2b;
 		countrycommand2 = StringUtils.substringAfter(countrycommand2, "-");
 		countrycommands2 = StringUtils.split(countrycommand2, "-");
+		//countrycommand3 and countrycommands3 are for removing one country
 		countrycommand3 = "editcountry -remove "+delcountrystr1;
 		countrycommand3 = StringUtils.substringAfter(countrycommand3, "-");
 		countrycommands3 = StringUtils.split(countrycommand3, "-");
+		//countrycommand4 and countrycommands4 are for removing two countries
 		countrycommand4 = "editcountry -remove  "+delcountrystr2a+" -remove "+delcountrystr2b;
 		countrycommand4 = StringUtils.substringAfter(countrycommand4, "-");
 		countrycommands4 = StringUtils.split(countrycommand4, "-");
+		//countrycommand5 and countrycommands5 are for adding and removing one country
 		countrycommand5 = "editcountry -add "+newcountrystr3+" "+countrycontinentstr3+" -remove "+delcountrystr3;
 		countrycommand5 = StringUtils.substringAfter(countrycommand5, "-");
 		countrycommands5 = StringUtils.split(countrycommand5, "-");
+		//countrycommand6 and countrycommands6 are for removing two countries
 		countrycommand6 = "editcountry -add "+newcountrystr4a+" "+countrycontinentstr4a
 					+" -add "+newcountrystr4b+" "+countrycontinentstr4b+" -remove "+delcountrystr4a+" -remove "+delcountrystr4b;
 		countrycommand6 = StringUtils.substringAfter(countrycommand6, "-");
 		countrycommands6 = StringUtils.split(countrycommand6, "-");
-		/**
-		 * The followings are for neighbor adding test:
-		 */
+		//The followings are for neighbor adding test:
 		countrystr1 = "nordennavic"; neighborstr1 = "siberia";
 		countrystr2a = "fiji"; neighborstr2a = "japan"; countrystr2b = "fiji"; neighborstr2b = "india";
 		countrystr3 = "siberia"; neighborstr3 = "worrick";
@@ -235,14 +250,14 @@ public class MapEditorControllerTest {
 		countrystr5a = "japan"; neighborstr5a = "afganistan"; countrystr5b = "japan"; neighborstr5b = "fiji";
 		countrystr6a = "china"; neighborstr6a = "sky_republic"; countrystr6b = "china"; neighborstr6b = "ocean_republic";
 		countrystr6c = "china"; neighborstr6c = "middle_east"; countrystr6d = "china"; neighborstr6d = "heal";
-		
+		//neighborcommand1,neighborcommands1, country1, and neighbor1 are for adding one neighbor
 		neighborcommand1 = "editneighbor -add "+countrystr1+" "+ neighborstr1;
 		neighborcommand1 = StringUtils.substringAfter(neighborcommand1, "-");
 		neighborcommands1 = StringUtils.split(neighborcommand1, "-");
 		
 		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr1);
 		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr1);
-		
+		//neighborcommand2,neighborcommands2, country2a, country2db, neighbor 2a, and neighbor2b are for adding two neighbor
 		neighborcommand2 = "editneighbor -add "+countrystr2a+" "+neighborstr2a+" -add "+countrystr2b+" "+neighborstr2b;
 		neighborcommand2 = StringUtils.substringAfter(neighborcommand2, "-");
 		neighborcommands2 = StringUtils.split(neighborcommand2, "-");
@@ -251,13 +266,13 @@ public class MapEditorControllerTest {
 		country2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2b);
 		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2a);
 		neighbor2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2b);
-		
+		//neighborcommand3,neighborcommands3, country3, and neighbor3 are for removing one neighbor
 		neighborcommand3 = "editneighbor -remove "+countrystr3+" "+neighborstr3;
 		neighborcommand3 = StringUtils.substringAfter(neighborcommand3, "-");
 		neighborcommands3 = StringUtils.split(neighborcommand3, "-");
 		country3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr3);
 		neighbor3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr3);
-		
+		//neighborcommand4,neighborcommands4, country4a, country4b, neighbor4a, and neighbor4b are for removing two neighbors
 		neighborcommand4 = "editneighbor -remove "+countrystr4a+" "+neighborstr4a+" -remove "+countrystr4b+" "+neighborstr4b;
 		neighborcommand4 = StringUtils.substringAfter(neighborcommand4, "-");
 		neighborcommands4 = StringUtils.split(neighborcommand4, "-");
@@ -267,7 +282,7 @@ public class MapEditorControllerTest {
 		
 		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4a);
 		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4b);
-		
+		//neighborcommand5,neighborcommands5, country5a, country5b, neighbor5a, and neighbor5b are for adding and removing one neighbor
 		neighborcommand5 = "editneighbor -add "+countrystr5a+" "+neighborstr5a+"-remove "+countrystr5b+" "+neighborstr5b;
 		neighborcommand5 = StringUtils.substringAfter(neighborcommand5, "-");
 		neighborcommands5 = StringUtils.split(neighborcommand5, "-");
@@ -277,7 +292,7 @@ public class MapEditorControllerTest {
 		
 		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5a);
 		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5b);
-		
+		//neighborcommand6,neighborcommands6, country6a, country6b, country6c, country6d, neighbor6a, neighbor6b, neighbor6c, and neighbor6d are for adding and removing two neighbors
 		neighborcommand6 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
 		neighborcommand6 = StringUtils.substringAfter(neighborcommand6, "-");
 		neighborcommands6 = StringUtils.split(neighborcommand6, "-");
@@ -326,6 +341,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test2_editMap() checks if the editmap command is valid.
+	 * If the method isPresent() from the controller returns true,
+	 * the test passes. 
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -337,6 +354,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test3_addOneContinent() tests adding one continent to the continent list.
+	 * The method uses continentcommand1 as the command to be checked.
+	 * The test passes if the number of continent increases by 1 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -350,6 +369,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test4_addTwoContinents() tests adding two continents to the continent list in one command.
+	 * The method uses continentcommand2 as the command to be checked.
+	 * The test passes if the number of continent increases by 2 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -363,6 +384,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test5_removeOneContinent() tests deleting one continent.
+	 * The method uses continentcommand3 as the command to be checked.
+	 * The test passes if the number of continents decreases by 1 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -376,6 +399,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test6_removeTwoContinents() tests removing continents from the continent list in one command.
+	 * The method uses continentcommand4 as the command to be checked.
+	 * The test passes if the number of continents decreases by 2 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -389,6 +414,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test7_addOneContinentRemoveOneContinent() tests adding and removing one continent from the continent list in one command.
+	 * The method uses continentcommand5.
+	 * The test passes if the number of continents stays the same after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -402,6 +429,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test8_addTwoContinentsRemoveTwoContinents() tests adding and removing two continents from the continent list in one command.
+	 * The method uses continentcommand6.
+	 * The test passes if the number of continents stays after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -415,6 +444,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test9_addOneCountry() tests adding one country to the country list.
+	 * The method uses countrycommand1 as the command to be checked.
+	 * The test passes if the number of countries increases by 1 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -427,7 +458,9 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test10_addTwoCountries() tests adding one country to the country list.
+	 * test10_addTwoCountries() tests adding two country to the country list.
+	 * The method uses countrycommand2 as the command to be checked.
+	 * The test passes if the number of countries increases by 2 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -441,6 +474,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test011_removeOneCountry() tests removing one country from the country list.
+	 * The method uses countrycommand3 as the command to be checked.
+	 * The test passes if the number of countries decreases by 1 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -455,6 +490,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test012_removeTwoCountries() tests removing two countries from the country list.
+	 * The method uses countrycommand4 as the command to be checked.
+	 * The test passes if the number of countries decreases by 2 after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -468,6 +505,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test013_addOneCountryRemoveOneCountry() tests adding and removing one country from the country list in one command.
+	 * The method uses countrycommand5 as the command to be checked.
+	 * The test passes if the number of countries stays the same after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -481,6 +520,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test014_addTwoCountriesRemoveTwoCountries() tests adding and removing two countries from the country list in one command.
+	 * The method uses countrycommand6 as the command to be checked.
+	 * The test passes if the number of countries stays the same after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -494,6 +535,10 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test015_addOneNeighbor() tests adding one neighbor of a country.
+	 * The method uses neighborcommand1 as the command to be checked.
+	 * The test passes if the origin country exists in the adjacency list of
+	 * the entire map and the neighboring country is among the 
+	 * origin country's adjacency's list after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -510,6 +555,10 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test016_addTwoNeighbors() tests adding two neighbors for one or two countries in one command.
+	 * The method uses neighborcommand2 as the command to be checked.
+	 * The test passes if the origin country exists in the adjacency list of
+	 * the entire map and the neighboring countries are among the 
+	 * origin country's adjacency's list after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -530,6 +579,10 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test017_removeOneNeighbor() tests removing one neighbor from a country.
+	 * The method uses neighborcommand3 as the command to be checked.
+	 * The test passes if the origin country exists in the adjacency list of
+	 * the entire map and the neighboring country is not among the 
+	 * origin country's adjacency's list after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -547,6 +600,10 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test018_removeTwoNeighbors() tests removing two neighbors from one or two countries in one command.
+	 * The method uses neighborcommand4 as the command to be checked.
+	 * The test passes if the origin country exists in the adjacency list of
+	 * the entire map and the neighboring countries are not among the 
+	 * origin country's adjacency's list after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -568,6 +625,11 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test019_addOneNeighborRemoveOneNeighbor() tests adding and removing one neighbor in one command.
+	 * The method uses neighborcommand5 as the command to be checked.
+	 * The test passes if the origin country exists in the adjacency list of
+	 * the entire map, the added neighboring country is among the 
+	 * origin country's adjacency's list, and the removed neighboring country
+	 * is not among the origin country's adjacency's list after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -590,6 +652,11 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test020_addTwoNeighborsRemoveTwoNeighbors() tests adding and removing two neighbors in one command.
+	 * The method uses neighborcommand6 as the command to be checked.
+	 * The test passes if the origin country exists in the adjacency list of
+	 * the entire map, the added neighboring countries are among the 
+	 * origin country's adjacency's list, and the removed neighboring countries
+	 * are not among the origin country's adjacency's list after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -618,6 +685,9 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test021_invalidateMap() tests if map is invalid.
+	 * The test passes if the getMapService().isMapNotValid() returns false,
+	 * which it should if the preceding tests on managing continents, countries,
+	 * and neighbors invalidate the map file.
 	 */
 	@Test
 	public void test021_invalidateMap() {
@@ -627,6 +697,9 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test022_validateMap() tests if map is valid.
+	 * The test passes if the getMapService().isMapNotValid() returns true,
+	 * which it should if the preceding tests on managing continents, countries,
+	 * and neighbors maintain the validity of the map file.
 	 */
 	@Ignore
 	@Test
@@ -637,6 +710,8 @@ public class MapEditorControllerTest {
 	
 	/**
 	 * test23_saveMap() tests if map can be saved.
+	 * The test passes if the saved map is found using the parseFile() method of
+	 * the map controller.
 	 */
 	@Ignore
 	@Test
