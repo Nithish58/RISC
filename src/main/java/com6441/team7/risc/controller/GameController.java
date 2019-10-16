@@ -19,6 +19,7 @@ import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.view.CommandPromptView;
 
 
 /**
@@ -39,6 +40,8 @@ public class GameController {
 	private StartupGameController startupPhaseController;
 	private ReinforceGameController reinforcementGameController;
 	private FortifyGameController fortificationGameController;
+	
+	private CommandPromptView view;
 	
 	private MapLoaderController mapLoaderController;
 	
@@ -126,7 +129,8 @@ public class GameController {
             		reinforcementGameController=new ReinforceGameController(this.currentPlayer,
             													this.mapService,
             													startupPhaseController,
-            													command);
+            													command,
+            													view);
             		
             	}
             	
@@ -163,7 +167,7 @@ public class GameController {
     		else currentPlayerIndex++;  
     		
     		this.currentPlayer=players.get(currentPlayerIndex);
-    		System.out.println("\nPlayer Turn: "+currentPlayer.getName());
+    		view.displayMessage("\nPlayer Turn: "+currentPlayer.getName());
     		
     	}
     	
@@ -171,5 +175,12 @@ public class GameController {
 
     }
     
+    public CommandPromptView getView() {
+    	return view;
+    }
+    
+    public void setView(CommandPromptView v) {
+    	this.view=v;
+    }
     	
 }

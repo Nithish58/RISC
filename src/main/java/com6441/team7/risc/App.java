@@ -32,6 +32,7 @@ public class App {
         CommandPromptView view = new CommandPromptView(mapLoaderController, gameController);
         
         mapLoaderController.setView(view);
+        gameController.setView(view);
         mapService.addObserver(view);
         view.receiveCommand();
 

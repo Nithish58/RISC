@@ -68,7 +68,7 @@ public class ReinforceGameControllerTest {
 		//startup.readCommand("placearmy siberia", phase);
 		startup.readCommand("placeall", phase);
 		cmd="reinforce siberia 7";
-		reinforceController1 = new ReinforceGameController(playerDummy1, mapService, startup, cmd);
+		reinforceController1 = new ReinforceGameController(playerDummy1, mapService, startup, cmd,cmdView);
 		reinforceController1.getReinforcedArmiesCount();
 
 	}
