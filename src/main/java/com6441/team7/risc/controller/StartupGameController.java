@@ -73,6 +73,7 @@ import com6441.team7.risc.api.model.RiscCommand;
 public class StartupGameController {
 	
 	private MapLoaderController mapLoaderController;
+	private CommandPromptView view;
 	
 	//private AtomicInteger continentIdGenerator;
     //private AtomicInteger countryIdGenerator;
@@ -104,6 +105,8 @@ public class StartupGameController {
 		
 		this.mapLoaderController=mapController;
 		
+		if(view==null) System.out.println("NULL VIEW");
+		
 		this.boolMapLoaded=false;
 		
 		
@@ -114,8 +117,7 @@ public class StartupGameController {
 		this.mapService=mapService;
 		
 		this.players=players; 
-		
-		
+
 	}
 	
 /**
@@ -160,9 +162,9 @@ public class StartupGameController {
             		loadMap(command);
         		}
         		else {
-        			if(!boolMapLoaded) System.out.println("Load Map First");
+        			if(!boolMapLoaded) view.displayMessage("Load Map First");
         			
-        			else if(boolCountriesPopulated) System.out.println("Countries already populated. Cannot "
+        			else if(boolCountriesPopulated) view.displayMessage("Countries already populated. Cannot "
         					+ "load new map now.");
         		}
         	}
@@ -177,9 +179,9 @@ public class StartupGameController {
         	
         	else {
         		
-        		if(!boolMapLoaded) System.out.println("Load Map First.");
+        		if(!boolMapLoaded) view.displayMessage("Load Map First.");
         		
-        		else if(boolAllGamePlayersAdded)	System.out.println("You are past adding phase.All Players Added/Removed");
+        		else if(boolAllGamePlayersAdded)	view.displayMessage("You are past adding phase.All Players Added/Removed");
         	}
         	
         	break;
@@ -196,15 +198,15 @@ public class StartupGameController {
         		
         		else {
         			
-        			System.out.println("No Player Added. Add 1 player atleast");
+        			view.displayMessage("No Player Added. Add 1 player atleast");
         		}
         	}
         	
         	else {
         		
-        		System.out.println("Load a Map first");
+        		view.displayMessage("Load a Map first");
         		
-        		if(players.isEmpty()) System.out.println("No Player Added. Add 1 player atleast");
+        		if(players.isEmpty()) view.displayMessage("No Player Added. Add 1 player atleast");
 
         	}
         	
@@ -214,7 +216,7 @@ public class StartupGameController {
         	
         	String[] strArr=StringUtils.split(command, WHITESPACE);
         	
-        	if(strArr.length!=2) System.out.println("Invalid Placearmy command");
+        	if(strArr.length!=2) view.displayMessage("Invalid Placearmy command");
         	else {
         		placeArmy(strArr[1]);
         	}
@@ -274,20 +276,20 @@ public class StartupGameController {
 		if(!boolCountriesPopulated) {
 			
 			int numPlayers=players.size();
-			System.out.println("NumPlayers: "+numPlayers);
+			view.displayMessage("NumPlayers: "+numPlayers);
 			
 			//CHECK IF ONLY 1 PLAYER: PLAYER WINS
 			if(numPlayers==1) {
-				System.out.println("PLAYER "+players.get(0).getName()+" WINS");
+				view.displayMessage("PLAYER "+players.get(0).getName()+" WINS");
 				endGame();
 			}
 			
 			else if(numPlayers==0) {
-				System.out.println("No Players Added. Try again");
+				view.displayMessage("No Players Added. Try again");
 			}
 			
 			else if(numPlayers>9) {
-				System.out.println("Player limit exceeded. Cannot Proceed");
+				view.displayMessage("Player limit exceeded. Cannot Proceed");
 			}
 			
 			else {
@@ -295,7 +297,7 @@ public class StartupGameController {
 				int numInitialArmies=determineNumInitialArmies(numPlayers);
 				assignInitialArmies(numInitialArmies);
 				
-				System.out.println("Number of Initial Armies:"+numInitialArmies+"\n");
+				view.displayMessage("Number of Initial Armies:"+numInitialArmies+"\n");
 				
 				Stack<Country> stackCountry=new Stack<>();
 				
@@ -331,32 +333,32 @@ public class StartupGameController {
 				
 				
 				for(Country c:mapService.getCountries()) {
-					System.out.println(c.getId()+" "+c.getCountryName()+" "+c.getPlayer().getName()
+					view.displayMessage(c.getId()+" "+c.getCountryName()+" "+c.getPlayer().getName()
 							+" "+c.getSoldiers());
 				}
 							
 				//gameplayer -add keshav -add jenny -remove jenny -add binsar -add jenny -add bikash -add keshav -add lol
 				
-				System.out.println("Countries Populated. Start placing your armies now.");
+				view.displayMessage("Countries Populated. Start placing your armies now.");
 				
 				this.boolCountriesPopulated=true;
 				
 				this.boolArrayCountriesPlaced=new boolean[players.size()];
 				
 				for(Player p:players) {
-					System.out.println("Remaining Armies for "+p.getName()
+					view.displayMessage("Remaining Armies for "+p.getName()
 											+": "+p.getArmies());
 				}
 				
 				this.currentPlayerIndex=0;
-				System.out.println("\nCurrent Player:"+players.get(this.currentPlayerIndex).getName());
+				view.displayMessage("\nCurrent Player:"+players.get(this.currentPlayerIndex).getName());
 				
 			}
 
 		}
 		
 		else {
-			System.out.println("Countries already populated");
+			view.displayMessage("Countries already populated");
 		}
 		
 	}
@@ -442,14 +444,14 @@ public class StartupGameController {
         		for(int i=0;i<players.size();i++) {
         			if(players.get(i).getName().equals(playerName)) {
         				nameFound=true;
-        				System.out.println("Player Already Exists. Try different name");
+        				view.displayMessage("Player Already Exists. Try different name");
         				break;
         			}
         		}
         		
         		if(!nameFound) {
         			players.add(new Player(playerName));
-        			System.out.println("Player Added: "+playerName);
+        			view.displayMessage("Player Added: "+playerName);
         		}
         		
         		
@@ -463,7 +465,7 @@ public class StartupGameController {
     	}
     	
     	else {
-    		System.out.println("Limit of 9 players reached.");
+    		view.displayMessage("Limit of 9 players reached.");
     	}
     	
 
@@ -487,12 +489,12 @@ public class StartupGameController {
     			if(players.get(i).getName().equals(playerName)) {
     				nameFound=true;
     				players.remove(i);
-    				System.out.println("Player Removed: "+playerName);
+    				view.displayMessage("Player Removed: "+playerName);
     				break;
     			}
     		}
     		
-    		if(!nameFound) System.out.println("gameplayer command: cannot remove, player does not exist");
+    		if(!nameFound) view.displayMessage("gameplayer command: cannot remove, player does not exist");
     		
     	}
     	
@@ -514,7 +516,7 @@ public class StartupGameController {
 	        if (commands.length != 2) {
 	        	
 	          //  view.displayMessage("The command editmap is not valid");
-	           System.out.println("Command LoadMap is not valid"); 
+	           view.displayMessage("Command LoadMap is not valid"); 
 	            return Optional.empty();
 	        }
 
@@ -538,7 +540,7 @@ public class StartupGameController {
 	        }
 
 	       // view.displayMessage("The command loadmap is not valid");
-	        System.out.println("Command LoadMap is not valid"); 
+	        view.displayMessage("Command LoadMap is not valid"); 
 	        return Optional.empty();
 
 		//NEED TO UPDATE BOOLFILENAME
@@ -554,12 +556,12 @@ public class StartupGameController {
 
         if(mapService.isMapValid()){
             //view.displayMessage("map is valid");
-        	System.out.println("Map is Valid");
+        	view.displayMessage("Map is Valid");
             return true;
         }
         else{
             //view.displayMessage("map is not valid");
-        	System.out.println("Map is not Valid");
+        	view.displayMessage("Map is not Valid");
             return false;
         }
     }
@@ -586,7 +588,7 @@ public class StartupGameController {
 	 * end the game
 	 */
 	private void endGame() {
-    	System.out.println("Game Ends");
+    	view.displayMessage("Game Ends");
     	System.exit(0);;
     }
 
@@ -612,7 +614,7 @@ public class StartupGameController {
         			
         			c.addSoldiers(1);		
         			
-        			System.out.println(currentPlayer.getName()+" placed army successfully.");
+        			view.displayMessage(currentPlayer.getName()+" placed army successfully.");
         			if(currentPlayer.getArmies()==0) {
         				boolArrayCountriesPlaced[currentPlayerIndex]=true;        				
         			}
@@ -620,13 +622,13 @@ public class StartupGameController {
         		}
         	}
         	
-        	if(!countryFound) System.out.println("Wrong Country Name!!");
+        	if(!countryFound) view.displayMessage("Wrong Country Name!!");
         	
         	else {
         		
         		if(currentPlayer.getArmies()==0) {
         			boolArrayCountriesPlaced[currentPlayerIndex]=true;
-        			System.out.println("All armies placed for "+currentPlayer.getName());
+        			view.displayMessage("All armies placed for "+currentPlayer.getName());
         		}
         		
         		//IF ALL Players have numArmies 0: Startup Phase Over, Switch To Next Phase 
@@ -640,9 +642,9 @@ public class StartupGameController {
         		}
         		
         		if(boolStartUpPhaseOver.get()) {
-        			System.out.println("All Armies Placed for all players.\n.");
+        			view.displayMessage("All Armies Placed for all players.\n.");
         			this.mapService.setState(GameState.REINFORCE);
-        			//System.out.println("Player Turn: "+players.get(0).getName());
+        			//view.displayMessage("Player Turn: "+players.get(0).getName());
         			switchToNextPlayer();
         		}
         		
@@ -668,7 +670,7 @@ public class StartupGameController {
 		
 		else currentPlayerIndex++;
     	
-    	System.out.println("Player Turn: "+players.get(currentPlayerIndex).getName());
+    	view.displayMessage("Player Turn: "+players.get(currentPlayerIndex).getName());
     	//showPlayer();
     	
     }
@@ -690,13 +692,13 @@ public class StartupGameController {
     		}
     		
     	}
-    	System.out.println("All Players Placed.");
+    	view.displayMessage("All Players Placed.");
     	showAllPlayers();
     	
     	this.boolStartUpPhaseOver.set(true);
     	this.mapService.setState(GameState.REINFORCE);
     	
-    	System.out.println("Player Turn: "+players.get(0).getName());
+    	view.displayMessage("Player Turn: "+players.get(0).getName());
     }
 
 	/**
@@ -718,13 +720,13 @@ public class StartupGameController {
         	}
         	);
         	
-        	System.out.println("Current Player: "+p.getName()+
+        	view.displayMessage("Current Player: "+p.getName()+
         			" , Num Armies Remaining: "+p.getArmies());
         	
-        	System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
+        	view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
         	
         	for(Country c :p.countryPlayerList) {
-        		System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()
+        		view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()
         						+"\t\t\t"+c.getSoldiers());
         	}
 
@@ -749,13 +751,13 @@ public class StartupGameController {
     	}
     	);
     	
-    	System.out.println("Current Player: "+players.get(currentPlayerIndex).getName()+
+    	view.displayMessage("Current Player: "+players.get(currentPlayerIndex).getName()+
     			" , Num Armies Remaining: "+players.get(currentPlayerIndex).getArmies());
     	
-    	System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
+    	view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
     	
     	for(Country c:players.get(currentPlayerIndex).countryPlayerList) {
-    		System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+    		view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
     	}
     	
     }
@@ -777,8 +779,8 @@ public class StartupGameController {
     		Optional<Continent> optionalContinent=mapService.getContinentById(key);
     		Continent currentContinent= (Continent) optionalContinent.get();
     		
-    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		System.out.println();
+    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+    		view.displayMessage("\n");
     		
     		Set<Integer> value=item.getValue();
     		
@@ -809,7 +811,7 @@ public class StartupGameController {
         				
         			}
         			
-        			System.out.println(strCountryOutput+"\n");    				
+        			view.displayMessage(strCountryOutput+"\n");    				
     				
     			}
     			
@@ -836,8 +838,8 @@ public class StartupGameController {
     		Optional<Continent> optionalContinent=mapService.getContinentById(key);
     		Continent currentContinent= (Continent) optionalContinent.get();
     		
-    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		System.out.println();
+    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+    		view.displayMessage("\n");
     		
     		Set<Integer> value=item.getValue();
     		
@@ -865,7 +867,7 @@ public class StartupGameController {
         				
         			}
         			
-        			System.out.println(strCountryOutput+"\n");    				
+        			view.displayMessage(strCountryOutput+"\n");    				
     				
     			}
     			
@@ -893,8 +895,8 @@ public class StartupGameController {
     		Optional<Continent> optionalContinent=mapService.getContinentById(key);
     		Continent currentContinent= (Continent) optionalContinent.get();
     		
-    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		System.out.println();
+    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+    		view.displayMessage("\n");
     		
     		Set<Integer> value=item.getValue();
     		
@@ -916,12 +918,21 @@ public class StartupGameController {
     						":"+mapService.getCountryById(j).get().getSoldiers()+")";
     			}
     			
-    			System.out.println(strCountryOutput+"\n");
+    			view.displayMessage(strCountryOutput+"\n");
     		}
 
     	}
 
     }
     
+    public CommandPromptView getView() {
+    	return view;
+    }
+    
+    public void setView(CommandPromptView v) {
+    	this.view=v;
+    	
+    }
+	
     
 }
