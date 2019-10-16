@@ -33,8 +33,8 @@ public class FortifyGameControllerTest {
 	static MapService mapService;
 	static private CommandPromptView cmdView;
 	Player player1;
-	fortifyGameController fortifyController;
-	fortifyGameController skippedFortifyController;
+	FortifyGameController fortifyController;
+	FortifyGameController skippedFortifyController;
 	Country fromCountry;
 	Country toCountry;
 	GameState nextState;

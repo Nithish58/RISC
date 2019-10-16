@@ -36,9 +36,9 @@ import com6441.team7.risc.api.model.RiscCommand;
  */
 public class GameController {
 
-	private startupGameController startupPhaseController;
-	private reinforceGameController reinforcementGameController;
-	private fortifyGameController fortificationGameController;
+	private StartupGameController startupPhaseController;
+	private ReinforceGameController reinforcementGameController;
+	private FortifyGameController fortificationGameController;
 	
 	private MapLoaderController mapLoaderController;
 	
@@ -81,7 +81,7 @@ public class GameController {
 		this.boolFortificationPhaseOver=new AtomicBoolean(false);
 		
 		
-		this.startupPhaseController=new startupGameController(this.mapLoaderController,this.mapService,
+		this.startupPhaseController=new StartupGameController(this.mapLoaderController,this.mapService,
 																	this.players);
 		
 		//reinforcementGameController=new reinforceGameController();
@@ -123,7 +123,7 @@ public class GameController {
             		
             		this.currentPlayer=players.get(currentPlayerIndex);
             		
-            		reinforcementGameController=new reinforceGameController(this.currentPlayer,
+            		reinforcementGameController=new ReinforceGameController(this.currentPlayer,
             													this.mapService,
             													startupPhaseController,
             													command);
@@ -132,7 +132,7 @@ public class GameController {
             	
             	else if(this.mapService.getGameState()==GameState.FORTIFY) {
             		
-            		fortificationGameController=new fortifyGameController(this.currentPlayer,
+            		fortificationGameController=new FortifyGameController(this.currentPlayer,
             																this.mapService,
             																this.startupPhaseController,
             																command,
