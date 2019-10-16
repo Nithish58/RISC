@@ -41,6 +41,13 @@ public class GameControllerTest {
 	static int testNo; //this is for determining which params to be used for certain test cases
 	String file, loadmapcmd;
 	
+	/**
+	 * Upon the creation of the class, MapService, MapLoaderController,
+	 * and CommandPromptView objects are instantiated.
+	 * The MapController object also set the game view to the CommandPromptView object.
+	 * The testNo field is set to 0.
+	 * @throws Exception on invalid value
+	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mapService = new MapService();
@@ -50,15 +57,28 @@ public class GameControllerTest {
 		testNo = 0;
 	}
 
+	/**
+	 * This method is executed after all test methods have been called.
+	 * @throws Exception on invalid value
+	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
+	/**
+	 * This method is executed before every test method is performed.
+	 * Here a GameController object called game is created.
+	 * @throws Exception on invalid value
+	 */
 	@Before
 	public void setUp() throws Exception {
 		game = new GameController(mapController, mapService);
 	}
 
+	/**
+	 * This method is executed after every test method is performed.
+	 * @throws Exception on invalid value
+	 */
 	@After
 	public void tearDown() throws Exception {
 	}

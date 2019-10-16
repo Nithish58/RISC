@@ -84,7 +84,10 @@ public class StartupGameControllerTest {
 		startup = new StartupGameController(mapController, mapService, players);
 		loadmapcmd = "loadmap ameroki.map"; //this loads the ameroki.map file for testing
 	}
-
+	/**
+	 * This method is executed after every test method is performed.
+	 * @throws Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 	}
