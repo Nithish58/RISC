@@ -72,9 +72,6 @@ public class MapLoaderController {
             case EDIT_NEIGHBOR:
                 editNeighbor(commands);
                 break;
-            case SHOW_FILE:
-                showMap();
-                break;
             case SHOW_MAP:
             	showMap();
                 break;

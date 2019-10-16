@@ -1,0 +1,13 @@
+keshav.map
+[files]
+[continent]
+africa 5 null
+asia 6 null
+
+[countries]
+1 a 1 0 0
+2 b 1 0 0
+
+[borders]
+1 2 
+2 1 

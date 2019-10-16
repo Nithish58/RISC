@@ -4,7 +4,7 @@
 
 3. Fix showmap Bugs (DONE)
 
-4. Fix showplayer UI bugs about spacing**
+4. Fix showplayer UI bugs about spacing******************************************************
 
 5. Placearmy bug ---- with 9 players when limit reaches 0, numArmies = -1   (DONE)
 
@@ -12,10 +12,9 @@
 
 7. Fix 1 player win startup phase (DONE)
 
-8. PRINT EVERYTHING VIA VIEW *******************************************************************
+8. PRINT EVERYTHING VIA VIEW (DONE)
 
-9. NULL MAP VALIDITY???? *********************************************************************** exitmapedit
- when no map loaded gives valid map  (FIXED, CONSULT JENNY)******   
+9. NULL MAP VALIDITY???? exitmapedit when no map loaded gives valid map  (FIXED, CONSULT JENNY) (DONE)
 
 10. -FORTIFICATION numSoldiers BUG (DONE)
 -   adjacent countries not belonging to same player bug (DONE)

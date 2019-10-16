@@ -530,21 +530,42 @@ public class MapService extends Observable {
                 });
     }
 
+    /**
+     * To remove continent by id
+     * @param id id of continent
+     */
     public void removeContinentById(int id) {
     }
 
+    /**
+     * To add neighboring countries by name
+     * @param contriesName list of countries name which is to be added.
+     */
     public void addNeighboringCountriesByName(List<String> contriesName) {
     }
 
+    /**
+     * To add neighboring countries by name
+     * @param countriesId list of countries id which is to be added.
+     */
     public void addNeighboringCountriesById(List<Integer> countriesId) {
     }
 
+    /**
+     * To remove neighboring countries by name
+     * @param name name of country
+     */
     public void removeNeighboringCountriesByName(String name) {
     }
+
 
     public void removeNeighboringCountriesById(int id) {
     }
 
+    /**
+     * To show the map
+     * @return Optional.empty() if empty
+     */
     public Optional<Graph<Integer, DefaultEdge>> showMap() {
         return Optional.empty();
     }
@@ -575,78 +596,109 @@ public class MapService extends Observable {
     }
 
     /**
-     * if name exists, return the country
-     * if not exist, return empty
-     * @param name
-     * @return
+     * To remove Vertex from map
+     * @param id index of vertex which is to be removed
+     */
+    private void removeVertex(int id){
+        directedGraph.removeVertex(id);
+    }
+
+    /**
+     * To remove edge from map
+     * @param src source node
+     * @param dest destination node
+     */
+    private void removeEdge(int src, int dest){
+        directedGraph.removeEdge(src, dest);
+
+    }
+    /**
+     * To get country by the its name
+     * @param name name of country
+     * @return Optional.of(country) if id exist else Optional.empty()
      */
     public Optional<Country> getCountryByName(String name) {
-    	
+
     	for(Country c:countries) {
     		if(c.getCountryName().equalsIgnoreCase(name)) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
+    /**
+     * To get country by the its id
+     * @param id Id of country
+     * @return Optional.of(country) if id exist else Optional.empty()
+     */
     public Optional<Country> getCountryById(int id) {
-    	
+
     	//Modified By Keshav
     	for(Country c:countries) {
     		if(c.getId()==id) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
     /**
-     * if name exists, return continent
-     * if does not exist, return empty
-     * @param name
-     * @return
+     * To get continent by the its name
+     * @param name name of continent
+     * @return Optional.of(continent) if id exist else Optional.empty()
      */
     public Optional<Continent> getContinentByName(String name) {
-    	
+
     	for(Continent c:continents) {
     		if(c.getName().equalsIgnoreCase(name)) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
     /**
-     * if continent id exists, return continent
-     * else return empty
-     * @param id
-     * @return
+     * To get continent by the its Id
+     * @param id id of continent
+     * @return Optional.of(continent) if id exist else Optional.empty()
      */
     public Optional<Continent> getContinentById(int id) {
-    	
+
     	//Modified By Keshav
     	for(Continent c:continents) {
     		if(c.getId()==id) return Optional.of(c);
     	}
-    	
+
         return Optional.empty();
     }
 
+    /**
+     * TO get map of adjacent countries map
+     * @return map of adjacent countries map
+     */
     public Map<Integer, Set<Integer>> getAdjacencyCountriesMap() {
         return adjacencyCountriesMap;
     }
 
+    /**
+     * To get map of continent's countries
+     * @return map of continent's countries
+     */
     public Map<Integer, Set<Integer>> getContinentCountriesMap() {
         return continentCountriesMap;
     }
 
+    /**
+     * To get directed graph
+     * @return directed graph
+     */
     public Graph<Integer, DefaultEdge> getDirectedGraph() {
-    	
+
         return directedGraph;
     }
 
 
     /**
-     * check if the map is strongly connected
-     * @return
+     * check if the map is not valid
+     * @return true if map is not valid
      */
     public boolean isMapNotValid() {
         return !isMapValid();
@@ -654,9 +706,13 @@ public class MapService extends Observable {
 
     /**
      * check if the map is strongly connected
-     * @return
+     * @return true if strongly connected
      */
     public boolean isStronglyConnected() {
+
+    	//Added By Keshav
+    	//if(countries.size()==0) return false;
+
         if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
             return false;
         }
@@ -675,9 +731,8 @@ public class MapService extends Observable {
                 .allMatch(num -> num == totalCountry);
     }
 
-
     /**
-     * print all countries information
+     * To print the country information
      */
     public void printCountryInfo(){
         System.out.println("[Country]");
@@ -694,7 +749,7 @@ public class MapService extends Observable {
     }
 
     /**
-     * print all continents information
+     * To print the continent information
      */
     public void printContinentInfo(){
         System.out.println("[Continent]");
@@ -708,7 +763,7 @@ public class MapService extends Observable {
     }
 
     /**
-     * print all neighboring countries information
+     * To print the neighboring country information
      */
     public void printNeighboringCountryInfo(){
         System.out.println("[Border]");
@@ -719,16 +774,16 @@ public class MapService extends Observable {
 
     /**
      * delete white spaces and make received name to lower case
-     * @param name
-     * @return
+     * @param name name whose white is removed and further changed to lowercase
+     * @return Edited name
      */
     private String convertNameToKeyFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
     /**
-     * return a set of all countries name
-     * @return set
+     * To get sets of country Name
+     * @return sets of country Name
      */
     private Set<String> getCountryNameSet() {
         return countries.stream().map(Country::getCountryName)
@@ -736,8 +791,8 @@ public class MapService extends Observable {
     }
 
     /**
-     * return a set of all continents name
-     * @return set
+     * To get sets of continent Name
+     * @return sets of continent Name
      */
     private Set<String> getContinentNameSet() {
         return continents.stream().map(Continent::getName)
@@ -745,16 +800,16 @@ public class MapService extends Observable {
     }
 
     /**
-     * return a set of all countryId
-     * @return set
+     * To get sets of country Id
+     * @return sets of country Id
      */
     private Set<Integer> getCountryIdSet() {
         return countries.stream().map(Country::getId).collect(Collectors.toSet());
     }
 
     /**
-     * return a set of all continentId
-     * @return
+     * To get sets of continent Id
+     * @return sets of continent Id
      */
     private Set<Integer> getContinentIdSet() {
         return continents.stream().map(Continent::getId).collect(Collectors.toSet());

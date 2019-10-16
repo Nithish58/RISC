@@ -36,18 +36,18 @@ public class ReinforceGameController {
     private CommandPromptView view;
     private int reinforcedArmiesCount;
     private StartupGameController startupGameController;
- 
+
 
     private String command="";
-    
+
     /**
      * Getter for the number of reinforcer armies
      * @return amount of reinforced armies
      */
     public int getReinforcedArmiesCountVal() {
-    	return reinforcedArmiesCount;
+        return reinforcedArmiesCount;
     }
-    
+
     /**
      * Sole constructor
      * @param currentPlayer this parameter is the player who is requesting to reinforce new armies.
@@ -59,43 +59,43 @@ public class ReinforceGameController {
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;
         this.command=cmd;
-        
+
         this.view=v;
 
         this.startupGameController=sgc;
-        
+
         getReinforcedArmiesCount();
 
         int countTurns=0;
-        
+
         Scanner inputReinforcementScanner=new Scanner(System.in);
-                
+
         do {
-        	
-        	if(reinforcedArmiesCount==0) break;
-        	
-        	view.displayMessage("You have " + reinforcedArmiesCount +" extra armies");
-        	
-        	if(countTurns!=0) {
-        		
-        		view.displayMessage("You must place all armies to proceed to next phase.");
-        		String strInput=inputReinforcementScanner.nextLine();
-        		this.command=new String(strInput);
-        		
-        		
-        	}
-        	
 
-        	readCommand();
+            if(reinforcedArmiesCount==0) break;
 
-        	countTurns++;
-        	
+            view.displayMessage("You have " + reinforcedArmiesCount +" extra armies");
+
+            if(countTurns!=0) {
+
+                view.displayMessage("You must place all armies to proceed to next phase.");
+                String strInput=inputReinforcementScanner.nextLine();
+                this.command=new String(strInput);
+
+
+            }
+
+
+            readCommand();
+
+            countTurns++;
+
         }while(reinforcedArmiesCount>0);
-        
+
         this.mapService.setState(GameState.FORTIFY);
-        
+
         return;
-        
+
     }
 
     private void readCommand() {
@@ -119,7 +119,7 @@ public class ReinforceGameController {
                         reinforce(arrCommand[1],Integer.parseInt(arrCommand[2]));
                     }
                 }
-                
+
                 catch(NumberFormatException e) {}
                 break;
 
@@ -129,25 +129,25 @@ public class ReinforceGameController {
                 break;
 
             case SHOW_PLAYER:
-            	showPlayerReinforcementPhase(player);
+                showPlayerReinforcementPhase(player);
                 break;
 
             case SHOW_ALL_PLAYERS:
                 startupGameController.showAllPlayers();
                 break;
-                
+
             case SHOW_PLAYER_ALL_COUNTRIES:
-            	showPlayerAllCountriesReinforcement();
-            	break;
-            
+                showPlayerAllCountriesReinforcement();
+                break;
+
             case SHOW_PLAYER_COUNTRIES:
-            	showPlayerCountriesReinforcement();
-            	break;
+                showPlayerCountriesReinforcement();
+                break;
 
             default:
-            	
-            	view.displayMessage("Cannot recognize this command in reinforcement. Try Again");
-            	
+
+                view.displayMessage("Cannot recognize this command in reinforcement. Try Again");
+
         }
 
     }
@@ -161,8 +161,8 @@ public class ReinforceGameController {
         //game rule 1
         this.reinforcedArmiesCount += allCountriesOfPlayer().size()/3;
         //game rule 3
-        if (player.hasDifferentCardsCategory() || player.hasSameCardsCategory()){
-            this.reinforcedArmiesCount += 5;
+        if (player.meetTradeInCondition()){
+            this.reinforcedArmiesCount += (5*player.getTradeInTimes());
             player.removeCards();
         }
         // Game rule 2 continentValue
@@ -185,27 +185,27 @@ public class ReinforceGameController {
      * @param num the number of armies
      */
     public void reinforce(String countryName, int num){
-    	
+
         if (mapService.getCountryByName(countryName).isPresent()){
-        	
+
             Country country = mapService.getCountryByName(countryName).get();
-            
+
             if (allCountriesOfPlayer().contains(country)){
-            	
+
                 if (num > reinforcedArmiesCount || num <= 0){
-                	
+
                     view.displayMessage("Sorry, your extra armies number should be in range 1 - "+ reinforcedArmiesCount);
-              
+
                 }else{
-                	
-                    view.displayMessage("Before reinforcement, "+countryName +" had " + 
-                    				country.getSoldiers()+" soldiers");
-                    
+
+                    view.displayMessage("Before reinforcement, "+countryName +" had " +
+                            country.getSoldiers()+" soldiers");
+
                     country.addSoldiers(num);
-                    
+
                     view.displayMessage("After reinforcement, "+ countryName +" has " +
-                    				country.getSoldiers()+" soldiers");
-                    
+                            country.getSoldiers()+" soldiers");
+
                     reinforcedArmiesCount -= num;
 
                 }
@@ -248,7 +248,7 @@ public class ReinforceGameController {
     }
 
 
-    
+
     private void showPlayerReinforcementPhase(Player p) {
         Collections.sort(p.countryPlayerList, new Comparator<Country>() {
 
@@ -269,120 +269,120 @@ public class ReinforceGameController {
             view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
         }
     }
-    
+
     private void showPlayerCountriesReinforcement() {
-    	Player currentPlayer=this.player;
-    	
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-    		
-    		int key=(int) item.getKey();
-    		   		
-    		
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-    		
-    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		view.displayMessage("\n");
-    		
-    		Set<Integer> value=item.getValue();
-    		
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
-    			Country currentCountry=optionalCountry.get();
-    			
-    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-    				
-        			String strCountryOutput="";
-        			
-        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
-        					", "+currentCountry.getSoldiers()+" soldiers   ";
-        			
-        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-        			
-        			for(Integer j:adjCountryList) {
-        				
-        				if(mapService.getCountryById(j).get().getPlayer().getName()
-        						.equalsIgnoreCase(currentPlayer.getName())){
-        	        				
-        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
-        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
-        						}
-        				
-        			}
-        			
-        			view.displayMessage(strCountryOutput+"\n");    				
-    				
-    			}
-    			
+        Player currentPlayer=this.player;
 
-    		}
+        for(Map.Entry<Integer, Set<Integer>> item :
+                mapService.getContinentCountriesMap().entrySet()) {
 
-    	}
+            int key=(int) item.getKey();
+
+
+            Optional<Continent> optionalContinent=mapService.getContinentById(key);
+            Continent currentContinent= (Continent) optionalContinent.get();
+
+            view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+            view.displayMessage("\n");
+
+            Set<Integer> value=item.getValue();
+
+            for(Integer i:value) {
+                //For Each Country In Continent, Get details + Adjacency Countries
+                Optional<Country> optionalCountry=mapService.getCountryById(i);
+
+                Country currentCountry=optionalCountry.get();
+
+                if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
+
+                    String strCountryOutput="";
+
+                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                            ", "+currentCountry.getSoldiers()+" soldiers   ";
+
+                    Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
+
+                    for(Integer j:adjCountryList) {
+
+                        if(mapService.getCountryById(j).get().getPlayer().getName()
+                                .equalsIgnoreCase(currentPlayer.getName())){
+
+                            strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
+                                    "("+mapService.getCountryById(j).get().getPlayer().getName()+
+                                    ":"+mapService.getCountryById(j).get().getSoldiers()+")";
+                        }
+
+                    }
+
+                    view.displayMessage(strCountryOutput+"\n");
+
+                }
+
+
+            }
+
+        }
     }
-    
+
     private void showPlayerAllCountriesReinforcement() {
-    	
-    	Player currentPlayer=player;
-    	
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-    		
-    		int key=(int) item.getKey();
-    		   		
-    		
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-    		
-    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		view.displayMessage("\n");
-    		
-    		Set<Integer> value=item.getValue();
-    		
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
-    			Country currentCountry=optionalCountry.get();
-    			
-    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-    				
-        			String strCountryOutput="";
-        			
-        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
-        					", "+currentCountry.getSoldiers()+" soldiers   ";
-        			
-        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-        			
-        			for(Integer j:adjCountryList) {
-        	        				
-        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
-        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
-        						
-        				
-        			}
-        			
-        			view.displayMessage(strCountryOutput+"\n");    				
-    				
-    			}
-    			
 
-    		}
+        Player currentPlayer=player;
 
-    	}
+        for(Map.Entry<Integer, Set<Integer>> item :
+                mapService.getContinentCountriesMap().entrySet()) {
+
+            int key=(int) item.getKey();
+
+
+            Optional<Continent> optionalContinent=mapService.getContinentById(key);
+            Continent currentContinent= (Continent) optionalContinent.get();
+
+            view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+            view.displayMessage("\n");
+
+            Set<Integer> value=item.getValue();
+
+            for(Integer i:value) {
+                //For Each Country In Continent, Get details + Adjacency Countries
+                Optional<Country> optionalCountry=mapService.getCountryById(i);
+
+                Country currentCountry=optionalCountry.get();
+
+                if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
+
+                    String strCountryOutput="";
+
+                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                            ", "+currentCountry.getSoldiers()+" soldiers   ";
+
+                    Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
+
+                    for(Integer j:adjCountryList) {
+
+                        strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
+                                "("+mapService.getCountryById(j).get().getPlayer().getName()+
+                                ":"+mapService.getCountryById(j).get().getSoldiers()+")";
+
+
+                    }
+
+                    view.displayMessage(strCountryOutput+"\n");
+
+                }
+
+
+            }
+
+        }
 
     }
-    
+
     public CommandPromptView getView() {
-    	return view;
+        return view;
     }
-    
+
     public void setView(CommandPromptView v) {
-    	this.view=v;
+        this.view=v;
     }
 
 }

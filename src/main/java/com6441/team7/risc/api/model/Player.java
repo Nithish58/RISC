@@ -49,22 +49,39 @@ public class Player {
         this.armies = 0;
         this.name = name;
         this.cardList = new ArrayList<>();
-        
+
+        this.tradeInTimes=1;
         this.countryPlayerList=new ArrayList<>();
     }
 
+    /**
+     * get name of player
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * set name of player
+     * @param name name to be added
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * get number of armies
+     * @return armies number
+     */
     public int getArmies() {
         return armies;
     }
 
+    /**
+     * set armies to player
+     * @param armies number of armies
+     */
     public void setArmies(int armies) {
         this.armies = armies;
     }
@@ -83,14 +100,26 @@ public class Player {
      */
     public void addArmy(int number){armies += number;}
 
+    /**
+     * get list of cards
+     * @return card list
+     */
     public List<Card> getCardList() {
         return cardList;
     }
 
+    /**
+     * set card list
+     * @param cardList new cardlist
+     */
     public void setCardList(List<Card> cardList) {
         this.cardList = cardList;
     }
 
+    /**
+     * Check whether trade in conditon is valid
+     * @return true or false
+     */
     public boolean meetTradeInCondition(){
         return hasDifferentCardsCategory() || hasSameCardsCategory();
     }
@@ -151,14 +180,27 @@ public class Player {
 
     }
 
+    /**
+     * get trade in times of player
+     * @return tradeInTimes
+     */
     public int getTradeInTimes() {
         return tradeInTimes;
     }
 
+    /**
+     * set trade in times of player
+     * @param tradeInTimes tradeinTimes value
+     */
     public void setTradeInTimes(int tradeInTimes) {
         this.tradeInTimes = tradeInTimes;
     }
 
+    /**
+     * check whether player has same card category
+     * @param card card
+     * @return true or false
+     */
     private boolean hasSameCardCategory(Card card){
         return cardList.stream()
                 .filter(card::equals)
