@@ -235,40 +235,53 @@ public class MapEditorControllerTest {
 		countrystr5a = "japan"; neighborstr5a = "afganistan"; countrystr5b = "japan"; neighborstr5b = "fiji";
 		countrystr6a = "china"; neighborstr6a = "sky_republic"; countrystr6b = "china"; neighborstr6b = "ocean_republic";
 		countrystr6c = "china"; neighborstr6c = "middle_east"; countrystr6d = "china"; neighborstr6d = "heal";
+		
 		neighborcommand1 = "editneighbor -add "+countrystr1+" "+ neighborstr1;
 		neighborcommand1 = StringUtils.substringAfter(neighborcommand1, "-");
 		neighborcommands1 = StringUtils.split(neighborcommand1, "-");
+		
 		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr1);
 		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr1);
+		
 		neighborcommand2 = "editneighbor -add "+countrystr2a+" "+neighborstr2a+" -add "+countrystr2b+" "+neighborstr2b;
 		neighborcommand2 = StringUtils.substringAfter(neighborcommand2, "-");
 		neighborcommands2 = StringUtils.split(neighborcommand2, "-");
+		
 		country2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2a);
 		country2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2b);
 		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2a);
 		neighbor2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2b);
+		
 		neighborcommand3 = "editneighbor -remove "+countrystr3+" "+neighborstr3;
 		neighborcommand3 = StringUtils.substringAfter(neighborcommand3, "-");
 		neighborcommands3 = StringUtils.split(neighborcommand3, "-");
 		country3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr3);
 		neighbor3 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr3);
+		
 		neighborcommand4 = "editneighbor -remove "+countrystr4a+" "+neighborstr4a+" -remove "+countrystr4b+" "+neighborstr4b;
 		neighborcommand4 = StringUtils.substringAfter(neighborcommand4, "-");
 		neighborcommands4 = StringUtils.split(neighborcommand4, "-");
+		
 		country4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4a);
 		country4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4b);
+		
 		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4a);
 		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4b);
+		
 		neighborcommand5 = "editneighbor -add "+countrystr5a+" "+neighborstr5a+"-remove "+countrystr5b+" "+neighborstr5b;
 		neighborcommand5 = StringUtils.substringAfter(neighborcommand5, "-");
 		neighborcommands5 = StringUtils.split(neighborcommand5, "-");
+		
 		country5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5a);
 		country5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5b);
+		
 		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5a);
 		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5b);
+		
 		neighborcommand6 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
 		neighborcommand6 = StringUtils.substringAfter(neighborcommand6, "-");
 		neighborcommands6 = StringUtils.split(neighborcommand6, "-");
+		
 		country6a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6a);
 		country6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6b);
 		country6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6c);

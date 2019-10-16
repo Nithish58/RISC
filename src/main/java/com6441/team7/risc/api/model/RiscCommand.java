@@ -28,7 +28,10 @@ public enum RiscCommand {
 	//Added By keshav
 	EXIT_MAPEDIT("exitmapedit"),
 	SHOW_PLAYER("showplayer"),
-	SHOW_ALL_PLAYERS("showallplayers")
+	SHOW_PLAYER_COUNTRIES("showplayercountries"),
+	SHOW_PLAYER_OWN_COUNTRIES("showplayerowncountries"),
+	SHOW_ALL_PLAYERS("showallplayers"),
+	SHOW_FILE("showfile")
 	
 	
 	;

@@ -628,6 +628,9 @@ public class MapService extends Observable {
      */
     public boolean isStronglyConnected() {
 
+    	//Added By Keshav
+    	if(countries.size()==0) return false;
+    	
         if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
             return false;
         }

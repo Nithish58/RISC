@@ -89,6 +89,14 @@ public class FortifyGameController {
 	                startupGameController.showAllPlayers();
 	                break; 
 	                
+	            case SHOW_PLAYER_OWN_COUNTRIES:
+	            	startupGameController.showPlayerOwnCountries();
+	            	break;
+	            
+	            case SHOW_PLAYER_COUNTRIES:
+	            	startupGameController.showPlayerCountries();
+	            	break;
+	                
 	               default:
 	            	   this.boolFortificationPhaseOver.set(false);
 	            	   throw new IllegalArgumentException
@@ -121,9 +129,6 @@ public class FortifyGameController {
 				this.fromCountry = mapService.getCountryByName(orders[1]).get();
 				
 				this.toCountry = mapService.getCountryByName(orders[2]).get();
-				
-				System.out.println(fromCountry.getCountryName());
-				System.out.println(toCountry.getCountryName());
 				
 				try {
 					this.num = Integer.parseInt(orders[3]);

@@ -39,7 +39,7 @@ import com6441.team7.risc.view.CommandPromptView;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StartupGameControllerTest {
-	startupGameController startup;
+	StartupGameController startup;
 	static MapLoaderController mapController;
 	static MapService mapService;
 	static CommandPromptView cmdView; 
@@ -81,7 +81,7 @@ public class StartupGameControllerTest {
 	public void setUp() throws Exception {
 		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-		startup = new startupGameController(mapController, mapService, players);
+		startup = new StartupGameController(mapController, mapService, players);
 		loadmapcmd = "loadmap ameroki.map"; //this loads the ameroki.map file for testing
 	}
 

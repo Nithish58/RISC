@@ -95,11 +95,10 @@ public class CommandPromptView implements Observer {
                         case FORTIFY:
                         	 gameController.readCommand(command);
                         	 break;
-                            //gameController.fortify(command);
                         case REINFORCE:
                         	 gameController.readCommand(command);
                         	 break;
-                            //gameController.reinforce(command);
+
 
                     }
                                      
@@ -128,7 +127,7 @@ public class CommandPromptView implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof GameState) {
             gameState = (GameState) arg;
-            System.out.println("game state changed to " + gameState.getName());
+            System.out.println("\nGame state changed to " + gameState.getName());
         }
     }
 }
