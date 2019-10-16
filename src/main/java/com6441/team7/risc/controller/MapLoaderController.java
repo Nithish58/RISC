@@ -188,15 +188,22 @@ public class MapLoaderController {
 
         });
 
+
         return stringBuilder.toString();
     }
 
     private String getCountryString() {
-        return mapService.getCountries()
-                .stream()
-                .map(Country::toString)
-                .reduce(String::concat)
-                .orElseThrow(RuntimeException::new);
+        StringBuilder stringBuilder = new StringBuilder();
+        mapService.getCountries().forEach(country -> {
+            stringBuilder.append(country.toString());
+        });
+
+        return stringBuilder.toString();
+//        return mapService.getCountries()
+//                .stream()
+//                .map(Country::toString)
+//                .reduce(String::concat)
+//                .orElseThrow(RuntimeException::new);
     }
 
     private String getBorderString() {
