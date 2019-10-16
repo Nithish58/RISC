@@ -1,6 +1,6 @@
 1. Game does not exit when endgame command applied. (DONE)
 
-2. Fix UI
+2. Fix UI   (DONE)
 
 3. Fix showmap Bugs (DONE)
 
@@ -15,7 +15,7 @@
 8. PRINT EVERYTHING VIA VIEW *******************************************************************
 
 9. NULL MAP VALIDITY???? *********************************************************************** exitmapedit
- when no map loaded gives valid map  (FIXED, CONSULT JENNY)******
+ when no map loaded gives valid map  (FIXED, CONSULT JENNY)******   
 
 10. -FORTIFICATION numSoldiers BUG (DONE)
 -   adjacent countries not belonging to same player bug (DONE)
@@ -26,4 +26,4 @@
 12. Maploader modifications discuss with jenny: + comments for new methods
 changed showmap...added showfile...added get set methods for country and continent id generator
 
-13. FOUND MAJOR BUG IN EDITMAP**********
+13. FOUND MAJOR BUG IN EDITMAP**********   (DONE)

@@ -232,8 +232,8 @@ public class StartupGameController {
         	showAllPlayers();
         	break;
         	
-        case SHOW_PLAYER_OWN_COUNTRIES:
-        	showPlayerOwnCountries();
+        case SHOW_PLAYER_ALL_COUNTRIES:       	
+        	showPlayerAllCountries();
         	break;
         
         case SHOW_PLAYER_COUNTRIES:
@@ -702,7 +702,7 @@ public class StartupGameController {
     	
     }
     
-    public void showPlayerOwnCountries() {
+    public void showPlayerCountries() {
     	
     	Player currentPlayer=players.get(currentPlayerIndex);
     	
@@ -758,7 +758,7 @@ public class StartupGameController {
 
     }
     
-    public void showPlayerCountries() {
+    public void showPlayerAllCountries() {
     	
     	Player currentPlayer=players.get(currentPlayerIndex);
     	
