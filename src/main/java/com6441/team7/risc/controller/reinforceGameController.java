@@ -38,7 +38,15 @@ public class reinforceGameController {
     private startupGameController startupGameController;
 
     private String command="";
-
+    
+    /**
+     * Getter for the number of reinforcer armies
+     * @return amount of reinforced armies
+     */
+    public int getReinforcedArmiesCountVal() {
+    	return reinforcedArmiesCount;
+    }
+    
     /**
      * Sole constructor
      * @param currentPlayer this parameter is the player who is requesting to reinforce new armies.
