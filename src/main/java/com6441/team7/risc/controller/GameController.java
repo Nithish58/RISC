@@ -53,6 +53,7 @@ public class GameController {
 
 	AtomicBoolean boolStartUpPhaseOver;
 	private boolean boolStartUpPhaseSet=false;
+	AtomicBoolean boolFortificationPhaseOver;
 	
 	private GameState gameState;
 	
@@ -75,9 +76,12 @@ public class GameController {
 		
 		this.currentPlayerIndex=0;
 		
-		boolStartUpPhaseOver=new AtomicBoolean(false);
+		this.boolStartUpPhaseOver=new AtomicBoolean(false);
 		
-		startupPhaseController=new startupGameController(this.mapLoaderController,this.mapService,
+		this.boolFortificationPhaseOver=new AtomicBoolean(false);
+		
+		
+		this.startupPhaseController=new startupGameController(this.mapLoaderController,this.mapService,
 																	this.players);
 		
 		//reinforcementGameController=new reinforceGameController();
@@ -129,11 +133,13 @@ public class GameController {
             	else if(this.mapService.getGameState()==GameState.FORTIFY) {
             		
             		fortificationGameController=new fortifyGameController(this.currentPlayer,
-            				this.mapService);
+            																this.mapService,
+            																this.startupPhaseController,
+            																command,
+            																this.boolFortificationPhaseOver);
             	
             		switchNextPlayer();
-            		//this.mapService.setState(GameState.REINFORCE);
-
+            			
             	}
 
         }
@@ -148,14 +154,21 @@ public class GameController {
     
     private void switchNextPlayer() {
 		
-		if(currentPlayerIndex==players.size()-1) {
-			currentPlayerIndex=0;
-		}
-		
-		else currentPlayerIndex++;  
-		
-		this.currentPlayer=players.get(currentPlayerIndex);
-		System.out.println("\nPlayer Turn: "+currentPlayer.getName());
+    	if(boolFortificationPhaseOver.get()) {
+    		
+    		if(currentPlayerIndex==players.size()-1) {
+    			currentPlayerIndex=0;
+    		}
+    		
+    		else currentPlayerIndex++;  
+    		
+    		this.currentPlayer=players.get(currentPlayerIndex);
+    		System.out.println("\nPlayer Turn: "+currentPlayer.getName());
+    		
+    	}
+    	
+    	boolFortificationPhaseOver.set(false);
+
     }
     
     	

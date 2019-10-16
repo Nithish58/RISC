@@ -61,9 +61,11 @@ public class FortifyGameControllerTest {
 		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 		player1 = new Player("Player_1");
-		fortifyController = new fortifyGameController(player1, mapService);
-		skippedFortifyController = new fortifyGameController(player1, mapService);
-		//the following two lines are to be changed
+		
+		// (BY KESHAV) fortifyController = new fortifyGameController(player1, mapService); 
+		//skippedFortifyController = new fortifyGameController(player1, mapService);
+		//  (BY KESHAV) the following two lines are to be changed
+		
 		mapCtrl.parseFile(file);
 		nextState = GameState.REINFORCE;
 		

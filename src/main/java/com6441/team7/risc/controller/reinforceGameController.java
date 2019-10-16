@@ -126,10 +126,8 @@ public class reinforceGameController {
                 break;
 
             default:
-                //throw new IllegalArgumentException("Cannot recognize this command in reeinforcement. Try Again"
-                //									+"\nCommand: "+command);
+            	
             	System.out.println("Cannot recognize this command in reinforcement. Try Again");
-            	System.out.println("Command: "+command);
             	
         }
 

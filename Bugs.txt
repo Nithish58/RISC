@@ -14,3 +14,5 @@
 
 8. PRINT EVERYTHING VIA VIEW
 
+9. -FORTIFICATION 1 SOLDIER BUG
+-adjacent countries not belonging to same player bug
