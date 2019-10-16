@@ -179,12 +179,17 @@ public class MapService extends Observable {
      */
     private void addNeighboringCountry(int countryId, int neghboringCountryId) {
         if (adjacencyCountriesMap.containsKey(countryId)) {
-            adjacencyCountriesMap.get(countryId).add(neghboringCountryId);
+            adjacencyCountriesMap.get(countryId).add(neghboringCountryId);        
         } else {
             Set<Integer> neighboringCountrySet = new HashSet<>();
             neighboringCountrySet.add(neghboringCountryId);
             adjacencyCountriesMap.put(countryId, neighboringCountrySet);
         }
+        
+
+        //***IN YOUR IF STATEMENT...shouldnt you add this as well:
+        //adjacencyCountriesMap.get(neghboringCountryId).add(countryId);
+        
     }
 
     /**
@@ -200,7 +205,8 @@ public class MapService extends Observable {
         adjacencyCountriesMap.get(countryId).remove(neghboringCountryId);
 
         adjacencyCountriesMap.get(neghboringCountryId).remove(countryId);
-
+        
+        
         //view.displayMessage("neighboring country " + neighboringCountry + " is sucessfully removed from " + country);
 
     }
@@ -610,6 +616,7 @@ public class MapService extends Observable {
     }
 
     public Graph<Integer, DefaultEdge> getDirectedGraph() {
+    	
         return directedGraph;
     }
 
