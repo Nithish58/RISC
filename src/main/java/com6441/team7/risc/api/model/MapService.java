@@ -205,7 +205,8 @@ public class MapService extends Observable {
         adjacencyCountriesMap.get(countryId).remove(neghboringCountryId);
 
         adjacencyCountriesMap.get(neghboringCountryId).remove(countryId);
-        
+
+        directedGraph.removeEdge(countryId, neghboringCountryId);
         
         //view.displayMessage("neighboring country " + neighboringCountry + " is sucessfully removed from " + country);
 
@@ -364,6 +365,7 @@ public class MapService extends Observable {
             countries.remove(country);
             removeCountryFromContinentCountryMap(country);
             removeCountryFromAdjacentCountryMap(country);
+            directedGraph.removeVertex(country.getId());
         });
     }
 
@@ -463,7 +465,10 @@ public class MapService extends Observable {
         Optional<Continent> toBeRemoved = continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(normalizedContinentName))
                 .findFirst();
+
         toBeRemoved.ifPresent(continent -> {
+            Set<Integer> countryId = continentCountriesMap.get(continent.getId());
+            directedGraph.removeAllVertices(countryId);
             continents.remove(continent);
             continentCountriesMap.remove(continent.getId());
             removeNeighboringCountryByContinentId(continent.getId());
@@ -569,6 +574,14 @@ public class MapService extends Observable {
 
     }
 
+    private void removeVertex(int id){
+        directedGraph.removeVertex(id);
+    }
+
+    private void removeEdge(int src, int dest){
+        directedGraph.removeEdge(src, dest);
+
+    }
     public Optional<Country> getCountryByName(String name) {
     	
     	for(Country c:countries) {
@@ -636,7 +649,7 @@ public class MapService extends Observable {
     public boolean isStronglyConnected() {
 
     	//Added By Keshav
-    	if(countries.size()==0) return false;
+    	//if(countries.size()==0) return false;
     	
         if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
             return false;

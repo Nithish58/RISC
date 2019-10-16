@@ -76,7 +76,7 @@ public class MapLoaderController {
                 showMap();
                 break;
             case SHOW_MAP:
-            	showMapFull();
+            	showMap();
                 break;
             case SAVE_MAP:
                 saveMap(command);
@@ -87,21 +87,21 @@ public class MapLoaderController {
             case VALIDATE_MAP:
                 validateMap();
                 break;
-                
-                //Added by Keshav
             case EXIT_MAPEDIT:
-            	           	
-            	if(!validateMap()) {
-            		System.out.println("Map Not Valid");
-            	}
-            	this.mapService.setState(GameState.START_UP);
+            	exitEditMap();
                 break;
                 
             default:
-            	//this.mapService.setState(GameState.LOAD_MAP);
                 throw new IllegalArgumentException("cannot recognize this command");
         }
 
+    }
+
+    private void exitEditMap(){
+        if(mapService.isMapNotValid()) {
+            System.out.println("Map Not Valid");
+        }
+        this.mapService.setState(GameState.START_UP);
     }
 
     /**
@@ -769,43 +769,45 @@ public class MapLoaderController {
     public void setCountryIdGenerator(int num) {
     	this.countryIdGenerator.set(num);
     }
-    
+
     public void showMapFull() {
-    	
+
     	for(Map.Entry<Integer, Set<Integer>> item :
     						mapService.getContinentCountriesMap().entrySet()) {
-    		
+
     		int key=(int) item.getKey();
-    		   		
-    		
+
+
     		Optional<Continent> optionalContinent=mapService.getContinentById(key);
     		Continent currentContinent= (Continent) optionalContinent.get();
-    		
+
     		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
     		System.out.println();
-    		
+
     		Set<Integer> value=item.getValue();
-    		
+
     		for(Integer i:value) {
     			//For Each Country In Continent, Get details + Adjacency Countries
     			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
+
     			Country currentCountry=optionalCountry.get();
     			String strCountryOutput="";
-    			
+
     			strCountryOutput+=currentCountry.getCountryName();
-    			
+
     			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-    			
-    			for(Integer j:adjCountryList) {
-    				strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName();
-    			}
-    			
+
+    			if(adjCountryList != null) {
+                    for (Integer j : adjCountryList) {
+                        strCountryOutput += " --> " + mapService.getCountryById(j).get().getCountryName();
+                    }
+                }
+
     			System.out.println(strCountryOutput+"\n");
     		}
 
     	}
 
     }
-    
+
 }
