@@ -46,6 +46,7 @@ public class fortifyGameController {
 				this.fromCountry = mapService.getCountryByName(orders[1]).get();
 				this.toCountry = mapService.getCountryByName(orders[2]).get();
 				this.num = Integer.parseInt(orders[3]);
+				fortify();
 				fortifyState = GameState.REINFORCE;
 			}
 		}
