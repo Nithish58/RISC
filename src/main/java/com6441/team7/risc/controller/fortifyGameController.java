@@ -40,7 +40,7 @@ public class fortifyGameController {
 		
 		public void readCommand(String command) throws IOException {
 			this.orders = command.split(" ");
-			if (orders[1].equals(new String("none"))){
+			if (orders[1].equals("none")){
 				fortifyState = GameState.REINFORCE;
 			} else {
 				this.fromCountry = mapService.getCountryByName(orders[1]).get();
@@ -64,7 +64,7 @@ public class fortifyGameController {
 			
 			// Is the exception correct? 
 			try {
-				assert(fortifyState.getName() == GameState.FORTIFY.toString());
+				assert(fortifyState.getName().equals(GameState.FORTIFY.toString()));
 
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -83,7 +83,7 @@ public class fortifyGameController {
 			
 			
 			try {
-				assert(fromCountry.getPlayer()==toCountry.getPlayer());
+				assert(fromCountry.getPlayer().equals(toCountry.getPlayer()));
 			} catch (Exception e) {
 				System.out.println("Check if both are same player's countries");
 			}
@@ -100,7 +100,7 @@ public class fortifyGameController {
 		 */
 		public void fortify() {
 			validation();
-			toCountry.setSoldiers(fromCountry.getSoldiers() - num);
+			toCountry.addSoldiers(fromCountry.getSoldiers() - num);
 		}
 
 }
