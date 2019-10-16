@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com6441.team7.risc.view.CommandPromptView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -232,8 +233,8 @@ public class StartupGameController {
         	showAllPlayers();
         	break;
         	
-        case SHOW_PLAYER_OWN_COUNTRIES:
-        	showPlayerOwnCountries();
+        case SHOW_PLAYER_ALL_COUNTRIES:       	
+        	showPlayerAllCountries();
         	break;
         
         case SHOW_PLAYER_COUNTRIES:
@@ -390,14 +391,25 @@ public class StartupGameController {
 		}
 		
 	}
-	
-	
+
+
+	/**
+	 * for each string, call editPlayerFromUserInput method
+	 * @param s
+	 */
 	private void editPlayer(String[] s) {
 		
 			 Arrays.stream(s).forEach(this::editPlayerFromUserInput);				
 	
 	}
 
+
+	/**
+	 * if the command is add, call addPlayer()
+	 * if the command is remove, call removePlayer()
+	 * else throw exception
+	 * @param s command string
+	 */
     private void editPlayerFromUserInput(String s) {
         String[] commands = StringUtils.split(s, " ");
         switch (convertFormat(commands[0])) {
@@ -411,8 +423,13 @@ public class StartupGameController {
                 throw new ContinentEditException("The gameplayer command " + s + " is not valid.");
         }
     }
-    
-    private void addPlayer(String[] s) {
+
+	/**
+	 * validate each player info, if player info is valid, add it to the list of players
+	 * if not valid, throw an exception
+	 * @param s
+	 */
+	private void addPlayer(String[] s) {
     	
     	if(players.size()<9) {
     		
@@ -451,9 +468,14 @@ public class StartupGameController {
     	
 
     }
-    
-    
-    private void removePlayer(String[] s) {
+
+
+	/**
+	 * validate player info, if player info is valid, remove it to the list of players
+	 * if not valid, throw an exception
+	 * @param s
+	 */
+	private void removePlayer(String[] s) {
     	
     	try {
     		
@@ -478,8 +500,12 @@ public class StartupGameController {
     		throw new PlayerEditException("gameplayer command: cannot add/remove it is not valid", e);
     	}
     }
-    
-    
+
+	/**
+	 * load map from the map file
+	 * @param s
+	 * @return
+	 */
 	Optional<String> loadMap(String s) {
 		
 	
@@ -518,9 +544,13 @@ public class StartupGameController {
 		//NEED TO UPDATE BOOLFILENAME
 		
 	}
-	
-   
-    private boolean validateMap() {
+
+
+	/**
+	 * validate the map
+	 * @return true if valid, false if not valid
+	 */
+	private boolean validateMap() {
 
         if(mapService.isMapValid()){
             //view.displayMessage("map is valid");
@@ -534,23 +564,38 @@ public class StartupGameController {
         }
     }
 
-    private void showMap() {
+	/**
+	 * show map information including countries, continents, and neighboringCountries
+	 */
+	private void showMap() {
         mapService.printCountryInfo();
         mapService.printContinentInfo();
         mapService.printNeighboringCountryInfo();
     }
-	
-    private String convertFormat(String name) {
+
+	/**
+	 * delete white spaces and make the string to lower cases
+	 * @param name
+	 * @return
+	 */
+	private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
-    
-    private void endGame() {
+	/**
+	 * end the game
+	 */
+	private void endGame() {
     	System.out.println("Game Ends");
     	System.exit(0);;
     }
-    
-    public void placeArmy(String countryName) {
+
+	/**
+	 * place an army on the country by its countryName
+	 * by each player until all players have placed all their armies
+	 * @param countryName
+	 */
+	public void placeArmy(String countryName) {
     	
     	boolean countryFound=false;
     	Player currentPlayer=players.get(currentPlayerIndex);
@@ -614,8 +659,11 @@ public class StartupGameController {
     	}
 	
     }
-    
-    private void switchToNextPlayer() {
+
+	/**
+	 * switchPlayers
+	 */
+	private void switchToNextPlayer() {
     	if(currentPlayerIndex==(players.size()-1)) currentPlayerIndex=0;
 		
 		else currentPlayerIndex++;
@@ -624,8 +672,11 @@ public class StartupGameController {
     	//showPlayer();
     	
     }
-    
-    public void placeAll() {
+
+	/**
+	 * automatically randomly place all remaining unplaced armies for all players
+	 */
+	public void placeAll() {
     	
     	for(Player p:players) {
     		
@@ -647,8 +698,12 @@ public class StartupGameController {
     	
     	System.out.println("Player Turn: "+players.get(0).getName());
     }
-    
-    public void showAllPlayers() {
+
+	/**
+	 * show players information including current player name, number of armies, continent,
+	 * countries, and number of armies on each country
+	 */
+	public void showAllPlayers() {
     	
     	for(Player p:players) {
     		
@@ -676,9 +731,12 @@ public class StartupGameController {
     	}
 
     }
-    
-    
-    public void showPlayer() {
+
+	/**
+	 * show all the players including current player name, number of armies, continent,
+	 * 	 * countries, and number of armies on each country
+	 */
+	public void showPlayer() {
     	
     	Collections.sort(players.get(currentPlayerIndex).countryPlayerList, new Comparator<Country>() {
 
@@ -701,8 +759,12 @@ public class StartupGameController {
     	}
     	
     }
-    
-    public void showPlayerOwnCountries() {
+
+
+	/**
+	 * show countries occupied by the current player
+	 */
+	public void showPlayerCountries() {
     	
     	Player currentPlayer=players.get(currentPlayerIndex);
     	
@@ -757,8 +819,11 @@ public class StartupGameController {
     	}
 
     }
-    
-    public void showPlayerCountries() {
+
+	/**
+	 * show all players and their occupying countries
+	 */
+	public void showPlayerAllCountries() {
     	
     	Player currentPlayer=players.get(currentPlayerIndex);
     	
@@ -810,11 +875,14 @@ public class StartupGameController {
     	}
 
     }
-    
-    
-    
-    
-    public void showMapFull() {
+
+
+	/**
+	 * print map in a format of continent, countries belong to the continent
+	 * for each country, print the players that occupy, the number of soldiers and
+	 * its neighboring countries
+	 */
+	public void showMapFull() {
     	
     	for(Map.Entry<Integer, Set<Integer>> item :
     						mapService.getContinentCountriesMap().entrySet()) {
