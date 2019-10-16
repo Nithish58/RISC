@@ -49,7 +49,7 @@ public class Player {
         this.armies = 0;
         this.name = name;
         this.cardList = new ArrayList<>();
-        this.tradeInTimes =1;
+        this.tradeInTimes = 1;
         this.countryPlayerList=new ArrayList<>();
     }
 
