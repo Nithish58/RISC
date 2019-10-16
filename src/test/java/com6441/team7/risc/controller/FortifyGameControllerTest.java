@@ -12,8 +12,10 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
@@ -21,23 +23,27 @@ import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.view.CommandPromptView;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FortifyGameControllerTest {
 	static MapService mapService;
 	static private CommandPromptView cmdView;
 	Player player1;
 	fortifyGameController fortifyController;
 	fortifyGameController skippedFortifyController;
-	Optional<Country> fromCountry;
-	Optional<Country> toCountry;
+	Country fromCountry;
+	Country toCountry;
 	GameState nextState;
 	String fortifyCommand1, fortifyCommand2, file;
+	private int expectedSoldiers;
 	static MapLoaderController mapCtrl;
+	static int testNo;
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mapService = new MapService();
 		mapCtrl = new MapLoaderController(mapService);
 		cmdView = new CommandPromptView(mapCtrl, new GameController(mapCtrl, mapService));
 		mapCtrl.setView(cmdView);
+		testNo = 0;
 
 	}
 
@@ -59,18 +65,29 @@ public class FortifyGameControllerTest {
 		
 		fortifyCommand1 = "fortify Siberia Worrick 1";
 		fortifyCommand2 = "fortify none";
-		//fortifyController.readCommand(fortifyCommand1);
-		skippedFortifyController.readCommand(fortifyCommand2);
+		expectedSoldiers = 1;
+		fromCountry = mapService.getCountryByName("siberia").get();
+		fromCountry.setSoldiers(3);
+		toCountry = mapService.getCountryByName("worrick").get();
+		switch(testNo) {
+		case 0:
+			fortifyController.readCommand(fortifyCommand1);
+			break;
+		case 1:
+			skippedFortifyController.readCommand(fortifyCommand2);
+			break;
+		}
 	}
 
 	@After
 	public void tearDown() throws Exception {
+		testNo++;
 	}
 
-	@Ignore
 	@Test
 	public void test001_fortifyCountry() {
-		//assertEquals(1, fortifyController.);
+		assertSame(expectedSoldiers, toCountry.getSoldiers());
+		assertEquals(nextState, fortifyController.fortifyState);
 	}
 	
 	@Test
