@@ -22,11 +22,11 @@ import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.RiscCommand;
 
 /**
- * <h1>The fortify phase</>
- * This class implements fortification phase of the game
- * It takes two commands:
- * <code>fortify none</code>
- * <code>fortify fromcountry tocountry num</code>
+ * This class represents the fortification phase
+ * It accepts fortification commands from user and some show commands and rejects all other commands
+ * It checks whether fortification criteria are met.
+ * It then carries out fortification
+ * After fortification, it changes updates gamestate to reinforcement
  */
 public class fortifyGameController {
 	
@@ -180,7 +180,14 @@ public class fortifyGameController {
 		}
 		
 
-		
+		/**
+		 * This method checks that the following reinforcement criterias are met: 
+		 * <ul>
+		 * <li>Both countries are adjacent </li>
+		 * <li>Both countries belong to player</li>
+		 * <li>at least 1 player will remain in the source country after fortification</li>
+		 * <ul>
+		 */
 		private boolean validateConditions() {
 			
 			this.boolValidationMet=true;
@@ -273,66 +280,3 @@ public class fortifyGameController {
 		
 		
 }
-		
-		
-		/*
-		
-		
-					public void validation() {
-			/*
-			 * Validity checks: 
-			 * 
-			 * -Both countries are adjacent 
-			 * -Both countries belong to player
-			 * -minimum num of armies/soldiers in source country
-			 */
-			
-			
-			// Is the exception correct? 
-		/*
-		  try { assert(fortifyState.getName().equals(GameState.FORTIFY.toString()));
-		  
-		  } catch (Exception e) { // TODO: handle exception
-		  System.out.println("Not right Game state"); }
-		 
-			
-			try {
-				
-				
-				Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
-				
-				Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountry.toString());
-				
-				Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.toString());
-				
-				neighbouringCountries =  adjacentCountriesList.get(fromId);
-				
-				assert(neighbouringCountries.contains(toId));
-				
-			} catch (Exception e) {
-				System.out.println("Countries not adjacent to each other");
-				return;
-			}
-			
-			
-			try {
-				assert(fromCountry.getPlayer().equals(toCountry.getPlayer()));
-			} catch (Exception e) {
-				System.out.println("Check if both are same player's countries");
-				return;
-			}
-			
-			
-			try {
-				assert(fromCountry.getSoldiers()>num);
-			} catch (Exception e) {
-				System.out.println("Not enough soldiers in source country");
-				return;
-			}
-			
-		}
-		
-		
-		
-		*/
-		
