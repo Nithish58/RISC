@@ -86,9 +86,7 @@ public class GameController {
 		
 		this.startupPhaseController=new StartupGameController(this.mapLoaderController,this.mapService,
 																	this.players);
-		
-		//reinforcementGameController=new reinforceGameController();
-		//fortificationGameController=new fortifyGameController();
+
 
 	}
 	
@@ -140,7 +138,8 @@ public class GameController {
             																this.mapService,
             																this.startupPhaseController,
             																command,
-            																this.boolFortificationPhaseOver);
+            																this.boolFortificationPhaseOver,
+            																view);
             	
             		switchNextPlayer();
             			
@@ -181,6 +180,7 @@ public class GameController {
     
     public void setView(CommandPromptView v) {
     	this.view=v;
+    	this.startupPhaseController.setView(v);
     }
     	
 }

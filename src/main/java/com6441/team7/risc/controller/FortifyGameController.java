@@ -21,6 +21,7 @@ import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.view.CommandPromptView;
 
 /**
  * This class represents the fortification phase
@@ -46,6 +47,7 @@ public class FortifyGameController {
 		Set<Integer> neighbouringCountries;
 		Set<Country> countryList;
 		
+		private CommandPromptView view;
 		private boolean boolValidationMet;
 		
 		/*
@@ -53,10 +55,12 @@ public class FortifyGameController {
 		 */
 		public FortifyGameController(Player player, MapService mapService,
 										StartupGameController sgc, String cmd,
-										AtomicBoolean boolFortificationPhaseOver) throws IOException{
+										AtomicBoolean boolFortificationPhaseOver,
+										CommandPromptView v) throws IOException{
 			this.mapService = mapService;
 			this.player = player;
 			this.startupGameController=sgc;
+			this.view=v;
 			
 			this.boolFortificationPhaseOver=boolFortificationPhaseOver;
 			this.boolValidationMet=false;
@@ -65,7 +69,16 @@ public class FortifyGameController {
 			
 			
 		}
-		
+
+	/**
+	 * read command from user, if it is fortify, call determineFortificationAndFortify method
+	 * if the command is showMap, call showMapFull()
+	 * if the command is showPlayer, call showPlayerFortificationPhase method
+	 * if the command is showPlayerAllCountries, call showPlayerAllCountriesFortification();
+	 * else throw exception
+	 * @param command
+	 * @throws IOException
+	 */
 		public void readCommand(String command) throws IOException{
 			
 			this.orders=command.split("\\s+");
@@ -102,15 +115,21 @@ public class FortifyGameController {
 			}
 
 		}
-			
-		
-		private void determineFortificationAndFortify(String command) {
+
+	/**
+	 * validate the command, if the command format is valid, check the command type
+	 * if the command is none, do nothing and exit reinforce phase
+	 * if the command is country and num, validat the country info and soldier info,
+	 * move the soldier from these two countries
+	 * @param command
+	 */
+	private void determineFortificationAndFortify(String command) {
 		
 			this.orders=command.split("\\s+");
 			
 			if(orders.length==2 && orders[1].equalsIgnoreCase("none")) {
 				
-				System.out.println("Fortification Phase Over.");
+				view.displayMessage("Fortification Phase Over.");
 				
 				this.mapService.setState(GameState.REINFORCE);
 				this.boolFortificationPhaseOver.set(true);
@@ -130,7 +149,7 @@ public class FortifyGameController {
 				}
 				catch(NumberFormatException e) {
 					
-					System.out.println("Wrong Number Format. Try Again");
+					view.displayMessage("Wrong Number Format. Try Again");
 				}
 				
 				fortify();
@@ -138,7 +157,7 @@ public class FortifyGameController {
 			}
 			
 			else {
-				System.out.println("Invalid Fortification Command. Try Again");
+				view.displayMessage("Invalid Fortification Command. Try Again");
 				this.boolFortificationPhaseOver.set(false);
 				return;
 			}
@@ -151,8 +170,9 @@ public class FortifyGameController {
 		
 
 		
-		/*
+		/**
 		 * After validation comes fortifying
+		 * show before and after fortification information of country and soldiers
 		 */
 		public void fortify() {
 			
@@ -160,14 +180,14 @@ public class FortifyGameController {
 			
 			if(this.boolValidationMet) {
 				
-				System.out.println("Before Fortification: "+fromCountry.getCountryName()+":"+
+				view.displayMessage("Before Fortification: "+fromCountry.getCountryName()+":"+
 						fromCountry.getSoldiers()+" , "+
 						toCountry.getCountryName()+":"+toCountry.getSoldiers());
 				
 				toCountry.addSoldiers(num);
 				fromCountry.removeSoldiers(num);
 				
-				System.out.println("After Fortification: "+fromCountry.getCountryName()+":"+
+				view.displayMessage("After Fortification: "+fromCountry.getCountryName()+":"+
 						fromCountry.getSoldiers()+" , "+
 						toCountry.getCountryName()+":"+toCountry.getSoldiers());
 				
@@ -214,13 +234,13 @@ public class FortifyGameController {
 			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.getCountryName());
 			
 			if(!fromId.isPresent()) {
-				System.out.println("Origin country not present");
+				view.displayMessage("Origin country not present");
 				this.boolValidationMet=false;
 			}
 
 			
 			if(!toId.isPresent()) {
-				System.out.println("Destination country not present");
+				view.displayMessage("Destination country not present");
 				this.boolValidationMet=false;
 			}
 			
@@ -229,33 +249,42 @@ public class FortifyGameController {
 				
 				if(!neighbouringCountries.contains(toId.get())) {
 					this.boolValidationMet=false;
-					System.out.println("Countries not adjacent to each other");
+					view.displayMessage("Countries not adjacent to each other");
 				}
 			}			
 			
 		}
-		
-		private void checkCountryOwnership() {
+
+	/**
+	 * check the country owned by the current player
+	 */
+	private void checkCountryOwnership() {
 			
 			if(!(fromCountry.getPlayer().getName().equalsIgnoreCase
 					(toCountry.getPlayer().getName()))) {
-				System.out.println("Countries do not belong to same player");
+				view.displayMessage("Countries do not belong to same player");
 				this.boolValidationMet=false;
 			}
 			
 		}
-		
-		private void checkNumSoldiers() {
+
+	/**
+	 * check the number of soldiers for the current player
+	 */
+	private void checkNumSoldiers() {
 			
 			if(!(fromCountry.getSoldiers()>num)) {
-				System.out.println("Not enough soldiers in origin country");
+				view.displayMessage("Not enough soldiers in origin country");
 				this.boolValidationMet=false;
 			}
 			
 		}
-		
-	    
-	    private void showPlayerFortificationPhase(Player p) {
+
+	/**
+	 * show current player information, the countries its occupy and corresponding soldiers
+	 * @param p
+	 */
+	private void showPlayerFortificationPhase(Player p) {
 	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
 
 	                    @Override
@@ -267,12 +296,12 @@ public class FortifyGameController {
 	                }
 	        );
 
-	        System.out.println("Current Player: "+p.getName());
+	        view.displayMessage("Current Player: "+p.getName());
 
-	        System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
+	        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
 
 	        for(Country c:p.countryPlayerList) {
-	            System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+	            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
 	        }
 	    }
 		
@@ -289,15 +318,20 @@ public class FortifyGameController {
 	                }
 	        );
 
-	        System.out.println("Current Player: "+p.getName());
+	        view.displayMessage("Current Player: "+p.getName());
 
-	        System.out.println("Continent \t\t\t\t Country \t\t\t\t NumArmies");
+	        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
 
 	        for(Country c:p.countryPlayerList) {
-	            System.out.println(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+	            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
 	        }
 	    }
-	    
+
+
+	/**
+	 * show current player and countries information in the fortification
+	 *
+	 */
 	    private void showPlayerCountriesFortification() {
 	    	Player currentPlayer=this.player;
 	    	
@@ -310,8 +344,8 @@ public class FortifyGameController {
 	    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
 	    		Continent currentContinent= (Continent) optionalContinent.get();
 	    		
-	    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-	    		System.out.println();
+	    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+	    		view.displayMessage("\n");
 	    		
 	    		Set<Integer> value=item.getValue();
 	    		
@@ -342,7 +376,7 @@ public class FortifyGameController {
 	        				
 	        			}
 	        			
-	        			System.out.println(strCountryOutput+"\n");    				
+	        			view.displayMessage(strCountryOutput+"\n");    				
 	    				
 	    			}
 	    			
@@ -351,7 +385,12 @@ public class FortifyGameController {
 
 	    	}
 	    }
-	    
+
+
+	/**
+	 * show players and all countries in fortification phase
+	 * @param p
+	 */
 	    private void showPlayerAllCountriesFortification() {
 	    	
 	    	Player currentPlayer=player;
@@ -365,8 +404,8 @@ public class FortifyGameController {
 	    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
 	    		Continent currentContinent= (Continent) optionalContinent.get();
 	    		
-	    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-	    		System.out.println();
+	    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+	    		view.displayMessage("\n");
 	    		
 	    		Set<Integer> value=item.getValue();
 	    		
@@ -394,7 +433,7 @@ public class FortifyGameController {
 	        				
 	        			}
 	        			
-	        			System.out.println(strCountryOutput+"\n");    				
+	        			view.displayMessage(strCountryOutput+"\n");    				
 	    				
 	    			}
 	    			
