@@ -61,7 +61,7 @@ public class MapService extends Observable {
 
     /**
      * set game state
-     * @param gameState
+     * @param gameState the state of game
      */
     public void setState(GameState gameState){
         this.gameState = gameState;
@@ -135,7 +135,7 @@ public class MapService extends Observable {
 
     /**
      * add a collection of continents
-     * @param continentsCollection
+     * @param continentsCollection Collections of Continents
      */
     public void addContinent(Collection<Continent> continentsCollection) {
         continents.addAll(continentsCollection);
@@ -150,7 +150,7 @@ public class MapService extends Observable {
 
     /**
      * add collection of countries id and its neighboring countries id
-     * @param map
+     * @param map the map which is used to play
      */
     public void addNeighboringCountries(Map<Integer, Set<Integer>> map) {
         map.forEach((key, value) -> adjacencyCountriesMap.put(key, value));
@@ -158,8 +158,8 @@ public class MapService extends Observable {
 
     /**
      * add a neighborhood with country name and its neighboring country name
-     * @param country
-     * @param neighboringCountry
+     * @param country Name of country
+     * @param neighboringCountry Name of neighbouring country
      */
     public void addNeighboringCountries(String country, String neighboringCountry) {
 
@@ -174,8 +174,8 @@ public class MapService extends Observable {
 
     /**
      * add a neighborhood with countryId and its neighboring country id
-     * @param countryId
-     * @param neghboringCountryId
+     * @param countryId Id of Country
+     * @param neghboringCountryId Id of neighbouring country.
      */
     private void addNeighboringCountry(int countryId, int neghboringCountryId) {
         if (adjacencyCountriesMap.containsKey(countryId)) {
@@ -189,8 +189,8 @@ public class MapService extends Observable {
 
     /**
      * remove a neighborhood with countryName and neighboringCountryName
-     * @param country
-     * @param neighboringCountry
+     * @param country name of country
+     * @param neighboringCountry name of neighbouring country
      */
     public void removeNeighboringCountriesByName(String country, String neighboringCountry) {
 
@@ -205,6 +205,9 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * To clear the map
+     */
     public void emptyMap(){
 
         if(directedGraph.vertexSet().size() != 0){
@@ -231,18 +234,26 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * To get set of countries
+     * @return countries set
+     */
     public Set<Country> getCountries() {
         return countries;
     }
 
+    /**
+     * To get set of Continents
+     * @return set of continents
+     */
     public Set<Continent> getContinents() {
         return continents;
     }
 
     /**
      * check if a country name exists
-     * @param countryName
-     * @return
+     * @param countryName country's name
+     * @return true if country name exist in map
      */
     public boolean countryNameExist(String countryName) {
         return Optional.ofNullable(countryName)
@@ -253,8 +264,8 @@ public class MapService extends Observable {
 
     /**
      * check if a country name does not exist
-     * @param countryName
-     * @return
+     * @param countryName country's name
+     * @return true if country name doesn't exist in map
      */
     public boolean countryNameNotExist(String countryName) {
         return !countryNameExist(countryName);
@@ -262,8 +273,8 @@ public class MapService extends Observable {
 
     /**
      * check if a continent name exist
-     * @param continentName
-     * @return
+     * @param continentName continent's name
+     * @return true if continents's name exist in map
      */
     public boolean continentNameExist(String continentName) {
         return Optional.ofNullable(continentName)
@@ -274,8 +285,8 @@ public class MapService extends Observable {
 
     /**
      * check if a continent name not exist
-     * @param continentName
-     * @return
+     * @param continentName continent's name
+     * @return true if continents's name doesn't exist in map
      */
     public boolean continentNameNotExist(String continentName) {
         return !continentNameExist(continentName);
@@ -283,8 +294,8 @@ public class MapService extends Observable {
 
     /**
      * check if a continent ID exist
-     * @param continentId
-     * @return
+     * @param continentId continent's Id
+     * @return true if continents's Id exist in map
      */
     public boolean continentIdExist(Integer continentId) {
         return Optional.ofNullable(continentId)
@@ -294,8 +305,8 @@ public class MapService extends Observable {
 
     /**
      * check if a continent id not exist
-     * @param continentId
-     * @return
+     * @param continentId continent's Id
+     * @return true if continents's Id doesn't exist in map
      */
     public boolean continentIdNotExist(Integer continentId) {
         return !continentIdExist(continentId);
@@ -303,8 +314,8 @@ public class MapService extends Observable {
 
     /**
      * check if a country id exist
-     * @param countryId
-     * @return
+     * @param countryId country id
+     * @return true if country's Id exist in map
      */
     public boolean countryIdExist(Integer countryId) {
         return Optional.ofNullable(countryId)
@@ -314,8 +325,8 @@ public class MapService extends Observable {
 
     /**
      * check if a country id not exist
-     * @param countryId
-     * @return
+     * @param countryId country's Id
+     * @return true if country's Id doesn't exist in map
      */
     public boolean countryIdNotExist(Integer countryId) {
         return !countryIdExist(countryId);
@@ -323,8 +334,8 @@ public class MapService extends Observable {
 
     /**
      * check if a country exist
-     * @param country
-     * @return
+     * @param country country's Name
+     * @return true if country doesn't exist in map
      */
     public boolean countryExist(Country country) {
         return Optional.ofNullable(country)
@@ -334,7 +345,7 @@ public class MapService extends Observable {
 
     /**
      * remove a country by country name
-     * @param countryName
+     * @param countryName Country Name
      */
     public void removeCountryByName(String countryName) {
         if (isNull(countryName)) {
@@ -352,7 +363,7 @@ public class MapService extends Observable {
 
     /**
      * remove a country id from continentCountryMap
-     * @param country
+     * @param country Country objects
      */
     private void removeCountryFromContinentCountryMap(Country country) {
 
@@ -364,7 +375,7 @@ public class MapService extends Observable {
 
     /**
      * remove country id from neighboring countries
-     * @param country
+     * @param country Country Objects
      */
     private void removeCountryFromAdjacentCountryMap(Country country) {
         int countryId = country.getId();
@@ -378,7 +389,7 @@ public class MapService extends Observable {
 
     /**
      * find continent id by given continent name
-     * @param name
+     * @param name continent's name
      * @return if continent exist, will return its ID, if not, return empty
      */
     public Optional<Integer> findCorrespondingIdByContinentName(String name) {
@@ -390,7 +401,7 @@ public class MapService extends Observable {
 
     /**
      * find country id by given country name
-     * @param name
+     * @param name country's name
      * @return if country exist, will return its ID, if not, return empty
      */
     public Optional<Integer> findCorrespondingIdByCountryName(String name) {
@@ -402,7 +413,7 @@ public class MapService extends Observable {
 
     /**
      * find continent name by given continent id
-     * @param id
+     * @param id continent's id
      * @return if continent exist, will return its name, if not, return empty
      */
     public Optional<String> findCorrespondingNameByContidentId(Integer id){
@@ -414,7 +425,7 @@ public class MapService extends Observable {
 
     /**
      * find country to be removed by its name
-     * @param countryName
+     * @param countryName country Name
      * @return if country exist, will return the country, if not, return empty
      */
     private Optional<Country> findCountryToBeRemoved(String countryName) {
@@ -426,6 +437,10 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * rremove country
+     * @param id id of country
+     */
     public void removeCountryById(int id) {
     }
 
@@ -457,7 +472,6 @@ public class MapService extends Observable {
     /**
      * remove countries that belong to a specific continent
      * @param name continent name
-     * @return
      */
     private void removeCountryByContinentName(String name){
         List<Country> toBeRemoved = findCountryByContinentName(name);
@@ -468,7 +482,7 @@ public class MapService extends Observable {
     /**
      * find countries that belong to a specific continent
      * @param name continent name
-     * @return
+     * @return list of Country
      */
     public List<Country> findCountryByContinentName(String name){
         return countries.stream()
@@ -527,8 +541,8 @@ public class MapService extends Observable {
 
     /**
      * build the graph based on the list of countries id
-     * @param src
-     * @param dest
+     * @param src source value
+     * @param dest set of destinatiton value
      */
     public void addEdge(int src, Set<Integer> dest) {
         if (!directedGraph.containsVertex(src)) {
