@@ -30,12 +30,12 @@ import org.apache.commons.lang3.StringUtils;
  * <b>Note: In any case, the minimum number of reinforcement armies is 3. </b>
  * </p>
  */
-public class reinforceGameController {
+public class ReinforceGameController {
     private Player player;
     private MapService mapService;
     private CommandPromptView view;
     private int reinforcedArmiesCount;
-    private startupGameController startupGameController;
+    private StartupGameController startupGameController;
 
     private String command="";
     
@@ -52,8 +52,8 @@ public class reinforceGameController {
      * @param currentPlayer this parameter is the player who is requesting to reinforce new armies.
      * @param mapService the mapService store current information of currentPlayer.
      */
-    public reinforceGameController(Player currentPlayer, MapService mapService,
-                                   startupGameController sgc, String cmd){
+    public ReinforceGameController(Player currentPlayer, MapService mapService,
+                                   StartupGameController sgc, String cmd){
         this.mapService=mapService;
         this.player = currentPlayer;
         this.reinforcedArmiesCount = 0;

@@ -25,9 +25,9 @@ import com6441.team7.risc.view.CommandPromptView;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ReinforceGameControllerTest {
-	static reinforceGameController reinforceController1, reinforceController2;
+	static ReinforceGameController reinforceController1, reinforceController2;
 	static Player playerDummy1, playerDummy2;
-	static startupGameController startup;
+	static StartupGameController startup;
 	static MapLoaderController mapController;
 	static MapService mapService;
 	static CommandPromptView cmdView; 
@@ -44,7 +44,7 @@ public class ReinforceGameControllerTest {
 		cmdView = new CommandPromptView(mapController, new GameController(mapController, mapService));
 		mapController.setView(cmdView);
 		players = new ArrayList<>();
-		startup = new startupGameController(mapController, mapService, players);
+		startup = new StartupGameController(mapController, mapService, players);
 		phase = new AtomicBoolean(false);
 		testNo = 0;
 	}
@@ -68,7 +68,7 @@ public class ReinforceGameControllerTest {
 		//startup.readCommand("placearmy siberia", phase);
 		startup.readCommand("placeall", phase);
 		cmd="reinforce siberia 7";
-		reinforceController1 = new reinforceGameController(playerDummy1, mapService, startup, cmd);
+		reinforceController1 = new ReinforceGameController(playerDummy1, mapService, startup, cmd);
 		reinforceController1.getReinforcedArmiesCount();
 
 	}

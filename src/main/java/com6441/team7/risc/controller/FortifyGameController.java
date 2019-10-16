@@ -28,11 +28,11 @@ import com6441.team7.risc.api.model.RiscCommand;
  * It then carries out fortification
  * After fortification, it changes updates gamestate to reinforcement
  */
-public class fortifyGameController {
+public class FortifyGameController {
 	
 		private MapService mapService;
 		
-		private startupGameController startupGameController;
+		private StartupGameController startupGameController;
 		
 		private AtomicBoolean boolFortificationPhaseOver;
 		
@@ -50,8 +50,8 @@ public class fortifyGameController {
 		/*
 		 * Constructor with parameters
 		 */
-		public fortifyGameController(Player player, MapService mapService,
-										startupGameController sgc, String cmd,
+		public FortifyGameController(Player player, MapService mapService,
+										StartupGameController sgc, String cmd,
 										AtomicBoolean boolFortificationPhaseOver) throws IOException{
 			this.mapService = mapService;
 			this.player = player;

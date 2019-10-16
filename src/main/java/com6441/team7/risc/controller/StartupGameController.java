@@ -69,7 +69,7 @@ import com6441.team7.risc.api.model.RiscCommand;
  * @author Keshav
  *
  */
-public class startupGameController {
+public class StartupGameController {
 	
 	private MapLoaderController mapLoaderController;
 	
@@ -98,7 +98,7 @@ public class startupGameController {
 	 * @param players list of all players passed as reference as well.
 	 * 
 	 */
-	public startupGameController(MapLoaderController mapController ,MapService mapService,
+	public StartupGameController(MapLoaderController mapController ,MapService mapService,
 			ArrayList<Player> players) {
 		
 		this.mapLoaderController=mapController;
