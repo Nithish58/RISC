@@ -118,7 +118,7 @@ public class reinforceGameController {
                 break;
 
             case SHOW_PLAYER:
-            	showPlayerReinforcement(player);
+            	showPlayerReinforcementPhase(player);
                 break;
 
             case SHOW_ALL_PLAYERS:
@@ -170,15 +170,27 @@ public class reinforceGameController {
      * @param num the number of armies
      */
     public void reinforce(String countryName, int num){
+    	
         if (mapService.getCountryByName(countryName).isPresent()){
+        	
             Country country = mapService.getCountryByName(countryName).get();
+            
             if (allCountriesOfPlayer().contains(country)){
+            	
                 if (num > reinforcedArmiesCount || num <= 0){
+                	
                     System.out.println("Sorry, your extra armies number should be in range 1 - "+ reinforcedArmiesCount);
+              
                 }else{
-                    System.out.println(countryName +" had " + country.getSoldiers()+" soldiers");
+                	
+                    System.out.println("Before reinforcement, "+countryName +" had " + 
+                    				country.getSoldiers()+" soldiers");
+                    
                     country.addSoldiers(num);
-                    System.out.println("After reinforcement, "+ countryName +" has " + country.getSoldiers()+" soldiers");
+                    
+                    System.out.println("After reinforcement, "+ countryName +" has " +
+                    				country.getSoldiers()+" soldiers");
+                    
                     reinforcedArmiesCount -= num;
                    // System.out.println("Number of soldiers remaining: "+reinforcedArmiesCount);
                 }
@@ -221,7 +233,8 @@ public class reinforceGameController {
     }
 
 
-    private void showPlayerReinforcement(Player p) {
+    
+    private void showPlayerReinforcementPhase(Player p) {
         Collections.sort(p.countryPlayerList, new Comparator<Country>() {
 
                     @Override

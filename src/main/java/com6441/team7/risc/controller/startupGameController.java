@@ -541,8 +541,6 @@ public class startupGameController {
     	System.exit(0);;
     }
     
-
-    
     public void placeArmy(String countryName) {
     	
     	boolean countryFound=false;

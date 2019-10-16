@@ -1,10 +1,16 @@
-1. Game does not exit when endgame command applied.
+1. Game does not exit when endgame command applied. (DONE)
+
 2. Fix UI
+
 3. Fix showmap Bugs
-4. Fix showplayer bugs
+
+4. Fix showplayer UI bugs
 
 5. Placearmy bug ---- with 9 players when limit reaches 0, numArmies = -1
+
 6. showplayer UI bug in reinforcement
 
-7. Fix 1 player win startup phase
+7. Fix 1 player win startup phase (DONE)
+
+8. PRINT EVERYTHING VIA VIEW
 
