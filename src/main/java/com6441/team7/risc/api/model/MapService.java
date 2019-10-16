@@ -179,12 +179,17 @@ public class MapService extends Observable {
      */
     private void addNeighboringCountry(int countryId, int neghboringCountryId) {
         if (adjacencyCountriesMap.containsKey(countryId)) {
-            adjacencyCountriesMap.get(countryId).add(neghboringCountryId);
+            adjacencyCountriesMap.get(countryId).add(neghboringCountryId);        
         } else {
             Set<Integer> neighboringCountrySet = new HashSet<>();
             neighboringCountrySet.add(neghboringCountryId);
             adjacencyCountriesMap.put(countryId, neighboringCountrySet);
         }
+        
+
+        //***IN YOUR IF STATEMENT...shouldnt you add this as well:
+        //adjacencyCountriesMap.get(neghboringCountryId).add(countryId);
+        
     }
 
     /**
@@ -201,6 +206,8 @@ public class MapService extends Observable {
 
         adjacencyCountriesMap.get(neghboringCountryId).remove(countryId);
 
+        directedGraph.removeEdge(countryId, neghboringCountryId);
+        
         //view.displayMessage("neighboring country " + neighboringCountry + " is sucessfully removed from " + country);
 
     }
@@ -358,6 +365,7 @@ public class MapService extends Observable {
             countries.remove(country);
             removeCountryFromContinentCountryMap(country);
             removeCountryFromAdjacentCountryMap(country);
+            directedGraph.removeVertex(country.getId());
         });
     }
 
@@ -457,7 +465,10 @@ public class MapService extends Observable {
         Optional<Continent> toBeRemoved = continents.stream()
                 .filter(continent -> convertNameToKeyFormat(continent.getName()).equals(normalizedContinentName))
                 .findFirst();
+
         toBeRemoved.ifPresent(continent -> {
+            Set<Integer> countryId = continentCountriesMap.get(continent.getId());
+            directedGraph.removeAllVertices(countryId);
             continents.remove(continent);
             continentCountriesMap.remove(continent.getId());
             removeNeighboringCountryByContinentId(continent.getId());
@@ -563,6 +574,12 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * if name exists, return the country
+     * if not exist, return empty
+     * @param name
+     * @return
+     */
     public Optional<Country> getCountryByName(String name) {
     	
     	for(Country c:countries) {
@@ -582,6 +599,12 @@ public class MapService extends Observable {
         return Optional.empty();
     }
 
+    /**
+     * if name exists, return continent
+     * if does not exist, return empty
+     * @param name
+     * @return
+     */
     public Optional<Continent> getContinentByName(String name) {
     	
     	for(Continent c:continents) {
@@ -591,6 +614,12 @@ public class MapService extends Observable {
         return Optional.empty();
     }
 
+    /**
+     * if continent id exists, return continent
+     * else return empty
+     * @param id
+     * @return
+     */
     public Optional<Continent> getContinentById(int id) {
     	
     	//Modified By Keshav
@@ -610,6 +639,7 @@ public class MapService extends Observable {
     }
 
     public Graph<Integer, DefaultEdge> getDirectedGraph() {
+    	
         return directedGraph;
     }
 
@@ -627,7 +657,6 @@ public class MapService extends Observable {
      * @return
      */
     public boolean isStronglyConnected() {
-
         if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
             return false;
         }
@@ -647,6 +676,9 @@ public class MapService extends Observable {
     }
 
 
+    /**
+     * print all countries information
+     */
     public void printCountryInfo(){
         System.out.println("[Country]");
         countries.forEach(
@@ -661,6 +693,9 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * print all continents information
+     */
     public void printContinentInfo(){
         System.out.println("[Continent]");
         continents.forEach(continent -> {
@@ -672,6 +707,9 @@ public class MapService extends Observable {
 
     }
 
+    /**
+     * print all neighboring countries information
+     */
     public void printNeighboringCountryInfo(){
         System.out.println("[Border]");
         for(Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()){
@@ -688,20 +726,36 @@ public class MapService extends Observable {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
+    /**
+     * return a set of all countries name
+     * @return set
+     */
     private Set<String> getCountryNameSet() {
         return countries.stream().map(Country::getCountryName)
                 .map(this::convertNameToKeyFormat).collect(Collectors.toSet());
     }
 
+    /**
+     * return a set of all continents name
+     * @return set
+     */
     private Set<String> getContinentNameSet() {
         return continents.stream().map(Continent::getName)
                 .map(this::convertNameToKeyFormat).collect(Collectors.toSet());
     }
 
+    /**
+     * return a set of all countryId
+     * @return set
+     */
     private Set<Integer> getCountryIdSet() {
         return countries.stream().map(Country::getId).collect(Collectors.toSet());
     }
 
+    /**
+     * return a set of all continentId
+     * @return
+     */
     private Set<Integer> getContinentIdSet() {
         return continents.stream().map(Continent::getId).collect(Collectors.toSet());
     }

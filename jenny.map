@@ -1,0 +1,31 @@
+; map: ameroki.map
+; map made with the map maker
+; yura.net Risk 1.0.9.4
+
+name Ameroki Map
+
+
+
+[files]
+pic ameroki_pic.png
+map ameroki_map.gif
+crd ameroki.cards
+prv ameroki.jpg
+
+[continent]
+azio 5 #9aff80
+ameroki 10 yellow
+utropa 10 #a980ff
+amerpoll 5 red
+afrori 5 #ffd780
+ulstrailia 5 magenta
+
+[countries]
+1 siberia 1 329 152
+2 worrick 1 308 199
+3 yazteck 1 284 260
+
+[borders]
+1 2 3 
+2 1 3 
+3 1 2 

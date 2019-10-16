@@ -132,6 +132,14 @@ public class ReinforceGameController {
             case SHOW_ALL_PLAYERS:
                 startupGameController.showAllPlayers();
                 break;
+                
+            case SHOW_PLAYER_OWN_COUNTRIES:
+            	startupGameController.showPlayerOwnCountries();
+            	break;
+            
+            case SHOW_PLAYER_COUNTRIES:
+            	startupGameController.showPlayerCountries();
+            	break;
 
             default:
             	

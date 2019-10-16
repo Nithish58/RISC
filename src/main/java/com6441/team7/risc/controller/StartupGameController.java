@@ -232,11 +232,19 @@ public class StartupGameController {
         	showAllPlayers();
         	break;
         	
+        case SHOW_PLAYER_OWN_COUNTRIES:
+        	showPlayerOwnCountries();
+        	break;
+        
+        case SHOW_PLAYER_COUNTRIES:
+        	showPlayerCountries();
+        	break;
+        	
         case SHOW_MAP:
         	
         	if(boolCountriesPopulated) showMapFull();
         	
-        	else showMap();
+        	else mapLoaderController.showMapFull();
         	
         	break;
         	
@@ -248,6 +256,7 @@ public class StartupGameController {
 	}
 
 	
+
 	//CHANGE STATE TO REINFORCEMENT IN MAPSERVICE AFTER END OF LAST METHOD
 
 	//Assign randomly countries to players
@@ -558,6 +567,11 @@ public class StartupGameController {
         			
         			c.addSoldiers(1);		
         			
+        			System.out.println(currentPlayer.getName()+" placed army successfully.");
+        			if(currentPlayer.getArmies()==0) {
+        				boolArrayCountriesPlaced[currentPlayerIndex]=true;        				
+        			}
+        			break;
         		}
         	}
         	
@@ -581,10 +595,10 @@ public class StartupGameController {
         		}
         		
         		if(boolStartUpPhaseOver.get()) {
-        			System.out.println("All Armies Placed.\n.");
+        			System.out.println("All Armies Placed for all players.\n.");
         			this.mapService.setState(GameState.REINFORCE);
-        			System.out.println("Player Turn: "+players.get(0).getName());
-        			
+        			//System.out.println("Player Turn: "+players.get(0).getName());
+        			switchToNextPlayer();
         		}
         		
         		else {
@@ -606,7 +620,8 @@ public class StartupGameController {
 		
 		else currentPlayerIndex++;
     	
-    	showPlayer();
+    	System.out.println("Player Turn: "+players.get(currentPlayerIndex).getName());
+    	//showPlayer();
     	
     }
     
@@ -687,6 +702,116 @@ public class StartupGameController {
     	
     }
     
+    public void showPlayerOwnCountries() {
+    	
+    	Player currentPlayer=players.get(currentPlayerIndex);
+    	
+    	for(Map.Entry<Integer, Set<Integer>> item :
+    						mapService.getContinentCountriesMap().entrySet()) {
+    		
+    		int key=(int) item.getKey();
+    		   		
+    		
+    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
+    		Continent currentContinent= (Continent) optionalContinent.get();
+    		
+    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+    		System.out.println();
+    		
+    		Set<Integer> value=item.getValue();
+    		
+    		for(Integer i:value) {
+    			//For Each Country In Continent, Get details + Adjacency Countries
+    			Optional<Country> optionalCountry=mapService.getCountryById(i);
+    			
+    			Country currentCountry=optionalCountry.get();
+    			
+    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
+    				
+        			String strCountryOutput="";
+        			
+        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+        					", "+currentCountry.getSoldiers()+" soldiers   ";
+        			
+        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
+        			
+        			for(Integer j:adjCountryList) {
+        				
+        				if(mapService.getCountryById(j).get().getPlayer().getName()
+        						.equalsIgnoreCase(currentPlayer.getName())){
+        	        				
+        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
+        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
+        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
+        						}
+        				
+        			}
+        			
+        			System.out.println(strCountryOutput+"\n");    				
+    				
+    			}
+    			
+
+    		}
+
+    	}
+
+    }
+    
+    public void showPlayerCountries() {
+    	
+    	Player currentPlayer=players.get(currentPlayerIndex);
+    	
+    	for(Map.Entry<Integer, Set<Integer>> item :
+    						mapService.getContinentCountriesMap().entrySet()) {
+    		
+    		int key=(int) item.getKey();
+    		   		
+    		
+    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
+    		Continent currentContinent= (Continent) optionalContinent.get();
+    		
+    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+    		System.out.println();
+    		
+    		Set<Integer> value=item.getValue();
+    		
+    		for(Integer i:value) {
+    			//For Each Country In Continent, Get details + Adjacency Countries
+    			Optional<Country> optionalCountry=mapService.getCountryById(i);
+    			
+    			Country currentCountry=optionalCountry.get();
+    			
+    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
+    				
+        			String strCountryOutput="";
+        			
+        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+        					", "+currentCountry.getSoldiers()+" soldiers   ";
+        			
+        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
+        			
+        			for(Integer j:adjCountryList) {
+        	        				
+        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
+        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
+        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
+        						
+        				
+        			}
+        			
+        			System.out.println(strCountryOutput+"\n");    				
+    				
+    			}
+    			
+
+    		}
+
+    	}
+
+    }
+    
+    
     
     
     public void showMapFull() {
@@ -712,15 +837,15 @@ public class StartupGameController {
     			Country currentCountry=optionalCountry.get();
     			String strCountryOutput="";
     			
-    			strCountryOutput+=currentCountry.getCountryName()+" "+currentCountry.getPlayer().getName()+
-    					" "+currentCountry.getSoldiers()+" soldiers ";
+    			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+    					", "+currentCountry.getSoldiers()+" soldiers   ";
     			
     			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
     			
     			for(Integer j:adjCountryList) {
     				strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
     						"("+mapService.getCountryById(j).get().getPlayer().getName()+
-    						","+mapService.getCountryById(j).get().getSoldiers()+")";
+    						":"+mapService.getCountryById(j).get().getSoldiers()+")";
     			}
     			
     			System.out.println(strCountryOutput+"\n");

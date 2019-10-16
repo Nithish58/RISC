@@ -254,12 +254,14 @@ public class MapEditorControllerTest {
 		neighborcommand1 = "editneighbor -add "+countrystr1+" "+ neighborstr1;
 		neighborcommand1 = StringUtils.substringAfter(neighborcommand1, "-");
 		neighborcommands1 = StringUtils.split(neighborcommand1, "-");
+		
 		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr1);
 		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr1);
 		//neighborcommand2,neighborcommands2, country2a, country2db, neighbor 2a, and neighbor2b are for adding two neighbor
 		neighborcommand2 = "editneighbor -add "+countrystr2a+" "+neighborstr2a+" -add "+countrystr2b+" "+neighborstr2b;
 		neighborcommand2 = StringUtils.substringAfter(neighborcommand2, "-");
 		neighborcommands2 = StringUtils.split(neighborcommand2, "-");
+		
 		country2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2a);
 		country2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2b);
 		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2a);
@@ -274,22 +276,27 @@ public class MapEditorControllerTest {
 		neighborcommand4 = "editneighbor -remove "+countrystr4a+" "+neighborstr4a+" -remove "+countrystr4b+" "+neighborstr4b;
 		neighborcommand4 = StringUtils.substringAfter(neighborcommand4, "-");
 		neighborcommands4 = StringUtils.split(neighborcommand4, "-");
+		
 		country4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4a);
 		country4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4b);
+		
 		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4a);
 		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4b);
 		//neighborcommand5,neighborcommands5, country5a, country5b, neighbor5a, and neighbor5b are for adding and removing one neighbor
 		neighborcommand5 = "editneighbor -add "+countrystr5a+" "+neighborstr5a+"-remove "+countrystr5b+" "+neighborstr5b;
 		neighborcommand5 = StringUtils.substringAfter(neighborcommand5, "-");
 		neighborcommands5 = StringUtils.split(neighborcommand5, "-");
+		
 		country5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5a);
 		country5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5b);
+		
 		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5a);
 		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5b);
 		//neighborcommand6,neighborcommands6, country6a, country6b, country6c, country6d, neighbor6a, neighbor6b, neighbor6c, and neighbor6d are for adding and removing two neighbors
 		neighborcommand6 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
 		neighborcommand6 = StringUtils.substringAfter(neighborcommand6, "-");
 		neighborcommands6 = StringUtils.split(neighborcommand6, "-");
+		
 		country6a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6a);
 		country6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6b);
 		country6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6c);

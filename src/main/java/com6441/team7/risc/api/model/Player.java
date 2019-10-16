@@ -10,15 +10,41 @@ import java.util.stream.Stream;
  * store player information
  */
 public class Player {
+
+    /**
+     * player name
+     */
     private String name;
+
+    /**
+     * number of army a player has
+     */
     private int armies;
+
+    /**
+     * list of cards a player has
+     */
     private List<Card> cardList;
+
+    /**
+     * number of trade-in times
+     */
     private int tradeInTimes;
+
+    /**
+     * number of card categories
+     */
     private static final int CARD_CATEGORY_NUMBER = 3;
-    
-    //ADDED BY KESHAV
+
+    /**
+     *  a list of country a player has
+     */
     public List<Country> countryPlayerList;
 
+    /**
+     * constructor
+     * @param name
+     */
     public Player(String name) {
         this.armies = 0;
         this.name = name;
@@ -43,10 +69,18 @@ public class Player {
         this.armies = armies;
     }
 
+    /**
+     * reduce the number of army from player
+     * @param number
+     */
     public void reduceArmy(int number){
         armies -= number;
     }
 
+    /**
+     * add the number of army to player
+     * @param number
+     */
     public void addArmy(int number){armies += number;}
 
     public List<Card> getCardList() {
@@ -61,15 +95,26 @@ public class Player {
         return hasDifferentCardsCategory() || hasSameCardsCategory();
     }
 
+    /**
+     * check if the player has same three cards
+     * @return true if players has three same cards, false is not
+     */
     public boolean hasSameCardsCategory(){
         return Stream.of(Card.ARTILLERY, Card.CAVALRY, Card.INFANTRY)
                 .anyMatch(this::hasSameCardCategory);
     }
 
+    /**
+     * check if the player has three different cards
+     * @return true if players has three different cards, false if not
+     */
     public boolean hasDifferentCardsCategory(){
         return new HashSet<>(cardList).size() >= CARD_CATEGORY_NUMBER;
     }
 
+    /**
+     * remove cards from players
+     */
     public void removeCards(){
         if(hasSameCardCategory(Card.ARTILLERY)){
             List<Card> list = cardList.stream()

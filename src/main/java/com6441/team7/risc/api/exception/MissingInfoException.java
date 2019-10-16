@@ -1,5 +1,8 @@
 package com6441.team7.risc.api.exception;
 
+/**
+ * create an self-defined exception if missing information when reading or writing map
+ */
 public class MissingInfoException extends RiscGameException {
     public MissingInfoException(Exception rootCause) {
         super(rootCause);

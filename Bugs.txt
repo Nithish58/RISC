@@ -2,17 +2,28 @@
 
 2. Fix UI
 
-3. Fix showmap Bugs
+3. Fix showmap Bugs (DONE)
 
-4. Fix showplayer UI bugs
+4. Fix showplayer UI bugs about spacing**
 
-5. Placearmy bug ---- with 9 players when limit reaches 0, numArmies = -1
+5. Placearmy bug ---- with 9 players when limit reaches 0, numArmies = -1   (DONE)
 
-6. showplayer UI bug in reinforcement
+6. showplayer UI bug in reinforcement (DONE)
 
 7. Fix 1 player win startup phase (DONE)
 
-8. PRINT EVERYTHING VIA VIEW
+8. PRINT EVERYTHING VIA VIEW *******************************************************************
 
-9. -FORTIFICATION 1 SOLDIER BUG
--adjacent countries not belonging to same player bug
+9. NULL MAP VALIDITY???? *********************************************************************** exitmapedit
+ when no map loaded gives valid map  (FIXED, CONSULT JENNY)******
+
+10. -FORTIFICATION numSoldiers BUG (DONE)
+-   adjacent countries not belonging to same player bug (DONE)
+-   same-player countries not adjacent BUG (DONE)
+
+11. DISCUSS ABOUT TESTS
+
+12. Maploader modifications discuss with jenny: + comments for new methods
+changed showmap...added showfile...added get set methods for country and continent id generator
+
+13. FOUND MAJOR BUG IN EDITMAP**********
