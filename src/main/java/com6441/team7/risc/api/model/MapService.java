@@ -238,14 +238,7 @@ public class MapService extends Observable {
         continents.clear();
         continentCountriesMap.keySet().clear();
         adjacencyCountriesMap.keySet().clear();
-        
-        
-        //Keshav Code
-        
-     //   countries = new HashSet<>();
-     //   continents=new HashSet<>();
-     //   adjacencyCountriesMap = new HashMap<>();
-     //   continentCountriesMap = new HashMap<>();
+
         
 
 
@@ -456,7 +449,7 @@ public class MapService extends Observable {
     }
 
     /**
-     * rremove country
+     * remove country
      * @param id id of country
      */
     public void removeCountryById(int id) {
@@ -465,7 +458,6 @@ public class MapService extends Observable {
     /**
      * remove a continent by a given name, if continent exist, remove from continents, contries, neighboring map
      * @param continentName
-     * @return
      */
     public void removeContinentByName(String continentName) {
         if (isNull(continentName)) {
@@ -568,7 +560,10 @@ public class MapService extends Observable {
     public void removeNeighboringCountriesByName(String name) {
     }
 
-
+    /**
+     * Remove Neighbour Country By Id.
+     * @param id of country
+     */
     public void removeNeighboringCountriesById(int id) {
     }
 
@@ -672,7 +667,6 @@ public class MapService extends Observable {
      */
     public Optional<Continent> getContinentById(int id) {
 
-    	//Modified By Keshav
     	for(Continent c:continents) {
     		if(c.getId()==id) return Optional.of(c);
     	}
@@ -719,9 +713,6 @@ public class MapService extends Observable {
      * @return true if strongly connected
      */
     public boolean isStronglyConnected() {
-
-    	//Added By Keshav
-    	//if(countries.size()==0) return false;
 
         if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
             return false;

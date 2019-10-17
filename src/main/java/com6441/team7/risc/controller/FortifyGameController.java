@@ -31,28 +31,62 @@ import com6441.team7.risc.view.CommandPromptView;
  * After fortification, it changes updates gamestate to reinforcement
  */
 public class FortifyGameController {
-	
-		private MapService mapService;
-		
-		private StartupGameController startupGameController;
-		
-		private AtomicBoolean boolFortificationPhaseOver;
-		
-		private Country fromCountry;
-		private Country toCountry;
-		private Player player;
-		private int num;
-		private String []orders;
+	/**
+	 * MapService objects
+	 */
+	private MapService mapService;
+
+	/**
+	 * StartupGameController objects
+	 */
+	private StartupGameController startupGameController;
+
+	/**
+	 * to check fortification phase gets over
+	 */
+	private AtomicBoolean boolFortificationPhaseOver;
+
+	/**
+	 * Country from where fortification is start
+	 */
+	private Country fromCountry;
+
+	/**
+	 * country to where fortification is done
+	 */
+	private Country toCountry;
+
+	/**
+	 * player whose fortification is in process
+	 */
+	private Player player;
+
+	/**
+	 * number
+	 */
+	private int num;
+
+	/**
+	 *  strings arrays in orders
+	 */
+	private String []orders;
 		GameState fortifyState;
 		Set<Integer> neighbouringCountries;
 		Set<Country> countryList;
+
+	/**
+	 * command Prompt view object
+	 */
+	private CommandPromptView view;
+
+	/**
+	 * check validation is met or not
+	 */
+	private boolean boolValidationMet;
 		
-		private CommandPromptView view;
-		private boolean boolValidationMet;
-		
-		/*
-		 * Constructor with parameters
-		 */
+	/**
+	 * Constructor with parameters
+	 */
 		public FortifyGameController(Player player, MapService mapService,
 										StartupGameController sgc, String cmd,
 										AtomicBoolean boolFortificationPhaseOver,
@@ -164,11 +198,6 @@ public class FortifyGameController {
 						
 		}
 
-		/*
-		 * 
-		 */
-		
-
 		
 		/**
 		 * After validation comes fortifying
@@ -224,8 +253,11 @@ public class FortifyGameController {
 			return this.boolValidationMet;
 			
 		}
-		
-		private void checkCountryAdjacency() {
+
+	/**
+	 * check country has Adjacency
+	 */
+	private void checkCountryAdjacency() {
 			
 			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
 			
@@ -281,8 +313,8 @@ public class FortifyGameController {
 		}
 
 	/**
-	 * show current player information, the countries its occupy and corresponding soldiers
-	 * @param p
+	 * show current player information, the countries it occupies and corresponding soldiers
+	 * @param p player
 	 */
 	private void showPlayerFortificationPhase(Player p) {
 	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
@@ -298,38 +330,15 @@ public class FortifyGameController {
 
 	        view.displayMessage("Current Player: "+p.getName());
 
-	        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-
 	        for(Country c:p.countryPlayerList) {
-	            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+	            view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
 	        }
 	    }
 		
-	    
-	    private void showPlayerReinforcementPhase(Player p) {
-	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
-
-	                    @Override
-	                    public int compare(Country c1, Country c2) {
-
-	                        return c1.getContinentName().compareTo(c2.getContinentName());
-	                    }
-
-	                }
-	        );
-
-	        view.displayMessage("Current Player: "+p.getName());
-
-	        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-
-	        for(Country c:p.countryPlayerList) {
-	            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
-	        }
-	    }
 
 
 	/**
-	 * show current player and countries information in the fortification
+	 * show current player and information of all countries player owns
 	 *
 	 */
 	    private void showPlayerCountriesFortification() {
@@ -359,7 +368,7 @@ public class FortifyGameController {
 	    				
 	        			String strCountryOutput="";
 	        			
-	        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
 	        					", "+currentCountry.getSoldiers()+" soldiers   ";
 	        			
 	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -389,7 +398,6 @@ public class FortifyGameController {
 
 	/**
 	 * show players and all countries in fortification phase
-	 * @param p
 	 */
 	    private void showPlayerAllCountriesFortification() {
 	    	
@@ -419,7 +427,7 @@ public class FortifyGameController {
 	    				
 	        			String strCountryOutput="";
 	        			
-	        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
 	        					", "+currentCountry.getSoldiers()+" soldiers   ";
 	        			
 	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);

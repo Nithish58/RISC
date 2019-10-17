@@ -31,13 +31,35 @@ import org.apache.commons.lang3.StringUtils;
  * </p>
  */
 public class ReinforceGameController {
+
+    /**
+     * Player objects
+     */
     private Player player;
+
+    /**
+     * MapService objects
+     */
     private MapService mapService;
+
+    /**
+     * CommandPromptView objects
+     */
     private CommandPromptView view;
+
+    /**
+     * to store total extra armies in reinforced.
+     */
     private int reinforcedArmiesCount;
+
+    /**
+     * StartupGameController {@link StartupGameController} object
+     */
     private StartupGameController startupGameController;
 
-
+    /**
+     * command string from user
+     */
     private String command="";
 
     /**
@@ -98,6 +120,9 @@ public class ReinforceGameController {
 
     }
 
+    /**
+     * Determines command type and "routes" to different methods
+     */
     private void readCommand() {
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -180,8 +205,8 @@ public class ReinforceGameController {
 
 
     /**
-     * Reinforce the extra armies
-     * @param countryName country where extra armies are added
+     * Reinforce the extra armies to another country
+     * @param countryName another country where extra armies are added
      * @param num the number of armies
      */
     public void reinforce(String countryName, int num){
@@ -248,7 +273,6 @@ public class ReinforceGameController {
     }
 
 
-
     private void showPlayerReinforcementPhase(Player p) {
         Collections.sort(p.countryPlayerList, new Comparator<Country>() {
 
@@ -263,13 +287,14 @@ public class ReinforceGameController {
 
         view.displayMessage("Current Player: "+p.getName());
 
-        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-
         for(Country c:p.countryPlayerList) {
-            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+            view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
         }
     }
 
+    /**
+     * show countries of this player in reinforcement
+     */
     private void showPlayerCountriesReinforcement() {
         Player currentPlayer=this.player;
 
@@ -297,7 +322,7 @@ public class ReinforceGameController {
 
                     String strCountryOutput="";
 
-                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
                             ", "+currentCountry.getSoldiers()+" soldiers   ";
 
                     Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -324,6 +349,9 @@ public class ReinforceGameController {
         }
     }
 
+    /**
+     * show the countries of all player in reinforcement
+     */
     private void showPlayerAllCountriesReinforcement() {
 
         Player currentPlayer=player;
@@ -352,7 +380,7 @@ public class ReinforceGameController {
 
                     String strCountryOutput="";
 
-                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
                             ", "+currentCountry.getSoldiers()+" soldiers   ";
 
                     Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -377,10 +405,18 @@ public class ReinforceGameController {
 
     }
 
+    /**
+     * get view from commandPrompt view
+     * @return view
+     */
     public CommandPromptView getView() {
         return view;
     }
 
+    /**
+     * set view
+     * @param v commandPrompt View
+     */
     public void setView(CommandPromptView v) {
         this.view=v;
     }
