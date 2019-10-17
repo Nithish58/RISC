@@ -500,6 +500,23 @@ public class StartupGameController {
     		throw new PlayerEditException("gameplayer command: cannot add/remove it is not valid", e);
     	}
     }
+	
+	/**
+	 * Getter Method for view
+	 * @return view 
+	 */
+    public CommandPromptView getView() {
+    	return view;
+    }
+    
+    /**
+     * Setter method for view
+     * @param view
+     */
+    public void setView(CommandPromptView v) {
+    	this.view=v;
+    	
+    }
 
 	/**
 	 * load map from the map file
@@ -721,11 +738,9 @@ public class StartupGameController {
         	view.displayMessage("Current Player: "+p.getName()+
         			" , Num Armies Remaining: "+p.getArmies());
         	
-        	view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-        	
         	for(Country c :p.countryPlayerList) {
-        		view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()
-        						+"\t\t\t"+c.getSoldiers());
+        		view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()
+        						+"\t"+c.getSoldiers());
         	}
 
     	}
@@ -752,10 +767,8 @@ public class StartupGameController {
     	view.displayMessage("Current Player: "+players.get(currentPlayerIndex).getName()+
     			" , Num Armies Remaining: "+players.get(currentPlayerIndex).getArmies());
     	
-    	view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-    	
     	for(Country c:players.get(currentPlayerIndex).countryPlayerList) {
-    		view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+    		view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
     	}
     	
     }
@@ -792,7 +805,7 @@ public class StartupGameController {
     				
         			String strCountryOutput="";
         			
-        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
         					", "+currentCountry.getSoldiers()+" soldiers   ";
         			
         			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -851,7 +864,7 @@ public class StartupGameController {
     				
         			String strCountryOutput="";
         			
-        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
         					", "+currentCountry.getSoldiers()+" soldiers   ";
         			
         			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -905,7 +918,7 @@ public class StartupGameController {
     			Country currentCountry=optionalCountry.get();
     			String strCountryOutput="";
     			
-    			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+    			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
     					", "+currentCountry.getSoldiers()+" soldiers   ";
     			
     			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -923,14 +936,7 @@ public class StartupGameController {
 
     }
     
-    public CommandPromptView getView() {
-    	return view;
-    }
-    
-    public void setView(CommandPromptView v) {
-    	this.view=v;
-    	
-    }
+
 	
     
 }

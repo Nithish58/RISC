@@ -98,6 +98,9 @@ public class ReinforceGameController {
 
     }
 
+    /**
+     * Determines command type and "routes" to different methods
+     */
     private void readCommand() {
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -247,7 +250,21 @@ public class ReinforceGameController {
         return allCountriesOfPlayer().stream().filter(country -> country.getContinentName().equals(continentName)).collect(Collectors.toList());
     }
 
-
+    /**
+     * Getter method for view
+     * @return view
+     */
+    public CommandPromptView getView() {
+        return view;
+    }
+    
+    /**
+     * Setter method for view
+     * @param view
+     */
+    public void setView(CommandPromptView v) {
+        this.view=v;
+    }
 
     private void showPlayerReinforcementPhase(Player p) {
         Collections.sort(p.countryPlayerList, new Comparator<Country>() {
@@ -263,10 +280,8 @@ public class ReinforceGameController {
 
         view.displayMessage("Current Player: "+p.getName());
 
-        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-
         for(Country c:p.countryPlayerList) {
-            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+            view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
         }
     }
 
@@ -297,7 +312,7 @@ public class ReinforceGameController {
 
                     String strCountryOutput="";
 
-                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
                             ", "+currentCountry.getSoldiers()+" soldiers   ";
 
                     Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -352,7 +367,7 @@ public class ReinforceGameController {
 
                     String strCountryOutput="";
 
-                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
                             ", "+currentCountry.getSoldiers()+" soldiers   ";
 
                     Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -377,12 +392,5 @@ public class ReinforceGameController {
 
     }
 
-    public CommandPromptView getView() {
-        return view;
-    }
-
-    public void setView(CommandPromptView v) {
-        this.view=v;
-    }
 
 }
