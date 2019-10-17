@@ -28,16 +28,16 @@ import com6441.team7.risc.view.CommandPromptView;
  * It accepts fortification commands from user and some show commands and rejects all other commands
  * It checks whether fortification criteria are met.
  * It then carries out fortification
- * After fortification, it changes updates gamestate to reinforcement
+ * After fortification, it updates gamestate to reinforcement
  */
 public class FortifyGameController {
 	/**
-	 * MapService objects
+	 * MapService reference
 	 */
 	private MapService mapService;
 
 	/**
-	 * StartupGameController objects
+	 * StartupGameController reference
 	 */
 	private StartupGameController startupGameController;
 
@@ -62,17 +62,22 @@ public class FortifyGameController {
 	private Player player;
 
 	/**
-	 * number
+	 * number of soldiers entered by user
 	 */
-	private int num;
+	private int numSoldiers;
 
 	/**
 	 *  strings arrays in orders
 	 */
 	private String []orders;
-		GameState fortifyState;
-		Set<Integer> neighbouringCountries;
-		Set<Country> countryList;
+	/**
+	 * Set that keeps track of neighbouring countries of origin country.
+	 */
+	private	Set<Integer> neighbouringCountries;
+	/**
+	 * set of countries
+	 */
+	private	Set<Country> countryList;
 
 	/**
 	 * command Prompt view object
@@ -105,11 +110,12 @@ public class FortifyGameController {
 		}
 
 	/**
-	 * read command from user, if it is fortify, call determineFortificationAndFortify method
-	 * if the command is showMap, call showMapFull()
-	 * if the command is showPlayer, call showPlayerFortificationPhase method
-	 * if the command is showPlayerAllCountries, call showPlayerAllCountriesFortification();
-	 * else throw exception
+	 * reads command from user.
+	 * <li>if it is fortify, call determineFortificationAndFortify method</li>
+	 * <li>if the command is showMap, call showMapFull()</li>
+	 * <li>if the command is showPlayer, call showPlayerFortificationPhase method</li>
+	 * <li>if the command is showPlayerAllCountries, call showPlayerAllCountriesFortification();</li>
+	 * else any other command type is invalidated
 	 * @param command
 	 * @throws IOException
 	 */
@@ -151,10 +157,10 @@ public class FortifyGameController {
 		}
 
 	/**
-	 * validate the command, if the command format is valid, check the command type
-	 * if the command is none, do nothing and exit reinforce phase
-	 * if the command is country and num, validat the country info and soldier info,
-	 * move the soldier from these two countries
+	 * This method determines type of fortification:
+	 * <li> It validates the command: if the command format is valid, it check the command type</li>
+	 * <li>if the command is none, it exits reinforce phase</li>
+	 * <li>if the command is valid, validate the country info and soldier info, and move the soldier from these two countries</li>
 	 * @param command
 	 */
 	private void determineFortificationAndFortify(String command) {
@@ -178,7 +184,7 @@ public class FortifyGameController {
 				this.toCountry = mapService.getCountryByName(orders[2]).get();
 				
 				try {
-					this.num = Integer.parseInt(orders[3]);
+					this.numSoldiers = Integer.parseInt(orders[3]);
 					
 				}
 				catch(NumberFormatException e) {
@@ -202,6 +208,7 @@ public class FortifyGameController {
 		/**
 		 * After validation comes fortifying
 		 * show before and after fortification information of country and soldiers
+		 * check validation criteria first
 		 */
 		public void fortify() {
 			
@@ -213,8 +220,8 @@ public class FortifyGameController {
 						fromCountry.getSoldiers()+" , "+
 						toCountry.getCountryName()+":"+toCountry.getSoldiers());
 				
-				toCountry.addSoldiers(num);
-				fromCountry.removeSoldiers(num);
+				toCountry.addSoldiers(numSoldiers);
+				fromCountry.removeSoldiers(numSoldiers);
 				
 				view.displayMessage("After Fortification: "+fromCountry.getCountryName()+":"+
 						fromCountry.getSoldiers()+" , "+
@@ -288,7 +295,7 @@ public class FortifyGameController {
 		}
 
 	/**
-	 * check the country owned by the current player
+	 * checks whether the 2 countrie are owned by the current player
 	 */
 	private void checkCountryOwnership() {
 			
@@ -302,10 +309,11 @@ public class FortifyGameController {
 
 	/**
 	 * check the number of soldiers for the current player
+	 * Ensures that at least 1 soldier remains in origin country
 	 */
 	private void checkNumSoldiers() {
 			
-			if(!(fromCountry.getSoldiers()>num)) {
+			if(!(fromCountry.getSoldiers()>numSoldiers)) {
 				view.displayMessage("Not enough soldiers in origin country");
 				this.boolValidationMet=false;
 			}
@@ -314,7 +322,7 @@ public class FortifyGameController {
 
 	/**
 	 * show current player information, the countries it occupies and corresponding soldiers
-	 * @param p player
+	 * @param current player
 	 */
 	private void showPlayerFortificationPhase(Player p) {
 	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {

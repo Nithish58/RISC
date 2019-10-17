@@ -227,5 +227,12 @@ public class GameController {
 		this.view=v;
 		this.startupPhaseController.setView(v);
 	}
-
+	
+	public StartupGameController getStartupController() {
+		return startupPhaseController;
+	}
+	
+	public ArrayList<Player> getPlayerList(){
+		return players;
+	}
 }

@@ -31,8 +31,8 @@ public enum RiscCommand {
 	SHOW_PLAYER_ALL_COUNTRIES("showplayerallcountries"),
 	SHOW_PLAYER_COUNTRIES("showplayercountries"),
 	SHOW_ALL_PLAYERS("showallplayers"),
-	SHOW_FILE("showfile")
-	
+	SHOW_FILE("showfile"),
+	EXIT("exit")
 	
 	;
 
