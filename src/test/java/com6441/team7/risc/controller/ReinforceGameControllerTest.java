@@ -50,6 +50,7 @@ public class ReinforceGameControllerTest {
 	static Player playerDummy1, playerDummy2;
 	static StartupGameController startup;
 	static MapLoaderController mapController;
+	static GameController game;
 	static MapService mapService;
 	static CommandPromptView cmdView; 
 	static ArrayList<Player> players;
@@ -70,10 +71,12 @@ public class ReinforceGameControllerTest {
 	public static void setUpBeforeClass() throws Exception {
 		mapService = new MapService();
 		mapController = new MapLoaderController(mapService);
-		cmdView = new CommandPromptView(mapController, new GameController(mapController, mapService));
+		game = new GameController(mapController, mapService);
+		cmdView = new CommandPromptView(mapController, game);
 		mapController.setView(cmdView);
-		players = new ArrayList<>();
-		startup = new StartupGameController(mapController, mapService, players);
+		game.setView(cmdView);
+		players = game.getPlayerList();
+		startup = game.getStartupController();
 		phase = new AtomicBoolean(false);
 	}
 	

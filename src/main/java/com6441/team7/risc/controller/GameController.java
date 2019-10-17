@@ -62,6 +62,14 @@ public class GameController {
 
 	private int numPlayers;
 
+    public StartupGameController getStartupController() {
+ 	   return this.startupPhaseController;
+    }
+	
+    public ArrayList<Player> getPlayerList(){
+    	return players;
+    }
+    
 	/**
 	 * This is the constructor of GameController class.
 	 * @param mapController Represents the mapLoaderController.

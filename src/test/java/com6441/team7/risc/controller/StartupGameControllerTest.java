@@ -43,6 +43,7 @@ public class StartupGameControllerTest {
 	static MapLoaderController mapController;
 	static MapService mapService;
 	static CommandPromptView cmdView; 
+	static GameController game;
 	ArrayList<Player> players;
 	static int testNo; //this is for determining which params to be used for certain test cases
 	String file, loadmapcmd;
@@ -58,8 +59,10 @@ public class StartupGameControllerTest {
 	public static void setUpBeforeClass() throws Exception {
 		mapService = new MapService();
 		mapController = new MapLoaderController(mapService);
-		cmdView = new CommandPromptView(mapController, new GameController(mapController, mapService));
+		game = new GameController(mapController, mapService);
+		cmdView = new CommandPromptView(mapController, game);
 		mapController.setView(cmdView);
+		game.setView(cmdView);
 		testNo = 0;
 	}
 
@@ -81,7 +84,8 @@ public class StartupGameControllerTest {
 	public void setUp() throws Exception {
 		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-		startup = new StartupGameController(mapController, mapService, players);
+		//startup = newStartupGameController(mapController, mapService, players);
+		startup = game.getStartupController();
 		loadmapcmd = "loadmap ameroki.map"; //this loads the ameroki.map file for testing
 	}
 	/**

@@ -70,22 +70,22 @@ public class GameControllerTest {
 	 * Here a GameController object called game is created.
 	 * @throws Exception on invalid value
 	 */
-	@Before
-	public void setUp() throws Exception {
-		game = new GameController(mapController, mapService);
-	}
+//	@Before
+//	public void setUp() throws Exception {
+//		game = new GameController(mapController, mapService);
+//	}
 
 	/**
 	 * This method is executed after every test method is performed.
 	 * @throws Exception on invalid value
 	 */
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+//	@After
+//	public void tearDown() throws Exception {
+//	}
+//
+//	@Test
+//	public void test() {
+//		
+//	}
 
 }
