@@ -24,8 +24,8 @@ public enum RiscCommand {
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
     UNKNOWN("unknown"),
-	
-	//Added By keshav
+
+
 	EXIT_MAPEDIT("exitmapedit"),
 	SHOW_PLAYER("showplayer"),
 	SHOW_PLAYER_ALL_COUNTRIES("showplayerallcountries"),
@@ -35,18 +35,33 @@ public enum RiscCommand {
 	
 	
 	;
-	
+
+    /**
+     * the command name
+     */
     private String name;
 
-
+    /**
+     * Game command
+     * @param name command
+     */
     RiscCommand(String name) {
         this.name = name;
     }
 
+    /**
+     * get name of command
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Return normalized commands
+     * @param command strings of commands
+     * @return arrays of command
+     */
     public static RiscCommand parse(String command) {
         String normalizedCommand = StringUtils.deleteWhitespace(command).toLowerCase(Locale.CANADA);
         return Arrays.stream(values())
