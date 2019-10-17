@@ -36,40 +36,71 @@ import com6441.team7.risc.view.CommandPromptView;
  *
  */
 public class GameController {
-
+	
+	/**
+	 * Object startupPhaseController
+	 */
 	private StartupGameController startupPhaseController;
+	/**
+	 * Object reinforcementGameController
+	 */
 	private ReinforceGameController reinforcementGameController;
+	/**
+	 * Object fortificationGameController
+	 */
 	private FortifyGameController fortificationGameController;
-
+	/**
+	 * Reference to view
+	 */
 	private CommandPromptView view;
-
+	/**
+	 * Reference to mapLoaderController
+	 */
 	private MapLoaderController mapLoaderController;
-
+	/**
+	 * Reference to mapService
+	 */
 	private MapService mapService;
-
+	/**
+	 * List of players playing the game
+	 */
 	private ArrayList<Player> players;
-
+	/**
+	 * Reference to current player
+	 */
 	private Player currentPlayer;
-
+	/**
+	 * Keeps track of current player index
+	 * Used to determine current player and switch to next player in player list
+	 */
 	private int currentPlayerIndex;
 
-
+	/**
+	 * Atomic Boolean that checks whether startUpPhase is over.
+	 * If yes, it does not "route" commands to starUpPhase again.
+	 * Instead control keeps looping between Reinforcement and Fortification phases.
+	 */
 	AtomicBoolean boolStartUpPhaseOver;
+	/**
+	 * boolean that checks whether current phase is startup.
+	 * If true, keeps routing commands to startup game controller.
+	 * Does not send to another controllers until startup phase is not over.
+	 * This is essential for game flow. e.g: cannot start reinforcing until countries have been populated.
+	 */
 	private boolean boolStartUpPhaseSet=false;
+	/**
+	 * Atomic Boolean that is set to true when fortification phase is over. It then helps to switch to next player.
+	 */
 	AtomicBoolean boolFortificationPhaseOver;
-
+	/**
+	 * Reference to gamestate in mapservice
+	 */
 	private GameState gameState;
-
+	/**
+	 * Number of players playing the game
+	 */
 	private int numPlayers;
-
-    public StartupGameController getStartupController() {
- 	   return this.startupPhaseController;
-    }
-	
-    public ArrayList<Player> getPlayerList(){
-    	return players;
-    }
-    
+   
 	/**
 	 * This is the constructor of GameController class.
 	 * @param mapController Represents the mapLoaderController.
@@ -160,9 +191,8 @@ public class GameController {
 	/**
 	 * This method keeps track of the currentPlayerIndex and switches to the next player as soon as a player's
 	 * turn is over.
-	 *
+	 *Uses Atomic Boolean boolFortificationPhaseOver to take decisions.
 	 */
-
 	private void switchNextPlayer() {
 
 		if(boolFortificationPhaseOver.get()) {
@@ -181,11 +211,18 @@ public class GameController {
 		boolFortificationPhaseOver.set(false);
 
 	}
-
+	/**
+	 * Getter method for view
+	 * @return view
+	 */
 	public CommandPromptView getView() {
 		return view;
 	}
-
+	
+	/**
+	 * Setter method for view
+	 * @param view
+	 */
 	public void setView(CommandPromptView v) {
 		this.view=v;
 		this.startupPhaseController.setView(v);
