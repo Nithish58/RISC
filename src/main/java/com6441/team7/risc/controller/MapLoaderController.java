@@ -27,8 +27,7 @@ import static java.util.Objects.isNull;
  */
 
 public class MapLoaderController {
-	
-	//Modified to public by keshav
+
     private AtomicInteger continentIdGenerator;
     private AtomicInteger countryIdGenerator;
     
@@ -94,6 +93,9 @@ public class MapLoaderController {
 
     }
 
+    /**
+     * exit the map editing
+     */
     private void exitEditMap(){
         if(mapService.isMapNotValid()) {
             System.out.println("Map Not Valid");
@@ -168,14 +170,26 @@ public class MapLoaderController {
     //    mapService.setState(GameState.START_UP);
     }
 
+    /**
+     * get mapIntro in string
+     * @return
+     */
     private String getMapIntroString(){
         return mapIntro.getMapIntro();
     }
 
+    /**
+     * get maptGraph in strings
+     * @return
+     */
     private String getMapGraphString(){
         return mapGraph.getMapGraph();
     }
 
+    /**
+     * get continents string
+     * @return
+     */
     private String getContinentString() {
         StringBuilder stringBuilder = new StringBuilder();
         mapService.getContinents().forEach(continent -> {
@@ -189,6 +203,10 @@ public class MapLoaderController {
         return stringBuilder.toString();
     }
 
+    /**
+     * get string of countries
+     * @return arrays of string
+     */
     private String getCountryString() {
         StringBuilder stringBuilder = new StringBuilder();
         mapService.getCountries().forEach(country -> {
@@ -203,6 +221,10 @@ public class MapLoaderController {
 //                .orElseThrow(RuntimeException::new);
     }
 
+    /**
+     * get border
+     * @return
+     */
     private String getBorderString() {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -216,6 +238,10 @@ public class MapLoaderController {
         return stringBuilder.toString();
     }
 
+    /**
+     * edit the coninents
+     * @param s arrays of string
+     */
     void editContinents(String[] s) {
         Arrays.stream(s).forEach(this::editContinentFromUserInput);
     }
@@ -743,6 +769,11 @@ public class MapLoaderController {
         }
     }
 
+    /**
+     * check country id is not valid
+     * @param id id to be checked
+     * @return true if country id is not valid
+     */
     private boolean isCountryIdNotValid(int id) {
         return !mapService.countryIdExist(id);
     }
@@ -756,20 +787,34 @@ public class MapLoaderController {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
+    /**
+     * get the MapService object
+     * @return MapService
+     */
     public MapService getMapService() {
         return mapService;
     }
 
-
+    /**
+     * set the command view
+     * @param view view to this view
+     */
     public void setView(CommandPromptView view) {
         this.view = view;
     }
-    
-    //2 SETTER METHODS ADDED BY KESHAV + showmap full methods
+
+    /**
+     * set continent id generator
+     * @param num number to set
+     */
     public void setContinentIdGenerator(int num) {
     	this.continentIdGenerator.set(num);
     }
-    
+
+    /**
+     * set country id generator
+     * @param num number to set
+     */
     public void setCountryIdGenerator(int num) {
     	this.countryIdGenerator.set(num);
     }
