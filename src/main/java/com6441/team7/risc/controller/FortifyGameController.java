@@ -198,11 +198,6 @@ public class FortifyGameController {
 						
 		}
 
-		/*
-		 * 
-		 */
-		
-
 		
 		/**
 		 * After validation comes fortifying
@@ -258,8 +253,11 @@ public class FortifyGameController {
 			return this.boolValidationMet;
 			
 		}
-		
-		private void checkCountryAdjacency() {
+
+	/**
+	 * check country has Adjacency
+	 */
+	private void checkCountryAdjacency() {
 			
 			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
 			
