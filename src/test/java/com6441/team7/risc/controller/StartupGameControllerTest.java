@@ -31,6 +31,7 @@ import com6441.team7.risc.view.CommandPromptView;
  * <li>static MapService mapService
  * <li>static CommandPromptView cmdView
  * <li>ArrayList<Player> players
+ * <li>GameController game
  * <li>static int testNo
  * <li>String file
  * <li>loadmapcmd
@@ -45,14 +46,12 @@ public class StartupGameControllerTest {
 	static CommandPromptView cmdView; 
 	static GameController game;
 	ArrayList<Player> players;
-	static int testNo; //this is for determining which params to be used for certain test cases
 	String file, loadmapcmd;
 
 	/**
 	 * Upon the creation of the class, MapService, MapLoaderController,
-	 * and CommandPromptView objects are instantiated.
-	 * The MapController object also set the game view to the CommandPromptView object.
-	 * The testNo field is set to 0.
+	 * GameController, and CommandPromptView objects are instantiated.
+	 * The MapController and GameController objects also set the game view to the CommandPromptView object.
 	 * @throws Exception on invalid value
 	 */
 	@BeforeClass
@@ -63,7 +62,6 @@ public class StartupGameControllerTest {
 		cmdView = new CommandPromptView(mapController, game);
 		mapController.setView(cmdView);
 		game.setView(cmdView);
-		testNo = 0;
 	}
 
 	@AfterClass
@@ -74,9 +72,11 @@ public class StartupGameControllerTest {
 	 * Before any test method is invoked, the followings are defined:
 	 * <ul>
 	 * <li>URI variable <i>uri</i> retrieve map file from the resource directory.
-	 * <li><i>file</i>
-	 * <li><i>startup</i> is an object instantiated from startupGameController class.
-	 * <li><i>loadmapcmd</i>
+	 * <li><i>file</i> reads the file retrieved by <i>uri</i> to String using UTF-8.
+	 * <li><i>mapController</i> parses <i>file</i> using the <i>parseFile()</i> method.
+	 * <li><i>startup</i> is an retrieved using the getStartupController() method
+	 * in the game object.
+	 * <li><i>loadmapcmd contains the loadmap command.</i>
 	 *  </ul>
 	 * @throws Exception on invalid value
 	 */
@@ -84,7 +84,7 @@ public class StartupGameControllerTest {
 	public void setUp() throws Exception {
 		URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI(); 
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-		//startup = newStartupGameController(mapController, mapService, players);
+		mapController.parseFile(file);
 		startup = game.getStartupController();
 		loadmapcmd = "loadmap ameroki.map"; //this loads the ameroki.map file for testing
 	}

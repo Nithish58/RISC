@@ -110,12 +110,12 @@ public class ReinforceGameControllerTest {
 		startup.readCommand("loadmap ameroki.map", phase);
 		playerDummy1 = new Player("John Doe");
 		playerDummy2 = new Player("Jane Doe");
-		players.add(playerDummy1);
-		players.add(playerDummy2);
+		players.add(playerDummy1); //first player is added to the players array list
+		players.add(playerDummy2); //second player is addesd to the players array list
 		startup.readCommand("populatecountries", phase);
 		startup.readCommand("showmap", phase);
 		startup.readCommand("placeall", phase);
-		cmd="reinforce siberia 7";
+		cmd="reinforce siberia 7"; //sets the cmd param
 
 		reinforcementController = new ReinforceGameController(playerDummy1, mapService, startup, cmd,cmdView);
 		reinforcementController.getReinforcedArmiesCount();

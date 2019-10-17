@@ -31,13 +31,35 @@ import org.apache.commons.lang3.StringUtils;
  * </p>
  */
 public class ReinforceGameController {
+
+    /**
+     * Player objects
+     */
     private Player player;
+
+    /**
+     * MapService objects
+     */
     private MapService mapService;
+
+    /**
+     * CommandPromptView objects
+     */
     private CommandPromptView view;
+
+    /**
+     * to store total extra armies in reinforced.
+     */
     private int reinforcedArmiesCount;
+
+    /**
+     * StartupGameController {@link StartupGameController} object
+     */
     private StartupGameController startupGameController;
 
-
+    /**
+     * command string from user
+     */
     private String command="";
 
     /**
@@ -183,8 +205,8 @@ public class ReinforceGameController {
 
 
     /**
-     * Reinforce the extra armies
-     * @param countryName country where extra armies are added
+     * Reinforce the extra armies to another country
+     * @param countryName another country where extra armies are added
      * @param num the number of armies
      */
     public void reinforce(String countryName, int num){
@@ -250,21 +272,6 @@ public class ReinforceGameController {
         return allCountriesOfPlayer().stream().filter(country -> country.getContinentName().equals(continentName)).collect(Collectors.toList());
     }
 
-    /**
-     * Getter method for view
-     * @return view
-     */
-    public CommandPromptView getView() {
-        return view;
-    }
-    
-    /**
-     * Setter method for view
-     * @param view
-     */
-    public void setView(CommandPromptView v) {
-        this.view=v;
-    }
 
     private void showPlayerReinforcementPhase(Player p) {
         Collections.sort(p.countryPlayerList, new Comparator<Country>() {
@@ -285,6 +292,9 @@ public class ReinforceGameController {
         }
     }
 
+    /**
+     * show countries of this player in reinforcement
+     */
     private void showPlayerCountriesReinforcement() {
         Player currentPlayer=this.player;
 
@@ -339,6 +349,9 @@ public class ReinforceGameController {
         }
     }
 
+    /**
+     * show the countries of all player in reinforcement
+     */
     private void showPlayerAllCountriesReinforcement() {
 
         Player currentPlayer=player;
@@ -392,5 +405,20 @@ public class ReinforceGameController {
 
     }
 
+    /**
+     * get view from commandPrompt view
+     * @return view
+     */
+    public CommandPromptView getView() {
+        return view;
+    }
+
+    /**
+     * set view
+     * @param v commandPrompt View
+     */
+    public void setView(CommandPromptView v) {
+        this.view=v;
+    }
 
 }
