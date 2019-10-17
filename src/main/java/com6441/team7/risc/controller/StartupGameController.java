@@ -72,25 +72,62 @@ import com6441.team7.risc.api.model.RiscCommand;
  */
 public class StartupGameController {
 	
+	/**
+	 * Reference to map loader controller
+	 */
 	private MapLoaderController mapLoaderController;
+	
+	/**
+	 * Reference to view
+	 */
 	private CommandPromptView view;
-	
-	//private AtomicInteger continentIdGenerator;
-    //private AtomicInteger countryIdGenerator;
-    
+
+    /**
+     * Boolean that checks if map is loaded.
+     * Used to control game flow.
+     */
 	private boolean boolMapLoaded;
+	/**
+	 * Boolean that checks if atleast 1 player is added.
+	 * If this is false, does not proceed further and asks addition of at least 1 player.
+	 * Used to control game flow.
+	 */
 	private boolean boolGamePlayerAdded;
+	/**
+	 * Boolean that checks if all players have been added.
+	 * Set to true when populate countries called
+	 * Can no longer add more players after this point.
+	 * Used to control game flow.
+	 */
 	private boolean boolAllGamePlayersAdded;
+	/**
+	 * Boolean that checks if a country have been successfully populated.
+	 * If true, allows proceeding to next phase.
+	 * Else need to populate countries first
+	 * Used to control game flow.
+	 */
 	private boolean boolCountriesPopulated;
-	
+	/**
+	 * Array of boolean that checks if all armies have been placed on all countries.
+	 * If true, allows proceeding to next phase; else program keep looping over players until all armies have been placed.
+	 */
 	private boolean[] boolArrayCountriesPlaced;
-	
+	/**
+	 * Atomic Boolean that is set to true after all countries have been populated.
+	 * When true, does not give control to startup phase again.
+	 */
 	private AtomicBoolean boolStartUpPhaseOver;
-	
+	/**
+	 * Keeps track of current player index to access current player from list of players
+	 */
 	int currentPlayerIndex;
-	
+	/**
+	 * Reference to mapService model
+	 */
 	private MapService mapService;
-	
+	/**
+	 * List of players playing the game
+	 */
 	private ArrayList<Player> players;
 	
 	/**
@@ -256,18 +293,12 @@ public class StartupGameController {
         
 	}
 
-	
-
-	//CHANGE STATE TO REINFORCEMENT IN MAPSERVICE AFTER END OF LAST METHOD
-
-	//Assign randomly countries to players
-	//Calculate number of initial soldiers allocated to players based on numPlayers
-	//Assign 1 army to each country and decrement from a player's total
 	/**
 	 * This method randomly assigns countries to players.
 	 * The random technique used in this method is shuffling the list of countries 3 times so that they are no
 	 * longer in order of id. This is done by using a stack.
 	 * The countries which are mixed and no longer in order are then allocated to players in round-robin fashion.
+	 * Then assigns 1 army to each country.
 	 */
 	private void populateCountries() {
 		
@@ -334,8 +365,6 @@ public class StartupGameController {
 					view.displayMessage(c.getId()+" "+c.getCountryName()+" "+c.getPlayer().getName()
 							+" "+c.getSoldiers());
 				}
-							
-				//gameplayer -add keshav -add jenny -remove jenny -add binsar -add jenny -add bikash -add keshav -add lol
 				
 				view.displayMessage("Countries Populated. Start placing your armies now.");
 				
@@ -408,7 +437,7 @@ public class StartupGameController {
 	 * if the command is add, call addPlayer()
 	 * if the command is remove, call removePlayer()
 	 * else throw exception
-	 * @param s command string
+	 * @param command string
 	 */
     private void editPlayerFromUserInput(String s) {
         String[] commands = StringUtils.split(s, " ");
@@ -427,7 +456,7 @@ public class StartupGameController {
 	/**
 	 * validate each player info, if player info is valid, add it to the list of players
 	 * if not valid, throw an exception
-	 * @param s
+	 * @param array of string commands
 	 */
 	private void addPlayer(String[] s) {
     	
@@ -473,7 +502,7 @@ public class StartupGameController {
 	/**
 	 * validate player info, if player info is valid, remove it to the list of players
 	 * if not valid, throw an exception
-	 * @param s
+	 * @param array of string commands
 	 */
 	private void removePlayer(String[] s) {
     	
@@ -520,8 +549,8 @@ public class StartupGameController {
 
 	/**
 	 * load map from the map file
-	 * @param s
-	 * @return
+	 * @param mapname
+	 * @return a string instead of null if map not loaded successfully, that is why optional is used/
 	 */
 	Optional<String> loadMap(String s) {
 		
@@ -539,7 +568,7 @@ public class StartupGameController {
 	        String path = commands[1];
 
 	        if (command.toLowerCase(Locale.CANADA).equals("loadmap")) {
-	            //readFile(path);
+
 	        	this.mapLoaderController.setContinentIdGenerator(0);
 	            this.mapLoaderController.setCountryIdGenerator(0);
 	        	mapService.emptyMap();
@@ -554,11 +583,8 @@ public class StartupGameController {
 	            return Optional.of(path);
 	        }
 
-	       // view.displayMessage("The command loadmap is not valid");
 	        view.displayMessage("Command LoadMap is not valid"); 
 	        return Optional.empty();
-
-		//NEED TO UPDATE BOOLFILENAME
 		
 	}
 
@@ -582,7 +608,7 @@ public class StartupGameController {
     }
 
 	/**
-	 * show map information including countries, continents, and neighboringCountries
+	 * show map information including countries, continents, and neighboring countries
 	 */
 	private void showMap() {
         mapService.printCountryInfo();
@@ -601,6 +627,7 @@ public class StartupGameController {
 
 	/**
 	 * end the game
+	 * called when only 1 player is present.
 	 */
 	private void endGame() {
     	view.displayMessage("Game Ends");
@@ -659,7 +686,6 @@ public class StartupGameController {
         		if(boolStartUpPhaseOver.get()) {
         			view.displayMessage("All Armies Placed for all players.\n.");
         			this.mapService.setState(GameState.REINFORCE);
-        			//view.displayMessage("Player Turn: "+players.get(0).getName());
         			switchToNextPlayer();
         		}
         		
