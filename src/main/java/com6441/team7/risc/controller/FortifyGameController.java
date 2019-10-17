@@ -145,7 +145,11 @@ public class FortifyGameController {
 	            
 	            case SHOW_PLAYER_COUNTRIES:
 	            	showPlayerCountriesFortification();
-	            	break;	            
+	            	break;	
+	            	
+	            case EXIT:
+	            	endGame();
+	            	break;
 	                
 	               default:
 	            	   this.boolFortificationPhaseOver.set(false);
@@ -401,6 +405,15 @@ public class FortifyGameController {
 	    		}
 
 	    	}
+	    }
+	    
+		/**
+		 * end the game
+		 * called when only 1 player is present.
+		 */
+		private void endGame() {
+	    	view.displayMessage("Game Ends");
+	    	System.exit(0);;
 	    }
 
 

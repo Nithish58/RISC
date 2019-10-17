@@ -168,6 +168,10 @@ public class ReinforceGameController {
             case SHOW_PLAYER_COUNTRIES:
                 showPlayerCountriesReinforcement();
                 break;
+                
+            case EXIT:
+            	endGame();
+            	break;
 
             default:
 
@@ -347,6 +351,15 @@ public class ReinforceGameController {
             }
 
         }
+    }
+    
+	/**
+	 * end the game
+	 * called when only 1 player is present.
+	 */
+	private void endGame() {
+    	view.displayMessage("Game Ends");
+    	System.exit(0);;
     }
 
     /**

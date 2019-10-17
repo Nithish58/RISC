@@ -87,6 +87,10 @@ public class MapLoaderController {
             	exitEditMap();
                 break;
                 
+            case EXIT:
+            	endGame();
+            	break;
+                
             default:
                 throw new IllegalArgumentException("cannot recognize this command");
         }
@@ -810,6 +814,15 @@ public class MapLoaderController {
     public void setContinentIdGenerator(int num) {
     	this.continentIdGenerator.set(num);
     }
+    
+	/**
+	 * end the game
+	 * called when only 1 player is present.
+	 */
+	private void endGame() {
+    	view.displayMessage("Game Ends");
+    	System.exit(0);;
+    }
 
     /**
      * set country id generator
@@ -861,5 +874,7 @@ public class MapLoaderController {
     	}
 
     }
+
+    
 
 }

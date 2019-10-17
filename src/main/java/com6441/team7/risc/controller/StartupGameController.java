@@ -286,6 +286,10 @@ public class StartupGameController {
         	
         	break;
         	
+        case EXIT:
+        	endGame();
+        	break;
+        	
         default:
             throw new IllegalArgumentException("cannot recognize this command");
 
