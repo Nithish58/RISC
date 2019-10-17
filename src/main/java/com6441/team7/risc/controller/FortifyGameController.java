@@ -316,7 +316,7 @@ public class FortifyGameController {
 
 	/**
 	 * show current player information, the countries it occupies and corresponding soldiers
-	 * @param current player
+	 * @param p player
 	 */
 	private void showPlayerFortificationPhase(Player p) {
 	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
