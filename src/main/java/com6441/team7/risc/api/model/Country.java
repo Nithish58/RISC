@@ -235,13 +235,18 @@ public class Country {
                 && Objects.equals(name, country.name);
     }
 
+    /**
+     * Returns hashcode of object
+     * Used for Setting IDs (Unique Value)
+     * @return hashcode of object
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
     /**
-     * To print country information
+     *Used to print country information
      * @return id name continentIdentifier coordinateX CoordinateY.
      */
     @Override

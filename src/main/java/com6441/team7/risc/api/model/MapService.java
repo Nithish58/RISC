@@ -45,15 +45,25 @@ public class MapService extends Observable {
      */
     private GameState gameState = GameState.LOAD_MAP;
 
-
+/**
+ * Default Constructor
+ */
     public MapService(){}
 
+    /**
+     * Overrides super class Observable method
+     * @param observer class
+     */
     @Override
     public void addObserver(Observer observer) {
         super.addObserver(observer);
         setState(gameState);
     }
 
+    /**
+     * Getter method for gamestate
+     * @return gamestate
+     */
     public GameState getGameState(){
         return gameState;
     }
