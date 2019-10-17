@@ -121,7 +121,7 @@ public class ReinforceGameController {
     }
 
     /**
-     * read command from user
+     * Determines command type and "routes" to different methods
      */
     private void readCommand() {
 
@@ -273,10 +273,6 @@ public class ReinforceGameController {
     }
 
 
-    /**
-     * show player in reinforcement phase
-     * @param p player
-     */
     private void showPlayerReinforcementPhase(Player p) {
         Collections.sort(p.countryPlayerList, new Comparator<Country>() {
 
@@ -291,10 +287,8 @@ public class ReinforceGameController {
 
         view.displayMessage("Current Player: "+p.getName());
 
-        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-
         for(Country c:p.countryPlayerList) {
-            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+            view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
         }
     }
 
@@ -328,7 +322,7 @@ public class ReinforceGameController {
 
                     String strCountryOutput="";
 
-                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
                             ", "+currentCountry.getSoldiers()+" soldiers   ";
 
                     Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -386,7 +380,7 @@ public class ReinforceGameController {
 
                     String strCountryOutput="";
 
-                    strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
                             ", "+currentCountry.getSoldiers()+" soldiers   ";
 
                     Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);

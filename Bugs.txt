@@ -4,7 +4,7 @@
 
 3. Fix showmap Bugs (DONE)
 
-4. Fix showplayer UI bugs about spacing******************************************************
+4. Fix showplayer UI bugs about spacing (DONE)
 
 5. Placearmy bug ---- with 9 players when limit reaches 0, numArmies = -1   (DONE)
 

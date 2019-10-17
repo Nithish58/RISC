@@ -315,8 +315,8 @@ public class FortifyGameController {
 		}
 
 	/**
-	 * show current player information, the countries its occupy and corresponding soldiers
-	 * @param p
+	 * show current player information, the countries it occupies and corresponding soldiers
+	 * @param current player
 	 */
 	private void showPlayerFortificationPhase(Player p) {
 	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
@@ -332,38 +332,15 @@ public class FortifyGameController {
 
 	        view.displayMessage("Current Player: "+p.getName());
 
-	        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-
 	        for(Country c:p.countryPlayerList) {
-	            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
+	            view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
 	        }
 	    }
 		
-	    
-	    private void showPlayerReinforcementPhase(Player p) {
-	        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
-
-	                    @Override
-	                    public int compare(Country c1, Country c2) {
-
-	                        return c1.getContinentName().compareTo(c2.getContinentName());
-	                    }
-
-	                }
-	        );
-
-	        view.displayMessage("Current Player: "+p.getName());
-
-	        view.displayMessage("Continent \t\t\t\t Country \t\t\t\t NumArmies");
-
-	        for(Country c:p.countryPlayerList) {
-	            view.displayMessage(c.getContinentName()+"\t\t\t"+c.getCountryName()+"\t\t\t"+c.getSoldiers());
-	        }
-	    }
 
 
 	/**
-	 * show current player and countries information in the fortification
+	 * show current player and information of all countries player owns
 	 *
 	 */
 	    private void showPlayerCountriesFortification() {
@@ -393,7 +370,7 @@ public class FortifyGameController {
 	    				
 	        			String strCountryOutput="";
 	        			
-	        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
 	        					", "+currentCountry.getSoldiers()+" soldiers   ";
 	        			
 	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
@@ -452,7 +429,7 @@ public class FortifyGameController {
 	    				
 	        			String strCountryOutput="";
 	        			
-	        			strCountryOutput+=currentCountry.getCountryName()+":"+currentCountry.getPlayer().getName()+
+	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
 	        					", "+currentCountry.getSoldiers()+" soldiers   ";
 	        			
 	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
