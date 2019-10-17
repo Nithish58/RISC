@@ -238,14 +238,7 @@ public class MapService extends Observable {
         continents.clear();
         continentCountriesMap.keySet().clear();
         adjacencyCountriesMap.keySet().clear();
-        
-        
-        //Keshav Code
-        
-     //   countries = new HashSet<>();
-     //   continents=new HashSet<>();
-     //   adjacencyCountriesMap = new HashMap<>();
-     //   continentCountriesMap = new HashMap<>();
+
         
 
 
