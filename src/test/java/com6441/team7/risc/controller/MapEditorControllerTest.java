@@ -42,7 +42,7 @@ public class MapEditorControllerTest {
 	static private GameController testGameController;
 	String test_map;
 	
-	//define test params
+	//define test variables
 	URI uri;
 	String mapname, file, savename, inputcommand, continentcommand1, continentcommand2, continentcommand3, continentcommand4, 
 		continentcommand5, continentcommand6, countrycommand1, countrycommand2,	countrycommand3, 
@@ -81,7 +81,6 @@ public class MapEditorControllerTest {
 		testMapService = new MapService();
 		testMapLoader = new MapLoaderController(testMapService);
 		testCmdView = new CommandPromptView(testMapLoader, testGameController);
-//		testState = new StateContext();
 		testMapLoader.setView(testCmdView);
 		
 	}
@@ -89,7 +88,7 @@ public class MapEditorControllerTest {
 	/**
 	 * <p>
 	 * beginMethod() is called before every method is performed. It prints list of countinents, countries, and borders.
-	 * Test params are set here.
+	 * Test variables are set here.
 	 * <ul>
 	 * <li><b>mapname</b> contains the map file to be loaded for testing.
 	 * <li><b>URI uri</b> is set as the URI of the filename.
@@ -140,14 +139,10 @@ public class MapEditorControllerTest {
 		testMapLoader.getMapService().printNeighboringCountryInfo();
 		System.out.println("Number of continents before test: "+testMapLoader.getMapService().getContinents().size());
 		System.out.println("Number of countries before test: "+testMapLoader.getMapService().getCountries().size());
-		/**
-		 * URI variable uri is assigned URI parameter for reading file and executing editmap command
-		 */
+		//URI variable uri is assigned URI parameter for reading file and executing editmap command
 		URI uri = getClass().getClassLoader().getResource(mapname).toURI(); 
-		/**
-		 * file reads the file retrieved from the uri as string.
-		 * it uses UTF-8 charsets.
-		 */
+		//file reads the file retrieved from the uri as string.
+		//it uses UTF-8 charsets.
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 		//if the testCounter is not less than 3, the editmap command and map parsing must be skipped.
 		//This so that the subsequent tests won't be impacted by it.
@@ -164,7 +159,7 @@ public class MapEditorControllerTest {
 		initcontinentsize = testMapLoader.getMapService().getContinents().size();
 		// The followings are for the test cases of editing continent
 		//expectedcontinentsize is the expected size of continent list
-		//after edit operation
+		//after each edit operation
 		//continentcommand contains the editcontinent commands.
 		//continentcommands is an array that contains the split string for parameters
 		newcontinentstr1 = "Nord_Asia"; //one continent to be added
@@ -215,6 +210,7 @@ public class MapEditorControllerTest {
 		delcountrystr2a = "yazteck"; delcountrystr2b = "kongrolo"; //two countrys to be deleted
 		
 		newcountrystr3 = "Fiji"; countrycontinentstr3="azio"; delcountrystr3 = "Nordenstan"; //countrys to be added and deleted one each in a line
+		
 		newcountrystr4a= "Sky_Republic"; countrycontinentstr4a="Nord_Asia"; 
 		newcountrystr4b = "Ocean_Republic"; countrycontinentstr4b="Northeast_Asia"; delcountrystr4a="sluci"; delcountrystr4b="kancheria"; 
 		//countrycommand1 and countrycommands1 are for adding one country
@@ -254,14 +250,12 @@ public class MapEditorControllerTest {
 		neighborcommand1 = "editneighbor -add "+countrystr1+" "+ neighborstr1;
 		neighborcommand1 = StringUtils.substringAfter(neighborcommand1, "-");
 		neighborcommands1 = StringUtils.split(neighborcommand1, "-");
-		
 		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr1);
 		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr1);
 		//neighborcommand2,neighborcommands2, country2a, country2db, neighbor 2a, and neighbor2b are for adding two neighbor
 		neighborcommand2 = "editneighbor -add "+countrystr2a+" "+neighborstr2a+" -add "+countrystr2b+" "+neighborstr2b;
 		neighborcommand2 = StringUtils.substringAfter(neighborcommand2, "-");
-		neighborcommands2 = StringUtils.split(neighborcommand2, "-");
-		
+		neighborcommands2 = StringUtils.split(neighborcommand2, "-");	
 		country2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2a);
 		country2b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr2b);
 		neighbor2a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr2a);
@@ -276,27 +270,22 @@ public class MapEditorControllerTest {
 		neighborcommand4 = "editneighbor -remove "+countrystr4a+" "+neighborstr4a+" -remove "+countrystr4b+" "+neighborstr4b;
 		neighborcommand4 = StringUtils.substringAfter(neighborcommand4, "-");
 		neighborcommands4 = StringUtils.split(neighborcommand4, "-");
-		
 		country4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4a);
 		country4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr4b);
-		
 		neighbor4a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4a);
 		neighbor4b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr4b);
 		//neighborcommand5,neighborcommands5, country5a, country5b, neighbor5a, and neighbor5b are for adding and removing one neighbor
 		neighborcommand5 = "editneighbor -add "+countrystr5a+" "+neighborstr5a+"-remove "+countrystr5b+" "+neighborstr5b;
 		neighborcommand5 = StringUtils.substringAfter(neighborcommand5, "-");
 		neighborcommands5 = StringUtils.split(neighborcommand5, "-");
-		
 		country5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5a);
 		country5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr5b);
-		
 		neighbor5a = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5a);
 		neighbor5b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr5b);
 		//neighborcommand6,neighborcommands6, country6a, country6b, country6c, country6d, neighbor6a, neighbor6b, neighbor6c, and neighbor6d are for adding and removing two neighbors
 		neighborcommand6 = "editneighbor -add china sky_republic -add china ocean_republic -remove china middle_east -remove china heal";
 		neighborcommand6 = StringUtils.substringAfter(neighborcommand6, "-");
 		neighborcommands6 = StringUtils.split(neighborcommand6, "-");
-		
 		country6a = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6a);
 		country6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6b);
 		country6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(countrystr6c);
@@ -305,13 +294,16 @@ public class MapEditorControllerTest {
 		neighbor6b = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6b);
 		neighbor6c = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6c);
 		neighbor6d = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborstr6d);
-		//the following is for saving file
+		//This sets the variable for map saving command.
 		savename = "edittedmap.map";
-		//incrementing the testcounter
 	}
 	
 	/**
-	 * endMethod() is called after every method is performed. It prints the number
+	 * endMethod() is called after every method is performed. It prints out
+	 * the continents list, countries list, neighbor info list, and numbers of continents 
+	 * and countries after each test.
+	 * <i>testCounter</i> is incremented here.
+	 * 
 	 */
 	@After
 	public void endMethod() {
@@ -327,7 +319,7 @@ public class MapEditorControllerTest {
 	
 
 	/**
-	 * test1_readFile() tests command to load map from file.
+	 * test001_readFile() tests command to load map from file.
 	 * <p>The method receives the <i>file</i>param from the context
 	 * and then it is parsed. The runner passes the test if the result
 	 * returns true.
@@ -340,7 +332,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test2_editMap() checks if the editmap command is valid.
+	 * test002_editMap() checks if the editmap command is valid.
 	 * If the method isPresent() from the controller returns true,
 	 * the test passes. 
 	 * @throws Exception upon invalid values
@@ -353,7 +345,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test3_addOneContinent() tests adding one continent to the continent list.
+	 * test003_addOneContinent() tests adding one continent to the continent list.
 	 * The method uses continentcommand1 as the command to be checked.
 	 * The test passes if the number of continent increases by 1 after the test.
 	 * @throws Exception upon invalid values
@@ -368,7 +360,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test4_addTwoContinents() tests adding two continents to the continent list in one command.
+	 * test004_addTwoContinents() tests adding two continents to the continent list in one command.
 	 * The method uses continentcommand2 as the command to be checked.
 	 * The test passes if the number of continent increases by 2 after the test.
 	 * @throws Exception upon invalid values
@@ -383,7 +375,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test5_removeOneContinent() tests deleting one continent.
+	 * test005_removeOneContinent() tests deleting one continent.
 	 * The method uses continentcommand3 as the command to be checked.
 	 * The test passes if the number of continents decreases by 1 after the test.
 	 * @throws Exception upon invalid values
@@ -398,7 +390,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test6_removeTwoContinents() tests removing continents from the continent list in one command.
+	 * test006_removeTwoContinents() tests removing continents from the continent list in one command.
 	 * The method uses continentcommand4 as the command to be checked.
 	 * The test passes if the number of continents decreases by 2 after the test.
 	 * @throws Exception upon invalid values
@@ -413,7 +405,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test7_addOneContinentRemoveOneContinent() tests adding and removing one continent from the continent list in one command.
+	 * test007_addOneContinentRemoveOneContinent() tests adding and removing one continent from the continent list in one command.
 	 * The method uses continentcommand5.
 	 * The test passes if the number of continents stays the same after the test.
 	 * @throws Exception upon invalid values
@@ -428,9 +420,9 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test8_addTwoContinentsRemoveTwoContinents() tests adding and removing two continents from the continent list in one command.
+	 * test008_addTwoContinentsRemoveTwoContinents() tests adding and removing two continents from the continent list in one command.
 	 * The method uses continentcommand6.
-	 * The test passes if the number of continents stays after the test.
+	 * The test passes if the number of continents stays the same after the test.
 	 * @throws Exception upon invalid values
 	 */
 	@Test
@@ -443,7 +435,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test9_addOneCountry() tests adding one country to the country list.
+	 * test009_addOneCountry() tests adding one country to the country list.
 	 * The method uses countrycommand1 as the command to be checked.
 	 * The test passes if the number of countries increases by 1 after the test.
 	 * @throws Exception upon invalid values
@@ -458,7 +450,7 @@ public class MapEditorControllerTest {
 	}
 	
 	/**
-	 * test10_addTwoCountries() tests adding two country to the country list.
+	 * test010_addTwoCountries() tests adding two country to the country list.
 	 * The method uses countrycommand2 as the command to be checked.
 	 * The test passes if the number of countries increases by 2 after the test.
 	 * @throws Exception upon invalid values
@@ -568,7 +560,7 @@ public class MapEditorControllerTest {
 		System.out.println(neighborcommand2);
 		borders2 = testMapLoader.getMapService().getAdjacencyCountriesMap();
 		testMapLoader.editNeighbor(neighborcommands2);
-		//get pair of country and neighbor
+		//Get pair of country and neighbor
 		pair2a = borders2.get(country2a.get());
 		pair2b = borders2.get(country2b.get());
 		//Check if map object contains both country ID and neighbor ID
@@ -723,7 +715,6 @@ public class MapEditorControllerTest {
 			file = FileUtils.readFileToString(new File(savename), StandardCharsets.UTF_8);
 			assertTrue(message, testMapLoader.parseFile(file));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
