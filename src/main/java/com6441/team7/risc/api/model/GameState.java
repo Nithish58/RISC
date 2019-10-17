@@ -8,13 +8,21 @@ public enum GameState {
     START_UP("startup"),
     REINFORCE("reinforce"),
     FORTIFY("fortify");
-
+/**
+ * value of different gamestates
+ */
     private String name;
-
+/**
+ * Setter for GameState Value
+ * @param name
+ */
     GameState(String name){
         this.name = name;
     }
-
+/**
+ * Getter method for Gamestate value
+ * @return state value
+ */
     public String getName(){
         return name;
     }

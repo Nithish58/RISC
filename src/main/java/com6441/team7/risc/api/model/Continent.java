@@ -53,7 +53,7 @@ public class Continent {
 
     /**
      *Getter method to get continent name
-     * @return
+     * @return continent name
      */
     public String getName() {
         return name;
@@ -119,8 +119,9 @@ public class Continent {
     }
 
     /**
-     *
-     * @return hashcode
+     *Get hashcode of object
+     *Used for Setting IDs (Unique Value)
+     * @return hashcode of object
      */
     @Override
     public int hashCode() {
