@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com6441.team7.risc.utils.MapDisplayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com6441.team7.risc.api.model.Continent;
@@ -92,21 +93,15 @@ public class FortifyGameController {
 	/**
 	 * Constructor with parameters
 	 */
-		public FortifyGameController(Player player, MapService mapService,
-										StartupGameController sgc, String cmd,
+		public FortifyGameController(MapService mapService,
+										StartupGameController sgc,
 										AtomicBoolean boolFortificationPhaseOver,
 										CommandPromptView v) throws IOException{
 			this.mapService = mapService;
-			this.player = player;
 			this.startupGameController=sgc;
 			this.view=v;
-			
 			this.boolFortificationPhaseOver=boolFortificationPhaseOver;
 			this.boolValidationMet=false;
-			
-			readCommand(cmd);
-			
-			
 		}
 
 	/**
@@ -354,57 +349,7 @@ public class FortifyGameController {
 	 *
 	 */
 	    private void showPlayerCountriesFortification() {
-	    	Player currentPlayer=this.player;
-	    	
-	    	for(Map.Entry<Integer, Set<Integer>> item :
-	    						mapService.getContinentCountriesMap().entrySet()) {
-	    		
-	    		int key=(int) item.getKey();
-	    		   		
-	    		
-	    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-	    		Continent currentContinent= (Continent) optionalContinent.get();
-	    		
-	    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-	    		view.displayMessage("\n");
-	    		
-	    		Set<Integer> value=item.getValue();
-	    		
-	    		for(Integer i:value) {
-	    			//For Each Country In Continent, Get details + Adjacency Countries
-	    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-	    			
-	    			Country currentCountry=optionalCountry.get();
-	    			
-	    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-	    				
-	        			String strCountryOutput="";
-	        			
-	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-	        					", "+currentCountry.getSoldiers()+" soldiers   ";
-	        			
-	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-	        			
-	        			for(Integer j:adjCountryList) {
-	        				
-	        				if(mapService.getCountryById(j).get().getPlayer().getName()
-	        						.equalsIgnoreCase(currentPlayer.getName())){
-	        	        				
-	        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-	        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
-	        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
-	        						}
-	        				
-	        			}
-	        			
-	        			view.displayMessage(strCountryOutput+"\n");    				
-	    				
-	    			}
-	    			
-
-	    		}
-
-	    	}
+			MapDisplayUtils.showCurrentPlayerMap(mapService, view, player);
 	    }
 	    
 		/**
@@ -413,7 +358,7 @@ public class FortifyGameController {
 		 */
 		private void endGame() {
 	    	view.displayMessage("Game Ends");
-	    	System.exit(0);;
+	    	System.exit(0);
 	    }
 
 
@@ -421,56 +366,7 @@ public class FortifyGameController {
 	 * show players and all countries in fortification phase
 	 */
 	    private void showPlayerAllCountriesFortification() {
-	    	
-	    	Player currentPlayer=player;
-	    	
-	    	for(Map.Entry<Integer, Set<Integer>> item :
-	    						mapService.getContinentCountriesMap().entrySet()) {
-	    		
-	    		int key=(int) item.getKey();
-	    		   		
-	    		
-	    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-	    		Continent currentContinent= (Continent) optionalContinent.get();
-	    		
-	    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-	    		view.displayMessage("\n");
-	    		
-	    		Set<Integer> value=item.getValue();
-	    		
-	    		for(Integer i:value) {
-	    			//For Each Country In Continent, Get details + Adjacency Countries
-	    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-	    			
-	    			Country currentCountry=optionalCountry.get();
-	    			
-	    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-	    				
-	        			String strCountryOutput="";
-	        			
-	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-	        					", "+currentCountry.getSoldiers()+" soldiers   ";
-	        			
-	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-	        			
-	        			for(Integer j:adjCountryList) {
-	        	        				
-	        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-	        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
-	        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
-	        						
-	        				
-	        			}
-	        			
-	        			view.displayMessage(strCountryOutput+"\n");    				
-	    				
-	    			}
-	    			
-
-	    		}
-
-	    	}
-
+	    	MapDisplayUtils.showCurrentPlayerMap(mapService, view, player);
 	    }
 	    
 	    

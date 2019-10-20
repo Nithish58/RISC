@@ -6,6 +6,7 @@ import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.CommandPromptView;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
@@ -14,6 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.omg.CORBA.MARSHAL;
 
 /**
  * <h1>The Reinforcement phase</h1>
@@ -278,17 +280,7 @@ public class ReinforceGameController {
 
 
     private void showPlayerReinforcementPhase(Player p) {
-        Collections.sort(p.countryPlayerList, new Comparator<Country>() {
-
-                    @Override
-                    public int compare(Country c1, Country c2) {
-
-                        return c1.getContinentName().compareTo(c2.getContinentName());
-                    }
-
-                }
-        );
-
+        p.countryPlayerList.sort(Comparator.comparing(Country::getContinentName));
         view.displayMessage("Current Player: "+p.getName());
 
         for(Country c:p.countryPlayerList) {
@@ -300,57 +292,7 @@ public class ReinforceGameController {
      * show countries of this player in reinforcement
      */
     private void showPlayerCountriesReinforcement() {
-        Player currentPlayer=this.player;
-
-        for(Map.Entry<Integer, Set<Integer>> item :
-                mapService.getContinentCountriesMap().entrySet()) {
-
-            int key=(int) item.getKey();
-
-
-            Optional<Continent> optionalContinent=mapService.getContinentById(key);
-            Continent currentContinent= (Continent) optionalContinent.get();
-
-            view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-            view.displayMessage("\n");
-
-            Set<Integer> value=item.getValue();
-
-            for(Integer i:value) {
-                //For Each Country In Continent, Get details + Adjacency Countries
-                Optional<Country> optionalCountry=mapService.getCountryById(i);
-
-                Country currentCountry=optionalCountry.get();
-
-                if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-
-                    String strCountryOutput="";
-
-                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-                            ", "+currentCountry.getSoldiers()+" soldiers   ";
-
-                    Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-
-                    for(Integer j:adjCountryList) {
-
-                        if(mapService.getCountryById(j).get().getPlayer().getName()
-                                .equalsIgnoreCase(currentPlayer.getName())){
-
-                            strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-                                    "("+mapService.getCountryById(j).get().getPlayer().getName()+
-                                    ":"+mapService.getCountryById(j).get().getSoldiers()+")";
-                        }
-
-                    }
-
-                    view.displayMessage(strCountryOutput+"\n");
-
-                }
-
-
-            }
-
-        }
+        MapDisplayUtils.showCurrentPlayerMap(mapService, view, player);
     }
     
 	/**
@@ -359,63 +301,14 @@ public class ReinforceGameController {
 	 */
 	private void endGame() {
     	view.displayMessage("Game Ends");
-    	System.exit(0);;
+    	System.exit(0);
     }
 
     /**
      * show the countries of all player in reinforcement
      */
     private void showPlayerAllCountriesReinforcement() {
-
-        Player currentPlayer=player;
-
-        for(Map.Entry<Integer, Set<Integer>> item :
-                mapService.getContinentCountriesMap().entrySet()) {
-
-            int key=(int) item.getKey();
-
-
-            Optional<Continent> optionalContinent=mapService.getContinentById(key);
-            Continent currentContinent= (Continent) optionalContinent.get();
-
-            view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-            view.displayMessage("\n");
-
-            Set<Integer> value=item.getValue();
-
-            for(Integer i:value) {
-                //For Each Country In Continent, Get details + Adjacency Countries
-                Optional<Country> optionalCountry=mapService.getCountryById(i);
-
-                Country currentCountry=optionalCountry.get();
-
-                if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-
-                    String strCountryOutput="";
-
-                    strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-                            ", "+currentCountry.getSoldiers()+" soldiers   ";
-
-                    Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-
-                    for(Integer j:adjCountryList) {
-
-                        strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-                                "("+mapService.getCountryById(j).get().getPlayer().getName()+
-                                ":"+mapService.getCountryById(j).get().getSoldiers()+")";
-
-
-                    }
-
-                    view.displayMessage(strCountryOutput+"\n");
-
-                }
-
-
-            }
-
-        }
-
+        MapDisplayUtils.showCurrentPlayerMap(mapService, view, player);
     }
 
     /**

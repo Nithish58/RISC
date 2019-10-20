@@ -682,6 +682,10 @@ public class MapService extends Observable {
         return adjacencyCountriesMap;
     }
 
+    public Set<Integer> getAdjacencyCountries(int countryId) {
+        return adjacencyCountriesMap.get(countryId);
+    }
+
     /**
      * To get map of continent's countries
      * @return map of continent's countries

@@ -12,7 +12,7 @@ import java.util.Scanner;
 /**
  * This class receives user input and call different controller according to the game state
  */
-public class CommandPromptView implements Observer {
+public class CommandPromptView implements GameView {
     private Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
     private GameState gameState;
     private MapLoaderController mapLoaderController;
@@ -40,6 +40,7 @@ public class CommandPromptView implements Observer {
     /**
      * receive user input. send the user command to different controller according to game state
      */
+    @Override
     public void receiveCommand() {
         while (true) {
             try {
@@ -113,6 +114,7 @@ public class CommandPromptView implements Observer {
      * display message to users
      * @param string
      */
+    @Override
     public void displayMessage(String string) {
         System.out.println(string);
         mapLoaderController.getMapService().getCountries();

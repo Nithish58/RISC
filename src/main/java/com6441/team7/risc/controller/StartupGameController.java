@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.CommandPromptView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -810,52 +811,52 @@ public class StartupGameController {
 	public void showPlayerCountries() {
     	
     	Player currentPlayer=players.get(currentPlayerIndex);
-    	
+
     	for(Map.Entry<Integer, Set<Integer>> item :
     						mapService.getContinentCountriesMap().entrySet()) {
-    		
+
     		int key=(int) item.getKey();
-    		   		
-    		
+
+
     		Optional<Continent> optionalContinent=mapService.getContinentById(key);
     		Continent currentContinent= (Continent) optionalContinent.get();
-    		
+
     		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
     		view.displayMessage("\n");
-    		
+
     		Set<Integer> value=item.getValue();
-    		
+
     		for(Integer i:value) {
     			//For Each Country In Continent, Get details + Adjacency Countries
     			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
+
     			Country currentCountry=optionalCountry.get();
-    			
+
     			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-    				
+
         			String strCountryOutput="";
-        			
+
         			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
         					", "+currentCountry.getSoldiers()+" soldiers   ";
-        			
+
         			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-        			
+
         			for(Integer j:adjCountryList) {
-        				
+
         				if(mapService.getCountryById(j).get().getPlayer().getName()
         						.equalsIgnoreCase(currentPlayer.getName())){
-        	        				
+
         	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
         	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
         	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
         						}
-        				
+
         			}
-        			
-        			view.displayMessage(strCountryOutput+"\n");    				
-    				
+
+        			view.displayMessage(strCountryOutput+"\n");
+
     			}
-    			
+
 
     		}
 
@@ -867,56 +868,8 @@ public class StartupGameController {
 	 * show all players and their occupying countries
 	 */
 	public void showPlayerAllCountries() {
-    	
     	Player currentPlayer=players.get(currentPlayerIndex);
-    	
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-    		
-    		int key=(int) item.getKey();
-    		   		
-    		
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-    		
-    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		view.displayMessage("\n");
-    		
-    		Set<Integer> value=item.getValue();
-    		
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
-    			Country currentCountry=optionalCountry.get();
-    			
-    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-    				
-        			String strCountryOutput="";
-        			
-        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-        					", "+currentCountry.getSoldiers()+" soldiers   ";
-        			
-        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-        			
-        			for(Integer j:adjCountryList) {
-        	        				
-        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
-        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
-        						
-        				
-        			}
-        			
-        			view.displayMessage(strCountryOutput+"\n");    				
-    				
-    			}
-    			
-
-    		}
-
-    	}
-
+		MapDisplayUtils.showCurrentPlayerMap(mapService, view, currentPlayer);
     }
 
 
