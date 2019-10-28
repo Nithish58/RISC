@@ -312,7 +312,7 @@ public class FortifyGameController {
 	 */
 	private void checkNumSoldiers() {
 			
-			if(!(fromCountry.getSoldiers()>numSoldiers)) {
+			if(!(fromCountry.getSoldiers()>numSoldiers && numSoldiers>0)) {
 				view.displayMessage("Not enough soldiers in origin country");
 				this.boolValidationMet=false;
 			}
