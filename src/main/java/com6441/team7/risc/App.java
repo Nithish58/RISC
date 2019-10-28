@@ -14,6 +14,9 @@ public class App {
     		
         MapService mapService = new MapService();
         
+        //PlayerList model
+        
+        
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
         GameController gameController = new GameController(mapLoaderController,mapService);
 		

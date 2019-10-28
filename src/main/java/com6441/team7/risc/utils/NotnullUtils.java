@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class NotnullUtils {
+	
     private NotnullUtils(){}
 
     public static <E> Stream<E> toStream(Collection<E> nullableCollection) {

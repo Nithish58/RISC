@@ -253,6 +253,7 @@ public class StartupGameController {
         	String[] strArr=StringUtils.split(command, WHITESPACE);
         	
         	if(strArr.length!=2) view.displayMessage("Invalid Placearmy command");
+        	
         	else {
         		placeArmy(strArr[1]);
         	}
@@ -738,10 +739,13 @@ public class StartupGameController {
     		}
     		
     	}
+    	
     	view.displayMessage("All Players Placed.");
+    	
     	showAllPlayers();
     	
     	this.boolStartUpPhaseOver.set(true);
+    	
     	this.mapService.setState(GameState.REINFORCE);
     	
     	view.displayMessage("Player Turn: "+players.get(0).getName());

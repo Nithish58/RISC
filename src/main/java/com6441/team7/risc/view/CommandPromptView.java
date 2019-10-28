@@ -50,8 +50,10 @@ public class CommandPromptView implements GameView {
                 if(gameState==GameState.LOAD_MAP) {
                 	
                 	if(!loadMapFirstLineOutput) {
+                		
                       	System.out.println("Do you want to Edit A Map or Load A Map Directly?\n"
                       						+ "Press 1 to Edit, Else Press any other key to Load");
+                      	
                       	this.loadMapFirstLineOutput=true;
                       	
                 	}
@@ -99,8 +101,7 @@ public class CommandPromptView implements GameView {
                         case REINFORCE:
                         	 gameController.readCommand(command);
                         	 break;
-
-
+                        	 
                     }
                                      
             } catch (Exception e) {
