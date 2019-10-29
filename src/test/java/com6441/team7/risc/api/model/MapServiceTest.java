@@ -1,6 +1,5 @@
 package com6441.team7.risc.api.model;
 
-import com6441.team7.risc.view.CommandPromptView;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -208,6 +208,7 @@ public class Player {
                 .count() == CARD_CATEGORY_NUMBER;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -219,6 +220,21 @@ public class Player {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public String toString(){
+        //TODO
+        return name;
+    }
+
+
+    public void attack(){
+        //TODO
+    }
+
+    public void reinforce(){
+        //TODO
     }
 }
 

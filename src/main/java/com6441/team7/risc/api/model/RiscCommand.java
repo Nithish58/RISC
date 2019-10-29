@@ -23,6 +23,7 @@ public enum RiscCommand {
     PLACE_ALL("placeall"),
     REINFORCE("reinforce"),
     FORTIFY("fortify"),
+    ATTACK("attack"),
     UNKNOWN("unknown"),
 
 

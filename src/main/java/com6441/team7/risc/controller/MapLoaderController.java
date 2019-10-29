@@ -3,7 +3,8 @@ package com6441.team7.risc.controller;
 import com6441.team7.risc.api.exception.*;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.MapDisplayUtils;
-import com6441.team7.risc.view.CommandPromptView;
+import com6441.team7.risc.view.GameView;
+import com6441.team7.risc.view.PhaseView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -27,13 +28,13 @@ import static java.util.Objects.isNull;
  * It calls the methods in mapService.
  */
 
-public class MapLoaderController {
+public class MapLoaderController implements Controller{
 
     private AtomicInteger continentIdGenerator;
     private AtomicInteger countryIdGenerator;
     
     private MapService mapService;
-    private CommandPromptView view;
+    private GameView view;
     private MapGraph mapGraph;
     private MapIntro mapIntro;
 
@@ -51,6 +52,7 @@ public class MapLoaderController {
      * @param command
      * @throws IOException
      */
+    @Override
     public void readCommand(String command) throws IOException {
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -804,7 +806,7 @@ public class MapLoaderController {
      * set the command view
      * @param view view to this view
      */
-    public void setView(CommandPromptView view) {
+    public void setView(GameView view) {
         this.view = view;
     }
 
@@ -833,10 +835,5 @@ public class MapLoaderController {
     	this.countryIdGenerator.set(num);
     }
 
-    /**
-     * show map information with continents, each country relates to continents and its neighboring countries
-     */
-    public void showMapFull() {
-        MapDisplayUtils.showFullMap(mapService, view);
-    }
+
 }

@@ -7,6 +7,7 @@ public enum GameState {
     LOAD_MAP("loadmap"),
     START_UP("startup"),
     REINFORCE("reinforce"),
+    ATTACK("attack"),
     FORTIFY("fortify");
 /**
  * value of different gamestates

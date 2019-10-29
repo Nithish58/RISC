@@ -6,7 +6,8 @@ import com6441.team7.risc.api.exception.NeighborParsingException;
 import com6441.team7.risc.api.model.Continent;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.MapService;
-import com6441.team7.risc.view.CommandPromptView;
+import com6441.team7.risc.view.GameView;
+import com6441.team7.risc.view.PhaseView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
@@ -29,15 +30,15 @@ import static org.junit.Assert.assertTrue;
 public class MapLoaderControllerTest {
 
     private MapLoaderController mapLoaderController;
-    private CommandPromptView view;
+    private GameView view;
     private MapService mapService;
-    private GameController gameController;
+
 
     @Before
     public void setUp() throws Exception {
         mapService = new MapService();
         mapLoaderController = new MapLoaderController(mapService);
-        view = new CommandPromptView( mapLoaderController, gameController);
+        view = new PhaseView();
         mapLoaderController.setView(view);
     }
 
