@@ -1,13 +1,25 @@
 package com6441.team7.risc.controller;
 
-import com6441.team7.risc.api.model.GameState;
-import com6441.team7.risc.api.model.MapService;
-import com6441.team7.risc.api.model.Player;
-import com6441.team7.risc.view.CommandPromptView;
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com6441.team7.risc.api.model.Country;
+import com6441.team7.risc.api.model.GameState;
+import com6441.team7.risc.api.model.MapService;
+import com6441.team7.risc.api.model.Player;
+import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.view.CommandPromptView;
 
 
 /**
@@ -24,11 +36,19 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  */
 public class GameController {
-	
+
 	/**
 	 * Object startupPhaseController
 	 */
 	private StartupGameController startupPhaseController;
+	/**
+	 * Object reinforcementGameController
+	 */
+	private ReinforceGameController reinforcementGameController;
+	/**
+	 * Object fortificationGameController
+	 */
+	private FortifyGameController fortificationGameController;
 	/**
 	 * Reference to view
 	 */
@@ -80,7 +100,7 @@ public class GameController {
 	 * Number of players playing the game
 	 */
 	private int numPlayers;
-   
+
 	/**
 	 * This is the constructor of GameController class.
 	 * @param mapController Represents the mapLoaderController.
@@ -93,6 +113,7 @@ public class GameController {
 		this.mapService=mapService;
 		this.gameState=this.mapService.getGameState();
 
+		//this.players=new LinkedHashMap<String,Player>();
 		this.players=new ArrayList<Player>();
 
 		this.currentPlayerIndex=0;
@@ -141,9 +162,24 @@ public class GameController {
 				//reinforcementGameController.readCommand(command)
 
 				this.currentPlayer=players.get(currentPlayerIndex);
+
+				reinforcementGameController=new ReinforceGameController(this.currentPlayer,
+						this.mapService,
+						startupPhaseController,
+						command,
+						view);
+
 			}
 
 			else if(this.mapService.getGameState()==GameState.FORTIFY) {
+
+				fortificationGameController=new FortifyGameController(this.currentPlayer,
+						this.mapService,
+						this.startupPhaseController,
+						command,
+						this.boolFortificationPhaseOver,
+						view);
+
 				switchNextPlayer();
 
 			}

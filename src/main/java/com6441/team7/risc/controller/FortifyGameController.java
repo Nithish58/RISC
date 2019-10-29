@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com6441.team7.risc.utils.MapDisplayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com6441.team7.risc.api.model.Continent;
@@ -89,19 +88,25 @@ public class FortifyGameController {
 	 * check validation is met or not
 	 */
 	private boolean boolValidationMet;
-		
+
 	/**
 	 * Constructor with parameters
 	 */
-		public FortifyGameController(MapService mapService,
-										StartupGameController sgc,
+		public FortifyGameController(Player player, MapService mapService,
+										StartupGameController sgc, String cmd,
 										AtomicBoolean boolFortificationPhaseOver,
 										CommandPromptView v) throws IOException{
 			this.mapService = mapService;
+			this.player = player;
 			this.startupGameController=sgc;
 			this.view=v;
+
 			this.boolFortificationPhaseOver=boolFortificationPhaseOver;
 			this.boolValidationMet=false;
+
+			readCommand(cmd);
+
+
 		}
 
 	/**
@@ -115,17 +120,17 @@ public class FortifyGameController {
 	 * @throws IOException
 	 */
 		public void readCommand(String command) throws IOException{
-			
+
 			this.orders=command.split("\\s+");
-			
+
 			RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
-			
+
 			switch(commandType) {
-			
+
 				case FORTIFY:
 					determineFortificationAndFortify(command);
 					break;
-				
+
 				case SHOW_MAP:
 	                startupGameController.showMapFull();
 	                break;
@@ -137,20 +142,20 @@ public class FortifyGameController {
 	            case SHOW_PLAYER_ALL_COUNTRIES:
 	            	showPlayerAllCountriesFortification();
 	            	break;
-	            
+
 	            case SHOW_PLAYER_COUNTRIES:
 	            	showPlayerCountriesFortification();
-	            	break;	
-	            	
+	            	break;
+
 	            case EXIT:
 	            	endGame();
 	            	break;
-	                
+
 	               default:
 	            	   this.boolFortificationPhaseOver.set(false);
 	            	   throw new IllegalArgumentException
 	            	   ("Cannot recognize this command in Fortification Phase. Try Again");
-			
+
 			}
 
 		}
@@ -163,79 +168,79 @@ public class FortifyGameController {
 	 * @param command
 	 */
 	private void determineFortificationAndFortify(String command) {
-		
+
 			this.orders=command.split("\\s+");
-			
+
 			if(orders.length==2 && orders[1].equalsIgnoreCase("none")) {
-				
+
 				view.displayMessage("Fortification Phase Over.");
-				
+
 				this.mapService.setState(GameState.REINFORCE);
 				this.boolFortificationPhaseOver.set(true);
-				
+
 			}
-			
+
 			else if(orders.length==4) {
-				
-				
+
+
 				this.fromCountry = mapService.getCountryByName(orders[1]).get();
-				
+
 				this.toCountry = mapService.getCountryByName(orders[2]).get();
-				
+
 				try {
 					this.numSoldiers = Integer.parseInt(orders[3]);
-					
+
 				}
 				catch(NumberFormatException e) {
-					
+
 					view.displayMessage("Wrong Number Format. Try Again");
 				}
-				
+
 				fortify();
-				
+
 			}
-			
+
 			else {
 				view.displayMessage("Invalid Fortification Command. Try Again");
 				this.boolFortificationPhaseOver.set(false);
 				return;
 			}
-						
+
 		}
 
-		
+
 		/**
 		 * After validation comes fortifying
 		 * show before and after fortification information of country and soldiers
 		 * check validation criteria first
 		 */
 		public void fortify() {
-			
+
 			validateConditions();
-			
+
 			if(this.boolValidationMet) {
-				
+
 				view.displayMessage("Before Fortification: "+fromCountry.getCountryName()+":"+
 						fromCountry.getSoldiers()+" , "+
 						toCountry.getCountryName()+":"+toCountry.getSoldiers());
-				
+
 				toCountry.addSoldiers(numSoldiers);
 				fromCountry.removeSoldiers(numSoldiers);
-				
+
 				view.displayMessage("After Fortification: "+fromCountry.getCountryName()+":"+
 						fromCountry.getSoldiers()+" , "+
 						toCountry.getCountryName()+":"+toCountry.getSoldiers());
-				
+
 				this.boolFortificationPhaseOver.set(true);
-				
+
 				this.mapService.setState(GameState.REINFORCE);
-				
+
 			}
 		}
-		
+
 
 		/**
-		 * This method checks that the following reinforcement criterias are met: 
+		 * This method checks that the following reinforcement criterias are met:
 		 * <ul>
 		 * <li>Both countries are adjacent </li>
 		 * <li>Both countries belong to player</li>
@@ -243,67 +248,67 @@ public class FortifyGameController {
 		 * <ul>
 		 */
 		private boolean validateConditions() {
-			
+
 			this.boolValidationMet=true;
-			
+
 			checkCountryAdjacency();
-			
+
 			if(boolValidationMet) {
 				checkCountryOwnership();
 			}
-						
+
 			if(boolValidationMet) {
 				checkNumSoldiers();
 			}
-			
+
 			return this.boolValidationMet;
-			
+
 		}
 
 	/**
 	 * check country has Adjacency
 	 */
 	private void checkCountryAdjacency() {
-			
+
 			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
-			
+
 			Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountry.getCountryName());
-			
+
 			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.getCountryName());
-			
+
 			if(!fromId.isPresent()) {
 				view.displayMessage("Origin country not present");
 				this.boolValidationMet=false;
 			}
 
-			
+
 			if(!toId.isPresent()) {
 				view.displayMessage("Destination country not present");
 				this.boolValidationMet=false;
 			}
-			
+
 			if(boolValidationMet) {
 				neighbouringCountries =  adjacentCountriesList.get(fromId.get());
-				
+
 				if(!neighbouringCountries.contains(toId.get())) {
 					this.boolValidationMet=false;
 					view.displayMessage("Countries not adjacent to each other");
 				}
-			}			
-			
+			}
+
 		}
 
 	/**
 	 * checks whether the 2 countrie are owned by the current player
 	 */
 	private void checkCountryOwnership() {
-			
+
 			if(!(fromCountry.getPlayer().getName().equalsIgnoreCase
 					(toCountry.getPlayer().getName()))) {
 				view.displayMessage("Countries do not belong to same player");
 				this.boolValidationMet=false;
 			}
-			
+
 		}
 
 	/**
@@ -311,12 +316,12 @@ public class FortifyGameController {
 	 * Ensures that at least 1 soldier remains in origin country
 	 */
 	private void checkNumSoldiers() {
-			
+
 			if(!(fromCountry.getSoldiers()>numSoldiers)) {
 				view.displayMessage("Not enough soldiers in origin country");
 				this.boolValidationMet=false;
 			}
-			
+
 		}
 
 	/**
@@ -341,7 +346,7 @@ public class FortifyGameController {
 	            view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
 	        }
 	    }
-		
+
 
 
 	/**
@@ -349,16 +354,66 @@ public class FortifyGameController {
 	 *
 	 */
 	    private void showPlayerCountriesFortification() {
-			MapDisplayUtils.showCurrentPlayerMap(mapService, view, player);
+	    	Player currentPlayer=this.player;
+
+	    	for(Map.Entry<Integer, Set<Integer>> item :
+	    						mapService.getContinentCountriesMap().entrySet()) {
+
+	    		int key=(int) item.getKey();
+
+
+	    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
+	    		Continent currentContinent= (Continent) optionalContinent.get();
+
+	    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+	    		view.displayMessage("\n");
+
+	    		Set<Integer> value=item.getValue();
+
+	    		for(Integer i:value) {
+	    			//For Each Country In Continent, Get details + Adjacency Countries
+	    			Optional<Country> optionalCountry=mapService.getCountryById(i);
+
+	    			Country currentCountry=optionalCountry.get();
+
+	    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
+
+	        			String strCountryOutput="";
+
+	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
+	        					", "+currentCountry.getSoldiers()+" soldiers   ";
+
+	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
+
+	        			for(Integer j:adjCountryList) {
+
+	        				if(mapService.getCountryById(j).get().getPlayer().getName()
+	        						.equalsIgnoreCase(currentPlayer.getName())){
+
+	        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
+	        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
+	        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
+	        						}
+
+	        			}
+
+	        			view.displayMessage(strCountryOutput+"\n");
+
+	    			}
+
+
+	    		}
+
+	    	}
 	    }
-	    
+
 		/**
 		 * end the game
 		 * called when only 1 player is present.
 		 */
 		private void endGame() {
 	    	view.displayMessage("Game Ends");
-	    	System.exit(0);
+	    	System.exit(0);;
 	    }
 
 
@@ -366,7 +421,56 @@ public class FortifyGameController {
 	 * show players and all countries in fortification phase
 	 */
 	    private void showPlayerAllCountriesFortification() {
-	    	MapDisplayUtils.showCurrentPlayerMap(mapService, view, player);
+
+	    	Player currentPlayer=player;
+
+	    	for(Map.Entry<Integer, Set<Integer>> item :
+	    						mapService.getContinentCountriesMap().entrySet()) {
+
+	    		int key=(int) item.getKey();
+
+
+	    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
+	    		Continent currentContinent= (Continent) optionalContinent.get();
+
+	    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
+	    		view.displayMessage("\n");
+
+	    		Set<Integer> value=item.getValue();
+
+	    		for(Integer i:value) {
+	    			//For Each Country In Continent, Get details + Adjacency Countries
+	    			Optional<Country> optionalCountry=mapService.getCountryById(i);
+
+	    			Country currentCountry=optionalCountry.get();
+
+	    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
+
+	        			String strCountryOutput="";
+
+	        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
+	        					", "+currentCountry.getSoldiers()+" soldiers   ";
+
+	        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
+
+	        			for(Integer j:adjCountryList) {
+
+	        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
+	        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
+	        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
+
+
+	        			}
+
+	        			view.displayMessage(strCountryOutput+"\n");
+
+	    			}
+
+
+	    		}
+
+	    	}
+
 	    }
 	    
 	    

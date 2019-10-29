@@ -2,6 +2,7 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.exception.*;
 import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.CommandPromptView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -732,7 +733,7 @@ public class MapLoaderController {
      * @return
      */
     private List<Integer> createAdjacencyCountriesFromRaw(String s) {
-        List<String> adjacency = Arrays.asList(StringUtils.split(s, " "));
+        List<String> adjacency = Arrays.asList(StringUtils.split(s, WHITESPACE));
 
         throwWhenNoNeighboringCountry(s, adjacency);
         throwWhenNeighbouringCountriesIdInvalid(s, adjacency);
@@ -821,7 +822,7 @@ public class MapLoaderController {
 	 */
 	private void endGame() {
     	view.displayMessage("Game Ends");
-    	System.exit(0);;
+    	System.exit(0);
     }
 
     /**
@@ -836,45 +837,6 @@ public class MapLoaderController {
      * show map information with continents, each country relates to continents and its neighboring countries
      */
     public void showMapFull() {
-
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-
-    		int key=(int) item.getKey();
-
-
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-
-    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		System.out.println();
-
-    		Set<Integer> value=item.getValue();
-
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-
-    			Country currentCountry=optionalCountry.get();
-    			String strCountryOutput="";
-
-    			strCountryOutput+=currentCountry.getCountryName();
-
-    			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-
-    			if(adjCountryList != null) {
-                    for (Integer j : adjCountryList) {
-                        strCountryOutput += " --> " + mapService.getCountryById(j).get().getCountryName();
-                    }
-                }
-
-    			System.out.println(strCountryOutput+"\n");
-    		}
-
-    	}
-
+        MapDisplayUtils.showFullMap(mapService, view);
     }
-
-    
-
 }

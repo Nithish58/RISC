@@ -92,6 +92,8 @@ public class ReinforceGameController {
 
         int countTurns=0;
 
+        //TODO: remove scanner from this. use view to receive commands and create a method in the class to read, validate and operate based on command
+
         Scanner inputReinforcementScanner=new Scanner(System.in);
 
         do {
