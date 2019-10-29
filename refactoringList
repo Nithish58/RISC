@@ -1,0 +1,4 @@
+remove duplicated showmap() methods in classes of mapLoaderController, gameController, startUpController, reinforceController and fortifyController. Extract these codes and make them as a static method in the class mapUtil
+remove codes of storing and managing players information in the controller to the model class named PlayerService 
+add observable to the PlayerService and view as the observers. 
+remove checking and validating logic in view to corresponding controllers. Make view only responsible for displaying messages from controller and model
