@@ -72,6 +72,7 @@ public class ReinforceGameController implements Controller{
         }
     }
 
+
     private void createCardExchangeView(){
         cardExchangeView = new CardExchangeView();
         playerService.addObserver(cardExchangeView);
@@ -119,7 +120,7 @@ public class ReinforceGameController implements Controller{
             throw new ReinforceParsingException(country + " does not exist or it does not owned by the current player " + player.getName());
         }
 
-        playerService.reinforceArmy(country, armNum);
+        playerService.reinforceArmy(player, country, armNum);
         reinforcedArmies -= armNum;
 
     }
@@ -134,14 +135,14 @@ public class ReinforceGameController implements Controller{
     }
 
     public int calculateReinforcedArmies(Player player){
-        int num = 0;
-        num += playerService.getConqueredCountriesNumber(player)/3;
 
-        num += playerService.getConqueredContinentNumber(player);
+        reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
 
-        if(num < 3){ num = 3; }
+        reinforcedArmies += playerService.getConqueredContinentNumber(player);
 
-        return num;
+        if(reinforcedArmies < 3){ reinforcedArmies = 3; }
+
+        return reinforcedArmies;
     }
 
     public void exchangeCards(Player player, String command, GameView view){
@@ -158,7 +159,7 @@ public class ReinforceGameController implements Controller{
             }
 
             else if(commands.length == 2){
-                //tradeNone();
+                tradeNone();
             }
             else{
                 throw new ReinforceParsingException(command + " is not valid.");
@@ -170,7 +171,13 @@ public class ReinforceGameController implements Controller{
 
     }
 
-    private void showCardsInfo(Player player, GameView view){
+    public void tradeNone(){
+        //TODO: add logic to validate command
+        //TODO: add logic to validate number of cards in player's hands
+        playerService.getMapService().setState(GameState.ATTACK);
+    }
+
+    private void  showCardsInfo(Player player, GameView view){
         List<String> cardsInfo = playerService.showCardsInfo(player);
 
         int count = 1;
@@ -206,8 +213,13 @@ public class ReinforceGameController implements Controller{
         reinforcedArmies += player.getTradeInTimes() * 5;
     }
 
+    public int getReinforcedArmies(){
+        return reinforcedArmies;
+    }
 
     private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
+
+
 }

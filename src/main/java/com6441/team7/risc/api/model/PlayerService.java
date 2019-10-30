@@ -156,6 +156,11 @@ public class PlayerService extends Observable {
         return currentPlayer;
     }
 
+    //jenny: add this method to set current player
+    public void setCurrentPlayer(Player player){
+        currentPlayer = player;
+    }
+
    // public boolean isPlayerValid(){ return false; }
     
     public boolean checkPlayerExistance(String playerName) {
@@ -187,8 +192,11 @@ public class PlayerService extends Observable {
 
 
     //jenny: call method in player to reinforceArmy
-    public void reinforceArmy(String country, int armyNum){
+    public void reinforceArmy(Player player, String country, int armyNum){
         mapService.reinforceArmyToCountry(country, armyNum);
+        CardWrapper cardWrapper = new CardWrapper(player, country, armyNum);
+        setChanged();
+        notifyObservers(cardWrapper);
     }
 
     //jenny: show cards information of the player
@@ -204,7 +212,7 @@ public class PlayerService extends Observable {
     //jenny: remove Cards from Player
     public void removeCards(Player player, List<String> cardList){
         player.removeCards(cardList);
-        notifyObservers(this);
+        notifyObservers(player);
     }
 
 

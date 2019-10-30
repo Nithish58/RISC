@@ -934,9 +934,6 @@ public class MapService extends Observable {
                 .filter(country -> country.getId() == id)
                 .findFirst()
                 .ifPresent(country -> country.addSoldiers(armyNum));
-
-        setChanged();
-        notifyObservers(this);
     }
 
 

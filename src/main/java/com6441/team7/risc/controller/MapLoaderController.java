@@ -44,6 +44,7 @@ public class MapLoaderController implements Controller{
         this.countryIdGenerator = new AtomicInteger();
         this.mapGraph = new MapGraph();
         this.mapIntro = new MapIntro();
+        this.view = new PhaseView();
     }
 
 
