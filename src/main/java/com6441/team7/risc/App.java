@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class App {
     public static void main( String[] args ) {
+    	
         MapService mapService = new MapService();
         PlayerService playerService = new PlayerService(mapService);
 

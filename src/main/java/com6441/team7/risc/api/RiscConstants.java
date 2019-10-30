@@ -7,4 +7,7 @@ public final class RiscConstants {
     public static final String EOL = "\r\n";
     public static final String WHITESPACE = " ";
     public static final String NEWLINE = "\n";
+    
+    public static final int MAX_NUM_PLAYERS=9;
+    
 }
