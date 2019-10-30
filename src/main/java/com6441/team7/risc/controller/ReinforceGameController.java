@@ -40,6 +40,8 @@ public class ReinforceGameController implements Controller{
     //TODO: cardExchangeView could be constructed locally in the method
     @Override
     public void readCommand(String command) throws Exception {
-
+    	
+    	this.playerService.getMapService().setState(GameState.ATTACK);
+    	
     }
 }

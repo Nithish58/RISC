@@ -87,8 +87,15 @@ public class PhaseView implements GameView {
 
         if (arg instanceof GameState) {
             gameState = (GameState) arg;
-            displayMessage("clear screen!");
-            System.out.println("game state being changed to " + gameState.getName());
+            //displayMessage("clear screen!");
+            
+            if(playerService.getCurrentPlayerIndex()<0)
+            	System.out.println("game state being changed to " + gameState.getName());
+            
+            else {
+            	System.out.println(playerService.getCurrentPlayerName()+" is in "+gameState+" state");
+            
+            }
         }
 
         if(o instanceof PlayerService){
@@ -96,7 +103,7 @@ public class PhaseView implements GameView {
            // displayMessage(String.format("the current player: + %s", currentPlayer));
             
         	
-        	//If integer changed, it must be currentPlayer Index...
+        	//If arg is integer, currentPlayerIndex has been changed which signifies switching player...
         	//therefore we display current player + state
         	if(arg instanceof Integer) {
         		System.out.println(playerService.getCurrentPlayerName()+" is in "+gameState+" state");

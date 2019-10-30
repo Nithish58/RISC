@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.view.GameView;
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +44,9 @@ public class FortifyGameController implements Controller{
     //TODO: if the command is not valid, call phaseView.displayMessage() to show error messages
 	@Override
 	public void readCommand(String command) throws Exception {
-
+		
+		this.playerService.getMapService().setState(GameState.REINFORCE);
+		this.playerService.switchNextPlayer();
+		
 	}
 }

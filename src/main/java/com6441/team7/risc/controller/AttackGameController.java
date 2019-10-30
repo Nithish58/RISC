@@ -1,5 +1,6 @@
 package com6441.team7.risc.controller;
 
+import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.view.GameView;
 
@@ -24,5 +25,7 @@ public class AttackGameController implements Controller {
     @Override
     public void readCommand(String command) throws Exception {
 
+    	this.playerService.getMapService().setState(GameState.FORTIFY);
+    	
     }
 }
