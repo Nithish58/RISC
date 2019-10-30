@@ -22,6 +22,7 @@ public enum RiscCommand {
     PLACE_ARMY("placearmy"),
     PLACE_ALL("placeall"),
     REINFORCE("reinforce"),
+    EXCHANGE_CARD("exchangecards"),
     FORTIFY("fortify"),
     ATTACK("attack"),
     UNKNOWN("unknown"),

@@ -124,8 +124,11 @@ public class Player{
      * get list of cards
      * @return card list
      */
-    public List<Card> getCardList() {
-        return cardList;
+    //jenny: modified methods
+    public List<String> getCardList() {
+        return cardList.stream()
+                .map(Card::getName)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -136,12 +139,34 @@ public class Player{
         this.cardList = cardList;
     }
 
-    /**
-     * Check whether trade in conditon is valid
-     * @return true or false
-     */
-    public boolean meetTradeInCondition(){
-        return hasDifferentCardsCategory() || hasSameCardsCategory();
+
+    //modified by jenny
+    public boolean meetTradeInCondition(List<String> cardList){
+        if(hasThreeSameCards(cardList) || hasThreeDifferentCards(cardList)){
+            return true;
+        }
+
+        return false;
+    }
+
+    //jenny: check if three cards are the same
+    private boolean hasThreeSameCards(List<String> cardList){
+        if(cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
+           cardList.get(1).equalsIgnoreCase(cardList.get(2))){
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean hasThreeDifferentCards(List<String> cardList){
+        if(!cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
+            cardList.get(1).equalsIgnoreCase(cardList.get(2)) &&
+            cardList.get(0).equalsIgnoreCase(cardList.get(2))){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -160,6 +185,31 @@ public class Player{
     public boolean hasDifferentCardsCategory(){
         return new HashSet<>(cardList).size() >= CARD_CATEGORY_NUMBER;
     }
+
+
+    //jenny: add a new method to remove cards from player
+    public void removeCards(List<String> list){
+        Card cardOne = cardList.stream()
+                .filter(card -> card.getName().equalsIgnoreCase(list.get(0)))
+                .findFirst().get();
+
+        Card cardTwo = cardList.stream()
+                .filter(card -> card.getName().equalsIgnoreCase(list.get(1)))
+                .findFirst().get();
+
+        Card cardThree = cardList.stream()
+                .filter(card -> card.getName().equalsIgnoreCase(list.get(2)))
+                .findFirst().get();
+
+
+        cardList.remove(cardOne);
+        cardList.remove(cardTwo);
+        cardList.remove(cardThree);
+
+        tradeInTimes ++;
+
+    }
+
 
     /**
      * remove cards from players

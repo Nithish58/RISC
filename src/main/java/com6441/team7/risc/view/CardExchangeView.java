@@ -6,7 +6,12 @@ import java.util.Collection;
 import java.util.Observable;
 import static com6441.team7.risc.api.RiscConstants.CARD_EXCHANGE_VIEW_STRING;
 
-public class CardExchangeView implements GameView {
+public class CardExchangeView implements GameView{
+
+    public CardExchangeView(){
+        System.out.println("card exchange view has been created");
+    }
+
     @Override
     public void receiveCommand() {
 

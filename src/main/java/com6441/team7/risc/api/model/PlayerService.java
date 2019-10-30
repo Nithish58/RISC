@@ -43,6 +43,8 @@ public class PlayerService extends Observable {
     
     
     
+    private Player currentPlayer;
+
 
     public PlayerService(MapService mapService){
 
@@ -148,8 +150,11 @@ public class PlayerService extends Observable {
     	return currentPlayerIndex;
     }
 
-    public String getConqueredContries(){ return null;}
 
+    //jenny: get current player
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
 
    // public boolean isPlayerValid(){ return false; }
     
@@ -163,6 +168,47 @@ public class PlayerService extends Observable {
     	
     	return false;
     }
+
+    //jenny: call method in mapService to get total number of countries conquered by the player
+    public long getConqueredCountriesNumber(Player player){
+
+        return mapService.getConqueredCountriesNumber(player);
+    }
+
+    //jenny: call method in mapService to get total number of continents conquered by the player
+    public long getConqueredContinentNumber(Player player){
+        return mapService.getConqueredContinentNumber(player);
+    }
+
+    //jenny: call method in mapService to get total number of countries conquered by the player
+    public List<String> getConqueredContries(Player player){
+        return mapService.getConqueredCountriesNameByPlayer(player);}
+
+
+
+    //jenny: call method in player to reinforceArmy
+    public void reinforceArmy(String country, int armyNum){
+        mapService.reinforceArmyToCountry(country, armyNum);
+    }
+
+    //jenny: show cards information of the player
+    public List<String> showCardsInfo(Player player){
+        return player.getCardList();
+    }
+
+    //jenny: validate cards validity
+    public boolean isTradeInCardsValid(Player player, List<String> cardList){
+        return player.meetTradeInCondition(cardList);
+    }
+
+    //jenny: remove Cards from Player
+    public void removeCards(Player player, List<String> cardList){
+        player.removeCards(cardList);
+        notifyObservers(this);
+    }
+
+
+    public boolean isPlayerValid(){ return false; }
 
     
     
