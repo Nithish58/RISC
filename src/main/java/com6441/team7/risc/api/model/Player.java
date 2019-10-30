@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
  * store player information
  */
-public class Player {
+public class Player extends Observable{
 
     /**
      * player name
@@ -40,7 +42,7 @@ public class Player {
     /**
      *  a list of country a player has
      */
-    public List<Country> countryPlayerList;
+    public ArrayList<Country> countryPlayerList;
 
     /**
      * constructor
@@ -54,6 +56,7 @@ public class Player {
         this.tradeInTimes=1;
         this.countryPlayerList=new ArrayList<>();
     }
+    
 
     /**
      * get name of player
@@ -85,6 +88,9 @@ public class Player {
      */
     public void setArmies(int armies) {
         this.armies = armies;
+        
+        setChanged();
+    	notifyObservers(this);
     }
 
     /**
@@ -93,13 +99,21 @@ public class Player {
      */
     public void reduceArmy(int number){
         armies -= number;
+        
+        setChanged();
+    	notifyObservers(this);
     }
 
     /**
      * add the number of army to player
      * @param number
      */
-    public void addArmy(int number){armies += number;}
+    public void addArmy(int number){
+    	armies += number;
+    	
+    	setChanged();
+    	notifyObservers(this);
+    }
 
     /**
      * get list of cards
@@ -235,6 +249,26 @@ public class Player {
 
     public void reinforce(){
         //TODO
+    }
+    
+    public void addCountryToPlayerList(Country c) {
+    	
+    	this.countryPlayerList.add(c);
+    	
+        //setChanged();
+        //notifyObservers(this);
+    }
+    
+    public void removeCountryFromPlayerList(Country c) {}
+    
+    public ArrayList<Country> getCountryList() {
+    	return countryPlayerList;
+    }
+    
+    @Override
+    public void addObserver(Observer observer) {
+
+        super.addObserver(observer);
     }
 }
 

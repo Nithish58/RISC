@@ -22,6 +22,9 @@ public class App {
 
         PhaseView phaseView = new PhaseView();
         GameView dominationView = new DominationView();
+        
+        //Added by Keshav
+        phaseView.setPhaseViewPlayerService(playerService);
 
 
         List<Controller> controllerList = new ArrayList<>();
@@ -48,12 +51,15 @@ public class App {
 
         mapService.addObserver(phaseView);
         mapService.addObserver(dominationView);
-
         playerService.addObserver(phaseView);
         playerService.addObserver(dominationView);
 
+        //Added by Keshav
+        startupGameController.setDominationView(dominationView);
+        
         phaseView.receiveCommand();
 
-
+      
+        
     }
 }

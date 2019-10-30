@@ -24,8 +24,9 @@ public class PhaseView implements GameView {
     private Controller reinforceGameController;
     private Controller fortifyGameController;
     private Controller attackController;
-
-
+    
+    //Added By Keshav
+    private PlayerService playerService;
 
     public void addController(List<Controller> list){
         list.forEach(controller -> {
@@ -91,10 +92,26 @@ public class PhaseView implements GameView {
         }
 
         if(o instanceof PlayerService){
-            String currentPlayer = ((PlayerService) o).getCurrentPlayerName();
-            displayMessage(String.format("the current player: + %s", currentPlayer));
+           // String currentPlayer = ((PlayerService) o).getCurrentPlayerName();
+           // displayMessage(String.format("the current player: + %s", currentPlayer));
             
-          
+        	
+        	//If integer changed, it must be currentPlayer Index...
+        	//therefore we display current player + state
+        	if(arg instanceof Integer) {
+        		System.out.println(playerService.getCurrentPlayerName()+" is in "+gameState+" state");
+            }
+        	
+        	//If arg is a string, it has been returned by the add player method
+        	if(arg instanceof String) {
+        		System.out.println("Player added successfully: "+(String) arg);
+        	}
+        	
+        	//If arg is a player, it is the player that is removed that has been returned
+        	if(arg instanceof Player) {
+        		String removedPlayerName=((Player) arg).getName();
+        		System.out.println("Player removed successfully: "+removedPlayerName);
+        	}
 
         }
 
@@ -107,6 +124,8 @@ public class PhaseView implements GameView {
         System.out.flush();
     }
     
-    
+    public void setPhaseViewPlayerService(PlayerService playerService) {
+    	this.playerService=playerService;
+    }
     
 }

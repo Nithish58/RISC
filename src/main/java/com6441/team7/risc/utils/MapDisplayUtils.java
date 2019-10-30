@@ -254,7 +254,7 @@ public final class MapDisplayUtils {
 			return;
 		}
     	
-    	Collections.sort(currentPlayer.countryPlayerList, new Comparator<Country>() {
+    	Collections.sort(currentPlayer.getCountryList(), new Comparator<Country>() {
 
 			@Override
 			public int compare(Country c1, Country c2) {
@@ -268,7 +268,7 @@ public final class MapDisplayUtils {
     	view.displayMessage("Current Player: "+currentPlayer.getName()+
     			" , Num Armies Remaining: "+currentPlayer.getArmies());
     	
-    	for(Country c : currentPlayer.countryPlayerList) {
+    	for(Country c : currentPlayer.getCountryList()) {
     		view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
     	}
     	
@@ -284,7 +284,7 @@ public final class MapDisplayUtils {
     	
     	for(Player p: playerService.getPlayerList()) {
     		
-        	Collections.sort(p.countryPlayerList, new Comparator<Country>() {
+        	Collections.sort(p.getCountryList(), new Comparator<Country>() {
 
     			@Override
     			public int compare(Country c1, Country c2) {
@@ -298,7 +298,7 @@ public final class MapDisplayUtils {
         	view.displayMessage("\n Player: "+p.getName()+
         			" Num Armies Remaining: "+p.getArmies());
         	
-        	for(Country c :p.countryPlayerList) {
+        	for(Country c :p.getCountryList()) {
         		view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()
         						+"\t"+c.getSoldiers());
         	}

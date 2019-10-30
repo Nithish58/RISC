@@ -2,6 +2,8 @@ package com6441.team7.risc.api.model;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 
 import static com6441.team7.risc.api.RiscConstants.EOL;
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
@@ -9,7 +11,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 /**
  * This class stores country information
  */
-public class Country {
+public class Country extends Observable{
 
     /**
      * The id of country in the map
@@ -203,6 +205,10 @@ public class Country {
      */
     public void setSoldiers(Integer soldiers) {
         this.soldiers = soldiers;
+        
+        setChanged();
+        notifyObservers(this);
+        
     }
 
     /**
@@ -211,6 +217,9 @@ public class Country {
      */
     public void addSoldiers(int number){
         this.soldiers += number;
+        
+        setChanged();
+        notifyObservers(this);
     }
 
     /**
@@ -219,6 +228,9 @@ public class Country {
      */
     public void removeSoldiers(int number){
         this.soldiers -= number;
+        
+        setChanged();
+        notifyObservers(this);
     }
 
     /**
@@ -257,4 +269,11 @@ public class Country {
                 coordinateX + WHITESPACE +
                 coordinateY + EOL;
     }
+    
+    @Override
+    public void addObserver(Observer observer) {
+
+        super.addObserver(observer);
+    }
+    
 }

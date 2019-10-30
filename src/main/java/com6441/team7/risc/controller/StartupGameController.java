@@ -102,7 +102,8 @@ public class StartupGameController implements Controller{
 	private MapService mapService;
 	private PlayerService playerService;
 	private GameView phaseView;
-
+	
+	private GameView dominationView;
 
 	public StartupGameController(Controller mapController, PlayerService playerService) {
 		this.mapLoaderController= (MapLoaderController) mapController;
@@ -122,6 +123,10 @@ public class StartupGameController implements Controller{
 	public void setView(GameView view){
 	    this.phaseView = view;
     }
+	
+	public void setDominationView(GameView domView) {
+		this.dominationView=domView;
+	}
 
     //TODO: read command from phaseView and validate command here
     //TODO: if the command is valid, call corresponding method in playerService
@@ -129,7 +134,6 @@ public class StartupGameController implements Controller{
 
     @Override
     public void readCommand(String command) throws Exception {
-    	phaseView.displayMessage(command);
     	
     	RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
@@ -398,7 +402,10 @@ public class StartupGameController implements Controller{
         			//players.add(new Player(playerName));
         			//view.displayMessage("Player Added: "+playerName);
         			
-        			playerService.addPlayer(playerName);
+        			Player newPlayer=playerService.addPlayer(playerName);
+        			
+        			newPlayer.addObserver(phaseView);
+        			newPlayer.addObserver(dominationView);
         			
         			this.boolGamePlayerAdded=true;
         		}
@@ -410,6 +417,7 @@ public class StartupGameController implements Controller{
         	}
         	
         	catch(Exception e) {
+        		e.printStackTrace();
         		throw new PlayerEditException("gameplayer command: cannot add/remove it is not valid", e);
         	}
     		
@@ -504,14 +512,20 @@ public class StartupGameController implements Controller{
 					
 					Country currentCountry=stackCountry.pop();
 					
-					currentCountry.setPlayer(playerService.getPlayerList().get(currentPlayerIndex));
+					//ADDING OBSERVERS TO EACH COUNTRY
+					currentCountry.addObserver(phaseView);
+					currentCountry.addObserver(dominationView);
 					
-					currentCountry.addSoldiers(1);
+					currentCountry.setPlayer(playerService.getPlayerList().get(currentPlayerIndex));
 					
 					playerService.getPlayerList().get(currentPlayerIndex).reduceArmy(1);
 					
+					currentCountry.addSoldiers(1);
+					
+
+					
 					playerService.getPlayerList().get(currentPlayerIndex)
-															.countryPlayerList.add(currentCountry);
+															.addCountryToPlayerList(currentCountry);
 					
 					if(playerService.getPlayerList().get(currentPlayerIndex).getArmies()==0) {
 						boolArrayCountriesPlaced[currentPlayerIndex]=true;
@@ -519,6 +533,7 @@ public class StartupGameController implements Controller{
 					
 					currentPlayerIndex++;
 					
+					//reset index to 0 when end of player list reached
 					if(currentPlayerIndex==playerService.getPlayerList().size()) currentPlayerIndex=0;
 					
 				}
@@ -534,17 +549,12 @@ public class StartupGameController implements Controller{
 				
 				this.boolCountriesPopulated=true;
 				
-				//this.boolArrayCountriesPlaced=new boolean[playerService.getPlayerList().size()];
-				
 				/*
 				for(Player p:players) {
 					view.displayMessage("Remaining Armies for "+p.getName()
 											+": "+p.getArmies());
 				}
 				*/
-				
-				//this.currentPlayerIndex=0;
-				//view.displayMessage("\nCurrent Player:"+players.get(this.currentPlayerIndex).getName());
 				
 				playerService.setCurrentPlayerIndex(0);
 			}
@@ -573,7 +583,7 @@ public class StartupGameController implements Controller{
 	 * @return number of intial armies allocated to each player
 	 */
 	private int determineNumInitialArmies(int numPlayers) {
-		return 20-((numPlayers-2)*5);
+		return 40-((numPlayers-2)*5);
 	}
 	
 	/**
@@ -606,7 +616,7 @@ public class StartupGameController implements Controller{
     	//if yes: switch to next player, else place army
     	if(!boolArrayCountriesPlaced[currentPlayerIndex]) {
     		
-    		for(Country c:currentPlayer.countryPlayerList) {
+    		for(Country c:currentPlayer.getCountryList()) {
     		    
         		if(countryName.equalsIgnoreCase(c.getCountryName())) {
         			countryFound=true;
@@ -680,7 +690,7 @@ public class StartupGameController implements Controller{
     		
     		while(p.getArmies()>0) {
     			
-    			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.countryPlayerList.size());
+    			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.getCountryList().size());
     			
     			p.countryPlayerList.get(randomIndex).addSoldiers(1);
     			p.reduceArmy(1);

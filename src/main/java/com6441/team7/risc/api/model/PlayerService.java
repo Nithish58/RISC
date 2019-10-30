@@ -61,14 +61,18 @@ public class PlayerService extends Observable {
 	public void setCurrentPlayerIndex(int num) {
 		this.currentPlayerIndex=num;
 		
-		notifyObservers();
+		setChanged();
+		notifyObservers(new Integer(currentPlayerIndex));
 	}
 
-    public void addPlayer(String name){
+    public Player addPlayer(String name){
         //TODO: add a player in the playerList
-    	listPlayers.add(new Player(name));
-    	this.currentPlayerIndex=0;
-        notifyObservers();
+    	Player newPlayer=new Player(name);
+    	listPlayers.add(newPlayer);
+    	
+    	setChanged();
+        notifyObservers(name);
+    	return newPlayer;
     }
 
     public boolean removePlayer(String playerName){
@@ -76,11 +80,13 @@ public class PlayerService extends Observable {
     	
 		for(int i=0;i<listPlayers.size();i++) {
 			if(listPlayers.get(i).getName().equals(playerName)) {
-				listPlayers.remove(i);
-
+				Player removedPlayer=listPlayers.remove(i);
 				
+				setChanged();
 		    	//NOTIFY BEFORE RETURN
-		        notifyObservers();
+		        notifyObservers(removedPlayer);
+		        
+		        removedPlayer.deleteObservers();
 				
 				return true;
 			}
@@ -146,5 +152,6 @@ public class PlayerService extends Observable {
 			else setCurrentPlayerIndex(this.currentPlayerIndex+1);
 
 	}
+	
 
 }
