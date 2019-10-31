@@ -9,6 +9,7 @@ import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.controller.*;
 import comp6441.team7.risc.wrapper_view.PlayerChangeWrapper;
 import comp6441.team7.risc.wrapper_view.PlayerEditWrapper;
+import comp6441.team7.risc.wrapper_view.PlayerFortificationWrapper;
 import comp6441.team7.risc.wrapper_view.PlayerInitialArmyWrapper;
 import comp6441.team7.risc.wrapper_view.PlayerInitialCountryAssignmentWrapper;
 import comp6441.team7.risc.wrapper_view.PlayerPlaceArmyWrapper;
@@ -119,8 +120,15 @@ public class PhaseView implements GameView {
         		return;
         	}
         	
+        	//When placeArmy of placeAll method called
         	if(arg instanceof PlayerPlaceArmyWrapper) {
         		playerPlaceArmyStatus(arg);
+        		return;
+        	}
+        	
+        	//During actual fortification in fortification phase
+        	if(arg instanceof PlayerFortificationWrapper) {
+        		playerFortificationStatus(arg);
         		return;
         	}
         	        	
@@ -227,6 +235,28 @@ public class PhaseView implements GameView {
     	+c.getCountryName()+" now has "+c.getSoldiers()+" soldiers.");
 		
 	}
+    
+    /**
+     * Displays information about fromCountry and toCountry during fortification phase.
+     * @param arg PlayerFortificationWrapper.class object
+     */
+    private void playerFortificationStatus(Object arg) {
+    	PlayerFortificationWrapper playerFortificationWrapper
+    	=((PlayerFortificationWrapper) arg);
+    	Country fromCountry=playerFortificationWrapper.getCountryFrom();
+    	Country toCountry=playerFortificationWrapper.getCountryTo();
+    	int numSoldiers=playerFortificationWrapper.getNumSoldiers();
+    	
+    	displayMessage("Before Fortification, From: "+fromCountry.getCountryName()+
+    			" had "+(fromCountry.getSoldiers()+numSoldiers)+" soldiers, To: "
+    			+toCountry.getCountryName()+" had "+(toCountry.getSoldiers()-numSoldiers)
+    			+" soldiers.");
+    	
+    	displayMessage("After Fortification, From: "+fromCountry.getCountryName()+
+    			" now has "+fromCountry.getSoldiers()+" soldiers, To: "
+    			+toCountry.getCountryName()+" now has "+toCountry.getSoldiers()+" soldiers.\n");
+    	
+    }
     
     //TRIAL METHOD...NOT YET USED...FOUND ON NET
     public  void clearScreen() {

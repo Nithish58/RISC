@@ -20,6 +20,8 @@ import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.GameView;
+import comp6441.team7.risc.wrapper_view.PlayerFortificationWrapper;
+
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -193,22 +195,29 @@ public class FortifyGameController implements Controller{
 			
 		if(!validateConditions()) return; //If conditions not true, do not proceed
 			
-			phaseView.displayMessage("Before Fortification: "+fromCountry.getCountryName()+":"+
-					fromCountry.getSoldiers()+" , "+
-					toCountry.getCountryName()+":"+toCountry.getSoldiers());
+		/*
+		 * phaseView.displayMessage("Before Fortification: "+fromCountry.getCountryName(
+		 * )+":"+ fromCountry.getSoldiers()+" , "+
+		 * toCountry.getCountryName()+":"+toCountry.getSoldiers());
+		 */
 			
 			fromCountry.removeSoldiers(numSoldiers);
 			toCountry.addSoldiers(numSoldiers);
 			
-			phaseView.displayMessage("After Fortification: "+fromCountry.getCountryName()+":"+
-					fromCountry.getSoldiers()+" , "+
-					toCountry.getCountryName()+":"+toCountry.getSoldiers());
+		/*
+		 * phaseView.displayMessage("After Fortification: "+fromCountry.getCountryName()
+		 * +":"+ fromCountry.getSoldiers()+" , "+
+		 * toCountry.getCountryName()+":"+toCountry.getSoldiers());
+		 */
+			
+			PlayerFortificationWrapper playerFortificationWrapper
+			=new PlayerFortificationWrapper(fromCountry,toCountry, numSoldiers);
+			playerService.notifyPlayerServiceObservers(playerFortificationWrapper);
 			
 			
 			this.playerService.switchNextPlayer();
 			this.mapService.setState(GameState.REINFORCE);
 
-			
 		
 	}
 

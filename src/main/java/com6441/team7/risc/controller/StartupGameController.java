@@ -624,7 +624,8 @@ public class StartupGameController implements Controller{
 			p.setArmies(numArmies);
 			
 			PlayerInitialArmyWrapper playerInitialArmyWrapper=new PlayerInitialArmyWrapper(p);
-			playerService.notifyObservers(playerInitialArmyWrapper);
+			//playerService.notifyObservers(playerInitialArmyWrapper);
+			playerService.notifyPlayerServiceObservers(playerInitialArmyWrapper);
 		}
 		
 	}
