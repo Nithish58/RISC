@@ -4,11 +4,8 @@ import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.*;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-
 import java.util.*;
-
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 /**
@@ -27,32 +24,61 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * </p>
  */
 public class ReinforceGameController implements Controller{
+    /**
+     * the reference of playerService
+     */
     private PlayerService playerService;
+
+    /**
+     * the reference of phaseView
+     */
     private GameView phaseView;
+
+    /**
+     * the reference of cardExchangeView which will be constructed locally
+     */
     private GameView cardExchangeView;
+
+    /**
+     * the number of reinforced armies
+     */
     private int reinforcedArmies;
 
+    private boolean isExchangeCardOver;
+
+    /**
+     * constructor
+     * @param playerService
+     */
     public ReinforceGameController(PlayerService playerService) {
         this.playerService = playerService;
+        isExchangeCardOver = false;
 
     }
 
+    /**
+     * connect the view to the reinforce controller
+     * @param view
+     */
     public void setView(GameView view){
         this.phaseView = view;
     }
 
-    //TODO: read command from phaseView and validate command here
-    //TODO: if the command is valid, call corresponding method in playerService
-    //TODO: cardExchangeView could be constructed locally in the method
+    /**
+     * receive commands from phase view
+     * check the command type, if it is reinforce, call reinforce()
+     * if it is exchange card, call exchangeCards()
+     * if it is show map, call showmap()
+     * else the command is not valid, will throw an exception
+     * @param command
+     * @throws Exception
+     */
     @Override
     public void readCommand(String command) throws Exception {
     	
     	this.playerService.getMapService().setState(GameState.ATTACK);
     	
-        createCardExchangeView();
-
         Player player = playerService.getCurrentPlayer();
-        showCardsInfo(player, cardExchangeView);
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
@@ -62,7 +88,7 @@ public class ReinforceGameController implements Controller{
                 reinforce(player, command);
                 break;
             case EXCHANGE_CARD:
-                exchangeCards(player, command, cardExchangeView);
+                exchangeCards(player, command);
                 break;
             case SHOW_MAP:
                 showMap();
@@ -73,19 +99,27 @@ public class ReinforceGameController implements Controller{
     }
 
 
-    private void createCardExchangeView(){
-        cardExchangeView = new CardExchangeView();
-        playerService.addObserver(cardExchangeView);
-
-    }
-
-
+    /**
+     * show map information
+     */
     public void showMap(){
         MapDisplayUtils.showFullMap(playerService.getMapService(), phaseView);
     }
 
+    /**
+     * validate reinforce command, if the command is valid, call reinforceArmy to put extra armies on countries occupied
+     * if the command is not valid, throw an exception and display error message to phaseView
+     * @param player
+     * @param command
+     */
     public void reinforce(Player player, String command){
         try{
+
+            if(!isExchangeCardOver){
+                phaseView.displayMessage("exchange cards first before reinforcement");
+                return;
+            }
+
             String[] commands = StringUtils.split(command, WHITESPACE);
 
             if(commands.length != 3){
@@ -103,6 +137,14 @@ public class ReinforceGameController implements Controller{
     }
 
 
+    /**
+     * calculate the reinforced armies, if the army number is 0, reinforce stage is over.
+     * else if the army number is not valid, will throw an exception
+     * else will reinforce army on the country specified and reduce reinforced army number
+     * @param player
+     * @param country
+     * @param armNum
+     */
     public void reinforceArmy(Player player, String country, int armNum){
 
         reinforcedArmies = calculateReinforcedArmies(player);
@@ -125,28 +167,57 @@ public class ReinforceGameController implements Controller{
 
     }
 
+    /**
+     * if the reinforced army number is reduced to 0
+     * @return true if the reinforceArmies to 0
+     */
     private boolean isReinforceOver(){
         return reinforcedArmies == 0;
     }
 
 
+    /**
+     * check if the country is occupied by the player
+     * @param player
+     * @param country
+     * @return
+     */
     private boolean notOccupiedByPlayer(Player player, String country){
         return !playerService.getConqueredContries(player).contains(convertFormat(country));
     }
 
+    /**
+     * caculate the number of reinforced armies
+     * rule 1: all conquered countries divided by 3
+     * rule 2: get the power of the continent if it is occupied by the player
+     * rule 3: if the total number of reinforced armies is less than 3, make it three
+     * @param player
+     * @return
+     */
     public int calculateReinforcedArmies(Player player){
 
         reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
 
-        reinforcedArmies += playerService.getConqueredContinentNumber(player);
+        reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
 
         if(reinforcedArmies < 3){ reinforcedArmies = 3; }
 
         return reinforcedArmies;
     }
 
-    public void exchangeCards(Player player, String command, GameView view){
+    /**
+     * exchange cards
+     * construct card exchange view
+     * validate exchange commands, if it is not valid, throw an exception
+     * else if the command is trade in, call tradeInCards() to exchange soliders
+     * else if the command is exchange -none, call tradeNone()
+     * @param player
+     * @param command
+     */
+    public void exchangeCards(Player player, String command){
         try{
+            createCardExchangeView();
+            showCardsInfo(player, cardExchangeView);
 
             String[] commands = StringUtils.split(command, WHITESPACE);
 
@@ -159,7 +230,7 @@ public class ReinforceGameController implements Controller{
             }
 
             else if(commands.length == 2){
-                tradeNone();
+                tradeNone(player, commands);
             }
             else{
                 throw new ReinforceParsingException(command + " is not valid.");
@@ -167,16 +238,51 @@ public class ReinforceGameController implements Controller{
 
         } catch (Exception e){
             phaseView.displayMessage("from phase view: " + e.getMessage());
+        }finally {
+            cardExchangeView.displayMessage("card exchange view close");
         }
 
     }
 
-    public void tradeNone(){
-        //TODO: add logic to validate command
-        //TODO: add logic to validate number of cards in player's hands
-        playerService.getMapService().setState(GameState.ATTACK);
+
+    /**
+     * create card exchange view
+     * subscribe playerService
+     */
+    private void createCardExchangeView(){
+        cardExchangeView = new CardExchangeView();
+        playerService.addObserver(cardExchangeView);
+
     }
 
+
+    /**
+     * if the command is exchangecards -none, if the card number is greater than 5, ask player to exchange cards
+     *
+     * @param player
+     * @param commands
+     */
+    public void tradeNone(Player player, String[] commands){
+        if(commands[1].equalsIgnoreCase("-none")){
+            throw new ReinforceParsingException(commands[1] + " is not valid");
+        }
+
+        int cardNum = player.getCardList().size();
+
+        if(cardNum >=5){
+            phaseView.displayMessage("you must exchange the cards");
+        }
+        else{
+            isExchangeCardOver = true;
+        }
+
+    }
+
+    /**
+     * display cards owned by the player
+     * @param player
+     * @param view
+     */
     private void  showCardsInfo(Player player, GameView view){
         List<String> cardsInfo = playerService.showCardsInfo(player);
 
@@ -187,6 +293,16 @@ public class ReinforceGameController implements Controller{
         }
     }
 
+
+    /**
+     * trade in cards from player
+     * validate the command, if it is not valid, throw an exception
+     * if it is valid, remove corresponding cards from player and display the change on the card exchange view
+     * @param player
+     * @param cardOne
+     * @param cardTwo
+     * @param cardThree
+     */
     public void tradeInCards(Player player, int cardOne, int cardTwo, int cardThree) {
         int cardSize = player.getCardList().size();
 
@@ -213,10 +329,19 @@ public class ReinforceGameController implements Controller{
         reinforcedArmies += player.getTradeInTimes() * 5;
     }
 
+    /**
+     * get number of reinforce armies
+     * @return reinforceArmies
+     */
     public int getReinforcedArmies(){
         return reinforcedArmies;
     }
 
+    /**
+     * make the string lower cases and remove white spaces
+     * @param name
+     * @return
+     */
     private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }

@@ -181,8 +181,8 @@ public class PlayerService extends Observable {
     }
 
     //jenny: call method in mapService to get total number of continents conquered by the player
-    public long getConqueredContinentNumber(Player player){
-        return mapService.getConqueredContinentNumber(player);
+    public long getReinforcedArmyByConqueredContinents(Player player){
+        return mapService.getReinforceArmyByConqueredContinents(player);
     }
 
     //jenny: call method in mapService to get total number of countries conquered by the player

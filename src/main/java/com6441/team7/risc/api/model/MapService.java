@@ -894,20 +894,28 @@ public class MapService extends Observable {
     }
 
     //jenny: new added method to count number of continents occupied by the player
-    public long getConqueredContinentNumber(Player player){
+    public long getReinforceArmyByConqueredContinents(Player player){
         List<Integer> countriesId = getCountryIdOccupiedByPlayer(player);
 
-        long count = 0;
+        long num = 0;
         for (Map.Entry<Integer, Set<Integer>> entry : continentCountriesMap.entrySet()) {
 
             if(countriesId.containsAll(entry.getValue())) {
-                count ++;
+                int continentId = entry.getKey();
+                int continentValue = findCorrespoindingContinentValueByContinentId(continentId).get();
+                num += continentValue;
             }
         }
+        return num;
 
+    }
 
-        return count;
-
+    //jenny: new added method to find corresponding continent value by continent id
+    public Optional<Integer> findCorrespoindingContinentValueByContinentId(int id) {
+        return continents.stream()
+                .filter(continent -> continent.getId() == id)
+                .map(Continent::getContinentValue)
+                .findFirst();
     }
 
     //jenny: new added method to get conquered countries by a player

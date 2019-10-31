@@ -58,7 +58,7 @@ public class Player{
         this.name = name;
         this.cardList = new ArrayList<>();
 
-        this.tradeInTimes=1;
+        this.tradeInTimes=0;
         this.countryPlayerList=new ArrayList<>();
     }
     
@@ -161,8 +161,8 @@ public class Player{
 
     private boolean hasThreeDifferentCards(List<String> cardList){
         if(!cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
-            cardList.get(1).equalsIgnoreCase(cardList.get(2)) &&
-            cardList.get(0).equalsIgnoreCase(cardList.get(2))){
+            !cardList.get(1).equalsIgnoreCase(cardList.get(2)) &&
+            !cardList.get(0).equalsIgnoreCase(cardList.get(2))){
             return true;
         }
 
