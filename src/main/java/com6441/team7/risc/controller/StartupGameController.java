@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.DominationView;
 import com6441.team7.risc.view.GameView;
@@ -276,7 +277,7 @@ public class StartupGameController implements Controller{
         	break;
         	
         case EXIT:
-        	endGame();
+        	CommonUtils.endGame(phaseView);
         	break;
         	
         default:
@@ -474,7 +475,7 @@ public class StartupGameController implements Controller{
 			if(numPlayers==1) {
 				phaseView.displayMessage("PLAYER "+playerService.getPlayerList()
 												.get(0).getName()+" WINS");
-				endGame();
+				CommonUtils.endGame(phaseView);
 			}
 			
 			else if(numPlayers==0) {
@@ -708,21 +709,6 @@ public class StartupGameController implements Controller{
     	
     	playerService.setCurrentPlayerIndex(0);
     	//view.displayMessage("Player Turn: "+players.get(0).getName());
-    }
-	
-	
-	
-	
-    
-    
-	/**
-	 * end the game
-	 * Called when only 1 player is present as he/she automatically wins.
-	 * Also called when exit command entered.
-	 */
-	private void endGame() {
-    	phaseView.displayMessage("Game Ends");
-    	System.exit(0);;
     }
 	
 	/**

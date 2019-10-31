@@ -177,7 +177,8 @@ public final class MapDisplayUtils {
     
     
 	/**
-	 * show countries occupied by the current player
+	 * show countries occupied by the current player and adjacent countries occupied by player only
+	 * this is useful in the fortification phase when player wants to know only about its countries
 	 */
 	public static void showPlayerCountries(MapService mapService, PlayerService playerService, GameView view) {
     	
@@ -310,7 +311,8 @@ public final class MapDisplayUtils {
 	
 	
 	/**
-	 * show all countries occupied by current player
+	 * show all countries occupied by current player and  information about all adjacent countries.
+	 * This is useful in the attack phase when player wants to know which countries it owns and which countries it can attack.
 	 */
 	public static void showPlayerAllCountries(MapService mapService, PlayerService playerService,
 																	GameView view) {
