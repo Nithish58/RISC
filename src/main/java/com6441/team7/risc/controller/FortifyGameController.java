@@ -1,5 +1,3 @@
-
-
 package com6441.team7.risc.controller;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
@@ -154,8 +152,8 @@ public class FortifyGameController implements Controller{
 				
 				//phaseView.displayMessage("Fortification Phase Over.");
 				
-				this.mapService.setState(GameState.REINFORCE);
 				this.playerService.switchNextPlayer();
+				this.mapService.setState(GameState.REINFORCE);
 				
 			}
 			
@@ -192,10 +190,8 @@ public class FortifyGameController implements Controller{
 	 * check validation criteria first
 	 */
 	public void fortify() {
-		
-		validateConditions();
-		
-		if(!this.boolValidationMet) return;
+			
+		if(!validateConditions()) return; //If conditions not true, do not proceed
 			
 			phaseView.displayMessage("Before Fortification: "+fromCountry.getCountryName()+":"+
 					fromCountry.getSoldiers()+" , "+
@@ -209,8 +205,9 @@ public class FortifyGameController implements Controller{
 					toCountry.getCountryName()+":"+toCountry.getSoldiers());
 			
 			
-			this.mapService.setState(GameState.REINFORCE);
 			this.playerService.switchNextPlayer();
+			this.mapService.setState(GameState.REINFORCE);
+
 			
 		
 	}
@@ -226,7 +223,7 @@ public class FortifyGameController implements Controller{
 	 */
 	private boolean validateConditions() {
 		
-		this.boolValidationMet=true;
+		boolValidationMet=true;
 		
 		checkCountryAdjacency();
 		

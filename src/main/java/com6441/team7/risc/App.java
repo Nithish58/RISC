@@ -22,10 +22,6 @@ public class App {
 
         PhaseView phaseView = new PhaseView();
         GameView dominationView = new DominationView();
-        
-        //Added by Keshav
-        phaseView.setPhaseViewPlayerService(playerService);
-
 
         List<Controller> controllerList = new ArrayList<>();
 

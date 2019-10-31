@@ -11,7 +11,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 /**
  * This class stores country information
  */
-public class Country extends Observable{
+public class Country{
 
     /**
      * The id of country in the map
@@ -206,8 +206,8 @@ public class Country extends Observable{
     public void setSoldiers(Integer soldiers) {
         this.soldiers = soldiers;
         
-        setChanged();
-        notifyObservers(this);
+        //setChanged();
+        //notifyObservers(this);
         
     }
 
@@ -218,8 +218,8 @@ public class Country extends Observable{
     public void addSoldiers(int number){
         this.soldiers += number;
         
-        setChanged();
-        notifyObservers(this);
+        //setChanged();
+        //notifyObservers(this);
     }
 
     /**
@@ -229,8 +229,8 @@ public class Country extends Observable{
     public void removeSoldiers(int number){
         this.soldiers -= number;
         
-        setChanged();
-        notifyObservers(this);
+        //setChanged();
+        //notifyObservers(this);
     }
 
     /**
@@ -270,10 +270,10 @@ public class Country extends Observable{
                 coordinateY + EOL;
     }
     
-    @Override
-    public void addObserver(Observer observer) {
-
-        super.addObserver(observer);
-    }
+	/*
+	 * @Override public void addObserver(Observer observer) {
+	 * 
+	 * super.addObserver(observer); }
+	 */
     
 }

@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * store player information
  */
-public class Player extends Observable{
+public class Player{
 
     /**
      * player name
@@ -89,8 +89,8 @@ public class Player extends Observable{
     public void setArmies(int armies) {
         this.armies = armies;
         
-        setChanged();
-    	notifyObservers(this);
+        //setChanged();
+    	//notifyObservers(this);
     }
 
     /**
@@ -100,8 +100,8 @@ public class Player extends Observable{
     public void reduceArmy(int number){
         armies -= number;
         
-        setChanged();
-    	notifyObservers(this);
+        //setChanged();
+    	//notifyObservers(this);
     }
 
     /**
@@ -111,8 +111,8 @@ public class Player extends Observable{
     public void addArmy(int number){
     	armies += number;
     	
-    	setChanged();
-    	notifyObservers(this);
+    	//setChanged();
+    	//notifyObservers(this);
     }
 
     /**
@@ -265,10 +265,10 @@ public class Player extends Observable{
     	return countryPlayerList;
     }
     
-    @Override
-    public void addObserver(Observer observer) {
-
-        super.addObserver(observer);
-    }
+	/*
+	 * @Override public void addObserver(Observer observer) {
+	 * 
+	 * super.addObserver(observer); }
+	 */
 }
 

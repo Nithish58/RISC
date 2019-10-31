@@ -2,6 +2,9 @@ package com6441.team7.risc.api.model;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
+import comp6441.team7.risc.wrapper_view.PlayerChangeWrapper;
+import comp6441.team7.risc.wrapper_view.PlayerEditWrapper;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -61,8 +64,11 @@ public class PlayerService extends Observable {
 	public void setCurrentPlayerIndex(int num) {
 		this.currentPlayerIndex=num;
 		
+		Player currentPlayer=listPlayers.get(currentPlayerIndex);
+		PlayerChangeWrapper playerChangeWrapper=new PlayerChangeWrapper(currentPlayer);
+		
 		setChanged();
-		notifyObservers(new Integer(currentPlayerIndex));
+		notifyObservers(playerChangeWrapper);
 	}
 
     public Player addPlayer(String name){
@@ -70,8 +76,13 @@ public class PlayerService extends Observable {
     	Player newPlayer=new Player(name);
     	listPlayers.add(newPlayer);
     	
+		//Add Player to Wrapper function and send wrapper function to observers
+		PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
+		playerEditWrapper.setAddedPlayer(newPlayer);
+    	
     	setChanged();
-        notifyObservers(name);
+        notifyObservers(playerEditWrapper);
+        
     	return newPlayer;
     }
 
@@ -79,15 +90,19 @@ public class PlayerService extends Observable {
         //TODO: remove a player in the playerList
     	
 		for(int i=0;i<listPlayers.size();i++) {
+			
 			if(listPlayers.get(i).getName().equals(playerName)) {
+				
 				Player removedPlayer=listPlayers.remove(i);
+				
+				//Add Player to Wrapper function and send wrapper function to observers
+				PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
+				playerEditWrapper.setRemovedPlayer(removedPlayer);
 				
 				setChanged();
 		    	//NOTIFY BEFORE RETURN
-		        notifyObservers(removedPlayer);
-		        
-		        removedPlayer.deleteObservers();
-				
+		        notifyObservers(playerEditWrapper);
+		    				
 				return true;
 			}
 		}
@@ -151,6 +166,12 @@ public class PlayerService extends Observable {
 
 			else setCurrentPlayerIndex(this.currentPlayerIndex+1);
 
+	}
+	
+	public void notifyPlayerServiceObservers(Object object) {
+		
+		setChanged();
+		notifyObservers(object);
 	}
 	
 

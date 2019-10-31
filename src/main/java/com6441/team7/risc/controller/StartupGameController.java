@@ -26,6 +26,9 @@ import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.view.PhaseView;
+import comp6441.team7.risc.wrapper_view.PlayerInitialArmyWrapper;
+import comp6441.team7.risc.wrapper_view.PlayerInitialCountryAssignmentWrapper;
+import comp6441.team7.risc.wrapper_view.PlayerPlaceArmyWrapper;
 
 /**
  * 
@@ -112,8 +115,6 @@ public class StartupGameController implements Controller{
 		this.playerService = playerService;
 		this.mapService = playerService.getMapService();
 		
-		
-		//Keshav Refactoring Part
 		this.boolMapLoaded=false;	
 		this.boolAllGamePlayersAdded=false;
 		this.boolGamePlayerAdded=false;
@@ -144,8 +145,6 @@ public class StartupGameController implements Controller{
             command = StringUtils.substringAfter(command, "-");
             commands = StringUtils.split(command, "-");
         }
-        
-        //this.boolStartUpPhaseOver=boolStartUpPhaseOver;
 
         switch(commandType) {
         	
@@ -186,7 +185,7 @@ public class StartupGameController implements Controller{
         		if(!boolMapLoaded) phaseView.displayMessage("Load Map First.");
         		
         		else if(boolAllGamePlayersAdded) phaseView.displayMessage
-        											("You are past adding phase.All Players Added/Removed");
+        		("You are past adding phase.All Players Added/Removed");
         	}
         	
         	break;
@@ -295,8 +294,7 @@ public class StartupGameController implements Controller{
 	 * @return a string instead of null if map not loaded successfully, that is why optional is used/
 	 */
 	Optional<String> loadMap(String s) {
-		
-	
+			
 	        String[] commands = StringUtils.split(s, " ");
 
 	        if (commands.length != 2) {
@@ -405,8 +403,8 @@ public class StartupGameController implements Controller{
         			
         			Player newPlayer=playerService.addPlayer(playerName);
         			
-        			newPlayer.addObserver(phaseView);
-        			newPlayer.addObserver(dominationView);
+        			//newPlayer.addObserver(phaseView);
+        			//newPlayer.addObserver(dominationView);
         			
         			this.boolGamePlayerAdded=true;
         		}
@@ -445,9 +443,15 @@ public class StartupGameController implements Controller{
     		
     		boolean playerRemoved=playerService.removePlayer(playerName);
     		
-    		if(!playerRemoved) {
-    			phaseView.displayMessage("gameplayer command: cannot remove, player does not exist");
+    		//If playerList is empty after player removed, cannot proceed to populatecountries
+    		//therefore boolean gamePlayerAdded must be reset to false
+    		if(playerRemoved) {
+    			
+    			if(playerService.getPlayerList().isEmpty())
+    				this.boolGamePlayerAdded=false;
     		}
+    		
+    		else phaseView.displayMessage("gameplayer command: cannot remove, player does not exist");
     		
     	}
     	
@@ -466,28 +470,18 @@ public class StartupGameController implements Controller{
 	 */
 	private void populateCountries() {
 		
-		if(!boolCountriesPopulated) {
-			
-			int numPlayers=playerService.getPlayerList().size();
-			phaseView.displayMessage("NumPlayers: "+numPlayers);
-			
-			//CHECK IF ONLY 1 PLAYER: PLAYER WINS
-			if(numPlayers==1) {
-				phaseView.displayMessage("PLAYER "+playerService.getPlayerList()
-												.get(0).getName()+" WINS");
-				CommonUtils.endGame(phaseView);
-			}
-			
-			else if(numPlayers==0) {
-				phaseView.displayMessage("No Players Added. Try again");
-			}
-			
-			else if(numPlayers>MAX_NUM_PLAYERS) {
-				phaseView.displayMessage("Player limit exceeded. Cannot Proceed");
-			}
-			
-			else {
+				//If countries already populated, do not proceed again
+				if(boolCountriesPopulated) {
+					phaseView.displayMessage("Countries already populated");
+					return;
+				}
+							
+				//If number of players invalid (0 or greater than player limit or if only 1 player present)
+				if(!checkNumPlayersValid()) return;
 				
+				
+				int numPlayers=playerService.getPlayerList().size();
+			
 				int numInitialArmies=determineNumInitialArmies(numPlayers);
 				assignInitialArmies(numInitialArmies);
 				
@@ -511,31 +505,36 @@ public class StartupGameController implements Controller{
 				
 				while(!stackCountry.isEmpty()) {
 					
+					Player currentPlayer=playerService.getPlayerList().get(currentPlayerIndex);
+					
 					Country currentCountry=stackCountry.pop();
 					
-					//ADDING OBSERVERS TO EACH COUNTRY
-					currentCountry.addObserver(phaseView);
-					currentCountry.addObserver(dominationView);
+					currentCountry.setPlayer(currentPlayer);
 					
-					currentCountry.setPlayer(playerService.getPlayerList().get(currentPlayerIndex));
-					
-					playerService.getPlayerList().get(currentPlayerIndex).reduceArmy(1);
+					currentPlayer.reduceArmy(1);
 					
 					currentCountry.addSoldiers(1);
+								
+					currentPlayer.addCountryToPlayerList(currentCountry);
 					
-
-					
-					playerService.getPlayerList().get(currentPlayerIndex)
-															.addCountryToPlayerList(currentCountry);
-					
-					if(playerService.getPlayerList().get(currentPlayerIndex).getArmies()==0) {
+					if(currentPlayer.getArmies()==0) {
 						boolArrayCountriesPlaced[currentPlayerIndex]=true;
 					}
+					
+					//NOTIFY playerService Observers
+					PlayerInitialCountryAssignmentWrapper playerInitialCountryAssignment
+					=new PlayerInitialCountryAssignmentWrapper(currentPlayer,currentCountry);
+					
+					
+					playerService.notifyPlayerServiceObservers(playerInitialCountryAssignment);
+					//playerService.notifyObservers(playerInitialCountryAssignment);
+					
 					
 					currentPlayerIndex++;
 					
 					//reset index to 0 when end of player list reached
-					if(currentPlayerIndex==playerService.getPlayerList().size()) currentPlayerIndex=0;
+					if(currentPlayerIndex==playerService.getPlayerList().size())
+						currentPlayerIndex=0;
 					
 				}
 				
@@ -546,7 +545,7 @@ public class StartupGameController implements Controller{
 				}
 				*/
 				
-				phaseView.displayMessage("Countries Populated. Start placing your armies now.");
+				phaseView.displayMessage("Countries Populated. Start placing your armies now.\n");
 				
 				this.boolCountriesPopulated=true;
 				
@@ -558,15 +557,41 @@ public class StartupGameController implements Controller{
 				*/
 				
 				playerService.setCurrentPlayerIndex(0);
-			}
-
-		}
-		
-		else {
-			phaseView.displayMessage("Countries already populated");
-		}
 		
 	}  //End of PopulateCountries
+	
+	/**
+	 * Method that checks if number of players is valid before populating countries
+	 * Checks the following conditions:
+	 * <li>If only 1 player present, player automatically wins</li>
+	 * <li>If no player present, cannot proceed to country population</li>
+	 * <li>If more than max num players present, cannot proceed to country population</li>
+	 * @return true if number of players valid, else false.
+	 */
+	private boolean checkNumPlayersValid() {
+		int numPlayers=playerService.getPlayerList().size();
+		phaseView.displayMessage("NumPlayers: "+numPlayers);
+		
+		//CHECK IF ONLY 1 PLAYER: PLAYER WINS
+		if(numPlayers==1) {
+			phaseView.displayMessage("PLAYER "+playerService.getPlayerList()
+											.get(0).getName()+" WINS");
+			CommonUtils.endGame(phaseView);
+			return false;
+		}
+		
+		else if(numPlayers==0) {
+			phaseView.displayMessage("No Players Added. Try again");
+			return false;
+		}
+		
+		else if(numPlayers>MAX_NUM_PLAYERS) {
+			phaseView.displayMessage("Player limit exceeded. Cannot Proceed");
+			return false;
+		}
+		
+		return true;
+	}
 	
 	/**
 	 * This method determines the initial number of armies allocated to each player.
@@ -597,6 +622,9 @@ public class StartupGameController implements Controller{
 		
 		for(Player p: playerService.getPlayerList()) {
 			p.setArmies(numArmies);
+			
+			PlayerInitialArmyWrapper playerInitialArmyWrapper=new PlayerInitialArmyWrapper(p);
+			playerService.notifyObservers(playerInitialArmyWrapper);
 		}
 		
 	}
@@ -626,6 +654,11 @@ public class StartupGameController implements Controller{
         			
         			c.addSoldiers(1);		
         			
+        			//Notify observers
+        			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
+        			=new PlayerPlaceArmyWrapper(currentPlayer,c);
+        		//	playerService.notifyObservers(playerPlaceArmyWrapper);
+        			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
         			
         			//phaseView.displayMessage(currentPlayer.getName()+" placed army successfully.");
         			if(currentPlayer.getArmies()==0) {
@@ -659,10 +692,15 @@ public class StartupGameController implements Controller{
         		
         		if(boolAllCountriesPlaced) {
         			phaseView.displayMessage("All Armies Placed for all players.\n.");
-        			this.mapService.setState(GameState.REINFORCE);
+        			
         			
         			//playerService.switchNextPlayer();
         			playerService.setCurrentPlayerIndex(0);
+        			
+        			this.mapService.setState(GameState.REINFORCE);
+        			
+
+
         		}
         		
         		else {
@@ -696,19 +734,25 @@ public class StartupGameController implements Controller{
     			p.countryPlayerList.get(randomIndex).addSoldiers(1);
     			p.reduceArmy(1);
     			
+    			//Notify Observers - Same as placeArmy
+    			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
+    			=new PlayerPlaceArmyWrapper(p,p.countryPlayerList.get(randomIndex));
+    			
+    			//playerService.notifyObservers(playerPlaceArmyWrapper);
+    			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
     		}
     		
     	}
-    	//notify observers??
+
     	phaseView.displayMessage("All Players Placed.");
-    	
-    	//showAllPlayers();
+
+
+    	playerService.setCurrentPlayerIndex(0);
+    	//view.displayMessage("Player Turn: "+players.get(0).getName());
     	
     	//this.boolStartUpPhaseOver.set(true);
     	this.mapService.setState(GameState.REINFORCE);
     	
-    	playerService.setCurrentPlayerIndex(0);
-    	//view.displayMessage("Player Turn: "+players.get(0).getName());
     }
 	
 	/**
