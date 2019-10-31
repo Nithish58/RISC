@@ -58,6 +58,7 @@ public class ReinforceGameControllerTest {
         return FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
     }
 
+
     /**
      * read an invalid command for reinforcement
      * expects the test to throw an IllegalArgumentException
@@ -66,6 +67,12 @@ public class ReinforceGameControllerTest {
     @Test(expected = IllegalArgumentException.class)
     public void readInvalidCommand() throws Exception {
         String command = "invalid command";
+        reinforceGameController.readCommand(command);
+    }
+
+    @Test
+    public void readValidCommand() throws Exception{
+        String command = "reinforce siberia 1";
         reinforceGameController.readCommand(command);
     }
 

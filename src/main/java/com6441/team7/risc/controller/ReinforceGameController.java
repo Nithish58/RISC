@@ -75,10 +75,10 @@ public class ReinforceGameController implements Controller{
      */
     @Override
     public void readCommand(String command) throws Exception {
-    	
-    	this.playerService.getMapService().setState(GameState.ATTACK);
-    	
+        createCardExchangeView();
         Player player = playerService.getCurrentPlayer();
+        showCardsInfo(player, cardExchangeView);
+
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
@@ -216,8 +216,7 @@ public class ReinforceGameController implements Controller{
      */
     public void exchangeCards(Player player, String command){
         try{
-            createCardExchangeView();
-            showCardsInfo(player, cardExchangeView);
+
 
             String[] commands = StringUtils.split(command, WHITESPACE);
 
@@ -345,6 +344,5 @@ public class ReinforceGameController implements Controller{
     private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
-
 
 }
