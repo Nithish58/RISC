@@ -51,7 +51,7 @@ public class App {
         playerService.addObserver(dominationView);
 
         //Added by Keshav
-        startupGameController.setDominationView(dominationView);
+       // startupGameController.setDominationView(dominationView);
         
         phaseView.receiveCommand();
 

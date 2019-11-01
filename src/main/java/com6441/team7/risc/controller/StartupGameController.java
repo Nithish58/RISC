@@ -107,7 +107,7 @@ public class StartupGameController implements Controller{
 	private PlayerService playerService;
 	private GameView phaseView;
 	
-	private GameView dominationView;
+	//private GameView dominationView;
 
 	public StartupGameController(Controller mapController, PlayerService playerService) {
 		this.mapLoaderController= (MapLoaderController) mapController;
@@ -126,9 +126,10 @@ public class StartupGameController implements Controller{
 	    this.phaseView = view;
     }
 	
-	public void setDominationView(GameView domView) {
-		this.dominationView=domView;
-	}
+	/*
+	 * public void setDominationView(GameView domView) {
+	 * this.dominationView=domView; }
+	 */
 
     //TODO: read command from phaseView and validate command here
     //TODO: if the command is valid, call corresponding method in playerService
@@ -222,6 +223,10 @@ public class StartupGameController implements Controller{
         	//NEED TO CHECK IF MAP LOADED AND COUNTRIES POPULATED FIRST
         	//NOT YET DONE
         	
+        	//Reconcatenate broken countryname split by '-' command:
+        	
+        	System.out.println("Command: "+command);
+        	
         	String[] strArr=StringUtils.split(command, WHITESPACE);
         	
         	if(strArr.length!=2) phaseView.displayMessage("Invalid Placearmy command");
@@ -313,7 +318,7 @@ public class StartupGameController implements Controller{
 	        	mapService.emptyMap();
 	        	mapLoaderController.readFile(path);
 	        	
-	        	MapDisplayUtils.showMap(mapService);
+	        	//MapDisplayUtils.showMap(mapService);
 	        	
 	        	//If Map not valid, boolMapLoaded will be false.
 	        	//Consequently, user will not be able to proceed without loading a valid map.
@@ -410,7 +415,7 @@ public class StartupGameController implements Controller{
         		}
         		
         		else {
-        			phaseView.displayMessage("Player Already Exists. Try different name");
+        			phaseView.displayMessage("Player Already Exists. Try different name.");
         		}
         		
         	}
@@ -451,7 +456,7 @@ public class StartupGameController implements Controller{
     				this.boolGamePlayerAdded=false;
     		}
     		
-    		else phaseView.displayMessage("gameplayer command: cannot remove, player does not exist");
+    		else phaseView.displayMessage("Cannot remove, player does not exist.");
     		
     	}
     	
@@ -468,7 +473,7 @@ public class StartupGameController implements Controller{
 	 * The countries which are mixed and no longer in order are then allocated to players in round-robin fashion.
 	 * Then assigns 1 army to each country.
 	 */
-	private void populateCountries() {
+	public void populateCountries() {
 		
 				//If countries already populated, do not proceed again
 				if(boolCountriesPopulated) {
@@ -608,7 +613,7 @@ public class StartupGameController implements Controller{
 	 * @param numPlayers
 	 * @return number of intial armies allocated to each player
 	 */
-	private int determineNumInitialArmies(int numPlayers) {
+	public int determineNumInitialArmies(int numPlayers) {
 		return 40-((numPlayers-2)*5);
 	}
 	
