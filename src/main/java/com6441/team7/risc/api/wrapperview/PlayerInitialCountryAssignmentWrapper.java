@@ -1,14 +1,14 @@
-package com6441.team7.risc.api;
+package com6441.team7.risc.api.wrapperview;
 
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.Player;
 
-public class PlayerPlaceArmyWrapper {
+public class PlayerInitialCountryAssignmentWrapper {
 	
 	private Player player;
 	private Country country;
 	
-	public PlayerPlaceArmyWrapper(Player p, Country c){
+	public PlayerInitialCountryAssignmentWrapper(Player p, Country c){
 		this.player=p;
 		this.country=c;
 	}
@@ -21,5 +21,4 @@ public class PlayerPlaceArmyWrapper {
 		return country;
 	}
 	
-
 }

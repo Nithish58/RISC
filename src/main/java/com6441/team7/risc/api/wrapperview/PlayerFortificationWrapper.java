@@ -1,4 +1,4 @@
-package com6441.team7.risc.api;
+package com6441.team7.risc.api.wrapperview;
 
 import com6441.team7.risc.api.model.Country;
 
