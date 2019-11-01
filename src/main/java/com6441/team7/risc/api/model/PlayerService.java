@@ -2,8 +2,8 @@ package com6441.team7.risc.api.model;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
-import comp6441.team7.risc.wrapper_view.PlayerChangeWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerEditWrapper;
+import com6441.team7.risc.api.PlayerChangeWrapper;
+import com6441.team7.risc.api.PlayerEditWrapper;
 
 import java.util.ArrayList;
 import java.util.Observable;

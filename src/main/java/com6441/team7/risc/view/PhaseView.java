@@ -1,5 +1,11 @@
 package com6441.team7.risc.view;
 
+import com6441.team7.risc.api.PlayerChangeWrapper;
+import com6441.team7.risc.api.PlayerEditWrapper;
+import com6441.team7.risc.api.PlayerFortificationWrapper;
+import com6441.team7.risc.api.PlayerInitialArmyWrapper;
+import com6441.team7.risc.api.PlayerInitialCountryAssignmentWrapper;
+import com6441.team7.risc.api.PlayerPlaceArmyWrapper;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
@@ -7,12 +13,6 @@ import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.controller.*;
-import comp6441.team7.risc.wrapper_view.PlayerChangeWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerEditWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerFortificationWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerInitialArmyWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerInitialCountryAssignmentWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerPlaceArmyWrapper;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;

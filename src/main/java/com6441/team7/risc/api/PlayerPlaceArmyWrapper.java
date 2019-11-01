@@ -1,4 +1,4 @@
-package comp6441.team7.risc.wrapper_view;
+package com6441.team7.risc.api;
 
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.Player;

@@ -19,6 +19,9 @@ import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.DominationView;
 import com6441.team7.risc.view.GameView;
+import com6441.team7.risc.api.PlayerInitialArmyWrapper;
+import com6441.team7.risc.api.PlayerInitialCountryAssignmentWrapper;
+import com6441.team7.risc.api.PlayerPlaceArmyWrapper;
 import com6441.team7.risc.api.exception.ContinentEditException;
 import com6441.team7.risc.api.exception.PlayerEditException;
 import com6441.team7.risc.api.model.Country;
@@ -26,9 +29,6 @@ import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.view.PhaseView;
-import comp6441.team7.risc.wrapper_view.PlayerInitialArmyWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerInitialCountryAssignmentWrapper;
-import comp6441.team7.risc.wrapper_view.PlayerPlaceArmyWrapper;
 
 /**
  * 
@@ -312,7 +312,7 @@ public class StartupGameController implements Controller{
 	            this.mapLoaderController.setCountryIdGenerator(0);
 	        	mapService.emptyMap();
 	        	mapLoaderController.readFile(path);
-	        
+	        	
 	        	MapDisplayUtils.showMap(mapService);
 	        	
 	        	//If Map not valid, boolMapLoaded will be false.
