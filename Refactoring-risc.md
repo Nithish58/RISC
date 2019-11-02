@@ -3,15 +3,15 @@
 1. ### remove duplicated showFullmap()  
     At build 1, showFullmap() in classes of controllers including mapLoaderController, gameController, startUpGameController, reinforceGameController and fortifyGameController.
 
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+    ![alt text](https://github.com/Nithish58/RISC/blob/master/images/build1/showPlayerAllCountriesFortification().png "showPlayer()")
 
     At build 2, we extract showFullMap() and make them a static method in the MapDisplayUtils.class to avoid duplication. 
 
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+    ![alt text](https://github.com/Nithish58/RISC/blob/master/images/build2/showMap().png "showPlayer()")
 
 
 2. ### move players lists, add players, remove players, switch players from the gameController to model named PlayerService.class 
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+    ![alt text](https://github.com/Nithish58/RISC/blob/master/images/build1/switchPlayers().png "switch player")
 
     At build 2, we extract showFullMap() and make them a static method in the MapDisplayUtils.class to avoid duplication. 
 
@@ -38,11 +38,11 @@
 5. ### Refactor the logic in reinforcement
    At build 1, the reinforceGameController method is large, making the code hard to read and maintain. 
 
-   ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+   ![alt text](https://github.com/Nithish58/RISC/blob/master/images/build1/reinforce()%20build1.png "reinforce build 1")
 
     At build 2, We split the function based on logic to make each function small and maintainable. 
 
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+    ![alt text](https://github.com/Nithish58/RISC/blob/master/images/build2/reinforceRefactoring.png "reinforce build 2")
 
 
 6. ### add observables to PlayerService and mapService.  
