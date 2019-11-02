@@ -403,6 +403,63 @@ public class FortifyGameControllerTest {
 		
 	}
 	
+	/**
+	 * Context: Test valid fortification move with all criterias of adjacency same-country-ownership and numSoldiers met.
+	 * HOWEVER, countries called are is not current player's countries.
+	 * Expected Result: Error Message:"fromCountry or toCountry does not belong to current player"
+	 * Also Game should remain in FORTIFICATION phase and there should be no changed to countries input. 
+	 */
+	@Test public void test008_validFortificationDifferentPlayerTurn() {
+		//Context
+				
+				Player nextPlayer=playerService.getNextPlayer();
+				
+				//Get first country in player list
+				Country fromCountry=nextPlayer.getCountryList().get(0);
+				Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromCountry.getId());
+				
+				//Get first adjacent country in country's list
+				Country toCountry = null;
+				for(Integer i: fromCountryAdjacencyList) {
+					toCountry=mapService.getCountryById(i).get();
+					break;
+				}
+				
+				//set toCountry to nextPlayer as well
+				toCountry.setPlayer(nextPlayer);
+				int initialToCountrySoldiers=toCountry.getSoldiers().intValue();
+				
+				//Set numSoldiers in fromCountry to 5
+				int initialFromCountrySoldiers=5;
+				fromCountry.setSoldiers(initialFromCountrySoldiers);
+				int numSoldiersToMove=3;
+				
+				String validFortificationCommand="fortify "+fromCountry.getCountryName()+" "+
+				toCountry.getCountryName()+" "+numSoldiersToMove;
+				
+				//Method call
+				phaseViewTest.receiveCommand(validFortificationCommand);
+				
+				//Evaluation
+				
+				Object obj=phaseViewTest.getReturnedObject(); PlayerFortificationWrapper
+				playerFortificationWrapper=((PlayerFortificationWrapper)obj);
+				
+				String strOutput="fromCountry or toCountry does not belong to current player";
+				String strDisplayMessage=playerFortificationWrapper.getFortificationDisplayMessage();
+				
+				assertEquals(strOutput,strDisplayMessage);
+				
+				assertEquals(playerFortificationWrapper.getCountryFrom().getSoldiers().intValue(),
+						  fromCountry.getSoldiers().intValue());
+				  
+				assertEquals(playerFortificationWrapper.getCountryTo().getSoldiers().intValue(),
+						  toCountry.getSoldiers().intValue());
+				  
+				assertTrue(mapService.getGameState()==GameState.FORTIFY);
+				
+	}
+	
 	
 	
 	
