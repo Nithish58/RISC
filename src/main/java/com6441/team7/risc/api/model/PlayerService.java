@@ -6,13 +6,7 @@ import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class PlayerService extends Observable {
 
@@ -148,12 +142,6 @@ public class PlayerService extends Observable {
     public int getCurrentPlayerIndex() {
     	
     	return currentPlayerIndex;
-    }
-
-
-    //jenny: get current player
-    public Player getCurrentPlayer(){
-        return currentPlayer;
     }
 
     //jenny: add this method to set current player
