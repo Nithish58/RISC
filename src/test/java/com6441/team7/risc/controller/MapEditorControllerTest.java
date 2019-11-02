@@ -25,7 +25,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com6441.team7.risc.view.CommandPromptView;
+import com6441.team7.risc.view.PhaseView;
 import com6441.team7.risc.controller.MapLoaderController;
 import com6441.team7.risc.api.model.MapService;
 
@@ -37,10 +37,9 @@ import com6441.team7.risc.api.model.MapService;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MapEditorControllerTest {
 
-	static private PhaseView testCmdView;
+	static private PhaseView testPhaseView;
 	static private MapService testMapService;
 	static private MapLoaderController testMapLoader;
-	static private GameController testGameController;
 	String test_map;
 
 	//define test variables
@@ -81,8 +80,8 @@ public class MapEditorControllerTest {
 		testCounter = 0;
 		testMapService = new MapService();
 		testMapLoader = new MapLoaderController(testMapService);
-		testCmdView = new CommandPromptView(testMapLoader, testGameController);
-		testMapLoader.setView(testCmdView);
+		testPhaseView = new PhaseView();
+		testMapLoader.setView(testPhaseView);
 
 	}
 
@@ -148,7 +147,7 @@ public class MapEditorControllerTest {
 		//if the testCounter is not less than 3, the editmap command and map parsing must be skipped.
 		//This so that the subsequent tests won't be impacted by it.
 		if (testCounter < 3) {
-		inputcommand = "editmap "+uri;
+		inputcommand = "editmap "+mapname;
 		testMapLoader.parseFile(file);
 		//if the testCounter is not less than 2, the editMap() method in the controller
 		//must be skipped. This so that the subsequent tests won't be impacted by it.
