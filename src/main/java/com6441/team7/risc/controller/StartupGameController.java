@@ -225,7 +225,7 @@ public class StartupGameController implements Controller{
         	
         	//Reconcatenate broken countryname split by '-' command:
         	
-        	System.out.println("Command: "+command);
+        	
         	
         	String[] strArr=StringUtils.split(command, WHITESPACE);
         	
@@ -318,8 +318,6 @@ public class StartupGameController implements Controller{
 	        	mapService.emptyMap();
 	        	mapLoaderController.readFile(path);
 	        	
-	        	//MapDisplayUtils.showMap(mapService);
-	        	
 	        	//If Map not valid, boolMapLoaded will be false.
 	        	//Consequently, user will not be able to proceed without loading a valid map.
 	        	if(validateMap()) {
@@ -346,12 +344,12 @@ public class StartupGameController implements Controller{
 
         if(mapService.isMapValid()){
         	
-        	phaseView.displayMessage("Map is Valid");
+        	//phaseView.displayMessage("Map is Valid");
             return true;
         }
         else{
 
-        	phaseView.displayMessage("Map is not Valid");
+        	//phaseView.displayMessage("Map is not Valid");
             return false;
         }
     }

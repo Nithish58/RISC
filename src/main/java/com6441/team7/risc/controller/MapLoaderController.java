@@ -539,13 +539,11 @@ public class MapLoaderController implements Controller{
      */
     void createFile(String name) {
     	
-    	/*
-    	//Added By Keshav on October 31 2019
     	if(!(mapService.getGameState()==GameState.LOAD_MAP)) {
     		view.displayMessage("Sorry, you can only create and edit maps in the loadmap phase.");
     		return;
     	}
-    	*/
+    	
     	
         File file = new File(name);
         try {

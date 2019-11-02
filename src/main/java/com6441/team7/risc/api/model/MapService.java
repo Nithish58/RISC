@@ -716,21 +716,15 @@ public class MapService extends Observable {
      * check if the map is strongly connected
      * @return true if strongly connected
      */
-    public boolean isStronglyConnected() {
+    public boolean isStronglyConnected() {    	
     	
-    	/*
-    	//Modified by Keshav on 31 October 2019
-        if(countries.size() == 0 || adjacencyCountriesMap.size() == 0){
-            return false;
-        }
-    	*/
-    	
-    	
-        if(countries.size() != 0 && adjacencyCountriesMap.size() == 0){
-            return false;
-        }
+    	if(countries.size()==0) {
+    		return false;
+    	}
         
-    	
+    	if(adjacencyCountriesMap.size()==0) {
+    		return false;
+    	}
     	
         for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
             Set<Integer> set = new HashSet<>(entry.getValue());

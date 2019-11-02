@@ -49,7 +49,7 @@ public class StartupGameControllerTest {
 
 	@Before public void beforeEachTest() {
 		createObjects();
-		loadValidMap("luca.map");
+		loadValidMap("RiskEurope.map");
 	}
 	
 	/**
