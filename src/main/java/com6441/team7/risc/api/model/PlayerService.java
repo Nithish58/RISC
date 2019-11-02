@@ -7,8 +7,12 @@ import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
+import java.util.Set;
 
 public class PlayerService extends Observable {
 
@@ -123,6 +127,15 @@ public class PlayerService extends Observable {
         return currentPlayer.getName();
     }
     
+    public Player getPlayerByName(String name) {
+    	
+    	for(Player p:listPlayers) {
+    		if(p.getName().equals(name)) return p;
+    	}
+    	
+    	return null;
+    }
+    
     public Player getCurrentPlayer() {
     	
     	if(currentPlayerIndex<0) return null;
@@ -170,11 +183,90 @@ public class PlayerService extends Observable {
 	}
 	
 	
+	/**
+	 * Function that notifies all playerService observers that it has been changed and then sends an object to the observers
+	 * @param object that can be of different classes (different wrapper classes)
+	 */
 	public void notifyPlayerServiceObservers(Object object) {
 		
 		setChanged();
 		notifyObservers(object);
 	}
+	
+	
+	
+	public Map<Integer, String> checkContinentOwners() {
+		
+		Map<Integer, Set<Integer>> continentCountriesMap = mapService.getContinentCountriesMap();
+		
+		Map<Integer, String> continentOwnerMap=new HashMap<>();
+		
+		//Loop through every continent's countries
+		//check if owner is same for all countries of the continent
+		
+    	for(Map.Entry<Integer, Set<Integer>> item :
+			mapService.getContinentCountriesMap().entrySet()) {
+
+    		int key=(int) item.getKey();
+
+    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
+    		Continent currentContinent= (Continent) optionalContinent.get();
+    		
+    		Set<Integer> value=item.getValue();
+    		
+    		//If continent empty, move to next continent
+    		if(value.size()==0) continue;
+    		
+    		//Only 1 country in continent: player of that country therefore owns continent
+    		if(value.size()==1) {
+    			
+    			int countryId=-1; //initialising variable
+    			
+    			for(Integer i:value) countryId=i;
+    			
+    			Optional<Country> optionalCountry=mapService.getCountryById(countryId);
+    			Country currentCountry=optionalCountry.get();
+    			String currentCountryOwnerName=currentCountry.getPlayer().getName();
+    			
+    			continentOwnerMap.put(key, currentCountryOwnerName);
+    			continue;
+    		}
+    		
+    		boolean boolSameOwner=true;
+    		
+    		String ownerName="";
+    		
+    		int counter=0;
+    				
+    		for(Integer i:value) {
+    			//For Each Country In Continent, Get owner
+    			Optional<Country> optionalCountry=mapService.getCountryById(i);
+
+    			Country currentCountry=optionalCountry.get();
+    			String currentCountryOwnerName=currentCountry.getPlayer().getName();
+    			
+    			//Set owner of first country as ownerName with which all other country owner names will be compared
+    			if(counter==0) {
+    				ownerName=currentCountryOwnerName;
+    				counter++;
+    				continue;
+    			}
+
+    			if(!currentCountryOwnerName.equals(ownerName)) {
+    				boolSameOwner=false;
+    				break;
+    			}
+    			
+    			counter++;
+    		}    //End of looping through all countries of 1 continent
+		
+    		if(boolSameOwner) continentOwnerMap.put(key, ownerName);
+    		
+    	}
+   	
+    	return continentOwnerMap;
+		
+	}  //End of method
 	
 	/*
 	public void fortifyCurrentPlayer(PlayerFortificationWrapper playerFortificationWrapper) {
