@@ -60,9 +60,10 @@ public class MapLoaderController implements Controller{
 
         String[] commands = {};
 
-        if(command.contains("-")){
+        if(command.toLowerCase(Locale.CANADA).contains("-add") || command.toLowerCase(Locale.CANADA).contains("-remove")){
+
             command = StringUtils.substringAfter(command, "-");
-            commands = StringUtils.split(command, "-");
+            commands = command.split("\\s-");
         }
 
         switch (commandType) {

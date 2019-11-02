@@ -781,6 +781,10 @@ public class MapService extends Observable {
     		return false;
     	}
     	
+        if (adjacencyCountriesMap.size() == 0) {
+            return false;
+        }
+
         for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
             Set<Integer> set = new HashSet<>(entry.getValue());
             addEdge(entry.getKey(), set);
@@ -806,7 +810,8 @@ public class MapService extends Observable {
                     System.out.print(country.getId() + " ");
                     System.out.print(country.getCountryName() + " ");
                     System.out.print(country.getContinentIdentifier() + " ");
-                    System.out.print(country.getContinentName() + " ");
+                    System.out.print(country.getCoordinateX() + " ");
+                    System.out.println(country.getCoordinateY());
                     System.out.println("\n");
                 }
         );
