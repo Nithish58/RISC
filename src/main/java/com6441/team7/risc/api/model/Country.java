@@ -204,8 +204,7 @@ public class Country{
      * @param soldiers
      */
     public void setSoldiers(Integer soldiers) {
-        this.soldiers = soldiers;
-        
+        this.soldiers = soldiers;       
         //setChanged();
         //notifyObservers(this);
         

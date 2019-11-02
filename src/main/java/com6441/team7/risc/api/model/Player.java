@@ -299,16 +299,16 @@ public class Player{
     		
     		return;
     	}
-    	System.out.println("Before Validate");
+
     	//Check if conditions of ownership, adjacency and numSoldiers are valid
     	if(!validateConditions(playerService)) {
     		
     		//Notify playerService Observers about validation error message
     		playerService.notifyPlayerServiceObservers(this.playerFortificationWrapper);
-    		System.out.println("After invalid notif");
+
     		return;
     	}
-    	System.out.println("After Validate");
+
     	
     	//Actual Fortification
 		fromCountry.removeSoldiers(numSoldiersToFortify);
@@ -388,7 +388,6 @@ public class Player{
 			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.getCountryName());
 			
 			if(!fromId.isPresent()) {
-				//phaseView.displayMessage("Origin country not present");
 				this.playerFortificationWrapper.setFortificationDisplayMessage
 				("Origin country not present");
 				this.boolValidationMet=false;

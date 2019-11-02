@@ -37,16 +37,36 @@ import static com6441.team7.risc.api.RiscConstants.MAX_NUM_PLAYERS;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StartupGameControllerTest {
 	
+	/**
+	 * View which outputs test strings and has some other additonal functionalities than the normal phaseView
+	 */
 	 PhaseViewTest phaseViewTest;
-
+	 /**
+	  * mapService object stores map Information and game state
+	  */
 	 MapService mapService;
+	 /**
+	  * playerService object keeps track of player information such as current player turn and list of players
+	  */
 	 PlayerService playerService;
-
+	 /**
+	  * Controller to load map
+	  */
 	 MapLoaderController mapLoaderController;
+	 /**
+	  * Controller for startup phase
+	  */
 	 StartupGameController startupGameController;
-
+	 
+	 /**
+	  * list of different controllers
+	  */
 	 List<Controller> controllerList;
 
+	 /**
+	  * Method called before each test case
+	  * Instantiates necessary objects and loads a valid map
+	  */
 	@Before public void beforeEachTest() {
 		createObjects();
 		loadValidMap("RiskEurope.map");
@@ -191,11 +211,12 @@ public class StartupGameControllerTest {
 	   * Check that numArmies determined decreases by 5 for each player added until max player reached.
 	   */
 	  @Test public void test007_determineInitialArmyAllocationToPlayer() {
-		  
+		  //Context
 		  int numArmy=40;
 		  addPlayer(String.valueOf(0));
 		  addPlayer(String.valueOf(1));
 		  
+		  //Method call and Evaluation
 		  for(int i=2;i<MAX_NUM_PLAYERS;i++) {
 			  numArmy-=5;
 			  addPlayer(String.valueOf(i));
@@ -455,8 +476,10 @@ public class StartupGameControllerTest {
 		mapLoaderController = new MapLoaderController(mapService);
 		startupGameController = new StartupGameController(mapLoaderController, playerService);
 
+
 		controllerList.add(mapLoaderController);
 		controllerList.add(startupGameController);
+		
 		phaseViewTest.addController(controllerList);
 
 		mapLoaderController.setView(phaseViewTest);

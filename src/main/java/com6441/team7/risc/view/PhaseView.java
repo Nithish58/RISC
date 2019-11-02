@@ -260,10 +260,10 @@ public class PhaseView implements GameView {
     }
     */
     private void playerFortificationStatus(Object arg) {
-    	System.out.println("Entered Method View");
+
     	PlayerFortificationWrapper playerFortificationWrapper
     	=((PlayerFortificationWrapper) arg);
-    	System.out.println("After Method cast");
+
     	//Check if boolean Fortification Set to true - output fortification over message
     	//Or check if fortification not successful, retrieve error message
     	

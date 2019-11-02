@@ -32,13 +32,10 @@ public class PhaseViewTest implements GameView{
     private Controller attackController;
     
     private GameState gameState;
-    private Player currentPlayer=null;
     
     private Object obj;
     
     private String strDisplayMessage="";
-    
-    PlayerEditWrapper playerEditWrapper;
 
     public void displayMessage(String string) {
     	this.strDisplayMessage=string;
@@ -84,7 +81,6 @@ public class PhaseViewTest implements GameView{
             }
 
         } catch (Exception e) {
-            //displayMessage(e.getMessage());
         	e.printStackTrace();
         }
 		
@@ -115,15 +111,7 @@ public class PhaseViewTest implements GameView{
 	public void receiveCommand() {}
 
 
-	public PlayerEditWrapper getPlayerEditWrapper() {
-		return playerEditWrapper;
-	}
-
-
 	public String getStrDisplayMessage() {
 		return strDisplayMessage;
 	}
-	
-	
-
 }

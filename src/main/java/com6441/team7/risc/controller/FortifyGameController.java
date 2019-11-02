@@ -168,10 +168,18 @@ public class FortifyGameController implements Controller {
 		}
 
 		else if (orders.length == 4) {
+			
+			if(!(mapService.getCountryByName(orders[1]).isPresent()&&
+					mapService.getCountryByName(orders[2]).isPresent())) {
+				phaseView.displayMessage("Invalid Country Name Entered");
+				return;
+			}
+				
 
 			this.fromCountry = mapService.getCountryByName(orders[1]).get();
 
 			this.toCountry = mapService.getCountryByName(orders[2]).get();
+			
 
 			try {
 				this.numSoldiers = Integer.parseInt(orders[3]);

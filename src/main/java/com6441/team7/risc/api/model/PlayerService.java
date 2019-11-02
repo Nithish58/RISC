@@ -182,6 +182,16 @@ public class PlayerService extends Observable {
 
 	}
 	
+	public int getNextPlayerIndex() {
+		
+		if((currentPlayerIndex+1)<=listPlayers.size()-1) return currentPlayerIndex+1;
+		
+		else return 0;
+	}
+	
+	public Player getNextPlayer() {
+		return listPlayers.get(getNextPlayerIndex());
+	}
 	
 	/**
 	 * Function that notifies all playerService observers that it has been changed and then sends an object to the observers
