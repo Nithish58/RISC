@@ -240,9 +240,41 @@ public class PhaseView implements GameView {
      * Displays information about fromCountry and toCountry during fortification phase.
      * @param arg PlayerFortificationWrapper.class object
      */
+    /*
     private void playerFortificationStatus(Object arg) {
     	PlayerFortificationWrapper playerFortificationWrapper
     	=((PlayerFortificationWrapper) arg);
+    	Country fromCountry=playerFortificationWrapper.getCountryFrom();
+    	Country toCountry=playerFortificationWrapper.getCountryTo();
+    	int numSoldiers=playerFortificationWrapper.getNumSoldiers();
+    	
+    	displayMessage("Before Fortification, From: "+fromCountry.getCountryName()+
+    			" had "+(fromCountry.getSoldiers()+numSoldiers)+" soldiers, To: "
+    			+toCountry.getCountryName()+" had "+(toCountry.getSoldiers()-numSoldiers)
+    			+" soldiers.");
+    	
+    	displayMessage("After Fortification, From: "+fromCountry.getCountryName()+
+    			" now has "+fromCountry.getSoldiers()+" soldiers, To: "
+    			+toCountry.getCountryName()+" now has "+toCountry.getSoldiers()+" soldiers.\n");
+    	
+    }
+    */
+    private void playerFortificationStatus(Object arg) {
+    	System.out.println("Entered Method View");
+    	PlayerFortificationWrapper playerFortificationWrapper
+    	=((PlayerFortificationWrapper) arg);
+    	System.out.println("After Method cast");
+    	//Check if boolean Fortification Set to true - output fortification over message
+    	//Or check if fortification not successful, retrieve error message
+    	
+    	if(playerFortificationWrapper.getBooleanFortificationNone()
+    	|| (!playerFortificationWrapper.getFortificationDisplayMessage().equalsIgnoreCase("success"))) {
+    		
+    		displayMessage(playerFortificationWrapper.getFortificationDisplayMessage());
+
+    		return;
+    	}
+    	
     	Country fromCountry=playerFortificationWrapper.getCountryFrom();
     	Country toCountry=playerFortificationWrapper.getCountryTo();
     	int numSoldiers=playerFortificationWrapper.getNumSoldiers();

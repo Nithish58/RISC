@@ -3,11 +3,16 @@ package com6441.team7.risc.api.model;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 /**
  * store player information
@@ -265,10 +270,202 @@ public class Player{
     	return countryPlayerList;
     }
     
-	/*
-	 * @Override public void addObserver(Observer observer) {
-	 * 
-	 * super.addObserver(observer); }
+    
+    private Country fromCountry;
+    private Country toCountry;
+    private int numSoldiersToFortify;
+    
+	/**
+	 * Set that keeps track of neighbouring countries of origin country.
 	 */
-}
+	private	Set<Integer> neighbouringCountries;
+    
+    private boolean boolValidationMet;
+    
+    private PlayerFortificationWrapper playerFortificationWrapper;
+    
+    
+    public void fortify(PlayerService playerService, PlayerFortificationWrapper playerFortificationWrapper) {
+    	
+    	this.playerFortificationWrapper=playerFortificationWrapper;
+    	this.fromCountry=this.playerFortificationWrapper.getCountryFrom();
+    	this.toCountry=this.playerFortificationWrapper.getCountryTo();
+    	this.numSoldiersToFortify=this.playerFortificationWrapper.getNumSoldiers();
+    	
+    	//Checks if boolean fortificationNone is true...calls fortifyNone method.
+    	
+    	if(this.playerFortificationWrapper.getBooleanFortificationNone()) {
+    		fortifyNone(playerService);
+    		
+    		return;
+    	}
+    	System.out.println("Before Validate");
+    	//Check if conditions of ownership, adjacency and numSoldiers are valid
+    	if(!validateConditions(playerService)) {
+    		
+    		//Notify playerService Observers about validation error message
+    		playerService.notifyPlayerServiceObservers(this.playerFortificationWrapper);
+    		System.out.println("After invalid notif");
+    		return;
+    	}
+    	System.out.println("After Validate");
+    	
+    	//Actual Fortification
+		fromCountry.removeSoldiers(numSoldiersToFortify);
+		toCountry.addSoldiers(numSoldiersToFortify);
+		
+		//Notifying Observers of PlayerService
+		this.playerFortificationWrapper=new PlayerFortificationWrapper(fromCountry, toCountry,
+				numSoldiersToFortify);
+		this.playerFortificationWrapper.setFortificationDisplayMessage("success");
+		
+		playerService.notifyPlayerServiceObservers(this.playerFortificationWrapper);
+		
+		//Switch to Next player and Change State to Reinforcement
+		playerService.switchNextPlayer();
+		playerService.getMapService().setState(GameState.REINFORCE);
+		
+    	
+    }
+    
+    /**
+     * Method called when fortify none is chosen
+     * It just switches to next player and changes game state to reinforcement again.
+     * @param playerService to notify observers about game info and retrieve useful info like current player
+     */
+    public void fortifyNone(PlayerService playerService) {
+    	
+    	//Notify playerService observers that fortification phase is over
+    	playerFortificationWrapper.setFortificationDisplayMessage("Fortification Phase is over.");
+    	playerService.notifyPlayerServiceObservers(playerFortificationWrapper);
+    	
+		playerService.switchNextPlayer();
+		playerService.getMapService().setState(GameState.REINFORCE);
+
+    }
+    
+	/**
+	 * This method checks that the following reinforcement criterias are met: 
+	 * <ul>
+	 * <li>Both countries are adjacent </li>
+	 * <li>Both countries belong to player</li>
+	 * <li>at least 1 player will remain in the source country after fortification</li>
+	 * <ul>
+	 */
+	private boolean validateConditions(PlayerService playerService) {
+		
+		this.boolValidationMet=true;
+		
+		checkCountryAdjacency(playerService.getMapService());
+		
+		if(boolValidationMet) {
+			checkCountriesBelongToCurrentPlayer(playerService);
+		}
+		
+		if(boolValidationMet) {
+			checkCountryOwnership();
+		}
+					
+		if(boolValidationMet) {
+			checkNumSoldiers();
+		}
+		
+		return this.boolValidationMet;
+		
+	}
+	
+	
+	/**
+	 * check country has Adjacency
+	 * @param mapservice to retrieve from and to countries' info and their adjacent countries
+	 */
+	private void checkCountryAdjacency(MapService mapService) {
+			
+			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
+			
+			Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountry.getCountryName());
+			
+			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.getCountryName());
+			
+			if(!fromId.isPresent()) {
+				//phaseView.displayMessage("Origin country not present");
+				this.playerFortificationWrapper.setFortificationDisplayMessage
+				("Origin country not present");
+				this.boolValidationMet=false;
+			}
+
+			
+			if(!toId.isPresent()) {
+				this.playerFortificationWrapper.setFortificationDisplayMessage
+				("Destination country not present");
+				this.boolValidationMet=false;
+			}
+			
+			if(boolValidationMet) {
+				neighbouringCountries =  adjacentCountriesList.get(fromId.get());
+				
+				if(!neighbouringCountries.contains(toId.get())) {
+					this.boolValidationMet=false;
+					this.playerFortificationWrapper.setFortificationDisplayMessage
+					("Countries not adjacent to each other");
+				}
+			}			
+			
+		}
+	
+	
+	/**
+	 * checks whether the 2 countries are owned by the current player
+	 */
+	private void checkCountryOwnership() {
+			
+			if(!(fromCountry.getPlayer().getName().equalsIgnoreCase
+					(toCountry.getPlayer().getName()))) {
+				
+				this.playerFortificationWrapper.setFortificationDisplayMessage
+				("Countries do not belong to same player");
+				this.boolValidationMet=false;
+			}
+			
+		}
+	
+	/**
+	 * Check if both countries belong to current player
+	 * @param playerService to notify observers about game info and retrieve useful info like current player 
+	 */
+	private void checkCountriesBelongToCurrentPlayer(PlayerService playerService) {
+		Player currentPlayer=playerService.getCurrentPlayer();
+		String playerName=currentPlayer.getName();
+		
+		if((!fromCountry.getPlayer().getName().equals(playerName))
+				|| (!toCountry.getPlayer().getName().equals(playerName))) {
+			this.playerFortificationWrapper.setFortificationDisplayMessage
+			("fromCountry or toCountry does not belong to current player");
+			this.boolValidationMet=false;
+		}
+		
+	}
+	
+	/**
+	 * check the number of soldiers for the current player
+	 * Ensures that at least 1 soldier remains in origin country
+	 */
+	private void checkNumSoldiers() {
+			
+			if(!(fromCountry.getSoldiers()>numSoldiersToFortify)) {
+				this.playerFortificationWrapper.setFortificationDisplayMessage
+				("Not enough soldiers in origin country");
+				this.boolValidationMet=false;
+			}
+			
+			if(numSoldiersToFortify<1) {
+				this.playerFortificationWrapper.setFortificationDisplayMessage
+				("Num soldiers must be greater than 0.");
+				this.boolValidationMet=false;
+			}
+		}
+	
+    
+   
+}  //End of Player class
 

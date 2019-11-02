@@ -344,12 +344,10 @@ public class StartupGameController implements Controller{
 
         if(mapService.isMapValid()){
         	
-        	//phaseView.displayMessage("Map is Valid");
             return true;
         }
         else{
 
-        	//phaseView.displayMessage("Map is not Valid");
             return false;
         }
     }
@@ -401,13 +399,8 @@ public class StartupGameController implements Controller{
         		boolean nameFound=playerService.checkPlayerExistance(playerName);
         		
         		if(!nameFound) {
-        			//players.add(new Player(playerName));
-        			//view.displayMessage("Player Added: "+playerName);
         			
-        			Player newPlayer=playerService.addPlayer(playerName);
-        			
-        			//newPlayer.addObserver(phaseView);
-        			//newPlayer.addObserver(dominationView);
+        			Player newPlayer=playerService.addPlayer(playerName);       			
         			
         			this.boolGamePlayerAdded=true;
         		}
@@ -621,14 +614,14 @@ public class StartupGameController implements Controller{
 	 */
 	private void assignInitialArmies(int numArmies) {
 		
-		//NEED TO MAKE PLAYER OBSERVABLE AS WELL
+		//DOCUMENT SUBJECT OF OBSERVABLE CLASS AND METHODS THAT NOTIFY OBSERVERS
 		
 		for(Player p: playerService.getPlayerList()) {
 			p.setArmies(numArmies);
 			
 			PlayerInitialArmyWrapper playerInitialArmyWrapper=new PlayerInitialArmyWrapper(p);
-			//playerService.notifyObservers(playerInitialArmyWrapper);
 			playerService.notifyPlayerServiceObservers(playerInitialArmyWrapper);
+			
 		}
 		
 	}
@@ -661,10 +654,11 @@ public class StartupGameController implements Controller{
         			//Notify observers
         			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
         			=new PlayerPlaceArmyWrapper(currentPlayer,c);
-        		//	playerService.notifyObservers(playerPlaceArmyWrapper);
+
         			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
         			
         			//phaseView.displayMessage(currentPlayer.getName()+" placed army successfully.");
+        			
         			if(currentPlayer.getArmies()==0) {
         				boolArrayCountriesPlaced[currentPlayerIndex]=true;        				
         			}
@@ -695,16 +689,12 @@ public class StartupGameController implements Controller{
         		}
         		
         		if(boolAllCountriesPlaced) {
+        			
         			phaseView.displayMessage("All Armies Placed for all players.\n.");
         			
-        			
-        			//playerService.switchNextPlayer();
         			playerService.setCurrentPlayerIndex(0);
         			
         			this.mapService.setState(GameState.REINFORCE);
-        			
-
-
         		}
         		
         		else {
@@ -742,7 +732,6 @@ public class StartupGameController implements Controller{
     			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
     			=new PlayerPlaceArmyWrapper(p,p.countryPlayerList.get(randomIndex));
     			
-    			//playerService.notifyObservers(playerPlaceArmyWrapper);
     			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
     		}
     		

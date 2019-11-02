@@ -4,6 +4,7 @@ import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
+import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -168,11 +169,17 @@ public class PlayerService extends Observable {
 
 	}
 	
+	
 	public void notifyPlayerServiceObservers(Object object) {
 		
 		setChanged();
 		notifyObservers(object);
 	}
 	
+	/*
+	public void fortifyCurrentPlayer(PlayerFortificationWrapper playerFortificationWrapper) {
+		getCurrentPlayer().fortify(this, playerFortificationWrapper);
+	}
+	*/
 
 }

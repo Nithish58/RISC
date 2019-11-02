@@ -154,8 +154,15 @@ public class FortifyGameController implements Controller{
 				
 				//phaseView.displayMessage("Fortification Phase Over.");
 				
+				/*
 				this.playerService.switchNextPlayer();
 				this.mapService.setState(GameState.REINFORCE);
+				*/
+				
+				//FORTIFY CALLED IN PLAYER CLASS
+				PlayerFortificationWrapper playerFortificationWrapper=new PlayerFortificationWrapper();
+				
+				playerService.getCurrentPlayer().fortify(playerService, playerFortificationWrapper);
 				
 			}
 			
@@ -174,7 +181,19 @@ public class FortifyGameController implements Controller{
 					phaseView.displayMessage("Wrong Number Format. Try Again");
 				}
 				
-				fortify();
+				//fortify();
+				
+				//FORTIFY CALLED IN PLAYER CLASS
+				
+				PlayerFortificationWrapper playerFortificationWrapper
+				=new PlayerFortificationWrapper(fromCountry, toCountry,numSoldiers);
+				
+				//CAN DIRECTLY CALL CURRENT PLAYER...NO NEED TO GO THROUGH MAPSERVICE
+				//CAN PASS PLAYERSERVICE AS PARAMETER
+				
+				//playerService.fortifyCurrentPlayer(playerFortificationWrapper);
+				
+				playerService.getCurrentPlayer().fortify(playerService, playerFortificationWrapper);
 				
 			}
 			
@@ -212,6 +231,7 @@ public class FortifyGameController implements Controller{
 			
 			PlayerFortificationWrapper playerFortificationWrapper
 			=new PlayerFortificationWrapper(fromCountry,toCountry, numSoldiers);
+			
 			playerService.notifyPlayerServiceObservers(playerFortificationWrapper);
 			
 			
@@ -237,6 +257,10 @@ public class FortifyGameController implements Controller{
 		checkCountryAdjacency();
 		
 		if(boolValidationMet) {
+			checkCountriesBelongToCurrentPlayer();
+		}
+		
+		if(boolValidationMet) {
 			checkCountryOwnership();
 		}
 					
@@ -245,6 +269,21 @@ public class FortifyGameController implements Controller{
 		}
 		
 		return this.boolValidationMet;
+		
+	}
+	
+	/**
+	 * Check if both countries belong to current player 
+	 */
+	private void checkCountriesBelongToCurrentPlayer() {
+		Player currentPlayer=playerService.getCurrentPlayer();
+		String playerName=currentPlayer.getName();
+		
+		if((!fromCountry.getPlayer().getName().equals(playerName))
+				|| (!toCountry.getPlayer().getName().equals(playerName))) {
+			phaseView.displayMessage("fromCountry or toCountry does not belong to current player");
+			this.boolValidationMet=false;
+		}
 		
 	}
 	
