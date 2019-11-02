@@ -220,12 +220,12 @@ public class StartupGameController implements Controller{
         	
         case PLACE_ARMY:
         	
-        	//NEED TO CHECK IF MAP LOADED AND COUNTRIES POPULATED FIRST
-        	//NOT YET DONE
-        	
         	//Reconcatenate broken countryname split by '-' command:
         	
-        	
+        	if(!boolCountriesPopulated) {
+        		phaseView.displayMessage("Populate countries first");
+        		return;
+        	}
         	
         	String[] strArr=StringUtils.split(command, WHITESPACE);
         	
@@ -238,36 +238,31 @@ public class StartupGameController implements Controller{
         	
         case PLACE_ALL:
         	
-        	//NEED TO CHECK IF MAP LOADED AND COUNTRIES POPULATED FIRST
-        	//NOT YET DONE
+        	if(!boolCountriesPopulated) {
+        		phaseView.displayMessage("Populate countries first");
+        		return;
+        	}
         	
         	placeAll();
         	break;
         	
         case SHOW_PLAYER:
         	
-        	//NEED TO CHECK IF PLAYER ADDED FIRST
-        	//NEED TO CHECK IF COUNTRY POPULATED AS WELL
-        	//NOT YET DONE
-        	
         	MapDisplayUtils.showPlayer(mapService,playerService,phaseView);
         	break;
         	
         case SHOW_ALL_PLAYERS:
-        	//NEED TO CHECK IF ALL PLAYERS ADDED FIRST (bool allGamePlayersAdded)
-        	//NOT YET DONE
+
         	MapDisplayUtils.showAllPlayers(mapService,playerService,phaseView);
         	break;
         	
         case SHOW_PLAYER_ALL_COUNTRIES:
-        	//NEED TO CHECK IF COUNTRIES POPULATED FIRST
-        	//NOT YET DONE
+
         	MapDisplayUtils.showPlayerAllCountries(mapService,playerService,phaseView);
         	break;
         
         case SHOW_PLAYER_COUNTRIES:
-        	//NEED TO CHECK IF COUNTRIES POPULATED FIRST
-        	//NOT YET DONE
+
         	MapDisplayUtils.showPlayerCountries(mapService,playerService,phaseView);
         	break;
         	
