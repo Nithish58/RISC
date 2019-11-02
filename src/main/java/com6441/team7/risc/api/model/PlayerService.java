@@ -193,8 +193,12 @@ public class PlayerService extends Observable {
 		notifyObservers(object);
 	}
 	
-	
-	
+	/**
+	 * This method checks if any player owns any continent.
+	 * It loops through all countries in each continent and check if they have the same owner.
+	 * Used for domination view and attack phase
+	 * @return map of <continent id, player name>, if any player owns the respective continent
+	 */
 	public Map<Integer, String> checkContinentOwners() {
 		
 		Map<Integer, Set<Integer>> continentCountriesMap = mapService.getContinentCountriesMap();
