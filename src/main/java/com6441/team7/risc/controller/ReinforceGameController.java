@@ -2,6 +2,7 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.*;
 import org.apache.commons.lang3.StringUtils;
@@ -91,8 +92,28 @@ public class ReinforceGameController implements Controller{
                 exchangeCards(player, command);
                 break;
             case SHOW_MAP:
-                showMap();
+                //showMap();
+            	MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
                 break;
+            case SHOW_PLAYER:
+    			// showPlayerFortificationPhase(player);
+    			MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
+    			break;
+
+    		case SHOW_PLAYER_ALL_COUNTRIES:
+    			// showPlayerAllCountriesFortification();
+    			MapDisplayUtils.showPlayerAllCountries(playerService.getMapService(), playerService, phaseView);
+    			break;
+
+    		case SHOW_PLAYER_COUNTRIES:
+    			// showPlayerCountriesFortification();
+    			MapDisplayUtils.showPlayerCountries(playerService.getMapService(), playerService, phaseView);
+    			break;
+
+    		case EXIT:
+    			CommonUtils.endGame(phaseView);
+    			break;
+    			
             default:
                 throw new IllegalArgumentException("cannot recognize this command");
         }
