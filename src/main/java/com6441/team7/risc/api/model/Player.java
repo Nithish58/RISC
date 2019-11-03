@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import java.security.SecureRandom;
+
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
@@ -80,6 +82,15 @@ public class Player{
         this.name = name;
     }
 
+    /**
+     * Maximum allowed number of dice(s) for attacker to roll 
+     */
+    private static final int MAX_ATTACKER_DICE_NUM=3;
+    
+    /**
+     * Maximum allowed number of dice(s) for defender to roll
+     */
+    private static final int MIN_DEFENDER_DICE_NUM=2;
 
 
     //------------------------------------REINFORCEMENT-----------------------------------------
@@ -321,6 +332,9 @@ public class Player{
     private Country toCountryAttack;
     private int numDiceAttacker=0;
     private int numDiceDefender=0;
+    private int[] attackerDice;
+    private int[] defenderDice;
+    private SecureRandom diceRandomizer;
     private boolean boolAllOut;
     
     
@@ -342,17 +356,42 @@ public class Player{
 			//Continue or you can change the structure of functions etc if you want.
 			// DO NOT CHANGE IN ATTACK CONTROLLER...You just have to code here.
 			//						GOOD LUCK BINSAR!!!
+    		if (numDiceAttacker>0 || numDiceAttacker<=MAX_ATTACKER_DICE_NUM)
+    			attackerDice = rollAttackerDice(numDiceAttacker);
     		
     }    
+    
+    public void defend() {  	
+    }
     
     
     public void attackAllOut() {}
     
+    public void attackNone() {}
     
+    public void attackMove() {
+    	
+    }
     
+    public int[] rollAttackerDice(int numDiceAttacker) {
+    	attackerDice = new int[numDiceAttacker];
+    	diceRandomizer = new SecureRandom();
+    	for (int i = 0; i < attackerDice.length; i++) {
+    		attackerDice[i] = diceRandomizer.nextInt(5)+1;
+    		System.out.println(attackerDice[i]);
+    	}
+    	return attackerDice;
+    }
     
-    
-    
+    public int[] rollDefenderDice(int numDiceDefender) {
+    	defenderDice = new int[numDiceDefender];
+    	diceRandomizer = new SecureRandom();
+    	for (int i = 0; i < defenderDice.length; i++) {
+    		defenderDice[i] = diceRandomizer.nextInt(5)+1;
+    		System.out.println(defenderDice[i]);
+    	}
+    	return defenderDice;
+    }
     
     //--------------------------------------FORTIFICATION--------------------------------------------------
     

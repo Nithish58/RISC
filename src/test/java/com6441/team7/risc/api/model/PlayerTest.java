@@ -68,4 +68,11 @@ public class PlayerTest {
 		assertEquals(armyNum, testPlayer.getArmies());
 	}
 
+	/**
+	 * Testing attacker dice roll
+	 */
+	@Test
+	public void test004_rollAttackerDice() {
+		assertNotEquals(0, testPlayer.rollAttackerDice(3));
+	}
 }
