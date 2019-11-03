@@ -75,9 +75,9 @@ public class ReinforceGameController implements Controller{
      */
     @Override
     public void readCommand(String command) throws Exception {
-        createCardExchangeView();
+
         Player player = playerService.getCurrentPlayer();
-        showCardsInfo(player, cardExchangeView);
+
 
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -147,12 +147,7 @@ public class ReinforceGameController implements Controller{
      */
     public void reinforceArmy(Player player, String country, int armNum){
 
-        reinforcedArmies = calculateReinforcedArmies(player);
 
-        if(isReinforceOver()){
-            playerService.getMapService().setState(GameState.ATTACK);
-            return;
-        }
 
         if(armNum < 0 || armNum > reinforcedArmies){
             throw new ReinforceParsingException("the number is less than 0 or larger than the number of reinforced solider you have");
@@ -164,6 +159,12 @@ public class ReinforceGameController implements Controller{
 
         playerService.reinforceArmy(player, country, armNum);
         reinforcedArmies -= armNum;
+        phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
+
+        if(isReinforceOver()){
+            playerService.getMapService().setState(GameState.ATTACK);
+            return;
+        }
 
     }
 
@@ -217,6 +218,12 @@ public class ReinforceGameController implements Controller{
     public void exchangeCards(Player player, String command){
         try{
 
+            createCardExchangeView();
+            showCardsInfo(player, cardExchangeView);
+            if(isExchangeCardOver){
+                cardExchangeView.displayMessage("the exchange cards stage terminates. enter reinforce command");
+                return;
+            }
 
             String[] commands = StringUtils.split(command, WHITESPACE);
 
@@ -236,7 +243,7 @@ public class ReinforceGameController implements Controller{
             }
 
         } catch (Exception e){
-            phaseView.displayMessage("from phase view: " + e.getMessage());
+            cardExchangeView.displayMessage( e.getMessage());
         }finally {
             cardExchangeView.displayMessage("card exchange view close");
         }
@@ -262,7 +269,7 @@ public class ReinforceGameController implements Controller{
      * @param commands
      */
     public void tradeNone(Player player, String[] commands){
-        if(commands[1].equalsIgnoreCase("-none")){
+        if(!commands[1].equalsIgnoreCase("-none")){
             throw new ReinforceParsingException(commands[1] + " is not valid");
         }
 
@@ -272,8 +279,13 @@ public class ReinforceGameController implements Controller{
             phaseView.displayMessage("you must exchange the cards");
         }
         else{
+            cardExchangeView.displayMessage("the exchange card phase terminates");
+            calculateReinforcedArmies(player);
+            phaseView.displayMessage(player.getName() + " get " + reinforcedArmies + " reinforced armies.");
             isExchangeCardOver = true;
         }
+
+
 
     }
 
@@ -285,6 +297,9 @@ public class ReinforceGameController implements Controller{
     private void  showCardsInfo(Player player, GameView view){
         List<String> cardsInfo = playerService.showCardsInfo(player);
 
+        if(cardsInfo.isEmpty()){
+            view.displayMessage("You don't have any cards yet");
+        }
         int count = 1;
         for(String card: cardsInfo){
             view.displayMessage(count + ":" + card + WHITESPACE);

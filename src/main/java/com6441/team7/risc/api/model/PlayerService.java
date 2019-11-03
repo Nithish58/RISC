@@ -1,10 +1,7 @@
 package com6441.team7.risc.api.model;
 
-import org.apache.commons.collections4.queue.CircularFifoQueue;
-
 import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 import java.util.*;
 
@@ -182,9 +179,9 @@ public class PlayerService extends Observable {
     //jenny: call method in player to reinforceArmy
     public void reinforceArmy(Player player, String country, int armyNum){
         mapService.reinforceArmyToCountry(country, armyNum);
-        CardWrapper cardWrapper = new CardWrapper(player, country, armyNum);
+        ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(player, country, armyNum);
         setChanged();
-        notifyObservers(cardWrapper);
+        notifyObservers(reinforcedArmyWrapper);
     }
 
     //jenny: show cards information of the player
