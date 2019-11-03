@@ -776,10 +776,12 @@ public class MapService extends Observable {
     	if(countries.isEmpty()) {
     		return false;
     	}
+
         
     	if(adjacencyCountriesMap.isEmpty()) {
     		return false;
     	}
+
 
         for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
             Set<Integer> set = new HashSet<>(entry.getValue());

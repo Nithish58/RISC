@@ -79,8 +79,22 @@ public class ReinforceGameController implements Controller{
      */
     @Override
     public void readCommand(String command) throws Exception {
+      /*
 
+        createCardExchangeView();
         Player player = playerService.getCurrentPlayer();
+        showCardsInfo(player, cardExchangeView);
+
+        //FOR BINSAR TO WORK ON ATTACK PHASE, im skipping reinforcement and going to attack jenny
+        //Comment out the code below if u want to test gameflow
+        playerService.getMapService().setState(GameState.ATTACK);
+
+*/
+    	
+    	playerService.getMapService().setState(GameState.ATTACK);
+    	
+        Player player = playerService.getCurrentPlayer();
+
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
 

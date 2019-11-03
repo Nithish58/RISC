@@ -107,7 +107,6 @@ public class StartupGameController implements Controller{
 	private PlayerService playerService;
 	private GameView phaseView;
 	
-	//private GameView dominationView;
 
 	public StartupGameController(Controller mapController, PlayerService playerService) {
 		this.mapLoaderController= (MapLoaderController) mapController;
@@ -126,10 +125,6 @@ public class StartupGameController implements Controller{
 	    this.phaseView = view;
     }
 	
-	/*
-	 * public void setDominationView(GameView domView) {
-	 * this.dominationView=domView; }
-	 */
 
     //TODO: read command from phaseView and validate command here
     //TODO: if the command is valid, call corresponding method in playerService
@@ -142,11 +137,18 @@ public class StartupGameController implements Controller{
 
         String[] commands = {};
 
-        if(command.contains("-")){
-            command = StringUtils.substringAfter(command, "-");
-            commands = StringUtils.split(command, "-");
-        }
+		/*
+		 * if(command.contains("-")){ command = StringUtils.substringAfter(command,
+		 * "-"); commands = StringUtils.split(command, "-"); }
+		 */
 
+        if(command.toLowerCase(Locale.CANADA).contains("-add") ||
+        	command.toLowerCase(Locale.CANADA).contains("-remove")){
+
+            command = StringUtils.substringAfter(command, "-");
+            commands = command.split("\\s-");
+        }
+        
         switch(commandType) {
         	
         case LOAD_MAP:
@@ -165,6 +167,7 @@ public class StartupGameController implements Controller{
             		loadMap(command);
         		}
         		else {
+        			
         			if(!boolMapLoaded) phaseView.displayMessage("Load Map First");
         			
         			else if(boolCountriesPopulated)

@@ -91,8 +91,6 @@ public class FortifyGameController implements Controller {
 	@Override
 	public void readCommand(String command) throws Exception {
 
-		// this.playerService.getMapService().setState(GameState.REINFORCE);
-		// this.playerService.switchNextPlayer();
 
 		this.player = playerService.getCurrentPlayer();
 

@@ -107,7 +107,7 @@ public class MapLoaderController implements Controller{
      */
     private void exitEditMap(){
         if(mapService.isMapNotValid()) {
-            System.out.println("Map Not Valid");
+            view.displayMessage("Map Not Valid");
         }
         this.mapService.setState(GameState.START_UP);
     }
@@ -310,7 +310,7 @@ public class MapLoaderController implements Controller{
 
             continent.setColor("null");
             mapService.addContinent(continent);
-            System.out.println("continent has been successfully added");
+            view.displayMessage("continent has been successfully added");
         } catch (Exception e) {
             throw new ContinentEditException("edit continent command: cannot add it is not valid", e);
         }
@@ -453,7 +453,7 @@ public class MapLoaderController implements Controller{
 
             if (mapService.countryNameExist(countryName) && mapService.countryNameExist(neighborCountry)) {
                 mapService.addNeighboringCountries(countryName, neighborCountry);
-                System.out.println("neighbor country been successfully added");
+                view.displayMessage("neighbor country been successfully added");
                 return;
             }
 
@@ -550,9 +550,9 @@ public class MapLoaderController implements Controller{
         File file = new File(name);
         try {
             FileUtils.writeStringToFile(file, "", StandardCharsets.UTF_8.name());
-            System.out.println("a file " + file.getName() + " has been created.");
+            view.displayMessage("a file " + file.getName() + " has been created.");
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            view.displayMessage(e.getMessage());
         }
     }
 

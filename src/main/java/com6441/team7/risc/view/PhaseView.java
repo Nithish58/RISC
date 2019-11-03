@@ -4,6 +4,15 @@ import com6441.team7.risc.api.model.*;
 
 import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
 
+import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+
+/*
+import com6441.team7.risc.api.model.MapService;
+import com6441.team7.risc.api.model.Player;
+import com6441.team7.risc.api.model.PlayerService;
+import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+*/
+
 import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
@@ -132,10 +141,20 @@ public class PhaseView implements GameView {
         		playerFortificationStatus(arg);
         		return;
         	}
+          
+        	//During attack phase
+        	if(arg instanceof PlayerAttackWrapper) {
+        		playerAttackStatus(arg);
+        		return;
+        	}
+        	        	
+
 
         	if(arg instanceof ReinforcedArmyWrapper){
         	    displayReinforcedArmy(arg);
+            return; //Added by keshav to resolve conflict
             }
+
 
         	return;
         }  //End of PlayerService.class observable 
@@ -151,6 +170,7 @@ public class PhaseView implements GameView {
         
     }  //End of Update Method
 
+
     /**
      * display the message of reinforced countries with number of reinforced armies and player name
      * @param arg
@@ -160,6 +180,7 @@ public class PhaseView implements GameView {
         displayMessage("reinforced country: " + ((ReinforcedArmyWrapper)arg).getCountryName());
         displayMessage("reinforced army number: " + ((ReinforcedArmyWrapper)arg).getNum());
     }
+
 
 	/**
      * Extracts information about a newly added player or a removed player and displays it
@@ -303,6 +324,55 @@ public class PhaseView implements GameView {
     			+toCountry.getCountryName()+" now has "+toCountry.getSoldiers()+" soldiers.\n");
     	
     }
+    
+    /**
+     * Displays various information when an attack is launched
+     * ALso displays end result of an attack
+     * @param PlayerAttackWrapper as object
+     */    
+    private void playerAttackStatus(Object arg) {
+    	
+    	PlayerAttackWrapper playerAttackWrapper
+    	=((PlayerAttackWrapper) arg);
+    	
+    	Country fromCountry=playerAttackWrapper.getFromCountry();
+    	Country toCountry=playerAttackWrapper.getToCountry();
+    	
+    	Player fromPlayer=fromCountry.getPlayer();
+    	Player toPlayer=toCountry.getPlayer();
+    	
+    	String fromCountryName=fromCountry.getCountryName();
+    	String toCountryName=toCountry.getCountryName();
+    	
+    	String fromPlayerName=fromPlayer.getName();
+    	String toPlayerName=toPlayer.getName();
+    	
+    	if(playerAttackWrapper.getBoolAttackOver()) {
+    		//Do something
+    		return;
+    	}
+    	
+    	String strMsg="";
+    	
+    	if(playerAttackWrapper.getBoolAllOut()) {
+    		strMsg=fromPlayerName+" decides to attack from "+fromCountryName+
+    				" to "+toCountryName+" ("+toPlayerName+") ALLOUT!!!";
+    	}
+    	
+    	else {
+    		
+    		int numDiceAttacker=playerAttackWrapper.getNumDiceAttacker();
+    		
+    		strMsg=fromPlayerName+" decides to attack from "+fromCountryName+
+    				" to "+toCountryName+" ("+toPlayerName+")";
+    		
+    		strMsg+="\n"+fromPlayerName+" chooses "+numDiceAttacker+" dices.";
+    		
+    	}
+    	
+    	displayMessage(strMsg);
+    }
+    
     
     //TRIAL METHOD...NOT YET USED...FOUND ON NET
     public  void clearScreen() {

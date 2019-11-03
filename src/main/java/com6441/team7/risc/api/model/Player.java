@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 /**
@@ -296,15 +297,6 @@ public class Player{
         //TODO
         return name;
     }
-
-
-    public void attack(){
-        //TODO
-    }
-
-    public void reinforce(){
-        //TODO
-    }
     
     public void addCountryToPlayerList(Country c) {
     	
@@ -320,9 +312,62 @@ public class Player{
     	return countryPlayerList;
     }
     
+    //------------------------------------REINFORCEMENT-----------------------------------------
     
-    private Country fromCountry;
-    private Country toCountry;
+    
+
+    public void reinforce(){
+        //TODO
+    }
+    
+    
+    
+    //----------------------------------ATTACK--------------------------------------------------
+    
+    //Start listing private members for attack here binsar and then continue in this region.
+    
+    private Country fromCountryAttack;
+    private Country toCountryAttack;
+    private int numDiceAttacker=0;
+    private int numDiceDefender=0;
+    private boolean boolAllOut;
+    
+    
+    public void attack(PlayerService playerService, PlayerAttackWrapper playerAttackWrapper){
+    	
+    		this.fromCountryAttack=playerAttackWrapper.getFromCountry();
+    		this.toCountryAttack=playerAttackWrapper.getToCountry();
+    		
+    		this.boolAllOut=playerAttackWrapper.getBooleanAllOut();
+    		
+    		if(boolAllOut) {
+    			attackAllOut();
+    			return;
+    		}
+    	
+			this.numDiceAttacker=playerAttackWrapper.getNumDiceAttacker();
+			this.numDiceDefender=playerAttackWrapper.getNumDiceDefender();
+			
+			//Continue or you can change the structure of functions etc if you want.
+			// DO NOT CHANGE IN ATTACK CONTROLLER...You just have to code here.
+			//						GOOD LUCK BINSAR!!!
+    		
+    }    
+    
+    
+    public void attackAllOut() {}
+    
+    
+    
+    
+    
+    
+    
+    //--------------------------------------FORTIFICATION--------------------------------------------------
+    
+    // Private members for Fortification
+    private Country fromCountryFortify;
+    private Country toCountryFortify;
     private int numSoldiersToFortify;
     
 	/**
@@ -330,7 +375,7 @@ public class Player{
 	 */
 	private	Set<Integer> neighbouringCountries;
     
-    private boolean boolValidationMet;
+    private boolean boolFortifyValidationMet;
     
     private PlayerFortificationWrapper playerFortificationWrapper;
     
@@ -338,8 +383,8 @@ public class Player{
     public void fortify(PlayerService playerService, PlayerFortificationWrapper playerFortificationWrapper) {
     	
     	this.playerFortificationWrapper=playerFortificationWrapper;
-    	this.fromCountry=this.playerFortificationWrapper.getCountryFrom();
-    	this.toCountry=this.playerFortificationWrapper.getCountryTo();
+    	this.fromCountryFortify=this.playerFortificationWrapper.getCountryFrom();
+    	this.toCountryFortify=this.playerFortificationWrapper.getCountryTo();
     	this.numSoldiersToFortify=this.playerFortificationWrapper.getNumSoldiers();
     	
     	//Checks if boolean fortificationNone is true...calls fortifyNone method.
@@ -351,7 +396,7 @@ public class Player{
     	}
 
     	//Check if conditions of ownership, adjacency and numSoldiers are valid
-    	if(!validateConditions(playerService)) {
+    	if(!validateFortifyConditions(playerService)) {
     		
     		//Notify playerService Observers about validation error message
     		playerService.notifyPlayerServiceObservers(this.playerFortificationWrapper);
@@ -361,11 +406,11 @@ public class Player{
 
     	
     	//Actual Fortification
-		fromCountry.removeSoldiers(numSoldiersToFortify);
-		toCountry.addSoldiers(numSoldiersToFortify);
+		fromCountryFortify.removeSoldiers(numSoldiersToFortify);
+		toCountryFortify.addSoldiers(numSoldiersToFortify);
 		
 		//Notifying Observers of PlayerService
-		this.playerFortificationWrapper=new PlayerFortificationWrapper(fromCountry, toCountry,
+		this.playerFortificationWrapper=new PlayerFortificationWrapper(fromCountryFortify, toCountryFortify,
 				numSoldiersToFortify);
 		this.playerFortificationWrapper.setFortificationDisplayMessage("success");
 		
@@ -402,25 +447,25 @@ public class Player{
 	 * <li>at least 1 player will remain in the source country after fortification</li>
 	 * <ul>
 	 */
-	private boolean validateConditions(PlayerService playerService) {
+	private boolean validateFortifyConditions(PlayerService playerService) {
 		
-		this.boolValidationMet=true;
+		this.boolFortifyValidationMet=true;
 		
 		checkCountryAdjacency(playerService.getMapService());
 		
-		if(boolValidationMet) {
+		if(boolFortifyValidationMet) {
 			checkCountriesBelongToCurrentPlayer(playerService);
 		}
 		
-		if(boolValidationMet) {
+		if(boolFortifyValidationMet) {
 			checkCountryOwnership();
 		}
 					
-		if(boolValidationMet) {
+		if(boolFortifyValidationMet) {
 			checkNumSoldiers();
 		}
 		
-		return this.boolValidationMet;
+		return this.boolFortifyValidationMet;
 		
 	}
 	
@@ -433,28 +478,28 @@ public class Player{
 			
 			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
 			
-			Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountry.getCountryName());
+			Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountryFortify.getCountryName());
 			
-			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountry.getCountryName());
+			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountryFortify.getCountryName());
 			
 			if(!fromId.isPresent()) {
 				this.playerFortificationWrapper.setFortificationDisplayMessage
 				("Origin country not present");
-				this.boolValidationMet=false;
+				this.boolFortifyValidationMet=false;
 			}
 
 			
 			if(!toId.isPresent()) {
 				this.playerFortificationWrapper.setFortificationDisplayMessage
 				("Destination country not present");
-				this.boolValidationMet=false;
+				this.boolFortifyValidationMet=false;
 			}
 			
-			if(boolValidationMet) {
+			if(boolFortifyValidationMet) {
 				neighbouringCountries =  adjacentCountriesList.get(fromId.get());
 				
 				if(!neighbouringCountries.contains(toId.get())) {
-					this.boolValidationMet=false;
+					this.boolFortifyValidationMet=false;
 					this.playerFortificationWrapper.setFortificationDisplayMessage
 					("Countries not adjacent to each other");
 				}
@@ -468,12 +513,12 @@ public class Player{
 	 */
 	private void checkCountryOwnership() {
 			
-			if(!(fromCountry.getPlayer().getName().equalsIgnoreCase
-					(toCountry.getPlayer().getName()))) {
+			if(!(fromCountryFortify.getPlayer().getName().equalsIgnoreCase
+					(toCountryFortify.getPlayer().getName()))) {
 				
 				this.playerFortificationWrapper.setFortificationDisplayMessage
 				("Countries do not belong to same player");
-				this.boolValidationMet=false;
+				this.boolFortifyValidationMet=false;
 			}
 			
 		}
@@ -486,11 +531,11 @@ public class Player{
 		Player currentPlayer=playerService.getCurrentPlayer();
 		String playerName=currentPlayer.getName();
 		
-		if((!fromCountry.getPlayer().getName().equals(playerName))
-				|| (!toCountry.getPlayer().getName().equals(playerName))) {
+		if((!fromCountryFortify.getPlayer().getName().equals(playerName))
+				|| (!toCountryFortify.getPlayer().getName().equals(playerName))) {
 			this.playerFortificationWrapper.setFortificationDisplayMessage
 			("fromCountry or toCountry does not belong to current player");
-			this.boolValidationMet=false;
+			this.boolFortifyValidationMet=false;
 		}
 		
 	}
@@ -501,16 +546,16 @@ public class Player{
 	 */
 	private void checkNumSoldiers() {
 			
-			if(!(fromCountry.getSoldiers()>numSoldiersToFortify)) {
+			if(!(fromCountryFortify.getSoldiers()>numSoldiersToFortify)) {
 				this.playerFortificationWrapper.setFortificationDisplayMessage
 				("Not enough soldiers in origin country");
-				this.boolValidationMet=false;
+				this.boolFortifyValidationMet=false;
 			}
 			
 			if(numSoldiersToFortify<1) {
 				this.playerFortificationWrapper.setFortificationDisplayMessage
 				("Num soldiers must be greater than 0.");
-				this.boolValidationMet=false;
+				this.boolFortifyValidationMet=false;
 			}
 		}
 	
