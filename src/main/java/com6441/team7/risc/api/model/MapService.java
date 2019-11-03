@@ -776,10 +776,6 @@ public class MapService extends Observable {
     	if(countries.size()==0) {
     		return false;
     	}
-        
-    	if(adjacencyCountriesMap.size()==0) {
-    		return false;
-    	}
     	
         if (adjacencyCountriesMap.size() == 0) {
             return false;
