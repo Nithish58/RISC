@@ -902,6 +902,7 @@ public class MapService extends Observable {
     }
 
 
+    //-------------------------------reinforcement functions-------------------------------ewikxz
 
 
     /**

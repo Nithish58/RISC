@@ -142,7 +142,12 @@ public class PlayerService extends Observable {
     	return currentPlayerIndex;
     }
 
-    //jenny: add this method to set current player
+
+
+	/**
+	 * set current player
+	 * @param player
+	 */
     public void setCurrentPlayer(Player player){
         currentPlayer = player;
     }
@@ -160,24 +165,46 @@ public class PlayerService extends Observable {
     	return false;
     }
 
-    //jenny: call method in mapService to get total number of countries conquered by the player
+
+	/**
+	 * get total number of countries conquered by the player
+	 * @param player
+	 * @return
+	 */
     public long getConqueredCountriesNumber(Player player){
 
         return mapService.getConqueredCountriesNumber(player);
     }
 
-    //jenny: call method in mapService to get total number of continents conquered by the player
+
+
+	/**
+	 * get total number of reinforcedArmy if player has conquered the whole continents
+	 * @param player
+	 * @return
+	 */
     public long getReinforcedArmyByConqueredContinents(Player player){
         return mapService.getReinforceArmyByConqueredContinents(player);
     }
 
-    //jenny: call method in mapService to get total number of countries conquered by the player
+
+	/**
+	 * get countries names conquered by the player
+	 * @param player
+	 * @return
+	 */
     public List<String> getConqueredContries(Player player){
         return mapService.getConqueredCountriesNameByPlayer(player);}
 
 
 
-    //jenny: call method in player to reinforceArmy
+
+	/**
+	 * reinforce army to the player of its country occupied
+	 * @param player
+	 * @param country
+	 * @param armyNum
+	 */
     public void reinforceArmy(Player player, String country, int armyNum){
         mapService.reinforceArmyToCountry(country, armyNum);
         ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(player, country, armyNum);
@@ -185,17 +212,34 @@ public class PlayerService extends Observable {
         notifyObservers(reinforcedArmyWrapper);
     }
 
-    //jenny: show cards information of the player
+
+	/**
+	 * show cards information of the player
+	 * @param player
+	 * @return
+	 */
     public List<String> showCardsInfo(Player player){
         return player.getCardList();
     }
 
-    //jenny: validate cards validity
+
+
+	/**
+	 * check if the trade-in cards meet the trade-in condition
+	 * @param player
+	 * @param cardList
+	 * @return
+	 */
     public boolean isTradeInCardsValid(Player player, List<String> cardList){
         return player.meetTradeInCondition(cardList);
     }
 
-    //jenny: remove Cards from Player
+
+	/**
+	 * remove cards from cardList of the player
+	 * @param player
+	 * @param cardList
+	 */
     public void removeCards(Player player, List<String> cardList){
         player.removeCards(cardList);
         notifyObservers(player);

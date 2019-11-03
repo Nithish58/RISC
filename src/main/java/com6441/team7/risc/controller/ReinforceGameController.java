@@ -79,22 +79,8 @@ public class ReinforceGameController implements Controller{
      */
     @Override
     public void readCommand(String command) throws Exception {
-      /*
 
-        createCardExchangeView();
         Player player = playerService.getCurrentPlayer();
-        showCardsInfo(player, cardExchangeView);
-
-        //FOR BINSAR TO WORK ON ATTACK PHASE, im skipping reinforcement and going to attack jenny
-        //Comment out the code below if u want to test gameflow
-        playerService.getMapService().setState(GameState.ATTACK);
-
-*/
-    	
-    	playerService.getMapService().setState(GameState.ATTACK);
-    	
-        Player player = playerService.getCurrentPlayer();
-
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
 
@@ -107,27 +93,27 @@ public class ReinforceGameController implements Controller{
                 break;
             case SHOW_MAP:
                 //showMap();
-            	MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
+                MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
                 break;
             case SHOW_PLAYER:
-    			// showPlayerFortificationPhase(player);
-    			MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
-    			break;
+                // showPlayerFortificationPhase(player);
+                MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
+                break;
 
-    		case SHOW_PLAYER_ALL_COUNTRIES:
-    			// showPlayerAllCountriesFortification();
-    			MapDisplayUtils.showPlayerAllCountries(playerService.getMapService(), playerService, phaseView);
-    			break;
+            case SHOW_PLAYER_ALL_COUNTRIES:
+                // showPlayerAllCountriesFortification();
+                MapDisplayUtils.showPlayerAllCountries(playerService.getMapService(), playerService, phaseView);
+                break;
 
-    		case SHOW_PLAYER_COUNTRIES:
-    			// showPlayerCountriesFortification();
-    			MapDisplayUtils.showPlayerCountries(playerService.getMapService(), playerService, phaseView);
-    			break;
+            case SHOW_PLAYER_COUNTRIES:
+                // showPlayerCountriesFortification();
+                MapDisplayUtils.showPlayerCountries(playerService.getMapService(), playerService, phaseView);
+                break;
 
-    		case EXIT:
-    			CommonUtils.endGame(phaseView);
-    			break;
-    			
+            case EXIT:
+                CommonUtils.endGame(phaseView);
+                break;
+
             default:
                 throw new IllegalArgumentException("cannot recognize this command");
         }
@@ -385,6 +371,10 @@ public class ReinforceGameController implements Controller{
         return reinforcedArmies;
     }
 
+    /**
+     * check if the exchange cards state is over
+     * @return
+     */
     public boolean isExchangeCardOver() {
         return isExchangeCardOver;
     }

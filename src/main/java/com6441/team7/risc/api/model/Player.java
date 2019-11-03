@@ -80,6 +80,10 @@ public class Player{
         this.name = name;
     }
 
+
+
+    //------------------------------------REINFORCEMENT-----------------------------------------
+
     /**
      * get number of armies
      * @return armies number
@@ -94,9 +98,6 @@ public class Player{
      */
     public void setArmies(int armies) {
         this.armies = armies;
-        
-        //setChanged();
-    	//notifyObservers(this);
     }
 
     /**
@@ -105,9 +106,6 @@ public class Player{
      */
     public void reduceArmy(int number){
         armies -= number;
-        
-        //setChanged();
-    	//notifyObservers(this);
     }
 
     /**
@@ -116,9 +114,6 @@ public class Player{
      */
     public void addArmy(int number){
     	armies += number;
-    	
-    	//setChanged();
-    	//notifyObservers(this);
     }
 
     /**
@@ -141,7 +136,12 @@ public class Player{
     }
 
 
-    //modified by jenny
+
+    /**
+     * check if the trade in cards meet the trade in condition
+     * @param cardList
+     * @return true if valid false if not valid
+     */
     public boolean meetTradeInCondition(List<String> cardList){
         if(hasThreeSameCards(cardList) || hasThreeDifferentCards(cardList)){
             return true;
@@ -150,7 +150,13 @@ public class Player{
         return false;
     }
 
-    //jenny: check if three cards are the same
+
+
+    /**
+     * check if the three cards are the same
+     * @param cardList
+     * @return true if all the cards are the same, false if not
+     */
     private boolean hasThreeSameCards(List<String> cardList){
         if(cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
            cardList.get(1).equalsIgnoreCase(cardList.get(2))){
@@ -160,6 +166,11 @@ public class Player{
         return false;
     }
 
+    /**
+     * check if the three cards are all different
+     * @param cardList
+     * @return true if all three cards are different, false if not
+     */
     private boolean hasThreeDifferentCards(List<String> cardList){
         if(!cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
             !cardList.get(1).equalsIgnoreCase(cardList.get(2)) &&
@@ -188,7 +199,11 @@ public class Player{
     }
 
 
-    //jenny: add a new method to remove cards from player
+
+    /**
+     * remove trade in cards from the player cards
+     * @param list
+     */
     public void removeCards(List<String> list){
         Card cardOne = cardList.stream()
                 .filter(card -> card.getName().equalsIgnoreCase(list.get(0)))
@@ -279,31 +294,11 @@ public class Player{
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Player player = (Player) o;
-        return Objects.equals(name, player.name);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
 
-    @Override
-    public String toString(){
-        //TODO
-        return name;
-    }
-    
     public void addCountryToPlayerList(Country c) {
     	
     	this.countryPlayerList.add(c);
-    	
-        //setChanged();
-        //notifyObservers(this);
     }
     
     public void removeCountryFromPlayerList(Country c) {}
@@ -312,14 +307,10 @@ public class Player{
     	return countryPlayerList;
     }
     
-    //------------------------------------REINFORCEMENT-----------------------------------------
+
     
     
 
-    public void reinforce(){
-        //TODO
-    }
-    
     
     
     //----------------------------------ATTACK--------------------------------------------------
@@ -560,7 +551,39 @@ public class Player{
 				this.boolFortifyValidationMet=false;
 			}
 		}
-	
+
+
+
+    /**
+     * check if the two players are the same
+     * @param o
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(name, player.name);
+    }
+
+    /**
+     * extend and override hashCode
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    /**
+     * extend and override toString() method
+     * @return
+     */
+    @Override
+    public String toString(){
+        return name;
+    }
     
    
 }  //End of Player class
