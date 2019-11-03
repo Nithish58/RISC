@@ -26,6 +26,11 @@ public enum RiscCommand {
     FORTIFY("fortify"),
     ATTACK("attack"),
     UNKNOWN("unknown"),
+    
+    
+    //ATTACK Commands
+    DEFEND("defend"),
+    ATTACKMOVE("attackmove"),
 
 
 	EXIT_MAPEDIT("exitmapedit"),

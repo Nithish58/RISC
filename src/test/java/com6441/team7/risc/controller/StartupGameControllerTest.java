@@ -69,7 +69,7 @@ public class StartupGameControllerTest {
 	  */
 	@Before public void beforeEachTest() {
 		createObjects();
-		loadValidMap("RiskEurope.map");
+		loadValidMap("ameroki.map");
 	}
 	
 	/**
@@ -311,13 +311,9 @@ public class StartupGameControllerTest {
 		  Country randomPlayerCountry=currentPlayer.getCountryList().get(0);
 		  int initialNumCountrySoldiers=randomPlayerCountry.getSoldiers();
 		  String countryName=randomPlayerCountry.getCountryName().toString();
-		  
-		  System.out.println(currentPlayer.getName());
 		 
 		  //Method call
 		  phaseViewTest.receiveCommand("placearmy "+countryName);
-		  System.out.println(countryName);
-		  System.out.println(currentPlayer.getName());
 		  
 		 assertEquals((currentPlayer.getArmies()+1),initialNumPlayerArmiesRemaining);
 		assertEquals((initialNumCountrySoldiers+1),randomPlayerCountry.getSoldiers().intValue());

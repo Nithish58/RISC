@@ -142,11 +142,18 @@ public class StartupGameController implements Controller{
 
         String[] commands = {};
 
-        if(command.contains("-")){
-            command = StringUtils.substringAfter(command, "-");
-            commands = StringUtils.split(command, "-");
-        }
+		/*
+		 * if(command.contains("-")){ command = StringUtils.substringAfter(command,
+		 * "-"); commands = StringUtils.split(command, "-"); }
+		 */
 
+        if(command.toLowerCase(Locale.CANADA).contains("-add") ||
+        	command.toLowerCase(Locale.CANADA).contains("-remove")){
+
+            command = StringUtils.substringAfter(command, "-");
+            commands = command.split("\\s-");
+        }
+        
         switch(commandType) {
         	
         case LOAD_MAP:
@@ -165,6 +172,7 @@ public class StartupGameController implements Controller{
             		loadMap(command);
         		}
         		else {
+        			
         			if(!boolMapLoaded) phaseView.displayMessage("Load Map First");
         			
         			else if(boolCountriesPopulated)

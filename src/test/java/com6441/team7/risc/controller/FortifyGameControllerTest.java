@@ -74,7 +74,7 @@ public class FortifyGameControllerTest {
 	@Before public void beforeEachTest() {
 		createObjects();
 		
-		loadValidMap("ameroki.map");
+		loadValidMap("luca.map");
 		
 		addPlayer("Keshav");
 		addPlayer("Binsar");
