@@ -30,8 +30,6 @@ public class ReinforceGameController implements Controller{
      */
     private PlayerService playerService;
 
-    
-    
     /**
      * the reference of phaseView
      */
