@@ -541,6 +541,10 @@ public class StartupGameController implements Controller{
 				
 				phaseView.displayMessage("Countries Populated. Start placing your armies now.\n");
 				
+				playerService.evaluateWorldDomination();
+				
+				System.out.println("After Dom view call");
+				
 				this.boolCountriesPopulated=true;
 				
 				/*
@@ -655,6 +659,8 @@ public class StartupGameController implements Controller{
 
         			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
         			
+        			playerService.evaluateWorldDomination();
+        			
         			//phaseView.displayMessage(currentPlayer.getName()+" placed army successfully.");
         			
         			if(currentPlayer.getArmies()==0) {
@@ -731,7 +737,11 @@ public class StartupGameController implements Controller{
     			=new PlayerPlaceArmyWrapper(p,p.countryPlayerList.get(randomIndex));
     			
     			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
+    			
+    			//playerService.evaluateWorldDomination();
     		}
+    		
+			playerService.evaluateWorldDomination();
     		
     	}
 

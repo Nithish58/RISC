@@ -2,6 +2,7 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.*;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +45,9 @@ public class ReinforceGameController implements Controller{
      */
     private int reinforcedArmies;
 
+    /**
+     * the value whether the exchange card stage terminates
+     */
     private boolean isExchangeCardOver;
 
     /**
@@ -75,6 +79,8 @@ public class ReinforceGameController implements Controller{
      */
     @Override
     public void readCommand(String command) throws Exception {
+      /*
+
         createCardExchangeView();
         Player player = playerService.getCurrentPlayer();
         showCardsInfo(player, cardExchangeView);
@@ -82,7 +88,10 @@ public class ReinforceGameController implements Controller{
         //FOR BINSAR TO WORK ON ATTACK PHASE, im skipping reinforcement and going to attack jenny
         //Comment out the code below if u want to test gameflow
         playerService.getMapService().setState(GameState.ATTACK);
-        
+
+*/
+        Player player = playerService.getCurrentPlayer();
+
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
 
@@ -94,8 +103,28 @@ public class ReinforceGameController implements Controller{
                 exchangeCards(player, command);
                 break;
             case SHOW_MAP:
-                showMap();
+                //showMap();
+            	MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
                 break;
+            case SHOW_PLAYER:
+    			// showPlayerFortificationPhase(player);
+    			MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
+    			break;
+
+    		case SHOW_PLAYER_ALL_COUNTRIES:
+    			// showPlayerAllCountriesFortification();
+    			MapDisplayUtils.showPlayerAllCountries(playerService.getMapService(), playerService, phaseView);
+    			break;
+
+    		case SHOW_PLAYER_COUNTRIES:
+    			// showPlayerCountriesFortification();
+    			MapDisplayUtils.showPlayerCountries(playerService.getMapService(), playerService, phaseView);
+    			break;
+
+    		case EXIT:
+    			CommonUtils.endGame(phaseView);
+    			break;
+    			
             default:
                 throw new IllegalArgumentException("cannot recognize this command");
         }
@@ -108,6 +137,7 @@ public class ReinforceGameController implements Controller{
     public void showMap(){
         MapDisplayUtils.showFullMap(playerService.getMapService(), phaseView);
     }
+
 
     /**
      * validate reinforce command, if the command is valid, call reinforceArmy to put extra armies on countries occupied
@@ -150,13 +180,6 @@ public class ReinforceGameController implements Controller{
      */
     public void reinforceArmy(Player player, String country, int armNum){
 
-        reinforcedArmies = calculateReinforcedArmies(player);
-
-        if(isReinforceOver()){
-            playerService.getMapService().setState(GameState.ATTACK);
-            return;
-        }
-
         if(armNum < 0 || armNum > reinforcedArmies){
             throw new ReinforceParsingException("the number is less than 0 or larger than the number of reinforced solider you have");
         }
@@ -167,6 +190,12 @@ public class ReinforceGameController implements Controller{
 
         playerService.reinforceArmy(player, country, armNum);
         reinforcedArmies -= armNum;
+        phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
+
+        if(isReinforceOver()){
+            playerService.getMapService().setState(GameState.ATTACK);
+            return;
+        }
 
     }
 
@@ -220,6 +249,12 @@ public class ReinforceGameController implements Controller{
     public void exchangeCards(Player player, String command){
         try{
 
+            createCardExchangeView();
+            showCardsInfo(player, cardExchangeView);
+            if(isExchangeCardOver){
+                cardExchangeView.displayMessage("the exchange cards stage terminates. enter reinforce command");
+                return;
+            }
 
             String[] commands = StringUtils.split(command, WHITESPACE);
 
@@ -239,7 +274,7 @@ public class ReinforceGameController implements Controller{
             }
 
         } catch (Exception e){
-            phaseView.displayMessage("from phase view: " + e.getMessage());
+            cardExchangeView.displayMessage( e.getMessage());
         }finally {
             cardExchangeView.displayMessage("card exchange view close");
         }
@@ -265,7 +300,7 @@ public class ReinforceGameController implements Controller{
      * @param commands
      */
     public void tradeNone(Player player, String[] commands){
-        if(commands[1].equalsIgnoreCase("-none")){
+        if(!commands[1].equalsIgnoreCase("-none")){
             throw new ReinforceParsingException(commands[1] + " is not valid");
         }
 
@@ -275,8 +310,13 @@ public class ReinforceGameController implements Controller{
             phaseView.displayMessage("you must exchange the cards");
         }
         else{
+            cardExchangeView.displayMessage("the exchange card phase terminates");
+            calculateReinforcedArmies(player);
+            phaseView.displayMessage(player.getName() + " get " + reinforcedArmies + " reinforced armies.");
             isExchangeCardOver = true;
         }
+
+
 
     }
 
@@ -288,6 +328,9 @@ public class ReinforceGameController implements Controller{
     private void  showCardsInfo(Player player, GameView view){
         List<String> cardsInfo = playerService.showCardsInfo(player);
 
+        if(cardsInfo.isEmpty()){
+            view.displayMessage("You don't have any cards yet");
+        }
         int count = 1;
         for(String card: cardsInfo){
             view.displayMessage(count + ":" + card + WHITESPACE);
@@ -337,6 +380,10 @@ public class ReinforceGameController implements Controller{
      */
     public int getReinforcedArmies(){
         return reinforcedArmies;
+    }
+
+    public boolean isExchangeCardOver() {
+        return isExchangeCardOver;
     }
 
     /**

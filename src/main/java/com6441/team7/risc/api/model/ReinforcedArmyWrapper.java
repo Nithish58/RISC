@@ -3,12 +3,12 @@ package com6441.team7.risc.api.model;
 /**
  * if you want to return many attributes than one to view, use the self-defined wrapper
  */
-public class CardWrapper {
+public class ReinforcedArmyWrapper {
     private Player player;
     private String countryName;
     private Integer num;
 
-    public CardWrapper(Player player, String countryName, Integer num) {
+    public ReinforcedArmyWrapper(Player player, String countryName, Integer num) {
         this.player = player;
         this.countryName = countryName;
         this.num = num;

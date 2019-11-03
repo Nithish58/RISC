@@ -1,12 +1,16 @@
 package com6441.team7.risc.view;
 
-import com6441.team7.risc.api.model.Country;
-import com6441.team7.risc.api.model.GameState;
+import com6441.team7.risc.api.model.*;
+
 import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
+
+/*
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+*/
+
 import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
@@ -47,6 +51,7 @@ public class PhaseView implements GameView {
                 this.startUpGameController = controller;
             }
             else if(controller instanceof ReinforceGameController){
+
                 this.reinforceGameController = controller;
             }
             else if(controller instanceof FortifyGameController){
@@ -71,6 +76,7 @@ public class PhaseView implements GameView {
                         startUpGameController.readCommand(command);
                         break;
                     case REINFORCE:
+
                         reinforceGameController.readCommand(command);
                         break;
                     case ATTACK:
@@ -86,6 +92,7 @@ public class PhaseView implements GameView {
             }
         }
     }
+
 
     @Override
     public void displayMessage(String string) {
@@ -132,13 +139,21 @@ public class PhaseView implements GameView {
         		playerFortificationStatus(arg);
         		return;
         	}
-        	
+          
         	//During attack phase
         	if(arg instanceof PlayerAttackWrapper) {
         		playerAttackStatus(arg);
         		return;
         	}
         	        	
+
+
+        	if(arg instanceof ReinforcedArmyWrapper){
+        	    displayReinforcedArmy(arg);
+            return; //Added by keshav to resolve conflict
+            }
+
+
         	return;
         }  //End of PlayerService.class observable 
         
@@ -152,6 +167,17 @@ public class PhaseView implements GameView {
 
         
     }  //End of Update Method
+
+
+    /**
+     * display the message of reinforced countries with number of reinforced armies and player name
+     * @param arg
+     */
+    private void displayReinforcedArmy(Object arg){
+        displayMessage("player: " + ((ReinforcedArmyWrapper)arg).getPlayer().getName());
+        displayMessage("reinforced country: " + ((ReinforcedArmyWrapper)arg).getCountryName());
+        displayMessage("reinforced army number: " + ((ReinforcedArmyWrapper)arg).getNum());
+    }
 
 
 	/**
