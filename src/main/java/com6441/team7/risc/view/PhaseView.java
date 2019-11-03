@@ -267,7 +267,7 @@ public class PhaseView implements GameView {
     	Country c=playerPlaceArmyWrapper.getCountry();
     	
     	displayMessage("Army Placed. "+p.getName()+" has "+p.getArmies()+" armies left. "
-    	+c.getCountryName()+" now has "+c.getSoldiers()+" soldiers.");
+    	+c.getCountryName()+" now has "+c.getSoldiers()+" soldiers.\n");
 		
 	}
     

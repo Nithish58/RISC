@@ -62,10 +62,7 @@ public class AttackGameController implements Controller {
 		 */
         
         commands = command.split("\\s");
-        
-        if(boolDefenderDiceRequired) {
-        	validateDefendCommand(commands);
-        }
+       
         
     	
     	switch(commandType) {
@@ -93,6 +90,10 @@ public class AttackGameController implements Controller {
     }
     
     private void validateDefendCommand(String[] arrCommand) {
+    	
+        if(boolDefenderDiceRequired) {
+        	validateDefendCommand(arrCommand);
+        }
     	
     	if(arrCommand.length!=2) {
     		phaseView.displayMessage("Invalid Defend command.");

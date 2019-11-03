@@ -416,6 +416,8 @@ public class Player{
 		
 		playerService.notifyPlayerServiceObservers(this.playerFortificationWrapper);
 		
+		playerService.evaluateWorldDomination();
+		
 		//Switch to Next player and Change State to Reinforcement
 		playerService.switchNextPlayer();
 		playerService.getMapService().setState(GameState.REINFORCE);

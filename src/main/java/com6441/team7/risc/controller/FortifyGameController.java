@@ -185,6 +185,7 @@ public class FortifyGameController implements Controller {
 			} catch (NumberFormatException e) {
 
 				phaseView.displayMessage("Wrong Number Format. Try Again");
+				return;
 			}
 
 			// fortify();
