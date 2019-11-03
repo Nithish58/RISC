@@ -185,7 +185,6 @@ public class AttackGameController implements Controller {
     		}
     		catch(Exception e) {
     			phaseView.displayMessage("Invalid numDice entered.");
-    			System.out.println("Before return");
     			return;
     		}
     		System.out.println("After return");
