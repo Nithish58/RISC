@@ -81,6 +81,11 @@ public class Player{
     public void setName(String name) {
         this.name = name;
     }
+    
+    /**
+     * Minimum allowed number of attacking armies in a country
+     */
+    private static final int MIN_ATTACKING_SOLDIERS=2;
 
     /**
      * Maximum allowed number of dice(s) for attacker to roll 
@@ -336,7 +341,11 @@ public class Player{
     private int[] defenderDice;
     private SecureRandom diceRandomizer;
     private boolean boolAllOut;
+    private boolean boolAttackOver;
     
+    private boolean boolAttackValidationMet;
+    
+    private PlayerAttackWrapper playerAttackWrapper;
     
     public void attack(PlayerService playerService, PlayerAttackWrapper playerAttackWrapper){
     	
@@ -344,9 +353,15 @@ public class Player{
     		this.toCountryAttack=playerAttackWrapper.getToCountry();
     		
     		this.boolAllOut=playerAttackWrapper.getBooleanAllOut();
+    		this.boolAttackOver=playerAttackWrapper.getBoolAttackOver();
     		
     		if(boolAllOut) {
     			attackAllOut();
+    			return;
+    		}
+    		
+    		if (boolAttackOver) {
+    			attackNone();
     			return;
     		}
     	
@@ -392,6 +407,71 @@ public class Player{
     	}
     	return defenderDice;
     }
+    
+    private boolean validateAttackConditions(PlayerService playerService) {
+    	this.boolAttackValidationMet = true;
+    	
+    	checkCountryAdjacency(playerService.getMapService());
+    	
+    	if (boolAttackValidationMet)
+    		checkCountryBelongToAttacker(playerService);
+    	
+    	if (boolAttackValidationMet)
+    		checkCountryHostility();
+    	
+    	if (boolAttackValidationMet)
+    		checkNumAttackingSoldiers();
+    	
+    	return boolAttackValidationMet;
+    }
+    
+	/**
+	 * Check if attacker country actually belongs to the attacker
+	 * @param playerService to notify observers about game info and retrieve useful info like current player 
+	 */
+	private void checkCountryBelongToAttacker(PlayerService playerService) {
+		Player currentPlayer=playerService.getCurrentPlayer();
+		String playerName=currentPlayer.getName();
+		
+		if((!fromCountryAttack.getPlayer().getName().equals(playerName))) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//this.playerFortificationWrapper.setAttackDisplayMessage
+			System.out.println("fromCountry or toCountry does not belong to current player");
+			this.boolAttackValidationMet=false;
+		}
+		
+	}
+	
+	/**
+	 * checks whether the 2 countries are owned by different players
+	 */
+	private void checkCountryHostility() {
+			
+			if(fromCountryAttack.getPlayer().getName().equalsIgnoreCase
+					(toCountryAttack.getPlayer().getName())) {
+				
+				//The message will be sent to the playerAttackWrapper when the notification method is created there
+				//this.playerFortificationWrapper.setAttackDisplayMessage
+				System.out.println("Countries belong to same player");
+				this.boolAttackValidationMet=false;
+			}
+			
+		}
+	
+	/**
+	 * check the number of soldiers for the attacker
+	 * Ensures that at least 2 soldier remains in the attacker's origin country
+	 */
+	private void checkNumAttackingSoldiers() {
+			
+			if(!(fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS)) {
+				//The message will be sent to the playerAttackWrapper when the notification method is created there
+				//this.playerFortificationWrapper.setAttackDisplayMessage
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Not enough soldiers in origin country");
+				this.boolFortifyValidationMet=false;
+			}
+		}
     
     //--------------------------------------FORTIFICATION--------------------------------------------------
     
