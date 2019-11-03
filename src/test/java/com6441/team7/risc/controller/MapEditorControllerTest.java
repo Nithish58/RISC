@@ -47,27 +47,12 @@ public class MapEditorControllerTest {
 
 	//define test variables
 	URI uri;
-	String mapname, file, savename, inputcommand, continentcommand1, continentcommand2, continentcommand3, continentcommand4,
-		continentcommand5, continentcommand6, countrycommand1, countrycommand2,	countrycommand3,
-		countrycommand4, countrycommand5, countrycommand6, neighborcommand1, neighborcommand2,
-		neighborcommand3, neighborcommand4, neighborcommand5, neighborcommand6, newcontinentstr1, newcontinentstr2a, newcontinentstr2b,
-		delcontinentstr1, delcontinentstr2a,delcontinentstr2b, newcontinentstr3, delcontinentstr3, newcontinentstr4a, newcontinentstr4b,
-		delcontinentstr4a, delcontinentstr4b, newcountrystr1, countrycontinentstr1, newcountrystr2a, countrycontinentstr2a,
-		newcountrystr2b, countrycontinentstr2b, delcountrystr1, delcountrystr2a, delcountrystr2b, newcountrystr3,
-		countrycontinentstr3, delcountrystr3, newcountrystr4a, newcountrystr4b, countrycontinentstr4a, countrycontinentstr4b,
-		delcountrystr4a, delcountrystr4b, countrystr1, neighborstr1, countrystr2a, neighborstr2a, countrystr2b, neighborstr2b,
-		countrystr3, neighborstr3, countrystr4a, neighborstr4a, countrystr4b, neighborstr4b,
-		countrystr5a, neighborstr5a, countrystr5b, neighborstr5b, countrystr6a, neighborstr6a, countrystr6b, neighborstr6b,
-		countrystr6c, neighborstr6c, countrystr6d, neighborstr6d;
-	String[] continentcommands1, continentcommands2, continentcommands3, continentcommands4, continentcommands5,
-		continentcommands6, countrycommands1, countrycommands2, countrycommands3, countrycommands4,
-		countrycommands5, countrycommands6, neighborcommands1, neighborcommands2, neighborcommands3,
-		neighborcommands4, neighborcommands5, neighborcommands6;
+	String mapname, file, savename, inputcommand;
+
 	int initcontinentsize, initcountrysize, expectedcontinentsize1, expectedcontinentsize2,
 		expectedcontinentsize3, expectedcontinentsize4, expectedcontinentsize5
 		, expectedcontinentsize6, expectedcountrysize1, expectedcountrysize2,
-		expectedcountrysize3, expectedcountrysize4, expectedcountrysize5
-		, expectedcountrysize6;
+		expectedcountrysize3, expectedcountrysize4, expectedcountrysize5;
 	static int  testCounter;
 	boolean mapIsRead;
 	Optional<String> inputmap;
@@ -181,7 +166,6 @@ public class MapEditorControllerTest {
 	@Test
 	public void test003_addContinent() throws Exception{
 		System.out.printf("Adding one continent%n------------%n");
-		System.out.println(continentcommand1);
 		addContinent("Nord_Asia","1");
 		expectedcontinentsize1 = initcontinentsize + 1; //Continent list size is expected to increase by 1
 		assertSame(expectedcontinentsize1, testMapLoader.getMapService().getContinents().size());
@@ -197,7 +181,6 @@ public class MapEditorControllerTest {
 	public void test004_removeContinent() throws Exception{
 		
 		System.out.printf("Removing one continent%n------------%n");
-		System.out.println(continentcommand3);
 		removeContinent("ulstrailia");
 		expectedcontinentsize3 = initcontinentsize - 1; //Continent list size is expected to decrease by 1
 		assertSame(expectedcontinentsize3, testMapLoader.getMapService().getContinents().size());
@@ -258,7 +241,6 @@ public class MapEditorControllerTest {
 	@Test
 	public void test009_addAndRemoveCountry() throws Exception{
 		System.out.printf("Adding and removing one country%n------------%n");
-		System.out.println(countrycommand5);
 		addAndRemoveCountry("Sky_Republic", "East_Asia", "Ocean_Republic");
 		expectedcountrysize5 = initcountrysize; //Country list size should remian the same
 		assertSame(expectedcountrysize5, testMapLoader.getMapService().getCountries().size());
@@ -293,7 +275,6 @@ public class MapEditorControllerTest {
 	@Test
 	public void test011_removeNeighbor() throws Exception{
 		System.out.printf("Removing one neighbor from a country%n------------%n");
-		System.out.println(neighborcommand3);
 		//get pair of country and neighbor
 		removeNeighbor("siberia", "worrick");
 		//Check if map object contains both country ID and neighbor ID
@@ -315,7 +296,6 @@ public class MapEditorControllerTest {
 	public void test012_addAndRemoveNeighbor() throws Exception{
 		System.out.printf("Adding and removing one neighbor from one country%n------------%n");
 		//Set the command string to remove two neighbors
-		System.out.println(neighborcommand5);
 		addAndRemoveNeighbor("Sky_Republic", "siberia", "worrick", "yazteck");
 		//Check if map object contains both country ID and neighbor ID
 		assertTrue("Country is not found",borders1.containsKey(country1.get()));
