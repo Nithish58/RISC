@@ -195,6 +195,7 @@ public class MapEditorControllerTest {
 	 */
 	@Test
 	public void test004_removeContinent() throws Exception{
+		
 		System.out.printf("Removing one continent%n------------%n");
 		System.out.println(continentcommand3);
 		removeContinent("ulstrailia");
