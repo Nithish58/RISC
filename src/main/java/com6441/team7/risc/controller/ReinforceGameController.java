@@ -44,6 +44,9 @@ public class ReinforceGameController implements Controller{
      */
     private int reinforcedArmies;
 
+    /**
+     * the value whether the exchange card stage terminates
+     */
     private boolean isExchangeCardOver;
 
     /**
@@ -77,9 +80,6 @@ public class ReinforceGameController implements Controller{
     public void readCommand(String command) throws Exception {
 
         Player player = playerService.getCurrentPlayer();
-
-
-
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
 
@@ -105,6 +105,7 @@ public class ReinforceGameController implements Controller{
     public void showMap(){
         MapDisplayUtils.showFullMap(playerService.getMapService(), phaseView);
     }
+
 
     /**
      * validate reinforce command, if the command is valid, call reinforceArmy to put extra armies on countries occupied
@@ -146,8 +147,6 @@ public class ReinforceGameController implements Controller{
      * @param armNum
      */
     public void reinforceArmy(Player player, String country, int armNum){
-
-
 
         if(armNum < 0 || armNum > reinforcedArmies){
             throw new ReinforceParsingException("the number is less than 0 or larger than the number of reinforced solider you have");
@@ -349,6 +348,10 @@ public class ReinforceGameController implements Controller{
      */
     public int getReinforcedArmies(){
         return reinforcedArmies;
+    }
+
+    public boolean isExchangeCardOver() {
+        return isExchangeCardOver;
     }
 
     /**

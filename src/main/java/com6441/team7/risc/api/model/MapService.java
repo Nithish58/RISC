@@ -773,17 +773,13 @@ public class MapService extends Observable {
      */
     public boolean isStronglyConnected() {    	
     	
-    	if(countries.size()==0) {
+    	if(countries.isEmpty()) {
     		return false;
     	}
         
-    	if(adjacencyCountriesMap.size()==0) {
+    	if(adjacencyCountriesMap.isEmpty()) {
     		return false;
     	}
-    	
-        if (adjacencyCountriesMap.size() == 0) {
-            return false;
-        }
 
         for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
             Set<Integer> set = new HashSet<>(entry.getValue());
@@ -891,14 +887,26 @@ public class MapService extends Observable {
     }
 
 
-    //jenny: new added method to count number of countries occupied by the player
+
+    /**
+     * count number of countries occupied by the player
+     * @param player
+     * @return number of countries
+     */
     public long getConqueredCountriesNumber(Player player){
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getPlayer().getName()).equals(convertNameToKeyFormat(player.getName())))
                 .count();
     }
 
-    //jenny: new added method to count number of continents occupied by the player
+
+
+
+    /**
+     * count number of reinforced armies get if occupying whole continents by the player
+     * @param player
+     * @return
+     */
     public long getReinforceArmyByConqueredContinents(Player player){
         List<Integer> countriesId = getCountryIdOccupiedByPlayer(player);
 
@@ -915,7 +923,12 @@ public class MapService extends Observable {
 
     }
 
-    //jenny: new added method to find corresponding continent value by continent id
+
+    /**
+     * find corresponding continent power by continent id
+     * @param id
+     * @return continent power
+     */
     public Optional<Integer> findCorrespoindingContinentValueByContinentId(int id) {
         return continents.stream()
                 .filter(continent -> continent.getId() == id)
@@ -923,7 +936,13 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
-    //jenny: new added method to get conquered countries by a player
+
+
+    /**
+     * get conquered countries by the player
+     * @param player
+     * @return list of country names occupied the player
+     */
     public List<String> getConqueredCountriesNameByPlayer (Player player){
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getPlayer().getName()).equals(convertNameToKeyFormat(player.getName())))
@@ -931,7 +950,13 @@ public class MapService extends Observable {
                 .collect(Collectors.toList());
     }
 
-    //jenny: new added method to get countryId occupied by certain player
+
+
+    /**
+     * get countryId occupied by the player
+     * @param player
+     * @return list of country id
+     */
     private List<Integer> getCountryIdOccupiedByPlayer(Player player){
         return countries.stream()
                 .filter(country -> convertNameToKeyFormat(country.getPlayer().getName()).equals(convertNameToKeyFormat(player.getName())))
@@ -939,7 +964,12 @@ public class MapService extends Observable {
                 .collect(Collectors.toList());
     }
 
-    //jenny: new added method to reinforce soldiers to country
+
+    /**
+     * reinforce the number of soldiers to the country
+     * @param name
+     * @param armyNum
+     */
     public void reinforceArmyToCountry(String name, int armyNum){
         int id = findCorrespondingIdByCountryName(name).get();
 

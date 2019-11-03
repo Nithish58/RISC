@@ -1,5 +1,7 @@
 package com6441.team7.risc.controller;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.view.PhaseView;
 import org.apache.commons.io.FileUtils;
@@ -33,6 +35,11 @@ public class ReinforceGameControllerTest {
     private MapService mapService;
 
     /**
+     * a reference of current player
+     */
+    private Player player;
+
+    /**
      * setup method to construct attributes before each test
      * @throws Exception
      */
@@ -40,8 +47,7 @@ public class ReinforceGameControllerTest {
     public void setUp() throws Exception {
         mapService = new MapService();
         playerService = new PlayerService(mapService);
-        Player player = new Player("jenny");
-        playerService.setCurrentPlayer(player);
+        player = new Player("jenny");
         PhaseView phaseView = new PhaseView();
         reinforceGameController = new ReinforceGameController(playerService);
         reinforceGameController.setView(phaseView);
@@ -70,12 +76,6 @@ public class ReinforceGameControllerTest {
         reinforceGameController.readCommand(command);
     }
 
-    @Test
-    public void readValidCommand() throws Exception{
-        String command = "reinforce siberia 1";
-        reinforceGameController.readCommand(command);
-    }
-
 
     /**
      * sucessfully add a soldier from reinforcement to the country occupied
@@ -83,9 +83,10 @@ public class ReinforceGameControllerTest {
      * @throws IOException
      */
     @Test
-    public void reinforceArmy() throws URISyntaxException, IOException {
+    public void reinforceValidArmyNumberToValidCountry() throws URISyntaxException, IOException {
         mockPlayerCountryInformationOne();
-        Player player = playerService.getCurrentPlayer();
+
+        reinforceGameController.calculateReinforcedArmies(player);
 
         reinforceGameController.reinforceArmy(player, "siberia", 1);
 
@@ -97,6 +98,26 @@ public class ReinforceGameControllerTest {
 
         assertEquals(11, armyNum);
 
+    }
+
+    /**
+     * if player reinforce armies to the country that is occupied by other player
+     * expect: throw an ReinforceParsingException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test(expected = ReinforceParsingException.class)
+    public void reinforceValidNumberToCountryOccupiedByOtherPlayer() throws URISyntaxException, IOException{
+        mockPlayerCountryInformationOne();
+        reinforceGameController.calculateReinforcedArmies(player);
+        reinforceGameController.reinforceArmy(player, "worrick", 3);
+    }
+
+    @Test(expected = ReinforceParsingException.class)
+    public void reinforceArmyNumberGreaterThanActualReinforcedArmies() throws URISyntaxException, IOException{
+        mockPlayerCountryInformationOne();
+        reinforceGameController.calculateReinforcedArmies(player);
+        reinforceGameController.reinforceArmy(player, "siberia", 100);
     }
 
     /**
@@ -128,7 +149,6 @@ public class ReinforceGameControllerTest {
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
         mapLoaderController.parseFile(file);
 
-        Player player = playerService.getCurrentPlayer();
         Player player2 = new Player("jake");
         occupyCountry(player, "siberia", 10);
         occupyCountry(player, "yazteck", 20);
@@ -146,7 +166,6 @@ public class ReinforceGameControllerTest {
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
         mapLoaderController.parseFile(file);
 
-        Player player = playerService.getCurrentPlayer();
         occupyCountry(player, "siberia", 10);
         occupyCountry(player, "yazteck", 20);
         occupyCountry(player, "worrick", 10);
@@ -158,7 +177,7 @@ public class ReinforceGameControllerTest {
      * @throws URISyntaxException
      */
     private void mockPlayerCountryInformationThree() throws IOException, URISyntaxException{
-        Player player = playerService.getCurrentPlayer();
+
         List<Card> cardList = new ArrayList<>();
         cardList.add(Card.ARTILLERY);
         cardList.add(Card.ARTILLERY);
@@ -172,7 +191,6 @@ public class ReinforceGameControllerTest {
      * @throws URISyntaxException
      */
     private void mockPlayerCountryInformationFour() throws IOException, URISyntaxException{
-        Player player = playerService.getCurrentPlayer();
         List<Card> cardList = new ArrayList<>();
         cardList.add(Card.ARTILLERY);
         cardList.add(Card.CAVALRY);
@@ -181,12 +199,11 @@ public class ReinforceGameControllerTest {
     }
 
     /**
-     * mock the player, and occupation data, cardList
+     * mock the player, and three cards the player has with two cards the same
      * @throws IOException
      * @throws URISyntaxException
      */
     private void mockPlayerCountryInformationFive() throws IOException, URISyntaxException{
-        Player player = playerService.getCurrentPlayer();
         List<Card> cardList = new ArrayList<>();
         cardList.add(Card.ARTILLERY);
         cardList.add(Card.ARTILLERY);
@@ -194,6 +211,21 @@ public class ReinforceGameControllerTest {
         player.setCardList(cardList);
     }
 
+    /**
+     * mock the player, and five cards the player has
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    private void mockPlayerCountryInformationSix() throws IOException, URISyntaxException{
+        List<Card> cardList = new ArrayList<>();
+        cardList.add(Card.ARTILLERY);
+        cardList.add(Card.INFANTRY);
+        cardList.add(Card.CAVALRY);
+        cardList.add(Card.ARTILLERY);
+        cardList.add(Card.INFANTRY);
+
+        player.setCardList(cardList);
+    }
 
 
 
@@ -208,9 +240,8 @@ public class ReinforceGameControllerTest {
      * @throws URISyntaxException
      */
     @Test
-    public void calculateReinforcedArmies() throws IOException, URISyntaxException {
+    public void calculateReinforcedArmiesWithCountriesOccupied() throws IOException, URISyntaxException {
         mockPlayerCountryInformationOne();
-        Player player = playerService.getCurrentPlayer();
         reinforceGameController.calculateReinforcedArmies(player);
         assertEquals(3, reinforceGameController.getReinforcedArmies());
     }
@@ -227,7 +258,6 @@ public class ReinforceGameControllerTest {
     @Test
     public void calculateReinforceArmiesWithWholeContinentOccupied() throws IOException, URISyntaxException {
         mockPlayerCountryInformationTwo();
-        Player player = playerService.getCurrentPlayer();
         reinforceGameController.calculateReinforcedArmies(player);
         assertEquals(6, reinforceGameController.getReinforcedArmies());
     }
@@ -238,9 +268,8 @@ public class ReinforceGameControllerTest {
      * expect result to be 5
      */
     @Test
-    public void exchangeSameCards() throws IOException, URISyntaxException {
+    public void exchangeThreeSameCards() throws IOException, URISyntaxException {
         mockPlayerCountryInformationThree();
-        Player player = playerService.getCurrentPlayer();
         String command = "exchangecards 1 2 3";
         reinforceGameController.exchangeCards(player, command);
         assertEquals(5, reinforceGameController.getReinforcedArmies());
@@ -254,7 +283,6 @@ public class ReinforceGameControllerTest {
     @Test
     public void exchangeThreeDifferentCards() throws IOException, URISyntaxException {
         mockPlayerCountryInformationFour();
-        Player player = playerService.getCurrentPlayer();
         String command = "exchangecards 1 2 3";
         reinforceGameController.exchangeCards(player, command);
         assertEquals(5, reinforceGameController.getReinforcedArmies());
@@ -266,11 +294,24 @@ public class ReinforceGameControllerTest {
      * expect reinforced number to be 0
      */
     @Test
-    public void exchangeInvalidCards() throws IOException, URISyntaxException{
+    public void exchangeTwoSameCardsOneDifferentCard() throws IOException, URISyntaxException{
         mockPlayerCountryInformationFive();
-        Player player = playerService.getCurrentPlayer();
         String command = "exchangecards 1 2 3";
         reinforceGameController.exchangeCards(player, command);
         assertEquals(0, reinforceGameController.getReinforcedArmies());
+    }
+
+    /**
+     * test when users have equal or greater than 5 cards but choose not to exchange cards
+     * exect the card exchange state to keep false
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    @Test
+    public void exchangeNoneWithFiveCards() throws IOException, URISyntaxException{
+        mockPlayerCountryInformationSix();
+        String command = "exchangecards -none";
+        reinforceGameController.exchangeCards(player, command);
+        assertFalse(reinforceGameController.isExchangeCardOver());
     }
 }
