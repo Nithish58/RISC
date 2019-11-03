@@ -107,7 +107,6 @@ public class StartupGameController implements Controller{
 	private PlayerService playerService;
 	private GameView phaseView;
 	
-	//private GameView dominationView;
 
 	public StartupGameController(Controller mapController, PlayerService playerService) {
 		this.mapLoaderController= (MapLoaderController) mapController;
@@ -126,10 +125,6 @@ public class StartupGameController implements Controller{
 	    this.phaseView = view;
     }
 	
-	/*
-	 * public void setDominationView(GameView domView) {
-	 * this.dominationView=domView; }
-	 */
 
     //TODO: read command from phaseView and validate command here
     //TODO: if the command is valid, call corresponding method in playerService
