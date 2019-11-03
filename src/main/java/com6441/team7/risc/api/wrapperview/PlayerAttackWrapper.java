@@ -63,5 +63,12 @@ public class PlayerAttackWrapper {
 	}
 	
 	//Write additional set get Methods here if you want
+	public void setAttackDisplayMessage(String str) {
+		this.strAttackDisplayMessage = str;
+	}
+	
+	public String getAttackDisplayMessage() {
+		return strAttackDisplayMessage;
+	}
 	
 }
