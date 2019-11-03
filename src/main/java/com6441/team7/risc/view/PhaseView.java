@@ -4,6 +4,8 @@ import com6441.team7.risc.api.model.*;
 
 import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
 
+import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+
 /*
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;

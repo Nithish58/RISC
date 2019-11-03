@@ -130,7 +130,7 @@ public class AttackGameController implements Controller {
     	
     private void validateAttackCommand(String[] arrCommand) {
     	
-    	if(arrCommand.length!=2 || arrCommand.length!=4) {
+    	if(!(arrCommand.length==2 || arrCommand.length==4)) {
     		phaseView.displayMessage("Invalid Attack Command");
     		return;
     	}
@@ -148,8 +148,8 @@ public class AttackGameController implements Controller {
     		String toCountryName=arrCommand[2];
     		
     		//Check if fromCountry and toCountry are present in map
-    		if(!mapService.getCountryByName(fromCountryName).isPresent() ||
-    				!mapService.getContinentByName(toCountryName).isPresent()) {
+    		if(!(mapService.getCountryByName(fromCountryName).isPresent() ||
+    				mapService.getContinentByName(toCountryName).isPresent())) {
     			phaseView.displayMessage("Invalid fromCountry or toCountry");
     			return;
     		}
@@ -185,9 +185,10 @@ public class AttackGameController implements Controller {
     		}
     		catch(Exception e) {
     			phaseView.displayMessage("Invalid numDice entered.");
+    			System.out.println("Before return");
     			return;
     		}
-    		
+    		System.out.println("After return");
     		//If integer valid, notify observers and launch attack
     		playerAttackWrapper.setNumDiceAttacker(numDice);
     		
@@ -200,8 +201,6 @@ public class AttackGameController implements Controller {
     		//Will wait for defender to enter numDice, then will launch attack in validateDefend Method
     		return;
     	} // End of If
-    	
-    	phaseView.displayMessage("Invalid Attack Command");
     	
     }  //End of validate attack method
     

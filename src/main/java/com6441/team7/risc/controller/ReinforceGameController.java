@@ -90,6 +90,9 @@ public class ReinforceGameController implements Controller{
         playerService.getMapService().setState(GameState.ATTACK);
 
 */
+    	
+    	playerService.getMapService().setState(GameState.ATTACK);
+    	
         Player player = playerService.getCurrentPlayer();
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
