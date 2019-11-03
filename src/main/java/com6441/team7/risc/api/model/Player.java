@@ -116,6 +116,16 @@ public class Player{
     	armies += number;
     }
 
+
+    /**
+     * reinforce army to the player of its country occupied
+     * @param country
+     * @param armyNum
+     */
+    public void reinforceArmy(String country, int armyNum, MapService mapService){
+        mapService.reinforceArmyToCountry(country, armyNum);
+    }
+
     /**
      * get list of cards
      * @return card list

@@ -205,12 +205,12 @@ public class PlayerService extends Observable {
 	 * @param country
 	 * @param armyNum
 	 */
-    public void reinforceArmy(Player player, String country, int armyNum){
-        mapService.reinforceArmyToCountry(country, armyNum);
-        ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(player, country, armyNum);
-        setChanged();
-        notifyObservers(reinforcedArmyWrapper);
-    }
+	public void reinforceArmy(Player player, String country, int armyNum){
+		player.reinforceArmy(country, armyNum, mapService);
+		ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(player, country, armyNum);
+		setChanged();
+		notifyObservers(reinforcedArmyWrapper);
+	}
 
 
 	/**
