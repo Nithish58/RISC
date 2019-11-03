@@ -1,6 +1,7 @@
 package com6441.team7.risc.api.model;
 
 import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
+import com6441.team7.risc.api.wrapperview.PlayerDominationWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
 
 import java.util.*;
@@ -320,6 +321,57 @@ public class PlayerService extends Observable {
     	return continentOwnerMap;
 		
 	}  //End of method
+	
+	public void evaluateWorldDomination() {
+		
+		Map<Integer, String> continentOwnerMap=checkContinentOwners();
+		
+		int numCountries=mapService.getCountries().size();
+		
+		ArrayList<PlayerDominationWrapper> listPlayerDomination=new ArrayList<>();
+		
+		for(Player p: listPlayers) {
+			
+			String playerName=p.getName();
+			
+			int numPlayerCountries=p.getCountryList().size();
+			
+			float percentageMap= (numPlayerCountries*100.0f) / numCountries;
+			
+			int numPlayerArmies=calculateTotalPlayerArmies(p);
+			
+			PlayerDominationWrapper playerDominationWrapper=new PlayerDominationWrapper(playerName,
+					percentageMap, numPlayerArmies);
+			
+			//Check if player owns any continent and add to list
+						
+			for(Map.Entry<Integer, String> item: continentOwnerMap.entrySet()) {
+				
+				int key= (int) item.getKey();
+				String strValue= item.getValue().toString();
+				
+				if(strValue.equals(playerName)) {					
+					String continentName=mapService.getContinentById(key).get().getName();
+					playerDominationWrapper.addContinentNameToWrapperList(continentName);
+				}
+				
+			}
+			listPlayerDomination.add(playerDominationWrapper);
+		}
+		
+		//NOTIFY TO OBSERVERS
+		
+		setChanged();
+		notifyObservers(listPlayerDomination);
+		
+	}
+	
+	public int calculateTotalPlayerArmies(Player player) {
+		int counter=0;
+		for(Country c:player.getCountryList()) counter+=c.getSoldiers().intValue();
+		
+		return counter;
+	}
 	
 	/*
 	public void fortifyCurrentPlayer(PlayerFortificationWrapper playerFortificationWrapper) {

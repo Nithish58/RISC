@@ -3,9 +3,11 @@ package com6441.team7.risc.view;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.PlayerService;
+import com6441.team7.risc.api.wrapperview.PlayerDominationWrapper;
+
 import static com6441.team7.risc.api.RiscConstants.DOMINATION_VIEW_STRING;
 
-
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class DominationView implements GameView {
@@ -29,6 +31,15 @@ public class DominationView implements GameView {
             //TODO: o.getOccupiedCountriesPercentage();
             //TODO: o.getOccupiedContinents();
             //TODO: call displayMessge to display messages
+        	
+        	if(arg instanceof ArrayList) {
+        		ArrayList<PlayerDominationWrapper> list=((ArrayList<PlayerDominationWrapper>)arg);
+        		
+        		for(PlayerDominationWrapper item:list)
+        		displayMessage(item.getPlayerDominationMessage());
+        		
+        	}
+        	
         }
         
         

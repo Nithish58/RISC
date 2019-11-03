@@ -9,7 +9,7 @@ public final class RiscConstants {
     public static final String NEWLINE = "\n";
     
     public static final String PHASE_VIEW_STRING="Phase View: ";
-    public static final String DOMINATION_VIEW_STRING="Players World Domination View: ";
+    public static final String DOMINATION_VIEW_STRING="Domination View: ";
     public static final String CARD_EXCHANGE_VIEW_STRING="Card Exchange View: ";
     
     public static final int MAX_NUM_PLAYERS=9;
