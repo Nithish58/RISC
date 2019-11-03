@@ -1,6 +1,7 @@
 package com6441.team7.risc.api.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,7 @@ public class Player{
     /**
      * Maximum allowed number of dice(s) for defender to roll
      */
-    private static final int MIN_DEFENDER_DICE_NUM=2;
+    private static final int MAX_DEFENDER_DICE_NUM=2;
 
 
     //------------------------------------REINFORCEMENT-----------------------------------------
@@ -371,14 +372,21 @@ public class Player{
 			//Continue or you can change the structure of functions etc if you want.
 			// DO NOT CHANGE IN ATTACK CONTROLLER...You just have to code here.
 			//						GOOD LUCK BINSAR!!!
-    		if (numDiceAttacker>0 || numDiceAttacker<=MAX_ATTACKER_DICE_NUM)
-    			attackerDice = rollAttackerDice(numDiceAttacker);
+			
+			//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
+			if (!validateAttackConditions(playerService)) {
+				
+				//notify playerService observer if it's not valid
+				playerService.notifyObservers(this.playerAttackWrapper);
+				
+				return;
+			}
+			
+			//Attacker and defender roll their dices
+			attackerDice = rollAttackerDice(numDiceAttacker);
+			defenderDice = rollDefenderDice(numDiceDefender);
     		
-    }    
-    
-    public void defend() {  	
-    }
-    
+    }        
     
     public void attackAllOut() {}
     
@@ -408,6 +416,68 @@ public class Player{
     	return defenderDice;
     }
     
+	public void decideBattleResult(int[] attackerDice, int[] defenderDice) {
+		Arrays.sort(attackerDice);
+		Arrays.sort(defenderDice);
+		int attackerMaxValue = 0;
+		int attackerSecondMaxValue = 0;
+		int defenderMaxValue = 0;
+		int defenderSecondMaxValue = 0;
+
+		// decide the maximum and second maximum(if any) values of attacker's dice
+		// based on the number of the dice thrown
+		switch (numDiceAttacker) {
+		case 3:
+			attackerMaxValue = attackerDice[2];
+			attackerSecondMaxValue = attackerDice[1];
+			break;
+		case 2:
+			attackerMaxValue = attackerDice[1];
+			attackerSecondMaxValue = attackerDice[0];
+			break;
+		case 1:
+			attackerMaxValue = attackerDice[0];
+		}
+
+		// decide the maximum and second maximum(if any) values of defender's dice
+		// based on the number of the dice thrown
+		switch (numDiceDefender) {
+		case 2:
+			defenderMaxValue = defenderDice[1];
+			defenderSecondMaxValue = defenderDice[0];
+			break;
+		case 1:
+			defenderMaxValue = defenderDice[0];
+		}
+
+		// choose how the battle is decided
+		// based on the number of attacker's and defender's dices
+		if (((numDiceAttacker == 3) && (numDiceDefender == 2)) 
+				|| ((numDiceAttacker == 2) && numDiceDefender == 2)) {
+			// Calculate the highest values of the both players' dices
+			if (attackerMaxValue > defenderMaxValue) {
+				toCountryAttack.getPlayer().reduceArmy(1);
+			} else {
+				fromCountryAttack.getPlayer().reduceArmy(1);
+			}
+
+			if (attackerSecondMaxValue > defenderSecondMaxValue) {
+				toCountryAttack.getPlayer().reduceArmy(1);
+			} else {
+				fromCountryAttack.getPlayer().reduceArmy(1);
+			}
+		}
+		// if at least one of both players only have one soldier in their respective countriies
+		else {
+			if (attackerMaxValue > defenderMaxValue) {
+				toCountryAttack.getPlayer().reduceArmy(1);
+			} else {
+				fromCountryAttack.getPlayer().reduceArmy(1);
+			}
+		}
+	}
+
+    
     private boolean validateAttackConditions(PlayerService playerService) {
     	this.boolAttackValidationMet = true;
     	
@@ -422,6 +492,12 @@ public class Player{
     	if (boolAttackValidationMet)
     		checkNumAttackingSoldiers();
     	
+    	if (boolAttackValidationMet)
+    		checkAttackerDiceNumValidity();
+    	
+    	if (boolAttackValidationMet)
+    		checkDefenderDiceNumValidity();
+    	
     	return boolAttackValidationMet;
     }
     
@@ -435,8 +511,8 @@ public class Player{
 		
 		if((!fromCountryAttack.getPlayer().getName().equals(playerName))) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
-			//this.playerFortificationWrapper.setAttackDisplayMessage
-			System.out.println("fromCountry or toCountry does not belong to current player");
+			this.playerAttackWrapper.setAttackDisplayMessage
+			("Origin country does not belong to current player");
 			this.boolAttackValidationMet=false;
 		}
 		
@@ -451,8 +527,8 @@ public class Player{
 					(toCountryAttack.getPlayer().getName())) {
 				
 				//The message will be sent to the playerAttackWrapper when the notification method is created there
-				//this.playerFortificationWrapper.setAttackDisplayMessage
-				System.out.println("Countries belong to same player");
+				this.playerAttackWrapper.setAttackDisplayMessage
+				("Countries belong to same player");
 				this.boolAttackValidationMet=false;
 			}
 			
@@ -466,12 +542,35 @@ public class Player{
 			
 			if(!(fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS)) {
 				//The message will be sent to the playerAttackWrapper when the notification method is created there
-				//this.playerFortificationWrapper.setAttackDisplayMessage
-				//this.playerAttackWrapper.setAttackDisplayMessage
-				System.out.println("Not enough soldiers in origin country");
+				this.playerAttackWrapper.setAttackDisplayMessage
+				("Not enough soldiers in origin country");
 				this.boolFortifyValidationMet=false;
 			}
 		}
+	
+	/**
+	 * check if attacker throws a valid number of dices
+	 */
+	private void checkAttackerDiceNumValidity() {
+		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM && numDiceAttacker>=fromCountryAttack.getPlayer().getArmies()) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			this.playerAttackWrapper.setAttackDisplayMessage
+			("Attacker should not throw more than 3 dices and the number of dices should be less than the number of soldiers");
+			this.boolFortifyValidationMet=false;
+		}
+	}
+	
+	/**
+	 * check if defender throws a valid number of dices
+	 */
+	private void checkDefenderDiceNumValidity() {
+		if(numDiceDefender>MAX_DEFENDER_DICE_NUM && numDiceDefender>toCountryAttack.getPlayer().getArmies()) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			playerAttackWrapper.setAttackDisplayMessage
+			("Defender should not throw more than 2 dices and the number of dices should less or equal than the number of soldiers");
+			this.boolFortifyValidationMet=false;
+		}
+	}
     
     //--------------------------------------FORTIFICATION--------------------------------------------------
     
