@@ -613,12 +613,25 @@ public class Player{
 	
 	/**
 	 * check if attacker throws a valid number of dices
+	 * it must be less than the maximum allowed number for attacker
 	 */
-	private void checkAttackerDiceNumValidity() {
-		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM && numDiceAttacker>=fromCountryAttack.getSoldiers()) {
+	private void checkAttackerMaxDiceNumValidity() {
+		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			//this.playerAttackWrapper.setAttackDisplayMessage
-			System.out.println("Attacker should not throw more than 3 dices and the number of dices should be less than the number of soldiers");
+			System.out.println("Attacker should not throw more than 3 dices");
+			this.boolAttackValidationMet=false;
+		}
+	}
+	
+	/**
+	 * check if attacker throws a number of dices that is less than the number of soldiers in his/her country
+	 */
+	private void checkAttackerDiceNumValidity() {
+		if(numDiceAttacker>=fromCountryAttack.getSoldiers()) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//this.playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Attacker should throw number of dices that is less or equal than the number of soldiers");
 			this.boolAttackValidationMet=false;
 		}
 	}
@@ -643,7 +656,7 @@ public class Player{
 		if(numDiceDefender>toCountryAttack.getSoldiers()) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			//playerAttackWrapper.setAttackDisplayMessage
-			System.out.println("Defender should throw less or equal than the number of soldiers");
+			System.out.println("Defender should throw number of dices that is less or equal than the number of soldiers");
 			this.boolAttackValidationMet=false;
 		}
 	}
