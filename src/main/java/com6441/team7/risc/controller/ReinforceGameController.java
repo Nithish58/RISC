@@ -80,6 +80,9 @@ public class ReinforceGameController implements Controller{
     @Override
     public void readCommand(String command) throws Exception {
 
+    	//skipping because of testing
+    	playerService.getMapService().setState(GameState.ATTACK);
+    	
         Player player = playerService.getCurrentPlayer();
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 

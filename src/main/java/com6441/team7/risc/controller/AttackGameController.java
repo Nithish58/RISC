@@ -3,6 +3,7 @@ package com6441.team7.risc.controller;
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -30,13 +31,20 @@ public class AttackGameController implements Controller {
     /**
      * Used to control gameflow. WHen it is set to true, only defend <numdice> command will be valid
      */
-    private boolean boolDefenderDiceRequired;
+    //private boolean boolDefenderDiceRequired;
+    private AtomicBoolean boolDefenderDiceRequired;
+    
+    private AtomicBoolean boolAttackMoveRequired;
     
     
     public AttackGameController(PlayerService playerService){
 
         this.playerService = playerService;
         this.mapService=playerService.getMapService();
+        
+        this.boolDefenderDiceRequired=new AtomicBoolean(false);
+        this.boolAttackMoveRequired=new AtomicBoolean(false);
+        
     }
 
     public void setView(GameView view){
@@ -128,7 +136,7 @@ public class AttackGameController implements Controller {
     		return;
     	}
     	
-    	if(!boolDefenderDiceRequired) {
+    	if(!boolDefenderDiceRequired.get()) {
     		phaseView.displayMessage("Defender numDice is not required right now");
     		return;
     	}
@@ -150,7 +158,7 @@ public class AttackGameController implements Controller {
     	playerAttackWrapper.setNumDiceDefender(defenderNumDice);
     	
     	//Reset to false so that other commands can go through
-    	this.boolDefenderDiceRequired=false;
+    	this.boolDefenderDiceRequired.set(false);
     	
     	//Launch attack
     	playerService.getCurrentPlayer().attack(playerService, playerAttackWrapper);    	
@@ -159,8 +167,9 @@ public class AttackGameController implements Controller {
     	
     private void validateAttackCommand(String[] arrCommand) {
     	
-        if(boolDefenderDiceRequired) {
-        	validateDefendCommand(arrCommand);
+        if(boolDefenderDiceRequired.get()) {
+        	//validateDefendCommand(arrCommand);
+        	phaseView.displayMessage("Attack command not required now.");
         	return;
         }
     	
@@ -224,11 +233,14 @@ public class AttackGameController implements Controller {
     		//If integer valid, notify observers and launch attack
     		playerAttackWrapper.setNumDiceAttacker(numDice);
     		
+    		//Set boolDefenderDiceRequired to true
+    		this.boolDefenderDiceRequired.set(true);
+    		playerAttackWrapper.setBoolaDefenderDiceRequired(boolDefenderDiceRequired);
+    		
     		playerService.notifyPlayerServiceObservers(playerAttackWrapper);
     		
     		phaseView.displayMessage("Please choose number of dices Defender:");
-    		//Set boolDefenderDiceRequired to true
-    		this.boolDefenderDiceRequired=true;
+
     		
     		//Will wait for defender to enter numDice, then will launch attack in validateDefend Method
     		return;

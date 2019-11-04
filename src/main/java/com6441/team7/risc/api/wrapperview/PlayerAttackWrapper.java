@@ -1,5 +1,7 @@
 package com6441.team7.risc.api.wrapperview;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com6441.team7.risc.api.model.Country;
 
 public class PlayerAttackWrapper {
@@ -11,6 +13,9 @@ public class PlayerAttackWrapper {
 	boolean boolAllOut;
 	boolean boolAttackOver;
 	
+	AtomicBoolean boolDefenderDiceRequired;
+	AtomicBoolean boolAttackMoveRequired;
+	
 	String strAttackDisplayMessage="";
 	
 	public PlayerAttackWrapper(Country from, Country to) {
@@ -18,7 +23,11 @@ public class PlayerAttackWrapper {
 		this.toCountry=to;
 		this.boolAllOut=false;
 		
-		this.boolAttackOver=false; //for display purposes
+		this.boolAttackOver=false; //for display purposes in view
+		
+	//	this.boolDefenderDiceRequired.set(false);
+	//	this.boolAttackMoveRequired.set(false);
+		
 	}
 	
 	public void setNumDiceAttacker(int n) {
@@ -71,4 +80,19 @@ public class PlayerAttackWrapper {
 		return strAttackDisplayMessage;
 	}
 	
+	public void setBoolAttackMoveRequired(AtomicBoolean b) {
+		this.boolAttackMoveRequired=b;
+	}
+	
+	public void setBoolaDefenderDiceRequired(AtomicBoolean b) {
+		this.boolDefenderDiceRequired=b;
+	}
+	
+	public AtomicBoolean getBooldAttackMoveRequired() {
+		return boolAttackMoveRequired;
+	}
+	
+	public AtomicBoolean getBoolDefenderDiceRequired() {
+		return boolDefenderDiceRequired;
+	}
 }

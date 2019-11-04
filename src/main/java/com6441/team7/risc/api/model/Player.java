@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -354,6 +355,9 @@ public class Player{
     private SecureRandom diceRandomizer;
     private boolean boolAllOut;
     private boolean boolAttackOver;
+    private AtomicBoolean boolAttackMoveRequired;
+    private AtomicBoolean boolDefendDiceRequired;
+    
     
     private boolean boolAttackValidationMet;
     
@@ -370,9 +374,12 @@ public class Player{
     			attackAllOut();
     			return;
     		}
-    	
+    		
 			this.numDiceAttacker=playerAttackWrapper.getNumDiceAttacker();
 			this.numDiceDefender=playerAttackWrapper.getNumDiceDefender();
+    		
+    		this.boolAttackMoveRequired=playerAttackWrapper.getBooldAttackMoveRequired();
+    		this.boolDefendDiceRequired=playerAttackWrapper.getBoolDefenderDiceRequired();
 			
 			//Continue or you can change the structure of functions etc if you want.
 			// DO NOT CHANGE IN ATTACK CONTROLLER...You just have to code here.
@@ -387,8 +394,8 @@ public class Player{
 			if (!validateAttackConditions(playerService)) {
 				
 				//notify playerService observer if it's not valid
-				playerService.notifyObservers(this.playerAttackWrapper);
-				
+				//playerService.notifyObservers(this.playerAttackWrapper);
+				System.out.println("Conditions not valid");
 				return;
 			}
 			
@@ -633,6 +640,7 @@ public class Player{
 			//playerAttackWrapper.setAttackDisplayMessage
 			System.out.println("Defender should not throw more than 2 dices");
 			this.boolAttackValidationMet=false;
+			this.boolDefendDiceRequired.set(true);
 		}
 	}
 	
@@ -645,6 +653,7 @@ public class Player{
 			//playerAttackWrapper.setAttackDisplayMessage
 			System.out.println("Defender should throw less or equal than the number of soldiers");
 			this.boolAttackValidationMet=false;
+			this.boolDefendDiceRequired.set(true);
 		}
 	}
 	
