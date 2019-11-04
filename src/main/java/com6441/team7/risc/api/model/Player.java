@@ -360,11 +360,6 @@ public class Player{
     			attackAllOut();
     			return;
     		}
-    		
-    		if (boolAttackOver) {
-    			attackNone();
-    			return;
-    		}
     	
 			this.numDiceAttacker=playerAttackWrapper.getNumDiceAttacker();
 			this.numDiceDefender=playerAttackWrapper.getNumDiceDefender();
@@ -390,12 +385,15 @@ public class Player{
     
     public void attackAllOut() {}
     
-    public void attackNone() {}
-    
     public void attackMove() {
     	
     }
     
+    /**
+     * Method for rolling attacker's dice
+     * @param numDiceAttacker
+     * @return
+     */
     public int[] rollAttackerDice(int numDiceAttacker) {
     	attackerDice = new int[numDiceAttacker];
     	diceRandomizer = new SecureRandom();
@@ -406,6 +404,11 @@ public class Player{
     	return attackerDice;
     }
     
+    /**
+     * Method for rolling defender's dice
+     * @param numDiceDefender
+     * @return
+     */
     public int[] rollDefenderDice(int numDiceDefender) {
     	defenderDice = new int[numDiceDefender];
     	diceRandomizer = new SecureRandom();
@@ -416,6 +419,14 @@ public class Player{
     	return defenderDice;
     }
     
+    /**
+     * This method decides the result of every battle after both attacker and defender
+     * throw their dices. 
+     * Each side is assigned second dice value to be compared with each other
+     * if both sides throw at least two dices.
+     * @param attackerDice
+     * @param defenderDice
+     */
 	public void decideBattleResult(int[] attackerDice, int[] defenderDice) {
 		Arrays.sort(attackerDice);
 		Arrays.sort(defenderDice);
@@ -456,25 +467,54 @@ public class Player{
 				|| ((numDiceAttacker == 2) && numDiceDefender == 2)) {
 			// Calculate the highest values of the both players' dices
 			if (attackerMaxValue > defenderMaxValue) {
-				toCountryAttack.getPlayer().reduceArmy(1);
+				toCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
-				fromCountryAttack.getPlayer().reduceArmy(1);
+				fromCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+						" : Lost a soldier");
 			}
 
 			if (attackerSecondMaxValue > defenderSecondMaxValue) {
-				toCountryAttack.getPlayer().reduceArmy(1);
+				toCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
-				fromCountryAttack.getPlayer().reduceArmy(1);
+				fromCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+						" : Lost a soldier");
 			}
 		}
-		// if at least one of both players only have one soldier in their respective countriies
+		// if the defender's country only have one soldier
 		else {
 			if (attackerMaxValue > defenderMaxValue) {
-				toCountryAttack.getPlayer().reduceArmy(1);
+				toCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
-				fromCountryAttack.getPlayer().reduceArmy(1);
+				fromCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+						" : Lost a soldier");
 			}
 		}
+		
+		//Check if all of the defender's soldiers have been eliminated
+		//If the defender lost all soldiers in his/her country, the attacker conquered the country
+		if (toCountryAttack.getSoldiers()==0)
+			toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 	}
 
     
@@ -552,7 +592,7 @@ public class Player{
 	 * check if attacker throws a valid number of dices
 	 */
 	private void checkAttackerDiceNumValidity() {
-		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM && numDiceAttacker>=fromCountryAttack.getPlayer().getArmies()) {
+		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM && numDiceAttacker>=fromCountryAttack.getSoldiers()) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			this.playerAttackWrapper.setAttackDisplayMessage
 			("Attacker should not throw more than 3 dices and the number of dices should be less than the number of soldiers");
@@ -564,13 +604,15 @@ public class Player{
 	 * check if defender throws a valid number of dices
 	 */
 	private void checkDefenderDiceNumValidity() {
-		if(numDiceDefender>MAX_DEFENDER_DICE_NUM && numDiceDefender>toCountryAttack.getPlayer().getArmies()) {
+		if(numDiceDefender>MAX_DEFENDER_DICE_NUM && numDiceDefender>toCountryAttack.getSoldiers()) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			playerAttackWrapper.setAttackDisplayMessage
 			("Defender should not throw more than 2 dices and the number of dices should less or equal than the number of soldiers");
 			this.boolFortifyValidationMet=false;
 		}
 	}
+	
+	
     
     //--------------------------------------FORTIFICATION--------------------------------------------------
     
