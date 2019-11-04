@@ -12,6 +12,8 @@ import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+import com6441.team7.risc.utils.CommonUtils;
+import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.GameView;
 
 public class AttackGameController implements Controller {
@@ -81,6 +83,36 @@ public class AttackGameController implements Controller {
     		
     	case ATTACKMOVE:
     		break;
+    		
+    	case SHOW_PLAYER:
+        	
+        	MapDisplayUtils.showPlayer(mapService,playerService,phaseView);
+        	break;
+        	
+        case SHOW_ALL_PLAYERS:
+
+        	MapDisplayUtils.showAllPlayers(mapService,playerService,phaseView);
+        	break;
+        	
+        case SHOW_PLAYER_ALL_COUNTRIES:
+
+        	MapDisplayUtils.showPlayerAllCountries(mapService,playerService,phaseView);
+        	break;
+        
+        case SHOW_PLAYER_COUNTRIES:
+
+        	MapDisplayUtils.showPlayerCountries(mapService,playerService,phaseView);
+        	break;
+        	
+        case SHOW_MAP:
+        	
+        	MapDisplayUtils.showMapFullUnpopulated(mapService, phaseView);        	
+        	break;
+        	
+        case EXIT:
+        	CommonUtils.endGame(phaseView);
+        	break;
+        	
     	
     	default:
             throw new IllegalArgumentException("cannot recognize this command");

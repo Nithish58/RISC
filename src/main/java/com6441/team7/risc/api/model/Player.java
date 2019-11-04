@@ -789,7 +789,7 @@ public class Player{
 		
 		this.boolFortifyValidationMet=true;
 		
-		checkCountryAdjacency(playerService.getMapService());
+		checkCountryAdjacencyForFortification(playerService.getMapService());
 		
 		if(boolFortifyValidationMet) {
 			checkCountriesBelongToCurrentPlayer(playerService);
@@ -812,7 +812,7 @@ public class Player{
 	 * check country has Adjacency
 	 * @param mapservice to retrieve from and to countries' info and their adjacent countries
 	 */
-	private void checkCountryAdjacency(MapService mapService) {
+	private void checkCountryAdjacencyForFortification(MapService mapService) {
 			
 			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
 			
