@@ -584,7 +584,7 @@ public class Player{
 				//The message will be sent to the playerAttackWrapper when the notification method is created there
 				this.playerAttackWrapper.setAttackDisplayMessage
 				("Not enough soldiers in origin country");
-				this.boolFortifyValidationMet=false;
+				this.boolAttackValidationMet=false;
 			}
 		}
 	
@@ -596,7 +596,7 @@ public class Player{
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			this.playerAttackWrapper.setAttackDisplayMessage
 			("Attacker should not throw more than 3 dices and the number of dices should be less than the number of soldiers");
-			this.boolFortifyValidationMet=false;
+			this.boolAttackValidationMet=false;
 		}
 	}
 	
@@ -608,9 +608,46 @@ public class Player{
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			playerAttackWrapper.setAttackDisplayMessage
 			("Defender should not throw more than 2 dices and the number of dices should less or equal than the number of soldiers");
-			this.boolFortifyValidationMet=false;
+			this.boolAttackValidationMet=false;
 		}
 	}
+	
+	/**
+	 * check if attacking country has Adjacency
+	 * @param mapservice to retrieve from and to countries' info and their adjacent countries
+	 */
+	private void checkAttackingCountryAdjacency(MapService mapService) {
+			
+			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
+			
+			Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountryAttack.getCountryName());
+			
+			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountryAttack.getCountryName());
+			
+			if(!fromId.isPresent()) {
+				this.playerAttackWrapper.setAttackDisplayMessage
+				("Origin country not present");
+				this.boolAttackValidationMet=false;
+			}
+
+			
+			if(!toId.isPresent()) {
+				this.playerAttackWrapper.setAttackDisplayMessage
+				("Destination country not present");
+				this.boolAttackValidationMet=false;
+			}
+			
+			if(boolAttackValidationMet) {
+				neighbouringCountries =  adjacentCountriesList.get(fromId.get());
+				
+				if(!neighbouringCountries.contains(toId.get())) {
+					this.boolAttackValidationMet=false;
+					this.playerAttackWrapper.setAttackDisplayMessage
+					("Countries not adjacent to each other");
+				}
+			}			
+			
+		}
 	
 	
     
