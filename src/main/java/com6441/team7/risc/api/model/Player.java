@@ -371,6 +371,9 @@ public class Player{
 			this.numDiceAttacker=playerAttackWrapper.getNumDiceAttacker();
 			this.numDiceDefender=playerAttackWrapper.getNumDiceDefender();
 			
+			//If boolAllOut is chosen
+			
+			
 			//Continue or you can change the structure of functions etc if you want.
 			// DO NOT CHANGE IN ATTACK CONTROLLER...You just have to code here.
 			//						GOOD LUCK BINSAR!!!
@@ -401,13 +404,15 @@ public class Player{
     		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
     		
     		if(boolAllOut) {
-    			attackAllOut(playerService);
+    			attackAllOut(playerService, numDiceAttacker, numDiceDefender);
     			return;
     		}
     }        
     
-    public void attackAllOut(PlayerService playerService) {
-    	while (!isDefenderPushedOut() || !isAttackerLastManStanding()) {
+    public void attackAllOut(PlayerService playerService, int numDiceAttacker, int numDiceDefender) {
+    	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
+    	this.numDefendingSoldiers = MAX_DEFENDER_DICE_NUM;
+    	while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
 			this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
 			this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
 			//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
@@ -571,8 +576,7 @@ public class Player{
 		
 		//Check if all of the defender's soldiers have been eliminated
 		//If the defender lost all soldiers in his/her country, the attacker conquered the country
-		if (isDefenderPushedOut())
-			toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
+		checkDefenderPushedOut();
 	}
 
     
@@ -704,10 +708,17 @@ public class Player{
 	 *If the defender lost all soldiers in his/her country, the attacker conquered the country
 	 * @return
 	 */
-	private boolean isDefenderPushedOut() {
+	private boolean checkDefenderPushedOut() {
 
-		if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
+		//if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
+		if ((toCountryAttack.getSoldiers().equals(0))) {
+			toCountryAttack.getPlayer().getCountryList().remove(toCountryAttack);
+			fromCountryAttack.getPlayer().getCountryList().add(toCountryAttack);
+			toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
+			
+			//notify
 			return true;
+		}
 		return false;
 	}
 	
