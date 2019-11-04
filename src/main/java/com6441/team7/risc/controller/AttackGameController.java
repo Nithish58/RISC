@@ -105,8 +105,8 @@ public class AttackGameController implements Controller {
         	break;
         	
         case SHOW_MAP:
-        	
-        	MapDisplayUtils.showMapFullUnpopulated(mapService, phaseView);        	
+
+        	MapDisplayUtils.showMapFullPopulated(mapService, phaseView);
         	break;
         	
         case EXIT:
