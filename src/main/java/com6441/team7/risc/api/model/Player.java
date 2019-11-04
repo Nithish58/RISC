@@ -369,6 +369,7 @@ public class Player{
     private PlayerAttackWrapper playerAttackWrapper;
     
     public void attack(PlayerService playerService, PlayerAttackWrapper playerAttackWrapper){
+    	
     		this.fromCountryAttack=playerAttackWrapper.getFromCountry();
     		this.toCountryAttack=playerAttackWrapper.getToCountry();
     		
@@ -384,48 +385,54 @@ public class Player{
     		this.boolDefendDiceRequired=playerAttackWrapper.getBoolDefenderDiceRequired();
 			
 			//If boolAllOut is chosen
-			
-			
-			//Continue or you can change the structure of functions etc if you want.
-			// DO NOT CHANGE IN ATTACK CONTROLLER...You just have to code here.
-			//						GOOD LUCK BINSAR!!!
-			
-			this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
-			this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
-			//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
-			System.out.println("Before: ");
-			System.out.println(this.fromCountryAttack.getCountryName()+": "+this.numAttackingSoldiers);
-    		System.out.println(this.toCountryAttack.getCountryName()+": "+this.numDefendingSoldiers);
-    		
-			if (!validateAttackConditions(playerService)) {
-				
-				//notify playerService observer if it's not valid
-				//playerService.notifyObservers(this.playerAttackWrapper);
-				System.out.println("Conditions not valid");
-				return;
-			}
-			
-			//Attacker and defender roll their dices
-			attackerDice = rollAttackerDice(numDiceAttacker);
-			defenderDice = rollDefenderDice(numDiceDefender);
-    		
-			this.boolCountryConquered = false;
-			
-			//Decide the winner
-			decideBattleResult(attackerDice, defenderDice);
-    		System.out.println("After: ");
-    		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
-    		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
-    		
-    		if(boolAllOut) {
+      		if(boolAllOut) {
     			attackAllOut(playerService, numDiceAttacker, numDiceDefender);
     			return;
     		}
-    }        
+			
+      		attackSingle(playerService);
+      		
+			
+  
+    }
+    
+    public void attackSingle(PlayerService playerService) {
+    	
+    	this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
+		this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
+		//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
+		System.out.println("Before: ");
+		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.numAttackingSoldiers);
+		System.out.println(this.toCountryAttack.getCountryName()+": "+this.numDefendingSoldiers);
+		
+		if (!validateAttackConditions(playerService)) {
+			
+			//notify playerService observer if it's not valid
+			//playerService.notifyObservers(this.playerAttackWrapper);
+			System.out.println("Conditions not valid");
+			return;
+		}
+		
+		//Attacker and defender roll their dices
+		attackerDice = rollAttackerDice(numDiceAttacker);
+		defenderDice = rollDefenderDice(numDiceDefender);
+		
+		this.boolCountryConquered = false;
+		
+		//Decide the winner
+		decideBattleResult(attackerDice, defenderDice);
+		System.out.println("After: ");
+		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
+		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
+		
+    	
+    }
     
     public void attackAllOut(PlayerService playerService, int numDiceAttacker, int numDiceDefender) {
+    	
     	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
     	this.numDefendingSoldiers = MAX_DEFENDER_DICE_NUM;
+    	
     	while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
 			this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
 			this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
@@ -437,7 +444,8 @@ public class Player{
 			if (!validateAttackConditions(playerService)) {
 				
 				//notify playerService observer if it's not valid
-				playerService.notifyObservers(this.playerAttackWrapper);
+				//playerService.notifyObservers(this.playerAttackWrapper);
+				System.out.println("Not not");
 				
 				return;
 			}
@@ -733,7 +741,7 @@ public class Player{
 			fromCountryAttack.getPlayer().getCountryList().add(toCountryAttack);
 			toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 			//checkDefenderEliminatedFromGame()
-			System.out.println("Defender eliminated");
+			System.out.println("Defender eliminated from country");
 			
 			System.out.println("Need to fortify new country, check if defender is eliminated from the game,"
 					+ "need to transfer cards, need to check if cards >= 6, need to call exchange view immediately,"
