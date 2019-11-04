@@ -91,10 +91,6 @@ public class AttackGameController implements Controller {
     
     private void validateDefendCommand(String[] arrCommand) {
     	
-        if(boolDefenderDiceRequired) {
-        	validateDefendCommand(arrCommand);
-        }
-    	
     	if(arrCommand.length!=2) {
     		phaseView.displayMessage("Invalid Defend command.");
     		return;
@@ -130,6 +126,11 @@ public class AttackGameController implements Controller {
     }
     	
     private void validateAttackCommand(String[] arrCommand) {
+    	
+        if(boolDefenderDiceRequired) {
+        	validateDefendCommand(arrCommand);
+        	return;
+        }
     	
     	if(!(arrCommand.length==2 || arrCommand.length==4)) {
     		phaseView.displayMessage("Invalid Attack Command");
@@ -188,7 +189,6 @@ public class AttackGameController implements Controller {
     			phaseView.displayMessage("Invalid numDice entered.");
     			return;
     		}
-    		System.out.println("After return");
     		//If integer valid, notify observers and launch attack
     		playerAttackWrapper.setNumDiceAttacker(numDice);
     		
