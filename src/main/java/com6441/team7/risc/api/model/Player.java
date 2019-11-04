@@ -732,7 +732,6 @@ public class Player{
 			toCountryAttack.getPlayer().getCountryList().remove(toCountryAttack);
 			fromCountryAttack.getPlayer().getCountryList().add(toCountryAttack);
 			toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
-			
 			//checkDefenderEliminatedFromGame()
 			System.out.println("Defender eliminated");
 			
