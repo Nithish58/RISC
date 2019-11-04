@@ -383,6 +383,9 @@ public class Player{
     		
     		this.boolAttackMoveRequired=playerAttackWrapper.getBooldAttackMoveRequired();
     		this.boolDefendDiceRequired=playerAttackWrapper.getBoolDefenderDiceRequired();
+    		
+			this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
+			this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
 			
 			//If boolAllOut is chosen
       		if(boolAllOut) {
@@ -398,8 +401,6 @@ public class Player{
     
     public void attackSingle(PlayerService playerService) {
     	
-    	this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
-		this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
 		//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
 		System.out.println("Before: ");
 		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.numAttackingSoldiers);
@@ -434,8 +435,7 @@ public class Player{
     	this.numDefendingSoldiers = MAX_DEFENDER_DICE_NUM;
     	
     	while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
-			this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
-			this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
+
 			//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
 			System.out.println("Before: ");
 			System.out.println(this.fromCountryAttack.getCountryName()+": "+this.numAttackingSoldiers);
