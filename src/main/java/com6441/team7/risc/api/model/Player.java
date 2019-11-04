@@ -1,6 +1,7 @@
 package com6441.team7.risc.api.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import java.security.SecureRandom;
 
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
@@ -33,6 +36,7 @@ public class Player{
     /**
      * list of cards a player has
      */
+
     private List<Card> cardList;
 
     /**
@@ -79,7 +83,21 @@ public class Player{
     public void setName(String name) {
         this.name = name;
     }
+    
+    /**
+     * Minimum allowed number of attacking armies in a country
+     */
+    private static final int MIN_ATTACKING_SOLDIERS=2;
 
+    /**
+     * Maximum allowed number of dice(s) for attacker to roll 
+     */
+    private static final int MAX_ATTACKER_DICE_NUM=3;
+    
+    /**
+     * Maximum allowed number of dice(s) for defender to roll
+     */
+    private static final int MAX_DEFENDER_DICE_NUM=2;
 
 
     //------------------------------------REINFORCEMENT-----------------------------------------
@@ -331,15 +349,22 @@ public class Player{
     private Country toCountryAttack;
     private int numDiceAttacker=0;
     private int numDiceDefender=0;
+    private int[] attackerDice;
+    private int[] defenderDice;
+    private SecureRandom diceRandomizer;
     private boolean boolAllOut;
+    private boolean boolAttackOver;
     
+    private boolean boolAttackValidationMet;
+    
+    private PlayerAttackWrapper playerAttackWrapper;
     
     public void attack(PlayerService playerService, PlayerAttackWrapper playerAttackWrapper){
-    	
     		this.fromCountryAttack=playerAttackWrapper.getFromCountry();
     		this.toCountryAttack=playerAttackWrapper.getToCountry();
     		
     		this.boolAllOut=playerAttackWrapper.getBooleanAllOut();
+    		this.boolAttackOver=playerAttackWrapper.getBoolAttackOver();
     		
     		if(boolAllOut) {
     			attackAllOut();
@@ -352,17 +377,327 @@ public class Player{
 			//Continue or you can change the structure of functions etc if you want.
 			// DO NOT CHANGE IN ATTACK CONTROLLER...You just have to code here.
 			//						GOOD LUCK BINSAR!!!
+			
+			//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
+			System.out.println("Before: ");
+			System.out.println("Name of soldiers owned by "+this.fromCountryAttack.getPlayer().getName()+" : "+this.fromCountryAttack.getPlayer().getArmies());
+			System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
+    		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
     		
-    }    
-    
+			if (!validateAttackConditions(playerService)) {
+				
+				//notify playerService observer if it's not valid
+				playerService.notifyObservers(this.playerAttackWrapper);
+				
+				return;
+			}
+			
+			//Attacker and defender roll their dices
+			attackerDice = rollAttackerDice(numDiceAttacker);
+			defenderDice = rollDefenderDice(numDiceDefender);
+    		
+			//Decide the winner
+			decideBattleResult(attackerDice, defenderDice);
+    		System.out.println("After: ");
+    		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
+    		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
+    }        
     
     public void attackAllOut() {}
     
+    public void attackMove() {
+    	
+    }
     
+    /**
+     * Method for rolling attacker's dice
+     * @param numDiceAttacker
+     * @return
+     */
+    public int[] rollAttackerDice(int numDiceAttacker) {
+    	attackerDice = new int[numDiceAttacker];
+    	diceRandomizer = new SecureRandom();
+    	for (int i = 0; i < attackerDice.length; i++) {
+    		attackerDice[i] = diceRandomizer.nextInt(5)+1;
+    		System.out.println(attackerDice[i]);
+    	}
+    	return attackerDice;
+    }
     
+    /**
+     * Method for rolling defender's dice
+     * @param numDiceDefender
+     * @return
+     */
+    public int[] rollDefenderDice(int numDiceDefender) {
+    	defenderDice = new int[numDiceDefender];
+    	diceRandomizer = new SecureRandom();
+    	for (int i = 0; i < defenderDice.length; i++) {
+    		defenderDice[i] = diceRandomizer.nextInt(5)+1;
+    		System.out.println(defenderDice[i]);
+    	}
+    	return defenderDice;
+    }
     
+    /**
+     * This method decides the result of every battle after both attacker and defender
+     * throw their dices. 
+     * Each side is assigned second dice value to be compared with each other
+     * if both sides throw at least two dices.
+     * @param attackerDice
+     * @param defenderDice
+     */
+	public void decideBattleResult(int[] attackerDice, int[] defenderDice) {
+		Arrays.sort(attackerDice);
+		Arrays.sort(defenderDice);
+		int attackerMaxValue = 0;
+		int attackerSecondMaxValue = 0;
+		int defenderMaxValue = 0;
+		int defenderSecondMaxValue = 0;
+
+		// decide the maximum and second maximum(if any) values of attacker's dice
+		// based on the number of the dice thrown
+		switch (numDiceAttacker) {
+		case 3:
+			attackerMaxValue = attackerDice[2];
+			attackerSecondMaxValue = attackerDice[1];
+			break;
+		case 2:
+			attackerMaxValue = attackerDice[1];
+			attackerSecondMaxValue = attackerDice[0];
+			break;
+		case 1:
+			attackerMaxValue = attackerDice[0];
+		}
+
+		// decide the maximum and second maximum(if any) values of defender's dice
+		// based on the number of the dice thrown
+		switch (numDiceDefender) {
+		case 2:
+			defenderMaxValue = defenderDice[1];
+			defenderSecondMaxValue = defenderDice[0];
+			break;
+		case 1:
+			defenderMaxValue = defenderDice[0];
+		}
+
+		// choose how the battle is decided
+		// based on the number of attacker's and defender's dices
+		if (((numDiceAttacker == 3) && (numDiceDefender == 2)) 
+				|| ((numDiceAttacker == 2) && numDiceDefender == 2)) {
+			// Calculate the highest values of the both players' dices
+			if (attackerMaxValue > defenderMaxValue) {
+				toCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				System.out.println(fromCountryAttack.getPlayer().getName()+
+						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
+			} else {
+				fromCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				System.out.println(fromCountryAttack.getPlayer().getName()+
+						" : Lost a soldier");
+			}
+
+			if (attackerSecondMaxValue > defenderSecondMaxValue) {
+				toCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				System.out.println(fromCountryAttack.getPlayer().getName()+
+						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
+			} else {
+				fromCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				System.out.println(fromCountryAttack.getPlayer().getName()+
+						" : Lost a soldier");
+			}
+		}
+		// if the defender's country only have one soldier
+		else {
+			if (attackerMaxValue > defenderMaxValue) {
+				toCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				System.out.println(fromCountryAttack.getPlayer().getName()+
+						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
+			} else {
+				fromCountryAttack.removeSoldiers(1);
+				//Notify Observers of Player Service
+				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				System.out.println(fromCountryAttack.getPlayer().getName()+
+						" : Lost a soldier");
+			}
+		}
+		
+		//Check if all of the defender's soldiers have been eliminated
+		//If the defender lost all soldiers in his/her country, the attacker conquered the country
+		if (isDefenderPushedOut())
+			toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
+	}
+
     
+    private boolean validateAttackConditions(PlayerService playerService) {
+    	this.boolAttackValidationMet = true;
+    	
+    	checkAttackingCountryAdjacency(playerService.getMapService());
+    	
+    	if (boolAttackValidationMet)
+    		checkCountryBelongToAttacker(playerService);
+    	
+    	if (boolAttackValidationMet)
+    		checkCountryHostility();
+    	
+    	if (boolAttackValidationMet)
+    		checkNumAttackingSoldiers();
+    	
+    	if (boolAttackValidationMet)
+    		checkAttackerDiceNumValidity();
+    	
+    	if (boolAttackValidationMet)
+    		checkDefenderMaxDiceNumValidity();
+    	
+    	if (boolAttackValidationMet)
+    		checkDefenderDiceNumValidity();
+    	
+    	return boolAttackValidationMet;
+    }
     
+	/**
+	 * Check if attacker country actually belongs to the attacker
+	 * @param playerService to notify observers about game info and retrieve useful info like current player 
+	 */
+	private void checkCountryBelongToAttacker(PlayerService playerService) {
+		Player currentPlayer=playerService.getCurrentPlayer();
+		String playerName=currentPlayer.getName();
+		
+		if((!fromCountryAttack.getPlayer().getName().equals(playerName))) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//this.playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Origin country does not belong to current player");
+			this.boolAttackValidationMet=false;
+		}
+		
+	}
+	
+	/**
+	 * checks whether the 2 countries are owned by different players
+	 */
+	private void checkCountryHostility() {
+			
+			if(fromCountryAttack.getPlayer().getName().equalsIgnoreCase
+					(toCountryAttack.getPlayer().getName())) {
+				
+				//The message will be sent to the playerAttackWrapper when the notification method is created there
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Countries belong to same player");
+				this.boolAttackValidationMet=false;
+			}
+			
+		}
+	
+	/**
+	 * check the number of soldiers for the attacker
+	 * Ensures that at least 2 soldier remains in the attacker's origin country
+	 */
+	private void checkNumAttackingSoldiers() {
+			
+			if(fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS) {
+				//The message will be sent to the playerAttackWrapper when the notification method is created there
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Not enough soldiers in origin country");
+				this.boolAttackValidationMet=false;
+			}
+		}
+	
+	/**
+	 * check if attacker throws a valid number of dices
+	 */
+	private void checkAttackerDiceNumValidity() {
+		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM && numDiceAttacker>=fromCountryAttack.getSoldiers()) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//this.playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Attacker should not throw more than 3 dices and the number of dices should be less than the number of soldiers");
+			this.boolAttackValidationMet=false;
+		}
+	}
+	
+	/**
+	 * check if defender throws a valid number of dices
+	 * it must be less or equal than the maximum allowed number for defender
+	 */
+	private void checkDefenderMaxDiceNumValidity() {
+		if(numDiceDefender>MAX_DEFENDER_DICE_NUM) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Defender should not throw more than 2 dices");
+			this.boolAttackValidationMet=false;
+		}
+	}
+	
+	/**
+	 * check if defender throws a number of dices that is less or equal than the number of soldiers in his/her country
+	 */
+	private void checkDefenderDiceNumValidity() {
+		if(numDiceDefender>toCountryAttack.getSoldiers()) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Defender should throw less or equal than the number of soldiers");
+			this.boolAttackValidationMet=false;
+		}
+	}
+	
+	/**
+	 * Check if all of the defender's soldiers have been eliminated
+	 *If the defender lost all soldiers in his/her country, the attacker conquered the country
+	 * @return
+	 */
+	private boolean isDefenderPushedOut() {
+
+		if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
+			return true;
+		return false;
+	}
+	
+	/**
+	 * check if attacking country has Adjacency
+	 * @param mapservice to retrieve from and to countries' info and their adjacent countries
+	 */
+	private void checkAttackingCountryAdjacency(MapService mapService) {
+			
+			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
+			
+			Optional<Integer> toId = mapService.findCorrespondingIdByCountryName(toCountryAttack.getCountryName());
+			
+			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountryAttack.getCountryName());
+			
+			if(!fromId.isPresent()) {
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Origin country not present");
+				this.boolAttackValidationMet=false;
+			}
+
+			
+			if(!toId.isPresent()) {
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Destination country not present");
+				this.boolAttackValidationMet=false;
+			}
+			
+			if(boolAttackValidationMet) {
+				neighbouringCountries =  adjacentCountriesList.get(fromId.get());
+				
+				if(!neighbouringCountries.contains(toId.get())) {
+					this.boolAttackValidationMet=false;
+					//this.playerAttackWrapper.setAttackDisplayMessage
+					System.out.println("Countries not adjacent to each other");
+				}
+			}			
+			
+		}
+	
+	
     
     //--------------------------------------FORTIFICATION--------------------------------------------------
     
