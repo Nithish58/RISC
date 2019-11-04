@@ -381,6 +381,8 @@ public class Player{
 			attackerDice = rollAttackerDice(numDiceAttacker);
 			defenderDice = rollDefenderDice(numDiceDefender);
     		
+			//Decide the winner
+			decideBattleResult(attackerDice, defenderDice);
     }        
     
     public void attackAllOut() {}
@@ -580,7 +582,7 @@ public class Player{
 	 */
 	private void checkNumAttackingSoldiers() {
 			
-			if(!(fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS)) {
+			if(fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS) {
 				//The message will be sent to the playerAttackWrapper when the notification method is created there
 				this.playerAttackWrapper.setAttackDisplayMessage
 				("Not enough soldiers in origin country");
