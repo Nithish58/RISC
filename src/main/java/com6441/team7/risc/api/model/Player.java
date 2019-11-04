@@ -523,7 +523,7 @@ public class Player{
 		
 		//Check if all of the defender's soldiers have been eliminated
 		//If the defender lost all soldiers in his/her country, the attacker conquered the country
-		if (toCountryAttack.getSoldiers()==0)
+		if (isDefenderPushedOut())
 			toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 	}
 
@@ -636,6 +636,18 @@ public class Player{
 			System.out.println("Defender should throw less or equal than the number of soldiers");
 			this.boolAttackValidationMet=false;
 		}
+	}
+	
+	/**
+	 * Check if all of the defender's soldiers have been eliminated
+	 *If the defender lost all soldiers in his/her country, the attacker conquered the country
+	 * @return
+	 */
+	private boolean isDefenderPushedOut() {
+
+		if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
+			return true;
+		return false;
 	}
 	
 	/**
