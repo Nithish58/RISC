@@ -521,7 +521,7 @@ public class Player{
     private boolean validateAttackConditions(PlayerService playerService) {
     	this.boolAttackValidationMet = true;
     	
-    	checkCountryAdjacency(playerService.getMapService());
+    	checkAttackingCountryAdjacency(playerService.getMapService());
     	
     	if (boolAttackValidationMet)
     		checkCountryBelongToAttacker(playerService);
