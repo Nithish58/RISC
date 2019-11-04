@@ -7,7 +7,7 @@ public class CommonUtils {
 	/**
 	 * end the game
 	 * Called when only 1 player is present as he/she automatically wins.
-	 * Also called when exit command entered.
+	 * Also called when exit command entered or when a player wins.
 	 */
 	public static void endGame(GameView view) {
 
