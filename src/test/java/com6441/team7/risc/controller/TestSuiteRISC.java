@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({MapLoaderControllerTest.class,
 				StartupGameControllerTest.class,
-				//ReinforceGameController.class,
+				ReinforceGameControllerTest.class,
 				//AttackGameControllerTest.class,
 				FortifyGameControllerTest.class})
 public class TestSuiteRISC {
