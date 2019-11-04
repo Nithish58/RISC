@@ -36,6 +36,7 @@ public class Player{
     /**
      * list of cards a player has
      */
+
     private List<Card> cardList;
 
     /**
@@ -349,7 +350,6 @@ public class Player{
     private PlayerAttackWrapper playerAttackWrapper;
     
     public void attack(PlayerService playerService, PlayerAttackWrapper playerAttackWrapper){
-    	
     		this.fromCountryAttack=playerAttackWrapper.getFromCountry();
     		this.toCountryAttack=playerAttackWrapper.getToCountry();
     		
@@ -369,6 +369,11 @@ public class Player{
 			//						GOOD LUCK BINSAR!!!
 			
 			//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
+			System.out.println("Before: ");
+			System.out.println("Name of soldiers owned by "+this.fromCountryAttack.getPlayer().getName()+" : "+this.fromCountryAttack.getPlayer().getArmies());
+			System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
+    		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
+    		
 			if (!validateAttackConditions(playerService)) {
 				
 				//notify playerService observer if it's not valid
@@ -383,6 +388,9 @@ public class Player{
     		
 			//Decide the winner
 			decideBattleResult(attackerDice, defenderDice);
+    		System.out.println("After: ");
+    		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
+    		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
     }        
     
     public void attackAllOut() {}
@@ -472,13 +480,13 @@ public class Player{
 				toCountryAttack.removeSoldiers(1);
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
-				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
 				fromCountryAttack.removeSoldiers(1);
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
-				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Lost a soldier");
 			}
 
@@ -486,13 +494,13 @@ public class Player{
 				toCountryAttack.removeSoldiers(1);
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
-				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
 				fromCountryAttack.removeSoldiers(1);
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
-				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Lost a soldier");
 			}
 		}
@@ -502,13 +510,13 @@ public class Player{
 				toCountryAttack.removeSoldiers(1);
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
-				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
 				fromCountryAttack.removeSoldiers(1);
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
-				this.playerAttackWrapper.setAttackDisplayMessage(fromCountryAttack.getPlayer().getName()+
+				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Lost a soldier");
 			}
 		}
@@ -538,6 +546,9 @@ public class Player{
     		checkAttackerDiceNumValidity();
     	
     	if (boolAttackValidationMet)
+    		checkDefenderMaxDiceNumValidity();
+    	
+    	if (boolAttackValidationMet)
     		checkDefenderDiceNumValidity();
     	
     	return boolAttackValidationMet;
@@ -553,8 +564,8 @@ public class Player{
 		
 		if((!fromCountryAttack.getPlayer().getName().equals(playerName))) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
-			this.playerAttackWrapper.setAttackDisplayMessage
-			("Origin country does not belong to current player");
+			//this.playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Origin country does not belong to current player");
 			this.boolAttackValidationMet=false;
 		}
 		
@@ -569,8 +580,8 @@ public class Player{
 					(toCountryAttack.getPlayer().getName())) {
 				
 				//The message will be sent to the playerAttackWrapper when the notification method is created there
-				this.playerAttackWrapper.setAttackDisplayMessage
-				("Countries belong to same player");
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Countries belong to same player");
 				this.boolAttackValidationMet=false;
 			}
 			
@@ -584,8 +595,8 @@ public class Player{
 			
 			if(fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS) {
 				//The message will be sent to the playerAttackWrapper when the notification method is created there
-				this.playerAttackWrapper.setAttackDisplayMessage
-				("Not enough soldiers in origin country");
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Not enough soldiers in origin country");
 				this.boolAttackValidationMet=false;
 			}
 		}
@@ -596,20 +607,33 @@ public class Player{
 	private void checkAttackerDiceNumValidity() {
 		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM && numDiceAttacker>=fromCountryAttack.getSoldiers()) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
-			this.playerAttackWrapper.setAttackDisplayMessage
-			("Attacker should not throw more than 3 dices and the number of dices should be less than the number of soldiers");
+			//this.playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Attacker should not throw more than 3 dices and the number of dices should be less than the number of soldiers");
 			this.boolAttackValidationMet=false;
 		}
 	}
 	
 	/**
 	 * check if defender throws a valid number of dices
+	 * it must be less or equal than the maximum allowed number for defender
+	 */
+	private void checkDefenderMaxDiceNumValidity() {
+		if(numDiceDefender>MAX_DEFENDER_DICE_NUM) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Defender should not throw more than 2 dices");
+			this.boolAttackValidationMet=false;
+		}
+	}
+	
+	/**
+	 * check if defender throws a number of dices that is less or equal than the number of soldiers in his/her country
 	 */
 	private void checkDefenderDiceNumValidity() {
-		if(numDiceDefender>MAX_DEFENDER_DICE_NUM && numDiceDefender>toCountryAttack.getSoldiers()) {
+		if(numDiceDefender>toCountryAttack.getSoldiers()) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
-			playerAttackWrapper.setAttackDisplayMessage
-			("Defender should not throw more than 2 dices and the number of dices should less or equal than the number of soldiers");
+			//playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Defender should throw less or equal than the number of soldiers");
 			this.boolAttackValidationMet=false;
 		}
 	}
@@ -627,15 +651,15 @@ public class Player{
 			Optional<Integer> fromId = mapService.findCorrespondingIdByCountryName(fromCountryAttack.getCountryName());
 			
 			if(!fromId.isPresent()) {
-				this.playerAttackWrapper.setAttackDisplayMessage
-				("Origin country not present");
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Origin country not present");
 				this.boolAttackValidationMet=false;
 			}
 
 			
 			if(!toId.isPresent()) {
-				this.playerAttackWrapper.setAttackDisplayMessage
-				("Destination country not present");
+				//this.playerAttackWrapper.setAttackDisplayMessage
+				System.out.println("Destination country not present");
 				this.boolAttackValidationMet=false;
 			}
 			
@@ -644,8 +668,8 @@ public class Player{
 				
 				if(!neighbouringCountries.contains(toId.get())) {
 					this.boolAttackValidationMet=false;
-					this.playerAttackWrapper.setAttackDisplayMessage
-					("Countries not adjacent to each other");
+					//this.playerAttackWrapper.setAttackDisplayMessage
+					System.out.println("Countries not adjacent to each other");
 				}
 			}			
 			
