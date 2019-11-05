@@ -72,7 +72,88 @@ public class PlayerTest {
 	 * Testing attacker dice roll
 	 */
 	@Test
-	public void test004_rollAttackerDice() {
+	public void test003_rollAttackerDice() {
 		assertNotEquals(0, testPlayer.rollAttackerDice(3));
 	}
+
+	/**
+	 * Testing attack method
+	 */
+	@Test
+	public void test004_attack(){
+
+	}
+
+	/**
+	 *  Testing the single attack
+	 */
+	@Test
+	public void test005_attackSingle(){
+
+	}
+
+	/**
+	 * Testing attack until soldiers from either attacker or defender is out
+	 */
+	@Test
+	public void test006_attackAllOut(){
+
+	}
+
+	/**
+	 * Testing rolling attacker's dice
+	 */
+	@Test
+	public void test007_rollAttackerDice(){
+
+	}
+
+	/**
+	 * testing rolling defender's dice
+	 */
+	@Test
+	public void test008_rollDefenderDice(){
+
+	}
+
+	/**
+	 * Testing result of deciding battle
+	 */
+	@Test
+	public void test009_decideBattleResult(){
+
+	}
+
+	/**
+	 *Testing validate attack conditions
+	 */
+	@Test
+	public void test010_validateAttackConditions(){
+
+	}
+
+	/**
+	 * Testing if attacker country actually belongs to the attacker
+	 */
+	@Test
+	public void test010_checkCountryBelongToAttacker(){
+
+	}
+
+	/**
+	 * Testing whether the 2 countries are owned by different players
+	 */
+	@Test
+	public void test011_checkCountryHostility(){
+
+	}
+
+	/**
+	 * testing the number of soldiers for the attacker
+	 */
+	@Test
+	public void test012_checkNumAttackingSoldiers(){
+
+	}
+
 }
