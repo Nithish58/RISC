@@ -4,7 +4,7 @@ import com6441.team7.risc.api.model.*;
 
 import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
 
-import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+import com6441.team7.risc.api.wrapperview.*;
 
 /*
 import com6441.team7.risc.api.model.MapService;
@@ -13,37 +13,63 @@ import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 */
 
-import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerInitialArmyWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerInitialCountryAssignmentWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerPlaceArmyWrapper;
 import com6441.team7.risc.controller.*;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
 
 /**
- * The functionality of phaseView is just the same as CommandTerminalView
- * So I delete commandTerminalView and use phaseView replace.
+ * The phase view implements GameView, and display all the information during game play
  */
 public class PhaseView implements GameView {
-    private Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
-    
-    private Controller mapLoaderController;
-    private Controller startUpGameController;
-    private Controller reinforceGameController;
-    private Controller fortifyGameController;
-    private Controller attackController;
-    
-    private GameState gameState;
-    private Player currentPlayer=null;
-    
 
+    /**
+     * scanner to receive player input
+     */
+    private Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8.name());
+
+    /**
+     * a reference of mapLoaderController
+     */
+    private Controller mapLoaderController;
+
+    /**
+     * a reference of startUpGameController
+     */
+    private Controller startUpGameController;
+
+    /**
+     * a reference of reinforceGameController
+     */
+    private Controller reinforceGameController;
+
+    /**
+     * a reference of fortifyGameController
+     */
+    private Controller fortifyGameController;
+
+    /**
+     * a reference of attackController
+     */
+    private Controller attackController;
+
+    /**
+     * a reference of gameState
+     */
+    private GameState gameState;
+
+    /**
+     * a reference of current player
+     */
+    private Player currentPlayer=null;
+
+
+    /**
+     * add controller to controller lists
+     * @param list
+     */
     public void addController(List<Controller> list){
         list.forEach(controller -> {
             if(controller instanceof MapLoaderController){
@@ -64,6 +90,10 @@ public class PhaseView implements GameView {
             }
         });
     }
+
+    /**
+     * extends method from GameView to receiveCommand
+     */
     @Override
     public void receiveCommand() {
         while (true) {
@@ -96,11 +126,21 @@ public class PhaseView implements GameView {
     }
 
 
+    /**
+     * extends method from GameView to displayMessage
+     * @param string
+     */
     @Override
     public void displayMessage(String string) {
         System.out.println(PHASE_VIEW_STRING + string);
     }
 
+    /**
+     * whenever users input valid or non-valid, or changes in the model,
+     * the update() will call and display changes to the phase view
+     * @param o
+     * @param arg
+     */
     @Override
     public void update(Observable o, Object arg) {
 
@@ -294,6 +334,11 @@ public class PhaseView implements GameView {
     	
     }
     */
+
+    /**
+     *
+     * @param arg
+     */
     private void playerFortificationStatus(Object arg) {
 
     	PlayerFortificationWrapper playerFortificationWrapper

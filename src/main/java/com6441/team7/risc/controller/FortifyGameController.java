@@ -33,8 +33,19 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FortifyGameController implements Controller {
 
+	/**
+	 * a reference of playerService
+	 */
 	private PlayerService playerService;
+
+	/**
+	 * a reference of mapService
+	 */
 	private MapService mapService;
+
+	/**
+	 * a reference of GameView
+	 */
 	private GameView phaseView;
 
 	/**
@@ -75,19 +86,32 @@ public class FortifyGameController implements Controller {
 	 */
 	private boolean boolValidationMet;
 
+	/**
+	 * constructor to set playerService
+	 * @param playerService
+	 */
 	public FortifyGameController(PlayerService playerService) {
 		this.playerService = playerService;
 		this.mapService = this.playerService.getMapService();
 	}
 
+	/**
+	 * set the view
+	 * @param view
+	 */
 	public void setView(GameView view) {
 		this.phaseView = view;
 	}
 
-	// TODO: read command from phaseView and validate command here
-	// TODO: if the command is valid, call corresponding method in playerService
-	// TODO: if the command is not valid, call phaseView.displayMessage() to show
-	// error messages
+
+	/**
+	 * extends from method in IController
+	 * check validity of the commands from player
+	 * if the command is valid, it will call corresponding methods
+	 * if not, display error messages to the phase view
+	 * @param command
+	 * @throws Exception
+	 */
 	@Override
 	public void readCommand(String command) throws Exception {
 

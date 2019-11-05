@@ -92,9 +92,11 @@ public class StartupGameController implements Controller{
 	
 	
 	//JENNY REFACTORING PART
-	
-	
-    //private Controller mapLoaderController;
+
+
+	/**
+	 * private Controller mapLoaderController;
+	 */
 	private MapLoaderController mapLoaderController; //Casted it here instead of casting everytime
 	
 	
@@ -103,11 +105,28 @@ public class StartupGameController implements Controller{
      // the value of mapService will come from playerService.getMapService();
      // I don't have domination view because, it is the model to update domination view,
      // so i don't give reference here.
-	private MapService mapService;
-	private PlayerService playerService;
-	private GameView phaseView;
-	
 
+	/**
+	 * a reference of mapService
+	 */
+	private MapService mapService;
+
+	/**
+	 * a reference of plaerService
+	 */
+	private PlayerService playerService;
+
+	/**
+	 * a reference of phaseView
+	 */
+	private GameView phaseView;
+
+
+	/**
+	 * constructor to set mapController and playerService
+	 * @param mapController
+	 * @param playerService
+	 */
 	public StartupGameController(Controller mapController, PlayerService playerService) {
 		this.mapLoaderController= (MapLoaderController) mapController;
 
@@ -121,16 +140,24 @@ public class StartupGameController implements Controller{
 
 	}
 
+	/**
+	 * set the view
+	 * @param view
+	 */
 	public void setView(GameView view){
 	    this.phaseView = view;
     }
-	
 
-    //TODO: read command from phaseView and validate command here
-    //TODO: if the command is valid, call corresponding method in playerService
-    //TODO: if the command is not valid, call phaseView.displayMessage() to show the error message
 
-    @Override
+	/**
+	 * extends method from IController to read command from the view
+	 * check the validity of the commands,
+	 * if the command is valid, call relative methods
+	 * if not, display error messages to the phase view
+	 * @param command
+	 * @throws Exception
+	 */
+	@Override
     public void readCommand(String command) throws Exception {
     	
     	RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);

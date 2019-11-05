@@ -17,6 +17,12 @@ import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.GameView;
 
+/**
+ * The Attack phase
+ * This class basically validate the commands from the players
+ * and call the methods in the Player to implement attacking and defending
+ *
+ */
 public class AttackGameController implements Controller {
 
     private PlayerService playerService;
@@ -35,9 +41,12 @@ public class AttackGameController implements Controller {
     private AtomicBoolean boolDefenderDiceRequired;
     
     private AtomicBoolean boolAttackMoveRequired;
-    
-    
-    public AttackGameController(PlayerService playerService){
+
+	/**
+	 * constructor
+	 * @param playerService
+	 */
+	public AttackGameController(PlayerService playerService){
 
         this.playerService = playerService;
         this.mapService=playerService.getMapService();
@@ -47,15 +56,24 @@ public class AttackGameController implements Controller {
         
     }
 
-    public void setView(GameView view){
+	/**
+	 * set the view in the attack controller
+	 * @param view
+	 */
+	public void setView(GameView view){
         this.phaseView = view;
     }
 
 
-    //TODO: receive command from phaseView and validate the command
-    //TODO: if the command is valid, call corresponding method in PlayerService.class
-    //TODO: if the command is not valid, call phaseView.displayMessage() to display error message
-    @Override
+	/**
+	 * extends method from the IController
+	 * check the validity of the command,
+	 * if the command is valid, call corresponding method
+	 * if not, display error messages to the phase view
+	 * @param command
+	 * @throws Exception
+	 */
+	@Override
     public void readCommand(String command) throws Exception {
 
     	//this.playerService.getMapService().setState(GameState.FORTIFY);
@@ -128,8 +146,14 @@ public class AttackGameController implements Controller {
     	}
     	  	
     }
-    
-    private void validateDefendCommand(String[] arrCommand) {
+
+	/**
+	 * validate the defend command
+	 * if the command is not valid, it will display error messages to phase view
+	 * if it is valid, it will call relative methods in Player class
+	 * @param arrCommand
+	 */
+	private void validateDefendCommand(String[] arrCommand) {
     	
     	if(arrCommand.length!=2) {
     		phaseView.displayMessage("Invalid Defend command.");
@@ -164,8 +188,14 @@ public class AttackGameController implements Controller {
     	playerService.getCurrentPlayer().attack(playerService, playerAttackWrapper);    	
 
     }
-    	
-    private void validateAttackCommand(String[] arrCommand) {
+
+	/**
+	 * check the validity of the attack command
+	 * if the command is not valid, it will display error messages to phase view
+	 * if the command is valid, it will call relative methods in Player class
+	 * @param arrCommand
+	 */
+	private void validateAttackCommand(String[] arrCommand) {
     	
         if(boolDefenderDiceRequired.get()) {
         	//validateDefendCommand(arrCommand);
@@ -247,8 +277,11 @@ public class AttackGameController implements Controller {
     	} // End of If
     	
     }  //End of validate attack method
-    
-    private void endAttackPhase() {
+
+	/**
+	 * call mapService and set the state to fortify
+	 */
+	private void endAttackPhase() {
     	mapService.setState(GameState.FORTIFY);
     }
 }

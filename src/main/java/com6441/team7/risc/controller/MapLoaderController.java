@@ -30,14 +30,41 @@ import static java.util.Objects.isNull;
 
 public class MapLoaderController implements Controller{
 
+    /**
+     * generates id for continents
+     */
     private AtomicInteger continentIdGenerator;
+
+    /**
+     * generates id for countries
+     */
     private AtomicInteger countryIdGenerator;
-    
+
+    /**
+     * a reference of mapService
+     */
     private MapService mapService;
+
+    /**
+     * a reference of gameView
+     */
     private GameView view;
+
+    /**
+     * a reference of mapGraph
+     */
     private MapGraph mapGraph;
+
+    /**
+     * a reference of mapIntro
+     */
     private MapIntro mapIntro;
 
+
+    /**
+     * constructor to set mapService
+     * @param mapService
+     */
     public MapLoaderController(MapService mapService) {
         this.mapService = mapService;
         this.continentIdGenerator = new AtomicInteger();

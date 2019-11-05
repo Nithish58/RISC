@@ -3,11 +3,15 @@ package com6441.team7.risc.api.model;
 import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerDominationWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
+import com6441.team7.risc.api.wrapperview.ReinforcedArmyWrapper;
 
 import java.util.*;
 
 public class PlayerService extends Observable {
 
+	/**
+	 * a reference to mapService
+	 */
     private MapService mapService;
 
     //to store newly added player to the list
@@ -31,13 +35,18 @@ public class PlayerService extends Observable {
 	 * Used to switch to next player in list as well by incrementing index
 	 */
 	int currentPlayerIndex;
-    
-    
-    
-    
-    private Player currentPlayer;
 
 
+	/**
+	 * the reference of current player
+	 */
+	private Player currentPlayer;
+
+
+	/**
+	 * constructor of playerService
+	 * @param mapService
+	 */
     public PlayerService(MapService mapService){
 
         this.mapService = mapService;
@@ -50,16 +59,28 @@ public class PlayerService extends Observable {
         
     }
 
-    public MapService getMapService() {
+	/**
+	 * get mapService
+	 * @return the reference of mapService
+	 */
+	public MapService getMapService() {
         return mapService;
     }
 
-    @Override
+	/**
+	 * extends addObserver() from java
+	 * @param observer
+	 */
+	@Override
     public void addObserver(Observer observer) {
 
         super.addObserver(observer);
     }
-    
+
+	/**
+	 * set current Player, notify the observers when player has been changed
+	 * @param num the index of player in PlayerList
+	 */
 	public void setCurrentPlayerIndex(int num) {
 		this.currentPlayerIndex=num;
 		
@@ -70,8 +91,12 @@ public class PlayerService extends Observable {
 		notifyObservers(playerChangeWrapper);
 	}
 
+	/**
+	 * add a Player
+	 * @param name of the player
+	 * @return player
+	 */
     public Player addPlayer(String name){
-        //TODO: add a player in the playerList
     	Player newPlayer=new Player(name);
     	listPlayers.add(newPlayer);
     	
@@ -85,8 +110,13 @@ public class PlayerService extends Observable {
     	return newPlayer;
     }
 
-    public boolean removePlayer(String playerName){
-        //TODO: remove a player in the playerList
+	/**
+	 * remove the player by player name
+	 * @param playerName
+	 * @return true if player been removed successfully and notify the observers
+	 * 		   false if player has not been removed successfully
+	 */
+	public boolean removePlayer(String playerName){
     	
 		for(int i=0;i<listPlayers.size();i++) {
 			
@@ -109,19 +139,36 @@ public class PlayerService extends Observable {
 		return false;
     }
 
-    public ArrayList<Player> getPlayerList(){
+	/**
+	 * return the list of players
+	 * @return
+	 */
+	public ArrayList<Player> getPlayerList(){
         return listPlayers;
     }
 
-    public String getCurrentPlayerName(){
+	/**
+	 * get current player name.
+	 * if the playerIndex is valid, return current player name.
+	 * if not, return empty string
+	 * @return player name
+	 */
+	public String getCurrentPlayerName(){
     	
     	if(currentPlayerIndex<0) return ""; 
     	
     	Player currentPlayer=listPlayers.get(currentPlayerIndex);
         return currentPlayer.getName();
     }
-    
-    public Player getPlayerByName(String name) {
+
+	/**
+	 * get Player by name.
+	 * if the name does not exist, return null
+	 * if the name exist, return the player
+	 * @param name
+	 * @return the player
+	 */
+	public Player getPlayerByName(String name) {
     	
     	for(Player p:listPlayers) {
     		if(p.getName().equals(name)) return p;
@@ -129,15 +176,26 @@ public class PlayerService extends Observable {
     	
     	return null;
     }
-    
-    public Player getCurrentPlayer() {
+
+	/**
+	 * get current player.
+	 * if the playerIndex is less than 0, return null
+	 * else return the player by index
+	 * @return player
+	 */
+	public Player getCurrentPlayer() {
     	
     	if(currentPlayerIndex<0) return null;
     	
     	return listPlayers.get(currentPlayerIndex);
     }
-    
-    public int getCurrentPlayerIndex() {
+
+
+	/**
+	 * get current player index
+	 * @return int
+	 */
+	public int getCurrentPlayerIndex() {
     	
     	return currentPlayerIndex;
     }
@@ -153,7 +211,12 @@ public class PlayerService extends Observable {
     }
 
    // public boolean isPlayerValid(){ return false; }
-    
+
+	/**
+	 * check if the player exist
+	 * @param playerName
+	 * @return true if the player name exist, false if does not exist
+	 */
     public boolean checkPlayerExistance(String playerName) {
     	
 		for(int i=0;i<listPlayers.size();i++) {
@@ -246,7 +309,11 @@ public class PlayerService extends Observable {
     }
 
 
-    public boolean isPlayerValid(){ return false; }
+	/**
+	 * check if Player is valid
+	 * @return always return false?
+	 */
+	public boolean isPlayerValid(){ return false; }
 
     
     
@@ -265,18 +332,29 @@ public class PlayerService extends Observable {
 			else setCurrentPlayerIndex(this.currentPlayerIndex+1);
 
 	}
-	
+
+	/**
+	 * get the next player index.
+	 * if next index points to the last element in list, return 0
+	 * else return currentIndex + 1
+	 * @return int
+	 */
 	public int getNextPlayerIndex() {
 		
 		if((currentPlayerIndex+1)<=listPlayers.size()-1) return currentPlayerIndex+1;
 		
 		else return 0;
 	}
-	
+
+	/**
+	 * get next Player
+	 * @return player
+	 */
 	public Player getNextPlayer() {
 		return listPlayers.get(getNextPlayerIndex());
 	}
-	
+
+
 	/**
 	 * Function that notifies all playerService observers that it has been changed and then sends an object to the observers
 	 * @param object that can be of different classes (different wrapper classes)
@@ -365,7 +443,11 @@ public class PlayerService extends Observable {
     	return continentOwnerMap;
 		
 	}  //End of method
-	
+
+
+	/**
+	 *
+	 */
 	public void evaluateWorldDomination() {
 		
 		Map<Integer, String> continentOwnerMap=checkContinentOwners();
@@ -409,7 +491,13 @@ public class PlayerService extends Observable {
 		notifyObservers(listPlayerDomination);
 		
 	}
-	
+
+
+	/**
+	 * caculate armies get from the player by the number of occupied countries
+	 * @param player
+	 * @return number of armies received
+	 */
 	public int calculateTotalPlayerArmies(Player player) {
 		int counter=0;
 		for(Country c:player.getCountryList()) counter+=c.getSoldiers().intValue();

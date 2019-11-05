@@ -10,18 +10,36 @@ import static com6441.team7.risc.api.RiscConstants.DOMINATION_VIEW_STRING;
 import java.util.ArrayList;
 import java.util.Observable;
 
+/**
+ * This view displays message when occupations data of the player changes
+ */
 public class DominationView implements GameView {
+
+    /**
+     * extends method from GameView to receiveCommand
+     */
     @Override
     public void receiveCommand() {
 
     }
 
+
+    /**
+     * extends method from GameView to displayMessage
+     * @param string
+     */
     @Override
     public void displayMessage(String string) {
     	System.out.println(DOMINATION_VIEW_STRING + string);
     }
 
-    
+
+    /**
+     * when the total armies, percentage of occupied countries, occupied continents of the player has been changed,
+     * the update() will call and display changes to the domination view
+     * @param o
+     * @param arg
+     */
     @Override
     public void update(Observable o, Object arg) {
     	

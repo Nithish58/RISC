@@ -150,7 +150,6 @@ public class Player{
      * get list of cards
      * @return card list
      */
-    //jenny: modified methods
     public List<String> getCardList() {
         return cardList.stream()
                 .map(Card::getName)
@@ -324,16 +323,27 @@ public class Player{
     }
 
 
-
-
-    public void addCountryToPlayerList(Country c) {
+	/**
+	 * add the country to the countryPlayerList
+	 * @param c country
+	 */
+	public void addCountryToPlayerList(Country c) {
     	
     	this.countryPlayerList.add(c);
     }
-    
-    public void removeCountryFromPlayerList(Country c) {}
-    
-    public ArrayList<Country> getCountryList() {
+
+
+	/**
+	 * remove country c from countryPlayerList
+	 * @param c country
+	 */
+	public void removeCountryFromPlayerList(Country c) {}
+
+	/**
+	 * get country list occupied of the player
+	 * @return list of country
+	 */
+	public ArrayList<Country> getCountryList() {
     	return countryPlayerList;
     }
     
@@ -346,32 +356,109 @@ public class Player{
     //----------------------------------ATTACK--------------------------------------------------
     
     //Start listing private members for attack here binsar and then continue in this region.
-    
-    private Country fromCountryAttack;
+
+	/**
+	 * a reference of attack country
+	 */
+	private Country fromCountryAttack;
+
+	/**
+	 * a reference of defender country
+	 */
     private Country toCountryAttack;
+
+	/**
+	 * number of attacking soldiers
+	 */
     private int numAttackingSoldiers=0;
-    private int numDefendingSoldiers=0;
+
+	/**
+	 * number of defending soldiers
+	 */
+	private int numDefendingSoldiers=0;
+
+	/**
+	 * number of dices from attackers
+	 */
     private int numDiceAttacker=0;
-    private int numDiceDefender=0;
+
+	/**
+	 * number of dices from defenders
+	 */
+	private int numDiceDefender=0;
+
+	/**
+	 * array of dices from attacker
+	 */
     private int[] attackerDice;
-    private int[] defenderDice;
+
+	/**
+	 * array of dices from defender
+	 */
+	private int[] defenderDice;
+
+	/**
+	 * a reference of SecureRandom to random dice number
+	 */
     private SecureRandom diceRandomizer;
-    private boolean boolAllOut;
+
+	/**
+	 * a boolean value whether is allOut
+	 */
+	private boolean boolAllOut;
+
+	/**
+	 * a boolean value whether attack is over
+	 */
     private boolean boolAttackOver;
-    private AtomicBoolean boolAttackMoveRequired;
+
+	/**
+	 * a boolean value is attackMoveRequired
+	 */
+	private AtomicBoolean boolAttackMoveRequired;
+
+	/**
+	 * a boolean value if defendDiceRequired
+	 */
     private AtomicBoolean boolDefendDiceRequired;
-    
-    private Player attacker;
+
+	/**
+	 * a reference of attack player
+	 */
+	private Player attacker;
+
+	/**
+	 * a reference of defend player
+	 */
     private Player defender;
-    
-    private PlayerService playerService;
-    
-    private boolean boolAttackValidationMet;
-    
-    private boolean boolCountryConquered;
+
+	/**
+	 * a reference of player service
+	 */
+	private PlayerService playerService;
+
+	/**
+	 * a boolean value if attack is valid
+	 */
+	private boolean boolAttackValidationMet;
+
+	/**
+	 * a boolean value if country is conquered
+	 */
+	private boolean boolCountryConquered;
+
+	/**
+	 *  a reference of PlayerAttackWrapper
+	 */
     private PlayerAttackWrapper playerAttackWrapper;
-    
-    public void attack(PlayerService playerService, PlayerAttackWrapper playerAttackWrapper){
+
+	/**
+	 * attack method. set the value of attributes
+	 * check boolean value boolAllOut, if allout, call attackAllOut(). if not, call attackSingle()
+	 * @param playerService playerService
+	 * @param playerAttackWrapper playerAttackWrapper
+	 */
+	public void attack(PlayerService playerService, PlayerAttackWrapper playerAttackWrapper){
     	
     		this.fromCountryAttack=playerAttackWrapper.getFromCountry();
     		this.toCountryAttack=playerAttackWrapper.getToCountry();
@@ -402,8 +489,14 @@ public class Player{
       		attackSingle(playerService);	
   
     }
-    
-    public void attackSingle(PlayerService playerService) {
+
+	/**
+	 * attack once
+	 * check if the attack is valid, if yes, roll the dice and compare the results
+	 * if not, just return
+	 * @param playerService a reference of PlayerService
+	 */
+	public void attackSingle(PlayerService playerService) {
     	
 		//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
 		System.out.println("Before: ");
@@ -432,8 +525,15 @@ public class Player{
 		
     	
     }
-    
-    public void attackAllOut(PlayerService playerService) {
+
+
+	/**
+	 * attack until soldiers from either attacker or defender is out
+	 * validate the validity of attack, if yes, roll the dice and compare attacking results
+	 * if not, just return
+	 * @param playerService a reference of PlayerService
+	 */
+	public void attackAllOut(PlayerService playerService) {
     	
     	
     	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
@@ -628,7 +728,12 @@ public class Player{
 		checkDefenderOwnership();
 	}
 
-    
+
+	/**
+	 * validate attack conditions
+	 * @param playerService a reference of PlayerService
+	 * @return true if valid, false if not valid
+	 */
     private boolean validateAttackConditions(PlayerService playerService) {
     	this.boolAttackValidationMet = true;
     	
@@ -779,7 +884,10 @@ public class Player{
 		}
 		return false;
 	}
-	
+
+	/**
+	 * check if attack has conquered all the countries
+	 */
 	private void checkPlayerWin() {
 		 
 		if(attacker.getCountryList().size()==playerService.getMapService().getCountries().size()) {
@@ -788,19 +896,27 @@ public class Player{
 		}
 		
 	}
-	
+
+	/**
+	 * transfer ownership of the country after attack
+	 */
 	private void transferCountryOwnershipAfterAttack() {
 		toCountryAttack.getPlayer().getCountryList().remove(toCountryAttack);
 		fromCountryAttack.getPlayer().getCountryList().add(toCountryAttack);
 		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 	}
-	
+
+	/**
+	 * validate if the defender occupy 0 country
+	 * @return true if defender occupy 0 country, false if not
+	 */
 	private boolean isDefenderEliminatedFromGame() {
 		if(defender.getCountryList().size()==0)
 			return true;
 		return false;
 	}
-	
+
+
 	private boolean checkDefenderOwnership() {
 		
 		this.boolCountryConquered=checkDefenderPushedOut();
@@ -869,21 +985,48 @@ public class Player{
     //--------------------------------------FORTIFICATION--------------------------------------------------
     
     // Private members for Fortification
+
+	/**
+	 * a reference of from Country of fortification
+	 */
     private Country fromCountryFortify;
-    private Country toCountryFortify;
+
+	/**
+	 * a reference of to country of fortification
+	 */
+	private Country toCountryFortify;
+
+	/**
+	 * number of fortified soldiers
+	 */
     private int numSoldiersToFortify;
     
 	/**
 	 * Set that keeps track of neighbouring countries of origin country.
 	 */
 	private	Set<Integer> neighbouringCountries;
-    
-    private boolean boolFortifyValidationMet;
-    
-    private PlayerFortificationWrapper playerFortificationWrapper;
-    
-    
-    public void fortify(PlayerService playerService, PlayerFortificationWrapper playerFortificationWrapper) {
+
+	/**
+	 * a boolean value if fortification is valid
+	 */
+	private boolean boolFortifyValidationMet;
+
+	/**
+	 * a reference of PlayerFortificationWrapper
+	 */
+	private PlayerFortificationWrapper playerFortificationWrapper;
+
+
+	/**
+	 * fortify soldiers of the country
+	 * if fortificationNone is true, call fortifyNone()
+	 * check if conditions of ownership, adjacency and numSoldiers are valid
+	 * if yes, implement fortification and notify observers
+	 * if not, notify observers with error messages
+	 * @param playerService
+	 * @param playerFortificationWrapper
+	 */
+	public void fortify(PlayerService playerService, PlayerFortificationWrapper playerFortificationWrapper) {
     	
     	this.playerFortificationWrapper=playerFortificationWrapper;
     	this.fromCountryFortify=this.playerFortificationWrapper.getCountryFrom();

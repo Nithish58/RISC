@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * a util to check if the object is null
+ */
 public class NotnullUtils {
     private NotnullUtils(){}
 

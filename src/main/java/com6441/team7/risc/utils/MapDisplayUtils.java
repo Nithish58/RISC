@@ -19,12 +19,32 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 
+/**
+ * a util class to show players, occupation, soldiers information.
+ */
 public final class MapDisplayUtils {
+
+	/**
+	 * boolean value if country belongs to the player
+	 */
     private static final BiPredicate<Country, Player> countryBelongsToPlayer = ((country, player) -> country.getPlayer().equals(player));
-    private static final BiPredicate<Country, Player> anyPlayers = (country, player) -> true;
 
-    private MapDisplayUtils(){}
+	/**
+	 * boolean value anyPlayer set to true
+	 */
+	private static final BiPredicate<Country, Player> anyPlayers = (country, player) -> true;
 
+	/**
+	 * private constructor
+	 */
+	private MapDisplayUtils(){}
+
+	/**
+	 * show current players map information
+	 * @param mapService
+	 * @param gameView
+	 * @param currentPlayer
+	 */
     public static void showCurrentPlayerMap(MapService mapService, GameView gameView, Player currentPlayer) {
         requireNonNull(mapService);
         requireNonNull(gameView);
@@ -37,7 +57,12 @@ public final class MapDisplayUtils {
         });
     }
 
-    public static void showFullMap(MapService mapService, GameView gameView) {
+	/**
+	 * show map information to the view including player, occupied countries, corresponding continents and soldiers
+	 * @param mapService
+	 * @param gameView
+	 */
+	public static void showFullMap(MapService mapService, GameView gameView) {
         requireNonNull(mapService);
         requireNonNull(gameView);
 
@@ -47,13 +72,28 @@ public final class MapDisplayUtils {
 
         });
     }
-    private static void displayContinentInfo(GameView gameView, MapService mapService, Integer continentId) {
+
+	/**
+	 * display continent information
+	 * @param gameView
+	 * @param mapService
+	 * @param continentId
+	 */
+	private static void displayContinentInfo(GameView gameView, MapService mapService, Integer continentId) {
         mapService.getContinentById(continentId)
                 .ifPresent(continent -> {
                     gameView.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+continent.getName()+NEWLINE);
                 });
     }
 
+	/**
+	 * display country information
+	 * @param gameView
+	 * @param mapService
+	 * @param countriesIds
+	 * @param predicate
+	 * @param current
+	 */
     private static void displayCountryInfo(GameView gameView, MapService mapService, Set<Integer> countriesIds, BiPredicate<Country, Player> predicate, Player current) {
         countriesIds.stream()
                 .map(mapService::getCountryById)
@@ -74,7 +114,7 @@ public final class MapDisplayUtils {
     }
     
     
-    //Added by Keshav
+
 	/**
 	 * show map information including countries, continents, and neighboring countries
 	 */

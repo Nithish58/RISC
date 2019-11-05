@@ -8,12 +8,23 @@ public enum Card {
     CAVALRY("cavalry"),
     ARTILLERY("artillery");
 
+    /**
+     * the name of the card
+     */
     private String name;
 
+    /**
+     * constructor
+     * @param name
+     */
     Card(String name) {
         this.name = name;
     }
 
+    /**
+     * get name of the card
+     * @return
+     */
     public String getName() {
         return name;
     }

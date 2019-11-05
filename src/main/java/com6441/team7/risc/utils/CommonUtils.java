@@ -2,6 +2,9 @@ package com6441.team7.risc.utils;
 
 import com6441.team7.risc.view.GameView;
 
+/**
+ * a util to end the game
+ */
 public class CommonUtils {
 	
 	/**
