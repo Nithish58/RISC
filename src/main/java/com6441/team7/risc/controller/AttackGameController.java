@@ -108,7 +108,7 @@ public class AttackGameController implements Controller {
     		break;
     		
     	case ATTACKMOVE:
-    		//validateAttackMoveCommand(commands);
+    		validateAttackMoveCommand(commands);
     		break;
     		
     	case SHOW_PLAYER:
@@ -148,6 +148,21 @@ public class AttackGameController implements Controller {
     	  	
     }
 
+	public void validateAttackMoveCommand(String[] commands) {
+		
+		int numSoldierTransfer=0;
+		
+		try {
+			numSoldierTransfer=Integer.parseInt(commands[1]);
+		}
+		catch(Exception e) {
+    		phaseView.displayMessage("Invalid numSoldiers Entered. Try again");
+    		return;
+    	}
+		
+		playerService.getCurrentPlayer().attackMove(numSoldierTransfer);
+	}
+
 	/**
 	 * validate the defend command
 	 * if the command is not valid, it will display error messages to phase view
@@ -158,6 +173,11 @@ public class AttackGameController implements Controller {
     	
     	if(arrCommand.length!=2) {
     		phaseView.displayMessage("Invalid Defend command.");
+    		return;
+    	}
+    	
+    	if(boolAttackMoveRequired.get()) {
+    		phaseView.displayMessage("attackmove command required");
     		return;
     	}
     	
@@ -200,7 +220,12 @@ public class AttackGameController implements Controller {
     	
         if(boolDefenderDiceRequired.get()) {
         	//validateDefendCommand(arrCommand);
-        	phaseView.displayMessage("Attack command not required now.");
+        	phaseView.displayMessage("Defend command required now.");
+        	return;
+        }
+        
+        if(boolAttackMoveRequired.get()) {
+        	phaseView.displayMessage("attackmove command required now");
         	return;
         }
     	
