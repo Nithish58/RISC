@@ -19,6 +19,9 @@ import java.security.SecureRandom;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
+import static com6441.team7.risc.api.RiscConstants.MAX_ATTACKER_DICE_NUM;
+import static com6441.team7.risc.api.RiscConstants.MAX_DEFENDER_DICE_NUM;
+import static com6441.team7.risc.api.RiscConstants.MIN_ATTACKING_SOLDIERS;
 
 /**
  * store player information
@@ -85,21 +88,6 @@ public class Player{
     public void setName(String name) {
         this.name = name;
     }
-    
-    /**
-     * Minimum allowed number of attacking armies in a country
-     */
-    private static final int MIN_ATTACKING_SOLDIERS=2;
-
-    /**
-     * Maximum allowed number of dice(s) for attacker to roll 
-     */
-    private static final int MAX_ATTACKER_DICE_NUM=3;
-    
-    /**
-     * Maximum allowed number of dice(s) for defender to roll
-     */
-    private static final int MAX_DEFENDER_DICE_NUM=2;
 
 
     //------------------------------------REINFORCEMENT-----------------------------------------
@@ -536,7 +524,7 @@ public class Player{
 	public void attackAllOut(PlayerService playerService) {
     	
     	
-    	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
+    	this.numDiceAttacker = 
     	this.numDiceDefender = MAX_DEFENDER_DICE_NUM;
     	
     	fromCountryAttack.setSoldiers(50);
@@ -747,6 +735,9 @@ public class Player{
     	
     	if (boolAttackValidationMet)
     		checkNumAttackingSoldiers();
+    	
+    	if (boolAttackValidationMet)
+    		checkAttackerMaxDiceNumValidity();
     	
     	if (boolAttackValidationMet)
     		checkAttackerDiceNumValidity();

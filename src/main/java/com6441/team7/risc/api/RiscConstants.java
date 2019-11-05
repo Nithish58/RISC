@@ -49,4 +49,18 @@ public final class RiscConstants {
      */
     public static final int MAX_NUM_PLAYERS=9;
     
+    /**
+     * a static final reference of minimum allowed number of attacking armies in a country
+     */
+    public static final int MIN_ATTACKING_SOLDIERS=2;
+
+    /**
+     * a static final reference for maximum allowed number of dice(s) for attacker to roll 
+     */
+    public static final int MAX_ATTACKER_DICE_NUM=3;
+    
+    /**
+     * a static final reference for maximum allowed number of dice(s) for defender to roll
+     */
+    public static final int MAX_DEFENDER_DICE_NUM=2;
 }
