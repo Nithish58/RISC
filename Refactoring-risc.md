@@ -73,3 +73,10 @@
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
     
     
+ 8. ### refactor mapLoaderTests including extracting logics and parameters in different methods to make tests more readable and understandable.  
+ 
+    At build 1
+    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+    
+    At build 2
+    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
