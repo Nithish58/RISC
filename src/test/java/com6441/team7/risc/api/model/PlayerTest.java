@@ -141,7 +141,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 *  whether the 2 countries are owned by different players
+	 * Testing whether the 2 countries are owned by different players
 	 */
 	@Test
 	public void test011_checkCountryHostility(){
@@ -149,10 +149,11 @@ public class PlayerTest {
 	}
 
 	/**
-	 *
+	 * testing the number of soldiers for the attacker
 	 */
 	@Test
 	public void test012_checkNumAttackingSoldiers(){
 
 	}
+
 }

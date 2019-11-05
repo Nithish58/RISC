@@ -947,7 +947,7 @@ public class Player{
 	 * check if attacking country has Adjacency
 	 * @param mapService to retrieve from and to countries' info and their adjacent countries
 	 */
-	private void checkAttackingCountryAdjacency(MapService mapService) {
+	public void checkAttackingCountryAdjacency(MapService mapService) {
 			
 			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
 			
@@ -1095,7 +1095,7 @@ public class Player{
 	 * <li>at least 1 player will remain in the source country after fortification</li>
 	 * <ul>
 	 */
-	private boolean validateFortifyConditions(PlayerService playerService) {
+	public boolean validateFortifyConditions(PlayerService playerService) {
 		
 		this.boolFortifyValidationMet=true;
 		
@@ -1120,9 +1120,9 @@ public class Player{
 	
 	/**
 	 * check country has Adjacency
-	 * @param mapservice to retrieve from and to countries' info and their adjacent countries
+	 * @param mapService to retrieve from and to countries' info and their adjacent countries
 	 */
-	private void checkCountryAdjacencyForFortification(MapService mapService) {
+	public void checkCountryAdjacencyForFortification(MapService mapService) {
 			
 			Map<Integer, Set<Integer>> adjacentCountriesList = mapService.getAdjacencyCountriesMap();
 			
@@ -1159,7 +1159,7 @@ public class Player{
 	/**
 	 * checks whether the 2 countries are owned by the current player
 	 */
-	private void checkCountryOwnership() {
+	public void checkCountryOwnership() {
 			
 			if(!(fromCountryFortify.getPlayer().getName().equalsIgnoreCase
 					(toCountryFortify.getPlayer().getName()))) {
@@ -1175,7 +1175,7 @@ public class Player{
 	 * Check if both countries belong to current player
 	 * @param playerService to notify observers about game info and retrieve useful info like current player 
 	 */
-	private void checkCountriesBelongToCurrentPlayer(PlayerService playerService) {
+	public void checkCountriesBelongToCurrentPlayer(PlayerService playerService) {
 		Player currentPlayer=playerService.getCurrentPlayer();
 		String playerName=currentPlayer.getName();
 		
@@ -1192,7 +1192,7 @@ public class Player{
 	 * check the number of soldiers for the current player
 	 * Ensures that at least 1 soldier remains in origin country
 	 */
-	private void checkNumSoldiers() {
+	public void checkNumSoldiers() {
 			
 			if(!(fromCountryFortify.getSoldiers()>numSoldiersToFortify)) {
 				this.playerFortificationWrapper.setFortificationDisplayMessage
