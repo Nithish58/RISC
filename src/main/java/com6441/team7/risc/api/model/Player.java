@@ -524,7 +524,7 @@ public class Player{
 	public void attackAllOut(PlayerService playerService) {
     	
     	
-    	this.numDiceAttacker = 
+    	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
     	this.numDiceDefender = MAX_DEFENDER_DICE_NUM;
     	
     	fromCountryAttack.setSoldiers(50);
