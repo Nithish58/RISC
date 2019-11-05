@@ -391,7 +391,7 @@ public class Player{
     private SecureRandom diceRandomizer;
 
 	/**
-	 * a boolean value whether is allOut
+	 * a boolean value whether attack is allOut
 	 */
 	private boolean boolAllOut;
 
@@ -401,7 +401,7 @@ public class Player{
     private boolean boolAttackOver;
 
 	/**
-	 * a boolean value is attackMoveRequired
+	 * a boolean value if attackMoveRequired after country conquered
 	 */
 	private AtomicBoolean boolAttackMoveRequired;
 
@@ -534,13 +534,14 @@ public class Player{
     		this.numDefendingSoldiers=toCountryAttack.getSoldiers();
     		
 			//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
-			System.out.println("Before: ");
+			System.out.println("Before allout: ");
 			System.out.println(this.fromCountryAttack.getCountryName()+": "+this.numAttackingSoldiers);
     		System.out.println(this.toCountryAttack.getCountryName()+": "+this.numDefendingSoldiers);
     		
 			//Checks the condition of both sides to determine how many number of dices are allowed
 			if (this.numAttackingSoldiers <= MAX_ATTACKER_DICE_NUM)
 				this.numDiceAttacker = this.numAttackingSoldiers-1;
+			
 			if (this.numDefendingSoldiers < MAX_DEFENDER_DICE_NUM)
 				this.numDiceDefender = this.numDefendingSoldiers;
     		

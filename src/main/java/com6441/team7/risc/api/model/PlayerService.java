@@ -91,8 +91,6 @@ public class PlayerService extends Observable {
 		shuffleDeckCards();
 	}
 	
-	
-	
 //------------------------------------------------------------------------------------------------	
 	
 	/**
