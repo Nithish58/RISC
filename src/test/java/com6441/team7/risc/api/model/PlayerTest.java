@@ -103,7 +103,7 @@ public class PlayerTest {
 		testPlayer.setArmies(armyNum);
 		createObjects();
 		
-		loadValidMap("luca.map");
+		loadValidMap("ameroki.map");
 		
 		addPlayer("Keshav");
 		addPlayer("Binsar");
@@ -296,13 +296,24 @@ public class PlayerTest {
 		
 		//Get first country in player list
 		Country fromAttackCountry=currentPlayer.getCountryList().get(0);
-		
+		Country toAttackCountry=playerService.getNextPlayer().countryPlayerList.get(0);
 		//numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid number of 
 		//dices can be thrown
 		fromAttackCountry.setSoldiers(1000);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 		
 		Set<Country> countryList = mapService.getCountries();
+		
+		for(Player p: playerService.getPlayerList()) {
+			
+			if(!p.getName().equals(fromAttackCountry.getPlayer().getName()))
+				for(Country c:p.getCountryList()) {
+					if(!c.getCountryName().equals(toAttackCountry.getCountryName()))
+						toAttackCountry.getPlayer().getCountryList().remove(c.getId());
+						currentPlayer.getCountryList().add(c);
+				}
+			
+		}
 		
 		//Get first adjacent country in country's list
 //		Country toAttackCountry = null;
@@ -318,17 +329,6 @@ public class PlayerTest {
 		}
 		
 		Set<Integer> toCountryAdjacencyList = mapService.getAdjacencyCountries(toAttackCountry.getId());
-		
-		//change all of the defender's other countries to the attacker's countries
-		for(Country country : countryList) {
-			if (!country.getCountryName().equals(toAttackCountry.getCountryName())) {
-				fromAttackCountry.getPlayer().addCountryToPlayerList(country);
-				System.out.println("Not Equal. Set it");
-				country.setPlayer(currentPlayer);
-			}
-			else
-				System.out.println("Equal");
-		}
 		
 		System.out.println("Attacker country list size after transfer: "+currentPlayer.getCountryList().size());
 		System.out.println("Total country list  size after: "+mapService.getCountries().size());
