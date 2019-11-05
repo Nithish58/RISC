@@ -480,7 +480,8 @@ public class PlayerService extends Observable {
 
 
 	/**
-	 *
+	 *Determines percentage controlled by every player, ownership of continents by every player,
+	 *number of soldiers controller by every player and then notifies observers of playerservice.
 	 */
 	public void evaluateWorldDomination() {
 		
