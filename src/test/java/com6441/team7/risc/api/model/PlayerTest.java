@@ -2,20 +2,76 @@ package com6441.team7.risc.api.model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+import com6441.team7.risc.controller.AttackGameController;
+import com6441.team7.risc.controller.Controller;
+import com6441.team7.risc.controller.FortifyGameController;
+import com6441.team7.risc.controller.MapLoaderController;
+import com6441.team7.risc.controller.ReinforceGameController;
+import com6441.team7.risc.controller.StartupGameController;
+import com6441.team7.risc.view.PhaseViewTest;
 
 /**
  * 
  * This is the test class for storing player information.
  *
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PlayerTest {
+	
+	/**
+	 * View which outputs test strings and has some other additonal functionalities than the normal phaseView
+	 */
+	 PhaseViewTest phaseViewTest;
+	 /**
+	  * mapService object stores map Information and game state
+	  */
+	 MapService mapService;
+	 /**
+	  * playerService object keeps track of player information such as current player turn and list of players
+	  */
+	 PlayerService playerService;
+	 /**
+	  * Controller to load map
+	  */
+	 MapLoaderController mapLoaderController;
+	 /**
+	  * Controller for startup phase
+	  */
+	 StartupGameController startupGameController;
+	 /**
+	  * Controller for Reinforcement phase
+	  */
+     ReinforceGameController reinforceGameController ;
+     /**
+      * Controller for Fortification phase
+      */
+     FortifyGameController fortifyGameController ;
+     /**
+      * Controller for Attack phase
+      */
+     AttackGameController attackController ;
+	 /**
+	  * list of different controllers
+	  */
+	 List<Controller> controllerList;
+	 /**
+	  * Wrapper for Attack phase
+	  */
+	 PlayerAttackWrapper playerAttackWrapper;
+	
 	static Player testPlayer;
 	String testName;
 	int testArmies;
@@ -23,6 +79,7 @@ public class PlayerTest {
 	int tradeInTimes;
 	static final int CARD_CATEGORY_NUMBER = 3;
 	int armyNum;
+	
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -33,94 +90,213 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Setting player's name. Instantiating a player object. Setting number of
-	 * armies.
-	 * 
+	 * Setting player's name.
+	 * Instantiating a player object.
+	 * Setting number of armies.
 	 * @throws Exception
 	 */
-	/*
-	 * @Before public void setUp() throws Exception { testName = "Player One";
-	 * testPlayer = new Player(testName); armyNum = 3;
-	 * testPlayer.setArmies(armyNum);
-	 * 
-	 * }
-	 * 
-	 * @After public void tearDown() throws Exception { }
-	 * 
-	 *//**
-		 * Testing player name
-		 */
-	/*
-	 * @Test public void test001_getName() { assertEquals(testName,
-	 * testPlayer.getName()); }
-	 * 
-	 *//**
-		 * Testing getArmies
-		 */
-	/*
-	 * @Test public void test002_getArmies() { assertEquals(armyNum,
-	 * testPlayer.getArmies()); }
-	 * 
-	 *//**
-		 * Testing attacker dice roll
-		 *//*
-			 * @Test public void test003_rollAttackerDice() { assertNotEquals(0,
-			 * testPlayer.rollAttackerDice(3)); }
-			 */
+	@Before
+	public void setUp() throws Exception {
+		testName = "Player One";
+		testPlayer = new Player(testName);
+		armyNum = 3;
+		testPlayer.setArmies(armyNum);
+		createObjects();
+		
+		loadValidMap("luca.map");
+		
+		addPlayer("Keshav");
+		addPlayer("Binsar");
+		
+		phaseViewTest.receiveCommand("populatecountries");
+		phaseViewTest.receiveCommand("placeall");
+		
+		mapService.setState(GameState.ATTACK);
+		
+	}
 
-	/**
-	 * Testing attack method
-	 */
-	@Test
-	public void test004_attack() {
-
+	@After
+	public void tearDown() throws Exception {
 	}
 
 	/**
-	 * Testing the single attack
+	 * Testing player name
 	 */
 	@Test
-	public void test005_attackSingle() {
+	public void test001_getName() {
+		assertEquals(testName, testPlayer.getName());
+	}
+	
+	/**
+	 * Testing getArmies
+	 */
+	@Test
+	public void test002_getArmies() {
+		assertEquals(armyNum, testPlayer.getArmies());
+	}
 
+	/**
+	 *  Testing the single attack
+	 */
+	@Test
+	public void test003_attackSingle(){
+		System.out.println("Attack single");
+		Player currentPlayer=playerService.getCurrentPlayer();
+		
+		//Get first country in player list
+		Country fromAttackCountry=currentPlayer.getCountryList().get(0);
+		
+		//numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid number of 
+		//dices can be thrown
+		fromAttackCountry.setSoldiers(4);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+		
+		//Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		for(Integer i: fromCountryAdjacencyList) {
+			if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+				toAttackCountry=mapService.getCountryById(i).get();
+				break;
+			}
+		}
+		
+		//numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid number of 
+		//dices can be thrown
+		toAttackCountry.setSoldiers(2);
+		
+		//expectedAttackerSoldier is the expected number of attacker soldier if 
+		//the attacker loses a soldier
+		Integer expectedAttackerSoldier = fromAttackCountry.getSoldiers()-1;
+		
+		//expectedDefenderSoldier is the expected number of defender soldier if 
+		//the defender loses a soldier
+		Integer expectedDefenderSoldier = toAttackCountry.getSoldiers()-1;
+		
+		//This is for checking the condition after attack
+		boolean isTrue = false; 
+		
+		//Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+		
+		//Set the number of attacker dices to 3
+		playerAttackWrapper.setNumDiceAttacker(3);
+		
+		//Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+		
+		//Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+		
+		//If either one of the countries' loses a soldier, isTrue is set to true
+		if (expectedAttackerSoldier.equals(fromAttackCountry.getSoldiers()) || 
+				expectedDefenderSoldier.equals(toAttackCountry.getSoldiers()))
+			isTrue = true;
+		
+		assertTrue(isTrue);
 	}
 
 	/**
 	 * Testing attack until soldiers from either attacker or defender is out
 	 */
 	@Test
-	public void test006_attackAllOut() {
-
+	public void test005_attackAllOut(){
+		System.out.println("Attack all out");
+		Player currentPlayer=playerService.getCurrentPlayer();
+		
+		//Get first country in player list
+		Country fromAttackCountry=currentPlayer.getCountryList().get(0);
+		
+		//numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid number of 
+		//dices can be thrown
+		fromAttackCountry.setSoldiers(4);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+		
+		//Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		for(Integer i: fromCountryAdjacencyList) {
+			if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+				toAttackCountry=mapService.getCountryById(i).get();
+				break;
+			}
+		}
+		
+		//numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid number of 
+		//dices can be thrown
+		toAttackCountry.setSoldiers(2);
+		
+		//expectedAttackerSoldier is the expected number of attacker soldier if 
+		//the attacker is only left with one soldier
+		Integer expectedAttackerSoldier = 1;
+		
+		//expectedDefenderSoldier is the expected number of defender soldier if 
+		//the defender lost all of his/her soldiers
+		Integer expectedDefenderSoldier = 0;
+		
+		//This is for checking the condition after attack
+		boolean isTrue = false; 
+		
+		//Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+		
+		playerAttackWrapper.setBooleanAllOut();
+		
+		//Set the number of attacker dices to 3
+		playerAttackWrapper.setNumDiceAttacker(3);
+		
+		//Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+		
+		//Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+		
+		//If either one of the countries' loses a soldier, isTrue is set to true
+		if (currentPlayer.isAttackerLastManStanding() || currentPlayer.checkDefenderPushedOut())
+			isTrue = true;
+		
+		assertTrue(isTrue);
 	}
 
 	/**
 	 * Testing rolling attacker's dice
 	 */
 	@Test
-	public void test007_rollAttackerDice() {
-
+	public void test006_rollAttackerDice(){
+		//Context
+		Player currentPlayer=playerService.getCurrentPlayer();
+		System.out.println("Roll attacker dice");
+		int numOfDice = 3;
+		int[] expectedAttackerDice = new int[numOfDice];
+		
+		assertTrue(expectedAttackerDice.length==currentPlayer.rollAttackerDice(numOfDice).length);
 	}
 
 	/**
 	 * testing rolling defender's dice
 	 */
 	@Test
-	public void test008_rollDefenderDice() {
-
+	public void test007_rollDefenderDice(){
+		//Context
+		Player currentPlayer=playerService.getCurrentPlayer();
+		System.out.println("Roll defender dice");
+		int numOfDice = 2;
+		int[] expectedDefenderDice = new int[numOfDice];
+		
+		assertTrue(expectedDefenderDice.length==currentPlayer.rollDefenderDice(numOfDice).length);
 	}
 
 	/**
 	 * Testing result of deciding battle
 	 */
 	@Test
-	public void test009_decideBattleResult() {
+	public void test008_decideBattleResult(){
 
 	}
 
 	/**
-	 * Testing validate attack conditions
+	 *Testing validate attack conditions
 	 */
 	@Test
-	public void test010_validateAttackConditions() {
+	public void test009_validateAttackConditions(){
 
 	}
 
@@ -128,7 +304,7 @@ public class PlayerTest {
 	 * Testing if attacker country actually belongs to the attacker
 	 */
 	@Test
-	public void test010_checkCountryBelongToAttacker() {
+	public void test010_checkCountryBelongToAttacker(){
 
 	}
 
@@ -136,7 +312,7 @@ public class PlayerTest {
 	 * Testing whether the 2 countries are owned by different players
 	 */
 	@Test
-	public void test011_checkCountryHostility() {
+	public void test011_checkCountryHostility(){
 
 	}
 
@@ -144,8 +320,73 @@ public class PlayerTest {
 	 * testing the number of soldiers for the attacker
 	 */
 	@Test
-	public void test012_checkNumAttackingSoldiers() {
+	public void test012_checkNumAttackingSoldiers(){
 
 	}
+	
+	/**
+	 * Method to load a map. Method first exits from editmapphase by sending command
+	 * exitmapedit. Then command to loadmap is sent.
+	 * 
+	 * @param mapName
+	 */
+	public void loadValidMap(String mapName) {
+		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase
 
+		phaseViewTest.receiveCommand("loadmap " + mapName); // Load ameroki map
+	}
+
+	/**
+	 * Method that sends command to add a player
+	 * 
+	 * @param name of player
+	 */
+	public void addPlayer(String name) {
+		phaseViewTest.receiveCommand("gameplayer -add " + name);
+	}
+
+	/**
+	 * Method that sends command to remove a player
+	 * 
+	 * @param name of player
+	 */
+	public void removePlayer(String name) {
+		phaseViewTest.receiveCommand("gameplayer -remove " + name);
+	}
+
+	/**
+	 * Method that instantiates all required objects before testing
+	 */
+	public void createObjects() {
+
+		mapService = new MapService();
+		playerService = new PlayerService(mapService);
+
+		phaseViewTest = new PhaseViewTest();
+		controllerList = new ArrayList<>();
+
+		mapLoaderController = new MapLoaderController(mapService);
+		startupGameController = new StartupGameController(mapLoaderController, playerService);
+		reinforceGameController = new ReinforceGameController(playerService);
+		fortifyGameController = new FortifyGameController(playerService);
+		attackController = new AttackGameController(playerService);
+
+		controllerList.add(mapLoaderController);
+		controllerList.add(startupGameController);
+		controllerList.add(reinforceGameController);
+		controllerList.add(fortifyGameController);
+		controllerList.add(attackController);
+
+		phaseViewTest.addController(controllerList);
+
+		mapLoaderController.setView(phaseViewTest);
+		startupGameController.setView(phaseViewTest);
+		reinforceGameController.setView(phaseViewTest);
+		fortifyGameController.setView(phaseViewTest);
+		attackController.setView(phaseViewTest);
+
+		mapService.addObserver(phaseViewTest);
+		playerService.addObserver(phaseViewTest);
+
+	}
 }
