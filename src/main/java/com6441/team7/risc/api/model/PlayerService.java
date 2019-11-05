@@ -13,17 +13,6 @@ public class PlayerService extends Observable {
 	 * a reference to mapService
 	 */
     private MapService mapService;
-
-    //to store newly added player to the list
-    //private CircularFifoQueue<Player> playerList;
-    
-    //Keshav Refactoring part
-    
-    //Jenny I am continuing using arraylist because many functions use arraylist and it'il be tedious to refactor
-    //It's gonna be hard to change everything.
-    //Also we need to keep track of current player even for queue.
-    //Very tedious to remove player from front and add to back of queue everytime we switch player
-    //So let's stick with arraylist.
     
 	/**
 	 * List of players playing the game
@@ -41,6 +30,11 @@ public class PlayerService extends Observable {
 	 * the reference of current player
 	 */
 	private Player currentPlayer;
+	
+	/**
+	 * Deck of cards implemented as stack
+	 */
+	private Stack<Card> deckCards;
 
 
 	/**
@@ -54,11 +48,51 @@ public class PlayerService extends Observable {
         
         this.listPlayers=new ArrayList<Player>();
         
+        initialiseDeckCards();
+        
         //Because no players added when PlayerService object is being instantiated in App.class
         this.currentPlayerIndex=-1;
         
     }
 
+ //-------------------------DECK OF CARDS METHODS---------------------------------------   
+    
+    /**
+     * Method initialised Deck of cards: 14 cards of each type
+     */
+	public void initialiseDeckCards() {
+		
+		this.deckCards=new Stack();
+		
+		Card[] arrCard=new Card[] {Card.INFANTRY,Card.CAVALRY,Card.ARTILLERY};
+		
+		for(int j=0;j<3;j++) {			
+			for(int i=0;i<14;i++) {
+				deckCards.push(arrCard[j]);
+			}			
+		}
+		
+		//shuffle deck of cards thrice for randomisation
+		shuffleDeckCards();
+	}
+
+	public void shuffleDeckCards() {
+		Collections.shuffle(deckCards);
+		Collections.shuffle(deckCards);
+		Collections.shuffle(deckCards);
+	}
+	
+	public Card drawFromDeck() {
+		return deckCards.pop();
+	}
+	
+	public void returnToDeck(Card c) {
+		deckCards.push(c);
+		shuffleDeckCards();
+	}
+	
+//------------------------------------------------------------------------------------------------	
+	
 	/**
 	 * get mapService
 	 * @return the reference of mapService
@@ -308,7 +342,7 @@ public class PlayerService extends Observable {
         notifyObservers(player);
     }
 
-
+    
 	/**
 	 * check if Player is valid
 	 * @return always return false?

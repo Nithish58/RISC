@@ -108,6 +108,7 @@ public class AttackGameController implements Controller {
     		break;
     		
     	case ATTACKMOVE:
+    		//validateAttackMoveCommand(commands);
     		break;
     		
     	case SHOW_PLAYER:

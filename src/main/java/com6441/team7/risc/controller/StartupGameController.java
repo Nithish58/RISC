@@ -570,8 +570,6 @@ public class StartupGameController implements Controller{
 				
 				playerService.evaluateWorldDomination();
 				
-				System.out.println("After Dom view call");
-				
 				this.boolCountriesPopulated=true;
 				
 				/*
