@@ -156,4 +156,14 @@ public class PlayerTest {
 
 	}
 
+	/**
+	 * Testing if attacker throws a valid number of dices
+	 */
+	@Test
+	public void test013_checkAttackerMaxDiceNumValidity(){
+
+	}
+
+	
+
 }
