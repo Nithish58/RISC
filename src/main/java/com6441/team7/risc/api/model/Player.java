@@ -19,6 +19,9 @@ import java.security.SecureRandom;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
+import static com6441.team7.risc.api.RiscConstants.MAX_ATTACKER_DICE_NUM;
+import static com6441.team7.risc.api.RiscConstants.MAX_DEFENDER_DICE_NUM;
+import static com6441.team7.risc.api.RiscConstants.MIN_ATTACKING_SOLDIERS;
 
 /**
  * store player information
@@ -85,21 +88,6 @@ public class Player{
     public void setName(String name) {
         this.name = name;
     }
-    
-    /**
-     * Minimum allowed number of attacking armies in a country
-     */
-    private static final int MIN_ATTACKING_SOLDIERS=2;
-
-    /**
-     * Maximum allowed number of dice(s) for attacker to roll 
-     */
-    private static final int MAX_ATTACKER_DICE_NUM=3;
-    
-    /**
-     * Maximum allowed number of dice(s) for defender to roll
-     */
-    private static final int MAX_DEFENDER_DICE_NUM=2;
 
 
     //------------------------------------REINFORCEMENT-----------------------------------------
@@ -536,7 +524,7 @@ public class Player{
 	public void attackAllOut(PlayerService playerService) {
     	
     	
-    	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
+    	this.numDiceAttacker = 
     	this.numDiceDefender = MAX_DEFENDER_DICE_NUM;
     	
     	fromCountryAttack.setSoldiers(50);
@@ -749,13 +737,22 @@ public class Player{
     		checkNumAttackingSoldiers();
     	
     	if (boolAttackValidationMet)
+    		checkAttackerMaxDiceNumValidity();
+    	
+    	if (boolAttackValidationMet)
     		checkAttackerDiceNumValidity();
+    	
+    	if (boolAttackValidationMet)
+    		checkAttackerMinDiceNumValidity();
     	
     	if (boolAttackValidationMet)
     		checkDefenderMaxDiceNumValidity();
     	
     	if (boolAttackValidationMet)
     		checkDefenderDiceNumValidity();
+    	
+    	if (boolAttackValidationMet)
+    		checkDefenderMinDiceNumValidity();
     	
     	return boolAttackValidationMet;
     }
@@ -833,6 +830,18 @@ public class Player{
 	}
 	
 	/**
+	 * check if attacker throws a number of dice that is less than 1
+	 */
+	private void checkAttackerMinDiceNumValidity() {
+		if(numDiceAttacker<1) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//this.playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Attacker should throw at least 1 dice");
+			this.boolAttackValidationMet=false;
+		}
+	}
+	
+	/**
 	 * check if defender throws a valid number of dices
 	 * it must be less or equal than the maximum allowed number for defender
 	 */
@@ -854,6 +863,19 @@ public class Player{
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			//playerAttackWrapper.setAttackDisplayMessage
 			System.out.println("Defender should throw number of dices that is less or equal than the number of soldiers");
+			this.boolAttackValidationMet=false;
+			this.boolDefendDiceRequired.set(true);
+		}
+	}
+	
+	/**
+	 * check if defender throws number of dice that is less than 1
+	 */
+	private void checkDefenderMinDiceNumValidity() {
+		if(numDiceDefender<1) {
+			//The message will be sent to the playerAttackWrapper when the notification method is created there
+			//playerAttackWrapper.setAttackDisplayMessage
+			System.out.println("Defender should throw at least 1 dice");
 			this.boolAttackValidationMet=false;
 			this.boolDefendDiceRequired.set(true);
 		}
