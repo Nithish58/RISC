@@ -308,7 +308,7 @@ public class PlayerService extends Observable {
         notifyObservers(player);
     }
 
-
+    
 	/**
 	 * check if Player is valid
 	 * @return always return false?

@@ -527,8 +527,8 @@ public class Player{
     	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
     	this.numDiceDefender = MAX_DEFENDER_DICE_NUM;
     	
-    	fromCountryAttack.setSoldiers(50);
-    	toCountryAttack.setSoldiers(10);
+    	//fromCountryAttack.setSoldiers(50);
+    	//toCountryAttack.setSoldiers(10);
     	
     	while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
 
@@ -563,7 +563,8 @@ public class Player{
     		
 			//Decide the winner
 			decideBattleResult(attackerDice, defenderDice);
-    		System.out.println("After: ");
+			
+    		System.out.println("After allout: ");
     		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
     		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
     	}
@@ -1001,6 +1002,14 @@ public class Player{
 			}			
 			
 		}
+	
+	public void setNumDiceAttacker(int n) {
+		this.numDiceAttacker=n;
+	}
+	
+	public void setNumDiceDefender(int n) {
+		this.numDiceDefender=n;
+	}
 	
 	
     
