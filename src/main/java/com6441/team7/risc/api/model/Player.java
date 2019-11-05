@@ -186,7 +186,7 @@ public class Player{
      * @param cardList
      * @return true if all the cards are the same, false if not
      */
-    private boolean hasThreeSameCards(List<String> cardList){
+    public boolean hasThreeSameCards(List<String> cardList){
         if(cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
            cardList.get(1).equalsIgnoreCase(cardList.get(2))){
             return true;
@@ -200,7 +200,7 @@ public class Player{
      * @param cardList
      * @return true if all three cards are different, false if not
      */
-    private boolean hasThreeDifferentCards(List<String> cardList){
+    public boolean hasThreeDifferentCards(List<String> cardList){
         if(!cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
             !cardList.get(1).equalsIgnoreCase(cardList.get(2)) &&
             !cardList.get(0).equalsIgnoreCase(cardList.get(2))){
@@ -316,7 +316,7 @@ public class Player{
      * @param card card
      * @return true or false
      */
-    private boolean hasSameCardCategory(Card card){
+    public boolean hasSameCardCategory(Card card){
         return cardList.stream()
                 .filter(card::equals)
                 .count() == CARD_CATEGORY_NUMBER;
@@ -734,7 +734,7 @@ public class Player{
 	 * @param playerService a reference of PlayerService
 	 * @return true if valid, false if not valid
 	 */
-    private boolean validateAttackConditions(PlayerService playerService) {
+    public boolean validateAttackConditions(PlayerService playerService) {
     	this.boolAttackValidationMet = true;
     	
     	checkAttackingCountryAdjacency(playerService.getMapService());
@@ -764,7 +764,7 @@ public class Player{
 	 * Check if attacker country actually belongs to the attacker
 	 * @param playerService to notify observers about game info and retrieve useful info like current player 
 	 */
-	private void checkCountryBelongToAttacker(PlayerService playerService) {
+	public void checkCountryBelongToAttacker(PlayerService playerService) {
 		Player currentPlayer=playerService.getCurrentPlayer();
 		String playerName=currentPlayer.getName();
 		
@@ -780,7 +780,7 @@ public class Player{
 	/**
 	 * checks whether the 2 countries are owned by different players
 	 */
-	private void checkCountryHostility() {
+	public void checkCountryHostility() {
 			
 			if(fromCountryAttack.getPlayer().getName().equalsIgnoreCase
 					(toCountryAttack.getPlayer().getName())) {
@@ -797,7 +797,7 @@ public class Player{
 	 * check the number of soldiers for the attacker
 	 * Ensures that at least 2 soldier remains in the attacker's origin country
 	 */
-	private void checkNumAttackingSoldiers() {
+	public void checkNumAttackingSoldiers() {
 			
 			if(isAttackerLastManStanding()) {
 				//The message will be sent to the playerAttackWrapper when the notification method is created there
@@ -806,12 +806,12 @@ public class Player{
 				this.boolAttackValidationMet=false;
 			}
 		}
-	
+
 	/**
 	 * check if attacker throws a valid number of dices
 	 * it must be less than the maximum allowed number for attacker
 	 */
-	private void checkAttackerMaxDiceNumValidity() {
+	public void checkAttackerMaxDiceNumValidity() {
 		if(numDiceAttacker>MAX_ATTACKER_DICE_NUM) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			//this.playerAttackWrapper.setAttackDisplayMessage
@@ -823,7 +823,7 @@ public class Player{
 	/**
 	 * check if attacker throws a number of dices that is less than the number of soldiers in his/her country
 	 */
-	private void checkAttackerDiceNumValidity() {
+	public void checkAttackerDiceNumValidity() {
 		if(numDiceAttacker>=fromCountryAttack.getSoldiers()) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			//this.playerAttackWrapper.setAttackDisplayMessage
@@ -836,7 +836,7 @@ public class Player{
 	 * check if defender throws a valid number of dices
 	 * it must be less or equal than the maximum allowed number for defender
 	 */
-	private void checkDefenderMaxDiceNumValidity() {
+	public void checkDefenderMaxDiceNumValidity() {
 		if(numDiceDefender>MAX_DEFENDER_DICE_NUM) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			//playerAttackWrapper.setAttackDisplayMessage
@@ -849,7 +849,7 @@ public class Player{
 	/**
 	 * check if defender throws a number of dices that is less or equal than the number of soldiers in his/her country
 	 */
-	private void checkDefenderDiceNumValidity() {
+	public void checkDefenderDiceNumValidity() {
 		if(numDiceDefender>toCountryAttack.getSoldiers()) {
 			//The message will be sent to the playerAttackWrapper when the notification method is created there
 			//playerAttackWrapper.setAttackDisplayMessage
@@ -864,7 +864,7 @@ public class Player{
 	 *If the defender lost all soldiers in his/her country, the attacker conquered the country
 	 * @return
 	 */
-	private boolean checkDefenderPushedOut() {
+	public boolean checkDefenderPushedOut() {
 
 		//if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
 		if ((toCountryAttack.getSoldiers().equals(0))) {
@@ -888,7 +888,7 @@ public class Player{
 	/**
 	 * check if attack has conquered all the countries
 	 */
-	private void checkPlayerWin() {
+	public void checkPlayerWin() {
 		 
 		if(attacker.getCountryList().size()==playerService.getMapService().getCountries().size()) {
 			System.out.println(attacker.getName()+" Wins");
@@ -900,7 +900,7 @@ public class Player{
 	/**
 	 * transfer ownership of the country after attack
 	 */
-	private void transferCountryOwnershipAfterAttack() {
+	public void transferCountryOwnershipAfterAttack() {
 		toCountryAttack.getPlayer().getCountryList().remove(toCountryAttack);
 		fromCountryAttack.getPlayer().getCountryList().add(toCountryAttack);
 		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
@@ -910,14 +910,14 @@ public class Player{
 	 * validate if the defender occupy 0 country
 	 * @return true if defender occupy 0 country, false if not
 	 */
-	private boolean isDefenderEliminatedFromGame() {
+	public boolean isDefenderEliminatedFromGame() {
 		if(defender.getCountryList().size()==0)
 			return true;
 		return false;
 	}
 
 
-	private boolean checkDefenderOwnership() {
+	public boolean checkDefenderOwnership() {
 		
 		this.boolCountryConquered=checkDefenderPushedOut();
 		
@@ -937,7 +937,7 @@ public class Player{
 	 * This checks if attacker only has one soldier left in the attacking country
 	 * @return
 	 */
-	private boolean isAttackerLastManStanding() {
+	public boolean isAttackerLastManStanding() {
 		if (fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS)
 			return true;
 		return false;
