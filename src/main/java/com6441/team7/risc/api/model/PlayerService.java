@@ -480,7 +480,7 @@ public class PlayerService extends Observable {
 
 
 	/**
-	 *
+	 *This method evaluate world domination and notify to observer
 	 */
 	public void evaluateWorldDomination() {
 		
