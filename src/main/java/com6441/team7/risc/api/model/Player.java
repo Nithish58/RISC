@@ -945,7 +945,7 @@ public class Player{
 	
 	/**
 	 * check if attacking country has Adjacency
-	 * @param mapservice to retrieve from and to countries' info and their adjacent countries
+	 * @param mapService to retrieve from and to countries' info and their adjacent countries
 	 */
 	private void checkAttackingCountryAdjacency(MapService mapService) {
 			
