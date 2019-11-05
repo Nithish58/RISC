@@ -35,6 +35,8 @@ public class PlayerService extends Observable {
 	 * Deck of cards implemented as stack
 	 */
 	private Stack<Card> deckCards;
+	
+	private boolean countryConqueredDuringAttackPhase;
 
 
 	/**
