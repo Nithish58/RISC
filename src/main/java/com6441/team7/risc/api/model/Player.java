@@ -527,9 +527,6 @@ public class Player{
     	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
     	this.numDiceDefender = MAX_DEFENDER_DICE_NUM;
     	
-    	fromCountryAttack.setSoldiers(50);
-    	toCountryAttack.setSoldiers(10);
-    	
     	while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
 
     		//Update numSoldiers everytime attack is being done
