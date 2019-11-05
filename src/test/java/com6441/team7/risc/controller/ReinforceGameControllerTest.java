@@ -113,11 +113,30 @@ public class ReinforceGameControllerTest {
         reinforceGameController.reinforceArmy(player, "worrick", 3);
     }
 
+    /**
+     * if the player reinforce armies to the countries which the number is larger than the army he gets in reinforcement phase
+     * expect: throw an ReinforceParsingException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
     @Test(expected = ReinforceParsingException.class)
     public void reinforceArmyNumberGreaterThanActualReinforcedArmies() throws URISyntaxException, IOException{
         mockPlayerCountryInformationOne();
         reinforceGameController.calculateReinforcedArmies(player);
         reinforceGameController.reinforceArmy(player, "siberia", 100);
+    }
+
+    /**
+     * if the player reinforce negative armies to the countries
+     * expect: throw an ReinforceParsingException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test(expected = ReinforceParsingException.class)
+    public void reinforceNegativeArmyNumber() throws URISyntaxException, IOException{
+        mockPlayerCountryInformationOne();
+        reinforceGameController.calculateReinforcedArmies(player);
+        reinforceGameController.reinforceArmy(player, "siberia", -1);
     }
 
     /**

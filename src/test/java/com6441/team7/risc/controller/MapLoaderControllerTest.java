@@ -39,11 +39,25 @@ import static org.junit.Assert.assertTrue;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MapLoaderControllerTest {
 
+    /**
+     * a reference of mapLoaderController
+     */
     private MapLoaderController mapLoaderController;
+    /**
+     * a reference of GameView
+     */
     private GameView view;
+
+    /**
+     * a reference of mapService
+     */
     private MapService mapService;
 
 
+    /**
+     * setup method to set up the attributes
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         mapService = new MapService();
