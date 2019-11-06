@@ -955,14 +955,12 @@ public class Player{
 			
 			if(!fromId.isPresent()) {
 				strSendAttackInfoToObservers+="\nOrigin country not present";
-				//System.out.println("Origin country not present");
 				this.boolAttackValidationMet=false;
 			}
 
 			
 			if(!toId.isPresent()) {
 				strSendAttackInfoToObservers+="\nDestination country not present";
-				//System.out.println("Destination country not present");
 				this.boolAttackValidationMet=false;
 			}
 			
@@ -973,7 +971,6 @@ public class Player{
 					this.boolAttackValidationMet=false;
 					//this.playerAttackWrapper.setAttackDisplayMessage
 					strSendAttackInfoToObservers+="\nCountries not adjacent to each other";
-					//System.out.println("Countries not adjacent to each other");
 				}
 			}			
 			
@@ -1204,14 +1201,15 @@ public class Player{
 		return boolCountryConquered;
 	}
 	
-	public void endAttackPhase() {
+	public void endAttackPhase(PlayerService playerService) {
 		
 		//Check if card needs to be drawn
 		if(boolDrawCard) {
 			Card c=playerService.drawFromDeck();
 			addCard(c);
 			this.boolDrawCard=false;
-			System.out.println("Card drawn: "+c.getName());
+			String strMessage="Card drawn: "+c.getName();
+			playerService.notifyPlayerServiceObservers(strMessage);
 		}
 		
 		
@@ -1220,6 +1218,9 @@ public class Player{
 		//playerService.getMapService().setState(GameState.FORTIFY);
 	}
 	
+	/**
+	 * Resetting boolean values for the next attack phase of the player
+	 */
 	public void resetBooleanValues() {
 		this.boolDrawCard=false;
 		this.boolAttackMoveRequired=false;
