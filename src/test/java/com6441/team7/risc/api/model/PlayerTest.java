@@ -301,6 +301,7 @@ public class PlayerTest {
 	/**
 	 * Testing result of deciding battle
 	 */
+	@Ignore
 	@Test
 	public void test005_checkPlayerWin() {
 		System.out.println("Check if the attacker wins the entire game");
@@ -329,15 +330,6 @@ public class PlayerTest {
 				}
 
 		}
-
-		// Get first adjacent country in country's list
-//		Country toAttackCountry = null;
-//		for(Integer i: fromCountryAdjacencyList) {
-//			if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
-//				toAttackCountry=mapService.getCountryById(i).get();
-//				break;
-//			}
-//		}
 
 		for (Country country : countryList) {
 			System.out.println(country);
@@ -384,6 +376,59 @@ public class PlayerTest {
 
 		assertTrue(isTrue);
 	}
+	
+	
+	/**
+	 * This checks if the attacker owns all the territory
+	 * and is declared the winner
+	 * @throws Exception on invalid value
+	 */
+	@Test
+	public void test006_checkPlayerWinTheGame() throws Exception{
+		System.out.println("Check if the attacker owns all countries and wins the entire game");
+		Player currentPlayer = playerService.getCurrentPlayer();
+		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
+		System.out.println("Total country list  size: " + mapService.getCountries().size());
+
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country toAttackCountry = playerService.getNextPlayer().countryPlayerList.get(0);
+		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// number of
+		// dices can be thrown
+		fromAttackCountry.setSoldiers(1000);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		Set<Country> countryList = mapService.getCountries();
+
+		for (Player p : playerService.getPlayerList()) {
+
+			if (!p.getName().equals(fromAttackCountry.getPlayer().getName()))
+				for (Country c : p.getCountryList()) {
+					toAttackCountry.getPlayer().getCountryList().remove(c.getId());
+					currentPlayer.getCountryList().add(c);
+				}
+
+		}
+
+
+
+		System.out.println("Attacker country list size after transfer: " + currentPlayer.getCountryList().size());
+		System.out.println("Total country list  size after: " + mapService.getCountries().size());
+
+
+		// This is for checking the condition after attack
+		boolean isTrue = false;
+
+
+		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
+		System.out.println("Total country list  size: " + mapService.getCountries().size());
+		// If either one of the countries' loses a soldier, isTrue is set to true
+		if (currentPlayer.getCountryList().size() == mapService.getCountries().size())
+			isTrue = true;
+
+		assertTrue(isTrue);
+	}
 
 	/**
 	 * Testing validate attack conditions
@@ -391,7 +436,7 @@ public class PlayerTest {
 	 * @throws Exception
 	 */
 	@Test
-	public void test006_validateAttackConditions() throws Exception {
+	public void test007_validateAttackConditions() throws Exception {
 		System.out.println("Validate attack conditions");
 		Player currentPlayer = playerService.getCurrentPlayer();
 
@@ -444,7 +489,7 @@ public class PlayerTest {
 	 * Testing if attacker country actually belongs to the attacker
 	 */
 	@Test
-	public void test007_checkCountryBelongToAttacker() {
+	public void test008_checkCountryBelongToAttacker() {
 
 	}
 
@@ -452,7 +497,7 @@ public class PlayerTest {
 	 * Testing whether the 2 countries are owned by different players
 	 */
 	@Test
-	public void test008_checkCountryHostility() {
+	public void test009_checkCountryHostility() {
 
 	}
 
@@ -460,7 +505,7 @@ public class PlayerTest {
 	 * testing the number of soldiers for the attacker
 	 */
 	@Test
-	public void test009_checkNumAttackingSoldiers() {
+	public void test010_checkNumAttackingSoldiers() {
 
 	}
 
