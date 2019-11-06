@@ -208,7 +208,6 @@ public class PhaseView implements GameView {
 
             }
 
-
         	return;
         }  //End of PlayerService.class observable 
         

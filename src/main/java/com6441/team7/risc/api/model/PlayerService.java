@@ -35,7 +35,9 @@ public class PlayerService extends Observable {
 	 */
 	private Stack<Card> deckCards;
 	
-	private boolean countryConqueredDuringAttackPhase;
+	private boolean boolCountryConquered;
+	
+	private boolean boolAttackMoveRequired;
 
 
 	/**
@@ -541,7 +543,7 @@ public class PlayerService extends Observable {
 
 
 	/**
-	 * caculate armies get from the player by the number of occupied countries
+	 * calculate armies get from the player by the number of occupied countries
 	 * @param player
 	 * @return number of armies received
 	 */
@@ -552,10 +554,4 @@ public class PlayerService extends Observable {
 		return counter;
 	}
 	
-	/*
-	public void fortifyCurrentPlayer(PlayerFortificationWrapper playerFortificationWrapper) {
-		getCurrentPlayer().fortify(this, playerFortificationWrapper);
-	}
-	*/
-
 }

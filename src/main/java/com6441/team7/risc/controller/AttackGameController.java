@@ -39,8 +39,6 @@ public class AttackGameController implements Controller {
      */
     //private boolean boolDefenderDiceRequired;
     private AtomicBoolean boolDefenderDiceRequired;
-    
-    private AtomicBoolean boolAttackMoveRequired;
 
 	/**
 	 * constructor
@@ -52,7 +50,6 @@ public class AttackGameController implements Controller {
         this.mapService=playerService.getMapService();
         
         this.boolDefenderDiceRequired=new AtomicBoolean(false);
-        this.boolAttackMoveRequired=new AtomicBoolean(false);
         
     }
 
@@ -75,19 +72,10 @@ public class AttackGameController implements Controller {
 	 */
 	@Override
     public void readCommand(String command) throws Exception {
-
-    	//this.playerService.getMapService().setState(GameState.FORTIFY);
     	
     	RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
     	
         String[] commands = {};
-    	
-		/*
-		 * if(command.toLowerCase(Locale.CANADA).contains("-allout")){
-		 * 
-		 * command = StringUtils.substringAfter(command, "-"); commands =
-		 * command.split("\\s-"); }
-		 */
         
         commands = command.split("\\s");
        
@@ -155,7 +143,7 @@ public class AttackGameController implements Controller {
 	 */
 	public void validateAttackMoveCommand(String[] commands) {
 		
-    	if(!boolAttackMoveRequired.get()) {
+    	if(!playerService.getCurrentPlayer().getBoolAttackMoveRequired()) {
     		phaseView.displayMessage("attackmove not required right now");
     		return;
     	}
@@ -191,7 +179,7 @@ public class AttackGameController implements Controller {
     		return;
     	}
     	
-    	if(boolAttackMoveRequired.get()) {
+    	if(playerService.getCurrentPlayer().getBoolAttackMoveRequired()) {
     		phaseView.displayMessage("attackmove command required");
     		return;
     	}
@@ -239,7 +227,7 @@ public class AttackGameController implements Controller {
         	return;
         }
         
-        if(boolAttackMoveRequired.get()) {
+        if(playerService.getCurrentPlayer().getBoolAttackMoveRequired()) {
         	phaseView.displayMessage("attackmove command required now");
         	return;
         }
@@ -251,6 +239,7 @@ public class AttackGameController implements Controller {
     	
     	//Validates attack -noattack command and ends phase
     	if(arrCommand.length==2 && arrCommand[1].equalsIgnoreCase("-noattack")) {
+    		//playerService.getCurrentPlayer().endAttackPhase();
     		endAttackPhase();
     		return;
     	}
@@ -323,6 +312,7 @@ public class AttackGameController implements Controller {
 	 * call mapService and set the state to fortify
 	 */
 	private void endAttackPhase() {
+		
     	mapService.setState(GameState.FORTIFY);
     }
 }
