@@ -467,7 +467,7 @@ public class FortifyGameControllerTest {
 	   * Method to load a map.
 	   * Method first exits from editmapphase by sending command exitmapedit.
 	   * Then command to loadmap is sent.
-	   * @param mapName
+	   * @param mapName MapName
 	   */
 	  	public void loadValidMap(String mapName) {
 	  		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase

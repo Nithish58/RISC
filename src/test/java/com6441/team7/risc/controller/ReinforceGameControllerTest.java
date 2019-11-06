@@ -275,7 +275,7 @@ public class ReinforceGameControllerTest {
      * rule 3: army += continent value (5)
      * expect the reinforceArmy number be 6
      * @throws IOException
-     * @throws URISyntaxException
+     * @throws URISyntaxException on
      */
     @Test
     public void calculateReinforceArmiesWithWholeContinentOccupied() throws IOException, URISyntaxException {

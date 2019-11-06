@@ -7,8 +7,8 @@ public interface Controller {
 
     /**
      * read command from the controller
-     * @param command
-     * @throws Exception
+     * @param command Command
+     * @throws Exception on invalid
      */
     void readCommand(String command) throws Exception;
 }

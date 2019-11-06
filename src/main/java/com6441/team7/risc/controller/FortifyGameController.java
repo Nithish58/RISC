@@ -88,7 +88,7 @@ public class  FortifyGameController implements Controller {
 
 	/**
 	 * constructor to set playerService
-	 * @param playerService
+	 * @param playerService PlayerService
 	 */
 	public FortifyGameController(PlayerService playerService) {
 		this.playerService = playerService;
@@ -97,7 +97,7 @@ public class  FortifyGameController implements Controller {
 
 	/**
 	 * set the view
-	 * @param view
+	 * @param view GameView
 	 */
 	public void setView(GameView view) {
 		this.phaseView = view;
@@ -109,8 +109,8 @@ public class  FortifyGameController implements Controller {
 	 * check validity of the commands from player
 	 * if the command is valid, it will call corresponding methods
 	 * if not, display error messages to the phase view
-	 * @param command
-	 * @throws Exception
+	 * @param command Command
+	 * @throws Exception on invalid
 	 */
 	@Override
 	public void readCommand(String command) throws Exception {

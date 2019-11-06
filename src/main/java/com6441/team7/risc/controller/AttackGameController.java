@@ -42,7 +42,7 @@ public class AttackGameController implements Controller {
 
 	/**
 	 * constructor
-	 * @param playerService
+	 * @param playerService PlayerService
 	 */
 	public AttackGameController(PlayerService playerService){
 
@@ -55,7 +55,7 @@ public class AttackGameController implements Controller {
 
 	/**
 	 * set the view in the attack controller
-	 * @param view
+	 * @param view for GameView
 	 */
 	public void setView(GameView view){
         this.phaseView = view;
@@ -67,8 +67,8 @@ public class AttackGameController implements Controller {
 	 * check the validity of the command,
 	 * if the command is valid, call corresponding method
 	 * if not, display error messages to the phase view
-	 * @param command
-	 * @throws Exception
+	 * @param command Command
+	 * @throws Exception on invalid
 	 */
 	@Override
     public void readCommand(String command) throws Exception {
@@ -139,7 +139,7 @@ public class AttackGameController implements Controller {
 	/**
 	 * Validate attackmove command
 	 * If command not valid, will send error message to phase view.
-	 * @param array of string commands
+	 * @param commands Command
 	 */
 	public void validateAttackMoveCommand(String[] commands) {
 		

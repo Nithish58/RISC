@@ -63,7 +63,7 @@ public class MapLoaderController implements Controller{
 
     /**
      * constructor to set mapService
-     * @param mapService
+     * @param mapService MapService
      */
     public MapLoaderController(MapService mapService) {
         this.mapService = mapService;
@@ -77,8 +77,8 @@ public class MapLoaderController implements Controller{
 
     /**
      * read commands from user input to call different methods. If commands are not recognized, throw an exception
-     * @param command
-     * @throws IOException
+     * @param command Command
+     * @throws IOException on IO Error
      */
     @Override
     public void readCommand(String command) throws IOException {
@@ -167,8 +167,8 @@ public class MapLoaderController implements Controller{
 
     /**
      * save the map, if the map is valid, it could be saved. if not, will throw an exception
-     * @param command
-     * @throws IOException
+     * @param command Command
+     * @throws IOException on IO Error
      */
     public void saveMap(String command) throws IOException {
         if (mapService.isMapNotValid()) {
