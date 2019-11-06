@@ -558,13 +558,14 @@ public class Player{
     	this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
     	this.numDiceDefender = MAX_DEFENDER_DICE_NUM;
 
-    	while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
-
+    	//while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
+    	while (!defenderPushedOut() || !isAttackerLastManStanding()) {
+    		
     		//Update numSoldiers everytime attack is being done
     		this.numAttackingSoldiers=fromCountryAttack.getSoldiers();
     		this.numDefendingSoldiers=toCountryAttack.getSoldiers();
     		
-			playerService.evaluateWorldDomination();
+		//	playerService.evaluateWorldDomination();
     		
 			//Checks the condition of both sides to determine how many number of dices are allowed
 			if (this.numAttackingSoldiers <= MAX_ATTACKER_DICE_NUM)
@@ -734,8 +735,10 @@ public class Player{
 	public boolean checkDefenderPushedOut() {
 		strSendAttackInfoToObservers="";
 		//if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
-		if ((toCountryAttack.getSoldiers().equals(0))) {
+		//if ((toCountryAttack.getSoldiers().equals(0))) {
 			
+		if(defenderPushedOut()) {
+		
 			//Need attack move next
 			//playerService.setBoolAttackMoveRequired(true);
 			this.boolAttackMoveRequired=true;
@@ -815,12 +818,22 @@ public class Player{
 	
 	/**
 	 * This checks if attacker only has one soldier left in the attacking country
-	 * @return true if only 1 soldier left
+	 * Stopping condition 1 for -allout attack
+	 * @return true if only 1 soldier left in attacking country
 	 */
 	public boolean isAttackerLastManStanding() {
 		if (fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS)
 			return true;
 		return false;
+	}
+	
+	/**
+	 * Checks if defender has no more soldiers remaining in defending country
+	 * Stopping condition 2 for -allout attack
+	 * @return true if no soldiers left in defending country
+	 */
+	public boolean defenderPushedOut() {
+		return toCountryAttack.getSoldiers().equals(0);
 	}
 	
 	
