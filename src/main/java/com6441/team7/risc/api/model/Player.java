@@ -1193,19 +1193,16 @@ public class Player{
 		
 		//Check if card needs to be drawn
 		if(boolDrawCard) {
-			System.out.println("Card drawn");
-			addCard(playerService.drawFromDeck());
+			Card c=playerService.drawFromDeck();
+			addCard(c);
 			this.boolDrawCard=false;
-			System.out.println("Card drawn");
+			System.out.println("Card drawn: "+c.getName());
 		}
 		
-		System.out.println("Before reset");
 		
 		resetBooleanValues();
 		
-		System.out.println("After reset");
-		
-		playerService.getMapService().setState(GameState.FORTIFY);
+		//playerService.getMapService().setState(GameState.FORTIFY);
 	}
 	
 	public void resetBooleanValues() {
