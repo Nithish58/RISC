@@ -32,7 +32,7 @@
     
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build two")
 
-4. ### remove logic relating to reinforce(), fortify(), exchangeCards() from corresponding reinforceGameController, fortifyGameController to the Player.class. The use of these controllers is to validate the commands received from the view and call methods in the model. 
+4. ### remove logic relating to reinforce() from reinforceController to model Player.class
 
     At build 1   
 
@@ -42,7 +42,16 @@
     
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
 
-5.  ### add GameView and Controller as the interface
+
+5. ### remove logic relating fortify() from fortifyController to model Player.class 
+    At build 1
+       ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+       
+    At build 2
+       ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+       
+
+6.  ### add GameView and Controller as the interface
     At build 1, we have only CommandPromptView to receive users commands, and sent it to different controllers according to the game state. 
 
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
@@ -51,29 +60,9 @@
 
      ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
 
-6. ### Refactor the logic in reinforcement
-   At build 1, the validation and reinforce logic are all in the ReinforceGameController. The methods are long and complex, which makes them hard to understand and maintain.  
-
-   ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
-
-    At build 2, we split the validation and reinforce logic. We put the command validation in ReinforceGameController and the reinforce logic in the model. For the method in ReinforceController, we split the method based on the logic to make each function small and maintainable. 
-
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
-
-
-7. ### add observables to PlayerService and mapService.  
-   At build 1, these model classes have a reference of view. When it modifies the data, it will call view.displayMethod() to display the changes in the model. 
-
-
-   ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
-
-
-    At build 2, we use observer pattern. We make PlayerService and mapService extends from Observable, and attach the views as the observers. If there is the update in the model, it will notify the views and update the new changes to the view. 
-
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
     
     
- 8. ### refactor mapLoaderTests including extracting logics and parameters in different methods to make tests more readable and understandable.  
+ 7. ### refactor mapLoaderTests including extracting logics and parameters in different methods to make tests more readable and understandable.  
  
     At build 1
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
