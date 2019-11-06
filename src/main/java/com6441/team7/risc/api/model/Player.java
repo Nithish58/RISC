@@ -348,8 +348,6 @@ public class Player{
     
     
     //----------------------------------ATTACK--------------------------------------------------
-    
-    //Start listing private members for attack here binsar and then continue in this region.
 
 	/**
 	 * a reference of attack country
