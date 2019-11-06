@@ -75,13 +75,6 @@ public class PlayerTest {
 	 */
 	PlayerAttackWrapper playerAttackWrapper;
 
-	static Player testPlayer;
-	String testName;
-	int testArmies;
-	List<Card> testCardList;
-	int tradeInTimes;
-	static final int CARD_CATEGORY_NUMBER = 3;
-	int armyNum;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -92,17 +85,16 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Setting player's name. Instantiating a player object. Setting number of
-	 * armies.
+	 * Before every test is performed, the following are performed:
+	 * Calling createObjects() method
+	 * load a map using the loadValidMap() method
+	 * Add two players
+	 * Populate countries and place all of players' soldiers to the map
 	 * 
 	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		testName = "Player One";
-		testPlayer = new Player(testName);
-		armyNum = 3;
-		testPlayer.setArmies(armyNum);
 		createObjects();
 
 		loadValidMap("luca.map");
@@ -117,13 +109,19 @@ public class PlayerTest {
 
 	}
 
+	/**
+	 * This method is performed after every test
+	 * @throws Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 	}
 
 	/**
-	 * Testing the single attack
-	 * 
+	 * Testing the single attack method.
+	 * It tests the regular attack function (i.e.: without the allout param)
+	 * The expected result is the number of either side's soldiers decrease by 1,
+	 * depending on which side loses in the dice roll
 	 * @throws Exception
 	 */
 	@Test
@@ -199,7 +197,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing attack until soldiers from either attacker or defender is out
+	 * Tests attack until soldiers from either attacker or defender is out
 	 * @throws Exception 
 	 */
 	@Ignore
@@ -271,7 +269,8 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing rolling attacker's dice
+	 * Tests rolling attacker's dice
+	 * The expected result is that the returned dice array has the same length as the expected one
 	 */
 	@Test
 	public void test003_rollAttackerDice() {
@@ -285,7 +284,8 @@ public class PlayerTest {
 	}
 
 	/**
-	 * testing rolling defender's dice
+	 * Tests rolling defender's dice
+	 * The expected result is that the returned dice array has the same length as the expected one
 	 */
 	@Test
 	public void test004_rollDefenderDice() {
@@ -299,7 +299,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing result of deciding battle
+	 * Tests if the player wins the game
 	 */
 	@Ignore
 	@Test
@@ -431,7 +431,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing validate attack conditions
+	 * Tests validate attack conditions
 	 * 
 	 * @throws Exception
 	 */
