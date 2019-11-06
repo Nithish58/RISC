@@ -1,6 +1,6 @@
 package com6441.team7.risc.controller;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -89,7 +90,10 @@ public class AttackGameControllerTest {
 		
 	}
 	
-	
+	/**
+	 * Tests validAttackCommand() method on the AttackGameController
+	 */
+	@Ignore
 	@Test public void test001_validAttackCommand() {
 		
 		Country fromCountryAttack=currentPlayer.getCountryList().get(0);
@@ -124,6 +128,16 @@ public class AttackGameControllerTest {
 		assertEquals(mapService.getCountryByName(fromCountryName).get().getSoldiers().intValue(),10);
 		assertEquals(mapService.getCountryByName(toCountryName).get().getSoldiers().intValue(),8);
 		
+	}
+	
+	/**
+	 * Tests method to end attack phase.
+	 * The expected game state is "fortify"
+	 */
+	@Test public void test002_endAttack() {
+		String expected = "fortify";
+		attackController.endAttackPhase();
+		assertTrue(mapService.getGameState().getName().equals(expected));
 	}
 	
 	
