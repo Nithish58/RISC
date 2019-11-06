@@ -1,18 +1,17 @@
 package com6441.team7.risc.api.model;
 
-import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerDominationWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
-import com6441.team7.risc.api.wrapperview.ReinforcedArmyWrapper;
+import com6441.team7.risc.api.wrapperview.*;
 
 import java.util.*;
+
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 public class PlayerService extends Observable {
 
 	/**
 	 * a reference to mapService
 	 */
-    private MapService mapService;
+	private MapService mapService;
 
 	/**
 	 * List of players playing the game
@@ -43,25 +42,25 @@ public class PlayerService extends Observable {
 	 * constructor of playerService
 	 * @param mapService
 	 */
-    public PlayerService(MapService mapService){
+	public PlayerService(MapService mapService){
 
-        this.mapService = mapService;
-        //playerList = new CircularFifoQueue<>();
+		this.mapService = mapService;
+		//playerList = new CircularFifoQueue<>();
 
-        this.listPlayers=new ArrayList<Player>();
+		this.listPlayers=new ArrayList<Player>();
 
-        initialiseDeckCards();
+		initialiseDeckCards();
 
-        //Because no players added when PlayerService object is being instantiated in App.class
-        this.currentPlayerIndex=-1;
+		//Because no players added when PlayerService object is being instantiated in App.class
+		this.currentPlayerIndex=-1;
 
-    }
+	}
 
- //-------------------------DECK OF CARDS METHODS---------------------------------------
+	//-------------------------DECK OF CARDS METHODS---------------------------------------
 
-    /**
-     * Method initialised Deck of cards: 14 cards of each type
-     */
+	/**
+	 * Method initialised Deck of cards: 14 cards of each type
+	 */
 	public void initialiseDeckCards() {
 
 		this.deckCards=new Stack();
@@ -88,8 +87,14 @@ public class PlayerService extends Observable {
 		return deckCards.pop();
 	}
 
-	public void returnToDeck(Card c) {
-		deckCards.push(c);
+	public void returnToDeck(List<Card> cards) {
+
+		cards.forEach(card -> deckCards.push(card));
+		shuffleDeckCards();
+	}
+
+	public void returnToDeck(Card card){
+		deckCards.push(card);
 		shuffleDeckCards();
 	}
 
@@ -100,18 +105,18 @@ public class PlayerService extends Observable {
 	 * @return the reference of mapService
 	 */
 	public MapService getMapService() {
-        return mapService;
-    }
+		return mapService;
+	}
 
 	/**
 	 * extends addObserver() from java
 	 * @param observer
 	 */
 	@Override
-    public void addObserver(Observer observer) {
+	public void addObserver(Observer observer) {
 
-        super.addObserver(observer);
-    }
+		super.addObserver(observer);
+	}
 
 	/**
 	 * set current Player, notify the observers when player has been changed
@@ -132,19 +137,19 @@ public class PlayerService extends Observable {
 	 * @param name of the player
 	 * @return player
 	 */
-    public Player addPlayer(String name){
-    	Player newPlayer=new Player(name);
-    	listPlayers.add(newPlayer);
+	public Player addPlayer(String name){
+		Player newPlayer=new Player(name);
+		listPlayers.add(newPlayer);
 
 		//Add Player to Wrapper function and send wrapper function to observers
 		PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
 		playerEditWrapper.setAddedPlayer(newPlayer);
 
-    	setChanged();
-        notifyObservers(playerEditWrapper);
+		setChanged();
+		notifyObservers(playerEditWrapper);
 
-    	return newPlayer;
-    }
+		return newPlayer;
+	}
 
 	/**
 	 * remove the player by player name
@@ -165,23 +170,23 @@ public class PlayerService extends Observable {
 				playerEditWrapper.setRemovedPlayer(removedPlayer);
 
 				setChanged();
-		    	//NOTIFY BEFORE RETURN
-		        notifyObservers(playerEditWrapper);
+				//NOTIFY BEFORE RETURN
+				notifyObservers(playerEditWrapper);
 
 				return true;
 			}
 		}
 
 		return false;
-    }
+	}
 
 	/**
 	 * return the list of players
 	 * @return
 	 */
 	public ArrayList<Player> getPlayerList(){
-        return listPlayers;
-    }
+		return listPlayers;
+	}
 
 	/**
 	 * get current player name.
@@ -191,11 +196,11 @@ public class PlayerService extends Observable {
 	 */
 	public String getCurrentPlayerName(){
 
-    	if(currentPlayerIndex<0) return "";
+		if(currentPlayerIndex<0) return "";
 
-    	Player currentPlayer=listPlayers.get(currentPlayerIndex);
-        return currentPlayer.getName();
-    }
+		Player currentPlayer=listPlayers.get(currentPlayerIndex);
+		return currentPlayer.getName();
+	}
 
 	/**
 	 * get Player by name.
@@ -206,12 +211,12 @@ public class PlayerService extends Observable {
 	 */
 	public Player getPlayerByName(String name) {
 
-    	for(Player p:listPlayers) {
-    		if(p.getName().equals(name)) return p;
-    	}
+		for(Player p:listPlayers) {
+			if(p.getName().equals(name)) return p;
+		}
 
-    	return null;
-    }
+		return null;
+	}
 
 	/**
 	 * get current player.
@@ -221,10 +226,10 @@ public class PlayerService extends Observable {
 	 */
 	public Player getCurrentPlayer() {
 
-    	if(currentPlayerIndex<0) return null;
+		if(currentPlayerIndex<0) return null;
 
-    	return listPlayers.get(currentPlayerIndex);
-    }
+		return listPlayers.get(currentPlayerIndex);
+	}
 
 
 	/**
@@ -233,8 +238,8 @@ public class PlayerService extends Observable {
 	 */
 	public int getCurrentPlayerIndex() {
 
-    	return currentPlayerIndex;
-    }
+		return currentPlayerIndex;
+	}
 
 
 
@@ -242,18 +247,18 @@ public class PlayerService extends Observable {
 	 * set current player
 	 * @param player
 	 */
-    public void setCurrentPlayer(Player player){
-        currentPlayer = player;
-    }
+	public void setCurrentPlayer(Player player){
+		currentPlayer = player;
+	}
 
-   // public boolean isPlayerValid(){ return false; }
+	// public boolean isPlayerValid(){ return false; }
 
 	/**
 	 * check if the player exist
 	 * @param playerName
 	 * @return true if the player name exist, false if does not exist
 	 */
-    public boolean checkPlayerExistance(String playerName) {
+	public boolean checkPlayerExistance(String playerName) {
 
 		for(int i=0;i<listPlayers.size();i++) {
 			if(listPlayers.get(i).getName().equals(playerName)) {
@@ -261,8 +266,8 @@ public class PlayerService extends Observable {
 			}
 		}
 
-    	return false;
-    }
+		return false;
+	}
 
 
 	/**
@@ -270,10 +275,10 @@ public class PlayerService extends Observable {
 	 * @param player
 	 * @return
 	 */
-    public long getConqueredCountriesNumber(Player player){
+	public long getConqueredCountriesNumber(Player player){
 
-        return mapService.getConqueredCountriesNumber(player);
-    }
+		return mapService.getConqueredCountriesNumber(player);
+	}
 
 
 
@@ -282,9 +287,9 @@ public class PlayerService extends Observable {
 	 * @param player
 	 * @return
 	 */
-    public long getReinforcedArmyByConqueredContinents(Player player){
-        return mapService.getReinforceArmyByConqueredContinents(player);
-    }
+	public long getReinforcedArmyByConqueredContinents(Player player){
+		return mapService.getReinforceArmyByConqueredContinents(player);
+	}
 
 
 	/**
@@ -292,8 +297,8 @@ public class PlayerService extends Observable {
 	 * @param player
 	 * @return
 	 */
-    public List<String> getConqueredContries(Player player){
-        return mapService.getConqueredCountriesNameByPlayer(player);}
+	public List<String> getConqueredContries(Player player){
+		return mapService.getConqueredCountriesNameByPlayer(player);}
 
 
 
@@ -317,9 +322,12 @@ public class PlayerService extends Observable {
 	 * @param player
 	 * @return
 	 */
-    public List<String> showCardsInfo(Player player){
-        return player.getCardList();
-    }
+	public void showCardsInfo(Player player){
+
+		ReinforcedCardWrapper cardWrapper = new ReinforcedCardWrapper(player, player.getCardList());
+		setChanged();
+		notifyObservers(cardWrapper);
+	}
 
 
 
@@ -329,9 +337,9 @@ public class PlayerService extends Observable {
 	 * @param cardList
 	 * @return
 	 */
-    public boolean isTradeInCardsValid(Player player, List<String> cardList){
-        return player.meetTradeInCondition(cardList);
-    }
+	public boolean isTradeInCardsValid(Player player, List<Card> cardList){
+		return player.meetTradeInCondition(cardList);
+	}
 
 
 	/**
@@ -339,10 +347,12 @@ public class PlayerService extends Observable {
 	 * @param player
 	 * @param cardList
 	 */
-    public void removeCards(Player player, List<String> cardList){
-        player.removeCards(cardList);
-        notifyObservers(player);
-    }
+	public void removeCards(Player player, List<Card> cardList){
+
+		player.removeCards(cardList);
+		returnToDeck(cardList);
+		notifyObservers(player);
+	}
 
 
 	/**
@@ -361,11 +371,11 @@ public class PlayerService extends Observable {
 	public void switchNextPlayer() {
 
 
-			if(currentPlayerIndex==listPlayers.size()-1) {
-				this.setCurrentPlayerIndex(0);
-			}
+		if(currentPlayerIndex==listPlayers.size()-1) {
+			this.setCurrentPlayerIndex(0);
+		}
 
-			else setCurrentPlayerIndex(this.currentPlayerIndex+1);
+		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
 
 	}
 
@@ -416,78 +426,74 @@ public class PlayerService extends Observable {
 		//Loop through every continent's countries
 		//check if owner is same for all countries of the continent
 
-    	for(Map.Entry<Integer, Set<Integer>> item :
-			mapService.getContinentCountriesMap().entrySet()) {
+		for(Map.Entry<Integer, Set<Integer>> item :
+				mapService.getContinentCountriesMap().entrySet()) {
 
-    		int key=(int) item.getKey();
+			int key=(int) item.getKey();
 
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
+			Optional<Continent> optionalContinent=mapService.getContinentById(key);
+			Continent currentContinent= (Continent) optionalContinent.get();
 
-    		Set<Integer> value=item.getValue();
+			Set<Integer> value=item.getValue();
 
-    		//If continent empty, move to next continent
-    		if(value.size()==0) continue;
+			//If continent empty, move to next continent
+			if(value.size()==0) continue;
 
-    		//Only 1 country in continent: player of that country therefore owns continent
-    		if(value.size()==1) {
+			//Only 1 country in continent: player of that country therefore owns continent
+			if(value.size()==1) {
 
-    			int countryId=-1; //initialising variable
+				int countryId=-1; //initialising variable
 
-    			for(Integer i:value) countryId=i;
+				for(Integer i:value) countryId=i;
 
-    			Optional<Country> optionalCountry=mapService.getCountryById(countryId);
-    			Country currentCountry=optionalCountry.get();
-    			String currentCountryOwnerName=currentCountry.getPlayer().getName();
+				Optional<Country> optionalCountry=mapService.getCountryById(countryId);
+				Country currentCountry=optionalCountry.get();
+				String currentCountryOwnerName=currentCountry.getPlayer().getName();
 
-    			continentOwnerMap.put(key, currentCountryOwnerName);
-    			continue;
-    		}
+				continentOwnerMap.put(key, currentCountryOwnerName);
+				continue;
+			}
 
-    		boolean boolSameOwner=true;
+			boolean boolSameOwner=true;
 
-    		String ownerName="";
+			String ownerName="";
 
-    		int counter=0;
+			int counter=0;
 
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get owner
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
+			for(Integer i:value) {
+				//For Each Country In Continent, Get owner
+				Optional<Country> optionalCountry=mapService.getCountryById(i);
 
-    			Country currentCountry=optionalCountry.get();
-    			String currentCountryOwnerName=currentCountry.getPlayer().getName();
+				Country currentCountry=optionalCountry.get();
+				String currentCountryOwnerName=currentCountry.getPlayer().getName();
 
-    			//Set owner of first country as ownerName with which all other country owner names will be compared
-    			if(counter==0) {
-    				ownerName=currentCountryOwnerName;
-    				counter++;
-    				continue;
-    			}
+				//Set owner of first country as ownerName with which all other country owner names will be compared
+				if(counter==0) {
+					ownerName=currentCountryOwnerName;
+					counter++;
+					continue;
+				}
 
-    			if(!currentCountryOwnerName.equals(ownerName)) {
-    				boolSameOwner=false;
-    				break;
-    			}
+				if(!currentCountryOwnerName.equals(ownerName)) {
+					boolSameOwner=false;
+					break;
+				}
 
-    			counter++;
-    		}    //End of looping through all countries of 1 continent
+				counter++;
+			}    //End of looping through all countries of 1 continent
 
-    		if(boolSameOwner) continentOwnerMap.put(key, ownerName);
+			if(boolSameOwner) continentOwnerMap.put(key, ownerName);
 
-    	}
+		}
 
-    	return continentOwnerMap;
+		return continentOwnerMap;
 
 	}  //End of method
 
 
 	/**
-<<<<<<< HEAD
-	 *This method evaluate world domination and notify to observer
-=======
 	 *Determines percentage controlled by every player, ownership of continents by every player,
 	 *number of soldiers controller by every player and then notifies observers of playerservice.
->>>>>>> 6e347d998e2f024743727e6cfe4167d7e6d657a3
 	 */
 	public void evaluateWorldDomination() {
 
