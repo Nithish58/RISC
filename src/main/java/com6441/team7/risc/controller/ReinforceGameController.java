@@ -297,7 +297,7 @@ public class ReinforceGameController implements Controller{
      */
     public void tradeNone(Player player, String[] commands){
         if(!commands[1].equalsIgnoreCase("-none")){
-            throw new ReinforceParsingException(commands[1] + " is not valid");
+            throw new ReinforceParsingException(commands[0] + " " + commands[1] + " is not valid");
         }
 
         int cardNum = player.getCardList().size();
@@ -338,6 +338,9 @@ public class ReinforceGameController implements Controller{
     public void tradeInCards(Player player, int cardOne, int cardTwo, int cardThree) {
         int cardSize = player.getCardList().size();
 
+        if(cardOne == cardTwo || cardTwo == cardThree || cardOne == cardThree){
+            throw new ReinforceParsingException("card num is not valid");
+        }
         if(cardOne > cardSize || cardTwo > cardSize || cardThree > cardSize){
             throw new ReinforceParsingException("card num is not valid");
         }
@@ -359,6 +362,7 @@ public class ReinforceGameController implements Controller{
 
         playerService.removeCards(player, cardList);
         reinforcedArmies += player.getTradeInTimes() * 5;
+        cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
     }
 
     /**
