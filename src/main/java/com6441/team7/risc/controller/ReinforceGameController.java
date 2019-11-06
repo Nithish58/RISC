@@ -185,10 +185,11 @@ public class ReinforceGameController implements Controller{
         playerService.reinforceArmy(player, country, armNum);
         reinforcedArmies -= armNum;
         phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
-        isExchangeCardOver = false;
+
 
         if(isReinforceOver()){
             playerService.getMapService().setState(GameState.ATTACK);
+            isExchangeCardOver = false;
             return;
         }
 
