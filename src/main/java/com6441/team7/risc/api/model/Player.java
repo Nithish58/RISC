@@ -1,5 +1,6 @@
 package com6441.team7.risc.api.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -138,10 +139,8 @@ public class Player{
      * get list of cards
      * @return card list
      */
-    public List<String> getCardList() {
-        return cardList.stream()
-                .map(Card::getName)
-                .collect(Collectors.toList());
+    public List<Card> getCardList() {
+        return cardList;
     }
 
     /**
@@ -159,7 +158,7 @@ public class Player{
      * @param cardList
      * @return true if valid false if not valid
      */
-    public boolean meetTradeInCondition(List<String> cardList){
+    public boolean meetTradeInCondition(List<Card> cardList){
         if(hasThreeSameCards(cardList) || hasThreeDifferentCards(cardList)){
             return true;
         }
@@ -174,9 +173,9 @@ public class Player{
      * @param cardList
      * @return true if all the cards are the same, false if not
      */
-    public boolean hasThreeSameCards(List<String> cardList){
-        if(cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
-           cardList.get(1).equalsIgnoreCase(cardList.get(2))){
+    public boolean hasThreeSameCards(List<Card> cardList){
+        if(cardList.get(0).getName().equalsIgnoreCase(cardList.get(1).getName()) &&
+           cardList.get(1).getName().equalsIgnoreCase(cardList.get(2).getName())){
             return true;
         }
 
@@ -188,10 +187,10 @@ public class Player{
      * @param cardList
      * @return true if all three cards are different, false if not
      */
-    public boolean hasThreeDifferentCards(List<String> cardList){
-        if(!cardList.get(0).equalsIgnoreCase(cardList.get(1)) &&
-            !cardList.get(1).equalsIgnoreCase(cardList.get(2)) &&
-            !cardList.get(0).equalsIgnoreCase(cardList.get(2))){
+    public boolean hasThreeDifferentCards(List<Card> cardList){
+        if(!cardList.get(0).getName().equalsIgnoreCase(cardList.get(1).getName()) &&
+            !cardList.get(1).getName().equalsIgnoreCase(cardList.get(2).getName()) &&
+            !cardList.get(0).getName().equalsIgnoreCase(cardList.get(2).getName())){
             return true;
         }
 
@@ -221,17 +220,17 @@ public class Player{
      * remove trade in cards from the player cards
      * @param list
      */
-    public void removeCards(List<String> list){
+    public void removeCards(List<Card> list){
         Card cardOne = cardList.stream()
-                .filter(card -> card.getName().equalsIgnoreCase(list.get(0)))
+                .filter(card -> card.getName().equalsIgnoreCase(list.get(0).getName()))
                 .findFirst().get();
 
         Card cardTwo = cardList.stream()
-                .filter(card -> card.getName().equalsIgnoreCase(list.get(1)))
+                .filter(card -> card.getName().equalsIgnoreCase(list.get(1).getName()))
                 .findFirst().get();
 
         Card cardThree = cardList.stream()
-                .filter(card -> card.getName().equalsIgnoreCase(list.get(2)))
+                .filter(card -> card.getName().equalsIgnoreCase(list.get(2).getName()))
                 .findFirst().get();
 
 
@@ -244,7 +243,14 @@ public class Player{
     }
 
 
-    /**
+	/**
+	 * add card to plaer
+	 */
+	public void addCard(Card card){
+		cardList.add(card);
+	}
+
+	/**
      * remove cards from players
      */
     public void removeCards(){
@@ -337,7 +343,7 @@ public class Player{
     
 
     
-    
+
 
     
     
@@ -1151,6 +1157,8 @@ public class Player{
 		//Switch to Next player and Change State to Reinforcement
 		playerService.switchNextPlayer();
 		playerService.getMapService().setState(GameState.REINFORCE);
+		playerService.showCardsInfo(playerService.getCurrentPlayer());
+
 		
     	
     }
@@ -1168,7 +1176,7 @@ public class Player{
     	
 		playerService.switchNextPlayer();
 		playerService.getMapService().setState(GameState.REINFORCE);
-
+		playerService.showCardsInfo(playerService.getCurrentPlayer());
     }
     
 	/**

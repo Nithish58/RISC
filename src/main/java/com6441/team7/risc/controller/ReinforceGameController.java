@@ -82,7 +82,7 @@ public class ReinforceGameController implements Controller{
 
     	//skipping because of testing
     	//playerService.getMapService().setState(GameState.ATTACK);
-    	
+
         Player player = playerService.getCurrentPlayer();
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
@@ -156,6 +156,8 @@ public class ReinforceGameController implements Controller{
 
             reinforceArmy(player, country, armyNum);
 
+
+
         } catch (Exception e){
             phaseView.displayMessage("from phase view: " + e.getMessage());
         }
@@ -183,6 +185,7 @@ public class ReinforceGameController implements Controller{
         playerService.reinforceArmy(player, country, armNum);
         reinforcedArmies -= armNum;
         phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
+        isExchangeCardOver = false;
 
         if(isReinforceOver()){
             playerService.getMapService().setState(GameState.ATTACK);
@@ -242,7 +245,7 @@ public class ReinforceGameController implements Controller{
         try{
 
             createCardExchangeView();
-            showCardsInfo(player, cardExchangeView);
+
             if(isExchangeCardOver){
                 cardExchangeView.displayMessage("the exchange cards stage terminates. enter reinforce command");
                 return;
@@ -318,16 +321,7 @@ public class ReinforceGameController implements Controller{
      * @param view
      */
     private void  showCardsInfo(Player player, GameView view){
-        List<String> cardsInfo = playerService.showCardsInfo(player);
-
-        if(cardsInfo.isEmpty()){
-            view.displayMessage("You don't have any cards yet");
-        }
-        int count = 1;
-        for(String card: cardsInfo){
-            view.displayMessage(count + ":" + card + WHITESPACE);
-            count ++;
-        }
+        playerService.showCardsInfo(player);
     }
 
 
@@ -347,11 +341,11 @@ public class ReinforceGameController implements Controller{
             throw new ReinforceParsingException("card num is not valid");
         }
 
-        String cardOneName = player.getCardList().get(cardOne - 1);
-        String cardTwoName = player.getCardList().get(cardTwo - 1);
-        String cardThreeName = player.getCardList().get(cardThree - 1);
+        Card cardOneName = player.getCardList().get(cardOne - 1);
+        Card cardTwoName = player.getCardList().get(cardTwo - 1);
+        Card cardThreeName = player.getCardList().get(cardThree - 1);
 
-        List<String> cardList = new ArrayList<>();
+        List<Card> cardList = new ArrayList<>();
         cardList.add(cardOneName);
         cardList.add(cardTwoName);
         cardList.add(cardThreeName);

@@ -778,6 +778,11 @@ public class StartupGameController implements Controller{
     	
     	//this.boolStartUpPhaseOver.set(true);
     	this.mapService.setState(GameState.REINFORCE);
+
+    	Player player = playerService.getCurrentPlayer();
+    	playerService.showCardsInfo(player);
+
+
     	
     }
 	
