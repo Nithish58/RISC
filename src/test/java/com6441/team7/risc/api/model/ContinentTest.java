@@ -13,36 +13,80 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+/**
+ * This class will test Continent class
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ContinentTest {
+	/**
+	 * id of continent in map
+	 */
 	private int id;
+
+	/**
+	 * Continent's name in world map
+	 */
 	private String name;
+
+	/**
+	 * Continent's expected Name in world map
+	 */
 	private String expectedName;
+
+	/**
+	 * Continent's value in world map
+	 */
 	private int continentValue;
+
+	/**
+	 *color of continent in world map
+	 */
 	private String color;
+
+	/**
+	 * Hashid of continent
+	 */
 	private int hashId;
 
+	/**
+	 * Continent object which keep track of each continent
+	 */
 	private Continent continent;
 
+	/**
+	 * To initialize Test for Continent class
+	 */
 	@BeforeClass
 	public static void initClass() {
 		System.out.println("Initialize Continent Test");
 	}
 
+	/**
+	 * Begin of Test for Continent class
+	 */
 	@Before
 	public void beginTest() {
 		System.out.println("Begin Test");
 	}
 
+	/**
+	 * End of Test for Continent class
+	 */
 	@After
 	public void endTest() {
 		System.out.println("End Test");
 	}
 
+
 	@AfterClass
 	public static void endClass() {
 	}
 
+	/**
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: get name
+	 * Evaluation: check id, name
+	 */
 	@Test
 	public void test1_firstConstructor() {
 		id = 42;
@@ -54,19 +98,34 @@ public class ContinentTest {
 		assertTrue(result.equals(expectedName));
 	}
 
+	/**
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: get name
+	 * Evaluation: check id, name. and value is correctly for new continent
+	 */
 	@Test
 	public void test2_secondConstructor() {
+		//context
 		id = 43;
 		name = "Scandinavia";
 		continentValue = 3;
 		expectedName = name.toLowerCase();
 		continent = new Continent(id, name, continentValue);
+
+		//Method Call
 		String result = continent.getName();
+
+		//Evaluation
 		assertEquals(id, continent.getId());
 		assertTrue(result.equals(expectedName));
 		assertEquals(continentValue, continent.getContinentValue());
 	}
 
+	/**
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: set continent value
+	 * Evaluation: check value is correct for new continent
+	 */
 	@Test
 	public void test3_setContinentValue() {
 		id = 43;
@@ -78,6 +137,11 @@ public class ContinentTest {
 		assertEquals(continentValue, continent.getContinentValue());
 	}
 
+	/**
+	 * Context: Initialising the continent with name, value, id and color
+	 * Method call: set color
+	 * Evaluation: check color is correct for new continent
+	 */
 	@Test
 	public void test4_setColor() {
 		id = 43;
@@ -89,14 +153,21 @@ public class ContinentTest {
 		assertSame(color, continent.getColor());
 	}
 
+	/**
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: getid and Object's hash method
+	 * Evaluation: check id is correct for new continent
+	 */
 	@Test
 	public void test5_hash() {
 		id = 43;
 		name = "Scandinavia";
 		continentValue = 3;
 		continent = new Continent(id, name, continentValue);
+
 		id = continent.getId();
 		hashId = Objects.hash(id);
+
 		assertEquals(hashId, continent.hashCode());
 	}
 

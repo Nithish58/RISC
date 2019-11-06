@@ -22,27 +22,65 @@ import com6441.team7.risc.controller.MapLoaderController;
 import com6441.team7.risc.controller.ReinforceGameController;
 import com6441.team7.risc.controller.StartupGameController;
 
+/**
+ * The test class for phase view
+ */
 public class PhaseViewTest implements GameView{
-	
-	
+
+    /**
+     * Controller object for mapLoader controller
+     */
     private Controller mapLoaderController;
+
+    /**
+     * Controller object for startUp controller
+     */
     private Controller startUpGameController;
+
+    /**
+     * Controller object for reinforce controller
+     */
     private Controller reinforceGameController;
+
+    /**
+     * Controller object for Fortify controller
+     */
     private Controller fortifyGameController;
+
+    /**
+     * Controller object for attack controller
+     */
     private Controller attackController;
-    
+
+    /**
+     * an object of GameState class
+     */
     private GameState gameState;
-    
+
+    /**
+     * an instance of Object
+     */
     private Object obj;
-    
+
+    /**
+     * Empty string which display message
+     */
     private String strDisplayMessage="";
 
+    /**
+     * method to display message
+     * @param string
+     */
     public void displayMessage(String string) {
     	this.strDisplayMessage=string;
         System.out.println(string);
     }
 
-
+    /**
+     * To update the change in state
+     * @param o Observable instance
+     * @param arg Object argument
+     */
 	public void update(Observable o, Object arg) {
 		
 		this.obj=arg;
@@ -53,11 +91,19 @@ public class PhaseViewTest implements GameView{
             return;
         }	
 	}
-	
+
+    /**
+     * To return an instance of Objects
+     * @return Object instance
+     */
 	public Object getReturnedObject() {
 		return obj;
 	}
 
+    /**
+     * this method receives command and change gamestate as per command if its valid
+     * @param command user command
+     */
 	public void receiveCommand(String command) {
 		
         try {
@@ -85,7 +131,11 @@ public class PhaseViewTest implements GameView{
         }
 		
 	}
-	
+
+    /**
+     * This method add list of controller to various controller after verifying instances of controller
+     * @param list list of controller
+     */
     public void addController(List<Controller> list){
         list.forEach(controller -> {
             if(controller instanceof MapLoaderController){
@@ -110,7 +160,10 @@ public class PhaseViewTest implements GameView{
 	@Override
 	public void receiveCommand() {}
 
-
+    /**
+     * Method to get display message
+     * @return string
+     */
 	public String getStrDisplayMessage() {
 		return strDisplayMessage;
 	}

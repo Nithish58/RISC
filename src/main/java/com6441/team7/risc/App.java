@@ -11,10 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is the main class.
+ * This class contains main methods which run Risc game
  *
  */
 public class App {
+    /**
+     * The main method of Risc game
+     * @param args default argument of main method
+     */
     public static void main( String[] args ) {
     	
         MapService mapService = new MapService();

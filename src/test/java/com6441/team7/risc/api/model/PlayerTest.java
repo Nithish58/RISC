@@ -25,7 +25,7 @@ import com6441.team7.risc.controller.StartupGameController;
 import com6441.team7.risc.view.PhaseViewTest;
 
 /**
- * 
+ *
  * This is the test class for storing player information.
  *
  */
@@ -75,13 +75,6 @@ public class PlayerTest {
 	 */
 	PlayerAttackWrapper playerAttackWrapper;
 
-	static Player testPlayer;
-	String testName;
-	int testArmies;
-	List<Card> testCardList;
-	int tradeInTimes;
-	static final int CARD_CATEGORY_NUMBER = 3;
-	int armyNum;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -92,17 +85,16 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Setting player's name. Instantiating a player object. Setting number of
-	 * armies.
-	 * 
+	 * Before every test is performed, the following are performed:
+	 * Calling createObjects() method
+	 * load a map using the loadValidMap() method
+	 * Add two players
+	 * Populate countries and place all of players' soldiers to the map
+	 *
 	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
-		testName = "Player One";
-		testPlayer = new Player(testName);
-		armyNum = 3;
-		testPlayer.setArmies(armyNum);
 		createObjects();
 
 		loadValidMap("luca.map");
@@ -117,13 +109,19 @@ public class PlayerTest {
 
 	}
 
+	/**
+	 * This method is performed after every test
+	 * @throws Exception
+	 */
 	@After
 	public void tearDown() throws Exception {
 	}
 
 	/**
-	 * Testing the single attack
-	 * 
+	 * Testing the single attack method.
+	 * It tests the regular attack function (i.e.: without the allout param)
+	 * The expected result is the number of either side's soldiers decrease by 1,
+	 * depending on which side loses in the dice roll
 	 * @throws Exception
 	 */
 	@Test
@@ -199,8 +197,8 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing attack until soldiers from either attacker or defender is out
-	 * @throws Exception 
+	 * Tests attack until soldiers from either attacker or defender is out
+	 * @throws Exception
 	 */
 	@Ignore
 	@Test
@@ -220,17 +218,17 @@ public class PlayerTest {
 		// Get first adjacent country in country's list
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
-		for (Integer i : fromCountryAdjacencyList) {
-			if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
-				toAttackCountry = mapService.getCountryById(i).get();
-				System.out.println("Defender country is " + toAttackCountry.getCountryName());
-				break;
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
 			}
-		}
-		if (toAttackCountry == null) {
-			System.out.println("No adjacent defender country found. Retrying the set up.");
-			setUp();
-		}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
 		}
 
 		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
@@ -271,7 +269,8 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing rolling attacker's dice
+	 * Tests rolling attacker's dice
+	 * The expected result is that the returned dice array has the same length as the expected one
 	 */
 	@Test
 	public void test003_rollAttackerDice() {
@@ -285,7 +284,8 @@ public class PlayerTest {
 	}
 
 	/**
-	 * testing rolling defender's dice
+	 * Tests rolling defender's dice
+	 * The expected result is that the returned dice array has the same length as the expected one
 	 */
 	@Test
 	public void test004_rollDefenderDice() {
@@ -299,7 +299,7 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing result of deciding battle
+	 * Tests if the player wins the game
 	 */
 	@Ignore
 	@Test
@@ -376,8 +376,8 @@ public class PlayerTest {
 
 		assertTrue(isTrue);
 	}
-	
-	
+
+
 	/**
 	 * This checks if the attacker owns all the territory
 	 * and is declared the winner
@@ -431,8 +431,8 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Testing validate attack conditions
-	 * 
+	 * Tests validate attack conditions
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -487,32 +487,196 @@ public class PlayerTest {
 
 	/**
 	 * Testing if attacker country actually belongs to the attacker
+	 * The test passes if the method isAttackerLastManStanding returns true
+	 * @throws Exception on invalid value
 	 */
 	@Test
-	public void test008_checkCountryBelongToAttacker() {
+	public void test008_checkLastManStanding() throws Exception {
+		System.out.println("Check last man standing for attacker");
+		Player currentPlayer = playerService.getCurrentPlayer();
 
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+
+		// numbers of soldiers on fromAttackCouuntry is set to 1
+		fromAttackCountry.setSoldiers(1);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		// print adjacency list
+		System.out.print("Adjacency list for attacker country " + fromAttackCountry.getCountryName()+" ");
+		for (Integer i : fromCountryAdjacencyList)
+			System.out.print(i + " ");
+		System.out.println();
+
+		// Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		while (toAttackCountry == null) {
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
+			}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
+		}
+		System.out.println("Defender country is " + toAttackCountry);
+		// numbers of soldiers on toAttackCouuntry is set to 2
+		toAttackCountry.setSoldiers(2);
+
+		// This is for checking the condition if the attacker only has 1 soldier left
+		boolean isTrue = false;
+
+		// Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		// Set the number of attacker dices to 3
+		playerAttackWrapper.setNumDiceAttacker(3);
+
+		// Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+
+		// If the attacker only has 1 soldier left in a country, isTrue is set to true
+		if (currentPlayer.isAttackerLastManStanding())
+			isTrue = true;
+
+		assertTrue(isTrue);
 	}
 
 	/**
-	 * Testing whether the 2 countries are owned by different players
+	 * Testing if the defender no longer has soldiers in one of their countries
+	 * The test passes if the method checkDefenderPushedOut returns true
+	 * @throws Exception 
 	 */
+	@Ignore
 	@Test
-	public void test009_checkCountryHostility() {
+	public void test009_checkIsDefenderPushedOut() throws Exception {
+		System.out.println("Check if defender has no soldiers left in a country");
+		Player currentPlayer = playerService.getCurrentPlayer();
 
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		// print adjacency list
+		System.out.print("Adjacency list for attacker country " + fromAttackCountry.getCountryName()+" ");
+		for (Integer i : fromCountryAdjacencyList)
+			System.out.print(i + " ");
+		System.out.println();
+
+		// Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		while (toAttackCountry == null) {
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
+			}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
+		}
+		
+		// numbers of soldiers on fromAttackCountry is set to 10
+		fromAttackCountry.setSoldiers(10);
+		
+		System.out.println("Defender country is " + toAttackCountry);
+		// numbers of soldiers on toAttackCouuntry is set to 2
+		toAttackCountry.setSoldiers(1);
+
+		// This is for checking the condition if the defender has no soldier left in a country
+		boolean isTrue = false;
+
+		// Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		// Set the number of attacker dices to 3
+		playerAttackWrapper.setNumDiceAttacker(3);
+
+		// Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+		
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+		
+		boolean isDefenderHasOwnership=currentPlayer.checkDefenderOwnership();
+		// If the defender has no soldiers left in a country, isTrue is set to true
+		if (isDefenderHasOwnership)
+			isTrue = true;
+
+		assertTrue(isTrue);
 	}
-
+	
 	/**
-	 * testing the number of soldiers for the attacker
+	 * Tests if an attack condition is not valid
+	 * In this test, the attacker's dice is set to above the allowed maximum
+	 * The test passes if the validateAttackConditions() method returns false
+	 * @throws Exception
 	 */
 	@Test
-	public void test010_checkNumAttackingSoldiers() {
+	public void test010_checkInvalidAttackConditions() throws Exception {
+		System.out.println("Check invalid attack conditions");
+		Player currentPlayer = playerService.getCurrentPlayer();
 
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+
+		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// number of
+		// dices can be thrown
+		fromAttackCountry.setSoldiers(4);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		// Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		while (toAttackCountry == null) {
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
+			}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
+		}
+
+		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// number of
+		// dices can be thrown
+		toAttackCountry.setSoldiers(2);
+
+		// Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		// Set the number of attacker dices to 4, which is not a valid number of allowed attacker dice
+		playerAttackWrapper.setNumDiceAttacker(4);
+
+		// Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+
+		assertFalse(currentPlayer.validateAttackConditions(playerService));
 	}
 
 	/**
 	 * Method to load a map. Method first exits from editmapphase by sending command
 	 * exitmapedit. Then command to loadmap is sent.
-	 * 
+	 *
 	 * @param mapName
 	 */
 	public void loadValidMap(String mapName) {
@@ -523,7 +687,7 @@ public class PlayerTest {
 
 	/**
 	 * Method that sends command to add a player
-	 * 
+	 *
 	 * @param name of player
 	 */
 	public void addPlayer(String name) {
@@ -532,7 +696,7 @@ public class PlayerTest {
 
 	/**
 	 * Method that sends command to remove a player
-	 * 
+	 *
 	 * @param name of player
 	 */
 	public void removePlayer(String name) {
@@ -574,7 +738,7 @@ public class PlayerTest {
 		playerService.addObserver(phaseViewTest);
 
 	}
-	
+
 	/**
 	 * This method is to retry map loading and player placements
 	 * It is called whenever there are no defender country found in the attacker country's adjacency list
