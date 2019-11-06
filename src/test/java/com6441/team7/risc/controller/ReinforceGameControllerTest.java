@@ -17,6 +17,9 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+/**
+ * Test class for testing methods of ReinforceGameController class
+ */
 public class ReinforceGameControllerTest {
 
     /**

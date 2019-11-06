@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
 				PlayerTest.class,
 				CountryTest.class,
 				ContinentTest.class,
+				GameStateTest.class,
 				MapServiceTest.class,
 				PlayerServiceTest.class
 				})
