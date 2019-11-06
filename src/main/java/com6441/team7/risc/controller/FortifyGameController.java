@@ -31,7 +31,7 @@ import org.apache.commons.lang3.StringUtils;
  * fortification After fortification, it updates gamestate to reinforcement and
  * switches to next player
  */
-public class FortifyGameController implements Controller {
+public class  FortifyGameController implements Controller {
 
 	/**
 	 * a reference of playerService
