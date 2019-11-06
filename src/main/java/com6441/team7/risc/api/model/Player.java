@@ -439,6 +439,8 @@ public class Player{
 	 *  a reference of PlayerAttackWrapper
 	 */
     private PlayerAttackWrapper playerAttackWrapper;
+    
+    private String strSendAttackInfoToObservers="";
 
 	/**
 	 * attack method. set the value of attributes
@@ -466,7 +468,12 @@ public class Player{
 			this.numAttackingSoldiers = this.fromCountryAttack.getSoldiers();
 			this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
 			
+			this.boolCountryConquered=false;
+			
 			this.playerService=playerService;
+			
+			constructAndSendInitialAttackInformation();
+			
 			
 			//If boolAllOut is chosen
       		if(boolAllOut) {
@@ -477,6 +484,29 @@ public class Player{
       		attackSingle(playerService);	
   
     }
+	
+	public void constructAndSendInitialAttackInformation() {
+		
+		String fromCountryName=fromCountryAttack.getCountryName();
+		String toCountryName=toCountryAttack.getCountryName();
+		String attackerName=attacker.getName();
+		String defenderName=defender.getName();
+		
+		this.strSendAttackInfoToObservers="\n";
+		
+		strSendAttackInfoToObservers+=fromCountryName+" (+"+attackerName+") wants to attack"+
+		toCountryName+" ("+defenderName+")";
+		
+		strSendAttackInfoToObservers+="\n"+fromCountryName+" has "+numAttackingSoldiers+", "+
+		toCountryName+" has "+numDefendingSoldiers;
+		
+		playerService.notifyObservers(strSendAttackInfoToObservers);
+		
+	}
+	
+	public void sendAttackerAndDefenderNumDiceMessage(){
+		
+	}
 
 	/**
 	 * attack once
@@ -487,9 +517,9 @@ public class Player{
 	public void attackSingle(PlayerService playerService) {
     	
 		//check the validity of countries owned by attacker and defender and number of soldiers in attacker's country
-		System.out.println("Before: ");
-		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.numAttackingSoldiers);
-		System.out.println(this.toCountryAttack.getCountryName()+": "+this.numDefendingSoldiers);
+		//System.out.println("Before: ");
+		//System.out.println(this.fromCountryAttack.getCountryName()+": "+this.numAttackingSoldiers);
+		//System.out.println(this.toCountryAttack.getCountryName()+": "+this.numDefendingSoldiers);
 		
 		if (!validateAttackConditions(playerService)) {
 			
@@ -507,9 +537,10 @@ public class Player{
 		
 		//Decide the winner
 		decideBattleResult(attackerDice, defenderDice);
-		System.out.println("After: ");
-		System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
-		System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
+		
+		//System.out.println("After: ");
+		//System.out.println(this.fromCountryAttack.getCountryName()+": "+this.fromCountryAttack.getSoldiers());
+		//System.out.println(this.toCountryAttack.getCountryName()+": "+this.toCountryAttack.getSoldiers());
 		
     	
     }
@@ -568,7 +599,18 @@ public class Player{
     	}
     }
     
-    public void attackMove() {
+    public void attackMove(int numSoldiersTransfer) {
+    	
+    	//Str displayMessage="";
+    	
+    	if(numSoldiersTransfer<fromCountryAttack.getSoldiers()) {
+    		
+    		fromCountryAttack.removeSoldiers(numSoldiersTransfer);
+    		toCountryAttack.addSoldiers(numSoldiersTransfer);
+    		//displayMessage=fromCountryAttack.
+    		//No longer require attackMove command
+    		this.boolAttackMoveRequired.set(false);
+    	}
     	
     }
     
@@ -646,32 +688,35 @@ public class Player{
 		// based on the number of the dice thrown
 		switch (numDiceDefender) {
 		case 2:
-			System.out.println("Defender max: "+numDiceDefender+" :"+defenderMaxValue+", "+defenderSecondMaxValue);
 			defenderMaxValue = defenderDice[1];
 			defenderSecondMaxValue = defenderDice[0];
 			break;
 		case 1:
-			System.out.println("Defender max: "+numDiceDefender+" :"+defenderMaxValue+", "+defenderSecondMaxValue);
 			//defenderMaxValue = defenderDice[0];
 			defenderMaxValue=defenderDice[0];
 			break;
 		}
 		
-		System.out.println("Defender max: "+defenderMaxValue+", "+defenderSecondMaxValue);
 		
 		// choose how the battle is decided
 		// based on the number of attacker's and defender's dices
 		if (((numDiceAttacker == 3) && (numDiceDefender == 2)) 
 				|| ((numDiceAttacker == 2) && numDiceDefender == 2)) {
+			
 			// Calculate the highest values of the both players' dices
 			if (attackerMaxValue > defenderMaxValue) {
 				toCountryAttack.removeSoldiers(1);
+				
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
+				
 				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
+			
 			} else {
+				
 				fromCountryAttack.removeSoldiers(1);
+				
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
 				System.out.println(fromCountryAttack.getPlayer().getName()+
@@ -679,13 +724,17 @@ public class Player{
 			}
 
 			if (attackerSecondMaxValue > defenderSecondMaxValue) {
+				
 				toCountryAttack.removeSoldiers(1);
+				
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
 				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
+				
 				fromCountryAttack.removeSoldiers(1);
+				
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
 				System.out.println(fromCountryAttack.getPlayer().getName()+
@@ -696,11 +745,13 @@ public class Player{
 		else {
 			if (attackerMaxValue > defenderMaxValue) {
 				toCountryAttack.removeSoldiers(1);
+				
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
 				System.out.println(fromCountryAttack.getPlayer().getName()+
 						" : Neutralized a soldier belonging to "+toCountryAttack.getPlayer().getName());
 			} else {
+				
 				fromCountryAttack.removeSoldiers(1);
 				//Notify Observers of Player Service
 				this.playerAttackWrapper = new PlayerAttackWrapper(fromCountryAttack, toCountryAttack);
@@ -889,8 +940,12 @@ public class Player{
 
 		//if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
 		if ((toCountryAttack.getSoldiers().equals(0))) {
-
+			
+			//Need attack move next
+			this.boolAttackMoveRequired.set(true);
+			
 			transferCountryOwnershipAfterAttack();
+			
 			checkPlayerWin();
 			//checkDefenderEliminatedFromGame()
 			System.out.println("Defender eliminated from country");

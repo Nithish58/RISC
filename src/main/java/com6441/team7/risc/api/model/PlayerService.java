@@ -13,12 +13,12 @@ public class PlayerService extends Observable {
 	 * a reference to mapService
 	 */
     private MapService mapService;
-    
+
 	/**
 	 * List of players playing the game
 	 */
 	private ArrayList<Player> listPlayers;
-	
+
 	/**
 	 * Keeps track of current player index to access current player from list of players.
 	 * Used to switch to next player in list as well by incrementing index
@@ -30,11 +30,13 @@ public class PlayerService extends Observable {
 	 * the reference of current player
 	 */
 	private Player currentPlayer;
-	
+
 	/**
 	 * Deck of cards implemented as stack
 	 */
 	private Stack<Card> deckCards;
+
+	private boolean countryConqueredDuringAttackPhase;
 
 
 	/**
@@ -45,33 +47,33 @@ public class PlayerService extends Observable {
 
         this.mapService = mapService;
         //playerList = new CircularFifoQueue<>();
-        
+
         this.listPlayers=new ArrayList<Player>();
-        
+
         initialiseDeckCards();
-        
+
         //Because no players added when PlayerService object is being instantiated in App.class
         this.currentPlayerIndex=-1;
-        
+
     }
 
- //-------------------------DECK OF CARDS METHODS---------------------------------------   
-    
+ //-------------------------DECK OF CARDS METHODS---------------------------------------
+
     /**
      * Method initialised Deck of cards: 14 cards of each type
      */
 	public void initialiseDeckCards() {
-		
+
 		this.deckCards=new Stack();
-		
+
 		Card[] arrCard=new Card[] {Card.INFANTRY,Card.CAVALRY,Card.ARTILLERY};
-		
-		for(int j=0;j<3;j++) {			
+
+		for(int j=0;j<3;j++) {
 			for(int i=0;i<14;i++) {
 				deckCards.push(arrCard[j]);
-			}			
+			}
 		}
-		
+
 		//shuffle deck of cards thrice for randomisation
 		shuffleDeckCards();
 	}
@@ -81,18 +83,18 @@ public class PlayerService extends Observable {
 		Collections.shuffle(deckCards);
 		Collections.shuffle(deckCards);
 	}
-	
+
 	public Card drawFromDeck() {
 		return deckCards.pop();
 	}
-	
+
 	public void returnToDeck(Card c) {
 		deckCards.push(c);
 		shuffleDeckCards();
 	}
-	
-//------------------------------------------------------------------------------------------------	
-	
+
+//------------------------------------------------------------------------------------------------
+
 	/**
 	 * get mapService
 	 * @return the reference of mapService
@@ -117,10 +119,10 @@ public class PlayerService extends Observable {
 	 */
 	public void setCurrentPlayerIndex(int num) {
 		this.currentPlayerIndex=num;
-		
+
 		Player currentPlayer=listPlayers.get(currentPlayerIndex);
 		PlayerChangeWrapper playerChangeWrapper=new PlayerChangeWrapper(currentPlayer);
-		
+
 		setChanged();
 		notifyObservers(playerChangeWrapper);
 	}
@@ -133,14 +135,14 @@ public class PlayerService extends Observable {
     public Player addPlayer(String name){
     	Player newPlayer=new Player(name);
     	listPlayers.add(newPlayer);
-    	
+
 		//Add Player to Wrapper function and send wrapper function to observers
 		PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
 		playerEditWrapper.setAddedPlayer(newPlayer);
-    	
+
     	setChanged();
         notifyObservers(playerEditWrapper);
-        
+
     	return newPlayer;
     }
 
@@ -151,25 +153,25 @@ public class PlayerService extends Observable {
 	 * 		   false if player has not been removed successfully
 	 */
 	public boolean removePlayer(String playerName){
-    	
+
 		for(int i=0;i<listPlayers.size();i++) {
-			
+
 			if(listPlayers.get(i).getName().equals(playerName)) {
-				
+
 				Player removedPlayer=listPlayers.remove(i);
-				
+
 				//Add Player to Wrapper function and send wrapper function to observers
 				PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
 				playerEditWrapper.setRemovedPlayer(removedPlayer);
-				
+
 				setChanged();
 		    	//NOTIFY BEFORE RETURN
 		        notifyObservers(playerEditWrapper);
-		    				
+
 				return true;
 			}
 		}
-		
+
 		return false;
     }
 
@@ -188,9 +190,9 @@ public class PlayerService extends Observable {
 	 * @return player name
 	 */
 	public String getCurrentPlayerName(){
-    	
-    	if(currentPlayerIndex<0) return ""; 
-    	
+
+    	if(currentPlayerIndex<0) return "";
+
     	Player currentPlayer=listPlayers.get(currentPlayerIndex);
         return currentPlayer.getName();
     }
@@ -203,11 +205,11 @@ public class PlayerService extends Observable {
 	 * @return the player
 	 */
 	public Player getPlayerByName(String name) {
-    	
+
     	for(Player p:listPlayers) {
     		if(p.getName().equals(name)) return p;
     	}
-    	
+
     	return null;
     }
 
@@ -218,9 +220,9 @@ public class PlayerService extends Observable {
 	 * @return player
 	 */
 	public Player getCurrentPlayer() {
-    	
+
     	if(currentPlayerIndex<0) return null;
-    	
+
     	return listPlayers.get(currentPlayerIndex);
     }
 
@@ -230,7 +232,7 @@ public class PlayerService extends Observable {
 	 * @return int
 	 */
 	public int getCurrentPlayerIndex() {
-    	
+
     	return currentPlayerIndex;
     }
 
@@ -252,13 +254,13 @@ public class PlayerService extends Observable {
 	 * @return true if the player name exist, false if does not exist
 	 */
     public boolean checkPlayerExistance(String playerName) {
-    	
+
 		for(int i=0;i<listPlayers.size();i++) {
 			if(listPlayers.get(i).getName().equals(playerName)) {
 				return true;
 			}
 		}
-    	
+
     	return false;
     }
 
@@ -342,15 +344,15 @@ public class PlayerService extends Observable {
         notifyObservers(player);
     }
 
-    
+
 	/**
 	 * check if Player is valid
 	 * @return always return false?
 	 */
 	public boolean isPlayerValid(){ return false; }
 
-    
-    
+
+
 	/**
 	 * This method keeps track of the currentPlayerIndex and switches to the next player as soon as a player's
 	 * turn is over.
@@ -374,9 +376,9 @@ public class PlayerService extends Observable {
 	 * @return int
 	 */
 	public int getNextPlayerIndex() {
-		
+
 		if((currentPlayerIndex+1)<=listPlayers.size()-1) return currentPlayerIndex+1;
-		
+
 		else return 0;
 	}
 
@@ -394,11 +396,11 @@ public class PlayerService extends Observable {
 	 * @param object that can be of different classes (different wrapper classes)
 	 */
 	public void notifyPlayerServiceObservers(Object object) {
-		
+
 		setChanged();
 		notifyObservers(object);
 	}
-	
+
 	/**
 	 * This method checks if any player owns any continent.
 	 * It loops through all countries in each continent and check if they have the same owner.
@@ -406,14 +408,14 @@ public class PlayerService extends Observable {
 	 * @return map of <continent id, player name>, if any player owns the respective continent
 	 */
 	public Map<Integer, String> checkContinentOwners() {
-		
+
 		Map<Integer, Set<Integer>> continentCountriesMap = mapService.getContinentCountriesMap();
-		
+
 		Map<Integer, String> continentOwnerMap=new HashMap<>();
-		
+
 		//Loop through every continent's countries
 		//check if owner is same for all countries of the continent
-		
+
     	for(Map.Entry<Integer, Set<Integer>> item :
 			mapService.getContinentCountriesMap().entrySet()) {
 
@@ -421,40 +423,40 @@ public class PlayerService extends Observable {
 
     		Optional<Continent> optionalContinent=mapService.getContinentById(key);
     		Continent currentContinent= (Continent) optionalContinent.get();
-    		
+
     		Set<Integer> value=item.getValue();
-    		
+
     		//If continent empty, move to next continent
     		if(value.size()==0) continue;
-    		
+
     		//Only 1 country in continent: player of that country therefore owns continent
     		if(value.size()==1) {
-    			
+
     			int countryId=-1; //initialising variable
-    			
+
     			for(Integer i:value) countryId=i;
-    			
+
     			Optional<Country> optionalCountry=mapService.getCountryById(countryId);
     			Country currentCountry=optionalCountry.get();
     			String currentCountryOwnerName=currentCountry.getPlayer().getName();
-    			
+
     			continentOwnerMap.put(key, currentCountryOwnerName);
     			continue;
     		}
-    		
+
     		boolean boolSameOwner=true;
-    		
+
     		String ownerName="";
-    		
+
     		int counter=0;
-    				
+
     		for(Integer i:value) {
     			//For Each Country In Continent, Get owner
     			Optional<Country> optionalCountry=mapService.getCountryById(i);
 
     			Country currentCountry=optionalCountry.get();
     			String currentCountryOwnerName=currentCountry.getPlayer().getName();
-    			
+
     			//Set owner of first country as ownerName with which all other country owner names will be compared
     			if(counter==0) {
     				ownerName=currentCountryOwnerName;
@@ -466,64 +468,69 @@ public class PlayerService extends Observable {
     				boolSameOwner=false;
     				break;
     			}
-    			
+
     			counter++;
     		}    //End of looping through all countries of 1 continent
-		
+
     		if(boolSameOwner) continentOwnerMap.put(key, ownerName);
-    		
+
     	}
-   	
+
     	return continentOwnerMap;
-		
+
 	}  //End of method
 
 
 	/**
+<<<<<<< HEAD
 	 *This method evaluate world domination and notify to observer
+=======
+	 *Determines percentage controlled by every player, ownership of continents by every player,
+	 *number of soldiers controller by every player and then notifies observers of playerservice.
+>>>>>>> 6e347d998e2f024743727e6cfe4167d7e6d657a3
 	 */
 	public void evaluateWorldDomination() {
-		
+
 		Map<Integer, String> continentOwnerMap=checkContinentOwners();
-		
+
 		int numCountries=mapService.getCountries().size();
-		
+
 		ArrayList<PlayerDominationWrapper> listPlayerDomination=new ArrayList<>();
-		
+
 		for(Player p: listPlayers) {
-			
+
 			String playerName=p.getName();
-			
+
 			int numPlayerCountries=p.getCountryList().size();
-			
+
 			float percentageMap= (numPlayerCountries*100.0f) / numCountries;
-			
+
 			int numPlayerArmies=calculateTotalPlayerArmies(p);
-			
+
 			PlayerDominationWrapper playerDominationWrapper=new PlayerDominationWrapper(playerName,
 					percentageMap, numPlayerArmies);
-			
+
 			//Check if player owns any continent and add to list
-						
+
 			for(Map.Entry<Integer, String> item: continentOwnerMap.entrySet()) {
-				
+
 				int key= (int) item.getKey();
 				String strValue= item.getValue().toString();
-				
-				if(strValue.equals(playerName)) {					
+
+				if(strValue.equals(playerName)) {
 					String continentName=mapService.getContinentById(key).get().getName();
 					playerDominationWrapper.addContinentNameToWrapperList(continentName);
 				}
-				
+
 			}
 			listPlayerDomination.add(playerDominationWrapper);
 		}
-		
+
 		//NOTIFY TO OBSERVERS
-		
+
 		setChanged();
 		notifyObservers(listPlayerDomination);
-		
+
 	}
 
 
@@ -535,10 +542,10 @@ public class PlayerService extends Observable {
 	public int calculateTotalPlayerArmies(Player player) {
 		int counter=0;
 		for(Country c:player.getCountryList()) counter+=c.getSoldiers().intValue();
-		
+
 		return counter;
 	}
-	
+
 	/*
 	public void fortifyCurrentPlayer(PlayerFortificationWrapper playerFortificationWrapper) {
 		getCurrentPlayer().fortify(this, playerFortificationWrapper);

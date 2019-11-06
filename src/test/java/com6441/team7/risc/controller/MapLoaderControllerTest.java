@@ -806,6 +806,29 @@ public class MapLoaderControllerTest {
 	}
 	
 	/**
+	 * test015_validateEmptyMap() tests if map if empty
+	 * @throws IOException 
+	 */
+	@Test
+	public void test015_validateEmptyMap() throws IOException {
+		message = "Map is empty";
+		editMap("newmap.map");
+		assertTrue(message, testMapLoader.getMapService().isMapNotValid());
+	}
+	
+	/**
+	 * test016_validateDuplicateCountry() tests if duplicate countries exist
+	 * @throws IOException
+	 */
+	@Test
+	public void test016_validateDuplicateCountry() throws IOException {
+		message = "Duplicate contries exist";
+		addCountry("nippon", "south_afrori");
+		addCountry("nippon", "south_afrori");
+		assertTrue(message, testMapLoader.getMapService().isMapNotValid());
+	}
+	
+	/**
 	 * This method is executed by {@link #test003_addContinent()}
 	 * @param name 
 	 * @param power
@@ -928,6 +951,17 @@ public class MapLoaderControllerTest {
 		//get pair of country and neighbor
 		pair1 = borders1.get(country1.get());
 		pair2 = borders1.get(country2.get());
+	}
+	
+	
+	/**
+	 * This method is executed by {@link #test003_addContinent()}
+	 * @param name 
+	 * @param power
+	 * @throws IOException on invalid values
+	 */
+	public void editMap(String name) throws IOException {
+		testMapLoader.readCommand("editmap "+name);
 	}
 
 

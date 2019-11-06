@@ -13,36 +13,78 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+/**
+ * This class will test Continent class
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ContinentTest {
+	/**
+	 * id of continent in map
+	 */
 	private int id;
+
+	/**
+	 * Continent's name in world map
+	 */
 	private String name;
+
+	/**
+	 * Continent's expected Name in world map
+	 */
 	private String expectedName;
+
+	/**
+	 * Continent's value in world map
+	 */
 	private int continentValue;
+
+	/**
+	 *color of continent in world map
+	 */
 	private String color;
+
+	/**
+	 * Hashid of continent
+	 */
 	private int hashId;
 
+	/**
+	 * Continent object which keep track of each continent
+	 */
 	private Continent continent;
 
+	/**
+	 * To initialize Test for Continent class
+	 */
 	@BeforeClass
 	public static void initClass() {
 		System.out.println("Initialize Continent Test");
 	}
 
+	/**
+	 * Begin of Test for Continent class
+	 */
 	@Before
 	public void beginTest() {
 		System.out.println("Begin Test");
 	}
 
+	/**
+	 * End of Test for Continent class
+	 */
 	@After
 	public void endTest() {
 		System.out.println("End Test");
 	}
 
+
 	@AfterClass
 	public static void endClass() {
 	}
 
+	/**
+	 * Testing firstConstructor method of first Continent class
+	 */
 	@Test
 	public void test1_firstConstructor() {
 		id = 42;
@@ -54,6 +96,9 @@ public class ContinentTest {
 		assertTrue(result.equals(expectedName));
 	}
 
+	/**
+	 * Testing second_Constructor method of first Continent class
+	 */
 	@Test
 	public void test2_secondConstructor() {
 		id = 43;
@@ -67,6 +112,9 @@ public class ContinentTest {
 		assertEquals(continentValue, continent.getContinentValue());
 	}
 
+	/**
+	 *Testig setContinentValue method
+	 */
 	@Test
 	public void test3_setContinentValue() {
 		id = 43;
@@ -78,6 +126,9 @@ public class ContinentTest {
 		assertEquals(continentValue, continent.getContinentValue());
 	}
 
+	/**
+	 *Testing color setting method
+	 */
 	@Test
 	public void test4_setColor() {
 		id = 43;
@@ -89,6 +140,9 @@ public class ContinentTest {
 		assertSame(color, continent.getColor());
 	}
 
+	/**
+	 * Testing the hashcode method of continent
+	 */
 	@Test
 	public void test5_hash() {
 		id = 43;
