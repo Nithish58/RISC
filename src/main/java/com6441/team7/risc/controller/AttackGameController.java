@@ -322,7 +322,7 @@ public class AttackGameController implements Controller {
 	/**
 	 * call mapService and set the state to fortify
 	 */
-	private void endAttackPhase() {
+	public void endAttackPhase() {
     	mapService.setState(GameState.FORTIFY);
     }
 }
