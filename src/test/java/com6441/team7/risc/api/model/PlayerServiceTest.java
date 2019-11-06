@@ -102,6 +102,39 @@ public class PlayerServiceTest {
 		String name = playerService.getCurrentPlayerName();
 		assertTrue(playerService.removePlayer(name));
 	}
+	
+	/**
+	 * Testing switch player method
+	 * Evaluation: should switch player and then return to first player of list (round-robin) when
+	 * switch player has beel called by last player.
+	 */
+	@Test public void test003_switchNextPlayer() {
+		
+		//context
+		Player nextPlayer=playerService.getNextPlayer();
+		String nextPlayerName=nextPlayer.getName();
+		
+		//Method call
+		playerService.switchNextPlayer();
+		
+		//Evaluation
+		String currentPlayerName=playerService.getCurrentPlayerName();
+		
+		assertEquals(currentPlayerName,nextPlayerName);
+		
+		//Context to test round-robin player
+		Player nextNextPlayer=playerService.getNextPlayer();
+		String nextNextPlayerName=nextNextPlayer.getName();
+		
+		//Method call
+		playerService.switchNextPlayer();
+		
+		//Evaluation
+		currentPlayerName=playerService.getCurrentPlayerName();
+		assertEquals(currentPlayerName,nextNextPlayerName);
+		
+		
+	}
 
 	/**
 	 * Method to load a map. Method first exits from editmapphase by sending command

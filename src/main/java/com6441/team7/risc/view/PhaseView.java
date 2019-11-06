@@ -322,7 +322,7 @@ public class PhaseView implements GameView {
     	
     	displayMessage(player.getName()+" has been assigned country "+country.getCountryName());
     	displayMessage("Country "+country.getCountryName()+" now has "+country.getSoldiers()+" soldier.");
-    	displayMessage(player.getName()+" now has "+player.getArmies()+" armies.\n");
+    	displayMessage(player.getName()+" now has "+player.getArmies()+" armies remaining to be placed.\n");
     			
     }
     
@@ -335,7 +335,7 @@ public class PhaseView implements GameView {
     	Player p=playerPlaceArmyWrapper.getPlayer();
     	Country c=playerPlaceArmyWrapper.getCountry();
     	
-    	displayMessage("Army Placed. "+p.getName()+" has "+p.getArmies()+" armies left. "
+    	displayMessage("Army Placed. "+p.getName()+" has "+p.getArmies()+" armies left to be placed.\n"
     	+c.getCountryName()+" now has "+c.getSoldiers()+" soldiers.\n");
 		
 	}

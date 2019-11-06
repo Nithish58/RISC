@@ -360,6 +360,12 @@ public class Player{
     
     
     //----------------------------------ATTACK--------------------------------------------------
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * a reference of attack country
@@ -707,6 +713,7 @@ public class Player{
 		this.boolCountryConquered=checkDefenderPushedOut();
 		
 		if(boolCountryConquered) {
+			
 			this.boolDrawCard=true;
 			if(isDefenderEliminatedFromGame()) {
 				
@@ -1137,11 +1144,11 @@ public class Player{
 		
 		this.strSendAttackInfoToObservers="\n";
 		
-		strSendAttackInfoToObservers+=fromCountryName+" (+"+attackerName+") wants to attack"+
+		strSendAttackInfoToObservers+=fromCountryName+" ("+attackerName+") wants to attack "+
 		toCountryName+" ("+defenderName+")";
 		
-		strSendAttackInfoToObservers+="\n"+fromCountryName+" has "+numAttackingSoldiers+", "+
-		toCountryName+" has "+numDefendingSoldiers;
+		strSendAttackInfoToObservers+="\n"+fromCountryName+" has "+numAttackingSoldiers+"soldiers, "+
+		toCountryName+" has "+numDefendingSoldiers+" soldiers.";
 		
 		strSendAttackInfoToObservers+="\n"+attackerName+" rolls "+numDiceAttacker+
 				" dices, "+defenderName+" rolls "+numDiceDefender+" dices.";
@@ -1186,11 +1193,18 @@ public class Player{
 		
 		//Check if card needs to be drawn
 		if(boolDrawCard) {
+			System.out.println("Card drawn");
 			addCard(playerService.drawFromDeck());
 			this.boolDrawCard=false;
+			System.out.println("Card drawn");
 		}
 		
+		System.out.println("Before reset");
+		
 		resetBooleanValues();
+		
+		System.out.println("After reset");
+		
 		playerService.getMapService().setState(GameState.FORTIFY);
 	}
 	
@@ -1199,7 +1213,7 @@ public class Player{
 		this.boolAttackMoveRequired=false;
 		this.boolAttackOver=false;
 		this.boolCountryConquered=false;
-		this.boolDefendDiceRequired.set(false);
+		//this.boolDefendDiceRequired.set(false);
 	}
 	
     

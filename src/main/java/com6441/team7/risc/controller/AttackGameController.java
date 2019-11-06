@@ -239,8 +239,8 @@ public class AttackGameController implements Controller {
     	
     	//Validates attack -noattack command and ends phase
     	if(arrCommand.length==2 && arrCommand[1].equalsIgnoreCase("-noattack")) {
-    		//playerService.getCurrentPlayer().endAttackPhase();
-    		endAttackPhase();
+    		playerService.getCurrentPlayer().endAttackPhase();
+    		//endAttackPhase();
     		return;
     	}
     	
