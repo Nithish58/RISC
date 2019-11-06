@@ -148,7 +148,22 @@ public class AttackGameController implements Controller {
     	  	
     }
 
+	/**
+	 * Validate attackmove command
+	 * If command not valid, will send error message to phase view.
+	 * @param array of string commands
+	 */
 	public void validateAttackMoveCommand(String[] commands) {
+		
+    	if(!boolAttackMoveRequired.get()) {
+    		phaseView.displayMessage("attackmove not required right now");
+    		return;
+    	}
+		
+    	if(commands.length!=2) {
+    		phaseView.displayMessage("Invalid attackmove command.");
+    		return;
+    	}
 		
 		int numSoldierTransfer=0;
 		

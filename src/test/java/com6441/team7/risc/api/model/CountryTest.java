@@ -9,33 +9,68 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+/**
+ * Method that tests different methods of Country class
+ * @author MSI
+ *
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CountryTest {
-    private Integer id;
-    private String name;
-    private String expectedName;
-    private Integer continentIdentifier;
-    private String continentName;
-    private Integer coordinateX;
-    private Integer coordinateY;
-    private Player player;
-    private int soldiers = 0;
-    
-    private Country country;
 
-    @BeforeClass
-    public static void initClass() {}
+
+    /**
+     * Reference to country object
+     */
+    private Country country;
     
+    /**
+     * 
+     */
     @Before
-    public void beginTest() {}
+    public void beginTest() {
+    	country=new Country(1,"Mauritius");
+    }
     
-    @After
-    public void endTest() {}
+    /**
+     * Context: Initialising the country.
+     * Method call: setting soldiers to 10.
+     * Evaluation: check if number of soldiers in country =10
+     */
+    @Test public void test001_setterGetterSoldiers(){
+    	
+    	//Methodcall
+    	country.setSoldiers(10);
+    	
+    	// Evaluation
+    	assertEquals(country.getSoldiers().intValue(),10);
+    	
+    }
     
-	@Test
-	public void test1_firstConstructor() {
-		id = 1;
-		name = "North Asia";
-	}
+    /**
+     * 
+     */
+    @Test public void test002_SoldierAddition() {
+    	//Context
+    	country.setSoldiers(10);
+    	int numSoldiersToAdd=5;
+    	//Methodcall
+    	country.addSoldiers(numSoldiersToAdd);
+    	//Evaluation
+    	assertEquals(country.getSoldiers().intValue(),15);
+    	
+    }
+    
+    @Test public void test003_soldierRemoval() {
+    	//Context
+    	country.setSoldiers(10);
+    	int numSoldiersToRemove=5;
+    	
+    	//Method call
+    	country.removeSoldiers(numSoldiersToRemove);
+    	//Evaluation
+    	assertEquals(country.getSoldiers().intValue(),5);
+    	
+    }
+
 
 }

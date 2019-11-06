@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * a test suite to test run all test cases
+ * a test suite to test run all test cases of controller package
  */
 @RunWith(Suite.class)
 @SuiteClasses({MapLoaderControllerTest.class,
@@ -13,6 +13,6 @@ import org.junit.runners.Suite.SuiteClasses;
 				ReinforceGameControllerTest.class,
 				//AttackGameControllerTest.class,
 				FortifyGameControllerTest.class})
-public class TestSuiteRISC {
+public class TestSuiteController {
 
 }
