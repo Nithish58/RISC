@@ -321,8 +321,18 @@ public class ReinforceGameController implements Controller{
      * @param player
      * @param view
      */
-    private void  showCardsInfo(Player player, GameView view){
-        playerService.showCardsInfo(player);
+    private void  showCardsInfo(List<Card> list, GameView view){
+        if (list.isEmpty()){
+            view.displayMessage("card list:empty");
+            return;
+        }
+
+        int count = 1;
+        view.displayMessage("card list: ");
+        for(Card card: list){
+            view.displayMessage(count + ":" + card.getName() + WHITESPACE);
+            count ++;
+        }
     }
 
 
@@ -363,6 +373,7 @@ public class ReinforceGameController implements Controller{
         playerService.removeCards(player, cardList);
         reinforcedArmies += player.getTradeInTimes() * 5;
         cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
+        showCardsInfo(player.getCardList(), cardExchangeView);
     }
 
     /**
