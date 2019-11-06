@@ -5,11 +5,11 @@ import javax.naming.spi.DirStateFactory.Result;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.notification.Failure;
 
-public class TestSuiteRunner {
+public class TestSuiteControllerRunner {
 
 	public static void main(String[] args) {
 		
-		org.junit.runner.Result result=JUnitCore.runClasses(TestSuiteRISC.class);
+		org.junit.runner.Result result=JUnitCore.runClasses(TestSuiteController.class);
 		
 		for(Failure failure:result.getFailures()) {
 			System.out.println(failure.toString());

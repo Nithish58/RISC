@@ -188,11 +188,17 @@ public class PhaseView implements GameView {
         		return;
         	}
         	        	
-
+        	
+        	//Any string message sent is just displayed
+        	if(arg instanceof String) {
+        		String displayMessage=((String) arg);
+        		displayMessage(displayMessage);
+        		return;
+        	}
 
         	if(arg instanceof ReinforcedArmyWrapper){
         	    displayReinforcedArmy(arg);
-            return; //Added by keshav to resolve conflict
+        	    return;
             }
 
 
