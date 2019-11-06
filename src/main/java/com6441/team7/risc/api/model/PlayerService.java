@@ -1,11 +1,10 @@
 package com6441.team7.risc.api.model;
 
-import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerDominationWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
-import com6441.team7.risc.api.wrapperview.ReinforcedArmyWrapper;
+import com6441.team7.risc.api.wrapperview.*;
 
 import java.util.*;
+
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 public class PlayerService extends Observable {
 
@@ -88,8 +87,14 @@ public class PlayerService extends Observable {
 		return deckCards.pop();
 	}
 	
-	public void returnToDeck(Card c) {
-		deckCards.push(c);
+	public void returnToDeck(List<Card> cards) {
+
+		cards.forEach(card -> deckCards.push(card));
+		shuffleDeckCards();
+	}
+
+	public void returnToDeck(Card card){
+		deckCards.push(card);
 		shuffleDeckCards();
 	}
 	
@@ -317,8 +322,11 @@ public class PlayerService extends Observable {
 	 * @param player
 	 * @return
 	 */
-    public List<String> showCardsInfo(Player player){
-        return player.getCardList();
+    public void showCardsInfo(Player player){
+
+		ReinforcedCardWrapper cardWrapper = new ReinforcedCardWrapper(player, player.getCardList());
+		setChanged();
+		notifyObservers(cardWrapper);
     }
 
 
@@ -329,7 +337,7 @@ public class PlayerService extends Observable {
 	 * @param cardList
 	 * @return
 	 */
-    public boolean isTradeInCardsValid(Player player, List<String> cardList){
+    public boolean isTradeInCardsValid(Player player, List<Card> cardList){
         return player.meetTradeInCondition(cardList);
     }
 
@@ -339,8 +347,10 @@ public class PlayerService extends Observable {
 	 * @param player
 	 * @param cardList
 	 */
-    public void removeCards(Player player, List<String> cardList){
+    public void removeCards(Player player, List<Card> cardList){
+
         player.removeCards(cardList);
+        returnToDeck(cardList);
         notifyObservers(player);
     }
 

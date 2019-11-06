@@ -3,6 +3,7 @@ package com6441.team7.risc.view;
 import com6441.team7.risc.api.model.*;
 
 import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 import com6441.team7.risc.api.wrapperview.*;
 
@@ -192,7 +193,12 @@ public class PhaseView implements GameView {
 
         	if(arg instanceof ReinforcedArmyWrapper){
         	    displayReinforcedArmy(arg);
-            return; //Added by keshav to resolve conflict
+                return; //Added by keshav to resolve conflict
+            }
+
+            if(arg instanceof ReinforcedCardWrapper){
+                displayReinforcedCard(arg);
+                return;
             }
 
 
@@ -221,6 +227,23 @@ public class PhaseView implements GameView {
         displayMessage("reinforced army number: " + ((ReinforcedArmyWrapper)arg).getNum());
     }
 
+
+    private void displayReinforcedCard(Object arg){
+        List<Card> list =  ((ReinforcedCardWrapper)arg).getCards();
+        Player player = ((ReinforcedCardWrapper)arg).getPlayer();
+
+        if (list.isEmpty()){
+            displayMessage(player.getName() + "'s cards are empty");
+            return;
+        }
+
+        int count = 1;
+        displayMessage("player " + player.getName() + ": ");
+        for(Card card: list){
+            displayMessage(count + ":" + card.getName() + WHITESPACE);
+            count ++;
+        }
+    }
 
 	/**
      * Extracts information about a newly added player or a removed player and displays it
