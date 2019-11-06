@@ -83,7 +83,9 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Testing firstConstructor method of first Continent class
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: get name
+	 * Evaluation: check id, name
 	 */
 	@Test
 	public void test1_firstConstructor() {
@@ -97,23 +99,32 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Testing second_Constructor method of first Continent class
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: get name
+	 * Evaluation: check id, name. and value is correctly for new continent
 	 */
 	@Test
 	public void test2_secondConstructor() {
+		//context
 		id = 43;
 		name = "Scandinavia";
 		continentValue = 3;
 		expectedName = name.toLowerCase();
 		continent = new Continent(id, name, continentValue);
+
+		//Method Call
 		String result = continent.getName();
+
+		//Evaluation
 		assertEquals(id, continent.getId());
 		assertTrue(result.equals(expectedName));
 		assertEquals(continentValue, continent.getContinentValue());
 	}
 
 	/**
-	 *Testig setContinentValue method
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: set continent value
+	 * Evaluation: check value is correct for new continent
 	 */
 	@Test
 	public void test3_setContinentValue() {
@@ -127,7 +138,9 @@ public class ContinentTest {
 	}
 
 	/**
-	 *Testing color setting method
+	 * Context: Initialising the continent with name, value, id and color
+	 * Method call: set color
+	 * Evaluation: check color is correct for new continent
 	 */
 	@Test
 	public void test4_setColor() {
@@ -141,7 +154,9 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Testing the hashcode method of continent
+	 * Context: Initialising the continent with name, value, id
+	 * Method call: getid and Object's hash method
+	 * Evaluation: check id is correct for new continent
 	 */
 	@Test
 	public void test5_hash() {
@@ -149,8 +164,10 @@ public class ContinentTest {
 		name = "Scandinavia";
 		continentValue = 3;
 		continent = new Continent(id, name, continentValue);
+
 		id = continent.getId();
 		hashId = Objects.hash(id);
+
 		assertEquals(hashId, continent.hashCode());
 	}
 

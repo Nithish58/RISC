@@ -12,7 +12,7 @@ public enum GameState {
 /**
  * value of different gamestates
  */
-    private String name;
+    public String name;
 /**
  * Setter for GameState Value
  * @param name

@@ -47,7 +47,9 @@ public class CountryTest {
     }
 
     /**
-     *
+     * Context: Initialising the country, set the soldiers 10 and create number of solders to add
+     * Method call: adding 5 new soldiers to country
+     * Evaluation: check if the number of solders becomes 15
      */
     @Test public void test002_SoldierAddition() {
         //Context
@@ -60,6 +62,11 @@ public class CountryTest {
 
     }
 
+    /**
+     * Context: Initialising the country, set the soldiers 10 and create number of solders to add
+     * Method call: Removing 5 new soldiers to country
+     * Evaluation: check if the number of solders becomes 5
+     */
     @Test public void test003_soldierRemoval() {
         //Context
         country.setSoldiers(10);
