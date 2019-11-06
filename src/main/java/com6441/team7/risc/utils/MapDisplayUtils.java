@@ -307,7 +307,7 @@ public final class MapDisplayUtils {
     	);
     	
     	view.displayMessage("Current Player: "+currentPlayer.getName()+
-    			" , Num Armies Remaining: "+currentPlayer.getArmies());
+    			" , Num Armies Remaining to be placed: "+currentPlayer.getArmies());
     	
     	for(Country c : currentPlayer.getCountryList()) {
     		view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());

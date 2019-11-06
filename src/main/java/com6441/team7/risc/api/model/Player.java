@@ -795,10 +795,12 @@ public class Player{
 	public void transferCountryOwnershipAfterAttack() {
 		
 		fromCountryAttack.getPlayer().addCountryToPlayerList(toCountryAttack);
+		
+		toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
 
 		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 		
-		toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
+		//toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
 
 		strSendAttackInfoToObservers+="Country ownership transferred.\n Attacker conquers country.";
 		
