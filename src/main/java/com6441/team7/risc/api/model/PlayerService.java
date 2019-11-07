@@ -403,6 +403,11 @@ public class PlayerService extends Observable {
 		notifyObservers(cardWrapper);
 	}
 
+	/**
+	 * caculate number of reinforced armies after trading in cards
+	 * @param player
+	 * @return number of reinforced army
+	 */
 	public int calculateReinforcedArmyByTradingCards(Player player){
 		int number = player.calculateReinforcedArmyByTradingCards();
 		ReinforcedArmyAfterTradingCard wrapper = new ReinforcedArmyAfterTradingCard(player, number);

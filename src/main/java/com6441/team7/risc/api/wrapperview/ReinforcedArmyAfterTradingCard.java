@@ -11,27 +11,55 @@ import java.util.List;
 public class ReinforcedArmyAfterTradingCard {
 
 
+    /**
+     * the current player
+     */
     private Player player;
+
+    /**
+     * the number of reinforced soldiers
+     */
     private int soldier;
 
+    /**
+     * constructor
+     * @param player
+     * @param soldier
+     */
     public ReinforcedArmyAfterTradingCard(Player player, int soldier) {
         this.player = player;
         this.soldier = soldier;
 
     }
 
+    /**
+     * get the current player
+     * @return
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * set the current player
+     * @param player
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
+    /**
+     * get the number of soldiers
+     * @return
+     */
     public int getSoldier() {
         return soldier;
     }
 
+    /**
+     * set the number of soldiers
+     * @param soldier
+     */
     public void setSoldier(int soldier) {
         this.soldier = soldier;
     }
