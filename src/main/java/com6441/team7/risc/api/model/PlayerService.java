@@ -112,7 +112,7 @@ public class PlayerService extends Observable {
 
 	/**
 	 * extends addObserver() from java
-	 * @param observer
+	 * @param observer Observer
 	 */
 	@Override
 	public void addObserver(Observer observer) {
@@ -322,7 +322,7 @@ public class PlayerService extends Observable {
 	/**
 	 * show cards information of the player
 	 * @param player
-	 * @return
+	 * 
 	 */
 	public void showCardsInfo(Player player){
 
@@ -417,7 +417,7 @@ public class PlayerService extends Observable {
 	 * This method checks if any player owns any continent.
 	 * It loops through all countries in each continent and check if they have the same owner.
 	 * Used for domination view and attack phase
-	 * @return map of <continent id, player name>, if any player owns the respective continent
+	 * @return map of (continent id, player name), if any player owns the respective continent
 	 */
 	public Map<Integer, String> checkContinentOwners() {
 

@@ -20,8 +20,8 @@ public class PlayerPlaceArmyWrapper {
 
 	/**
 	 * constructor of PlayerPlaceArmyWrapper
-	 * @param p
-	 * @param c
+	 * @param p Player
+	 * @param c Country
 	 */
 	public PlayerPlaceArmyWrapper(Player p, Country c){
 		this.player=p;

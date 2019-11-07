@@ -69,7 +69,7 @@ public class PhaseViewTest implements GameView{
 
     /**
      * method to display message
-     * @param string
+     * @param string String
      */
     public void displayMessage(String string) {
     	this.strDisplayMessage=string;

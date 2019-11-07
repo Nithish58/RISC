@@ -91,7 +91,7 @@ public class PlayerTest {
 	 * Add two players
 	 * Populate countries and place all of players' soldiers to the map
 	 *
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -111,7 +111,7 @@ public class PlayerTest {
 
 	/**
 	 * This method is performed after every test
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@After
 	public void tearDown() throws Exception {
@@ -122,7 +122,7 @@ public class PlayerTest {
 	 * It tests the regular attack function (i.e.: without the allout param)
 	 * The expected result is the number of either side's soldiers decrease by 1,
 	 * depending on which side loses in the dice roll
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@Test
 	public void test001_attackSingle() throws Exception {
@@ -198,7 +198,7 @@ public class PlayerTest {
 
 	/**
 	 * Tests attack until soldiers from either attacker or defender is out
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@Ignore
 	@Test
@@ -381,7 +381,7 @@ public class PlayerTest {
 	/**
 	 * This checks if the attacker owns all the territory
 	 * and is declared the winner
-	 * @throws Exception on invalid value
+	 * @throws Exception on invalid on invalid value
 	 */
 	@Test
 	public void test006_checkPlayerWinTheGame() throws Exception{
@@ -433,7 +433,7 @@ public class PlayerTest {
 	/**
 	 * Tests validate attack conditions
 	 *
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@Test
 	public void test007_validateAttackConditions() throws Exception {
@@ -488,7 +488,7 @@ public class PlayerTest {
 	/**
 	 * Testing if attacker country actually belongs to the attacker
 	 * The test passes if the method isAttackerLastManStanding returns true
-	 * @throws Exception on invalid value
+	 * @throws Exception on invalid on invalid value
 	 */
 	@Test
 	public void test008_checkLastManStanding() throws Exception {
@@ -552,7 +552,7 @@ public class PlayerTest {
 	/**
 	 * Testing if the defender no longer has soldiers in one of their countries
 	 * The test passes if the method checkDefenderPushedOut returns true
-	 * @throws Exception 
+	 * @throws Exception on invalid 
 	 */
 	@Ignore
 	@Test
@@ -621,7 +621,7 @@ public class PlayerTest {
 	 * Tests if an attack condition is not valid
 	 * In this test, the attacker's dice is set to above the allowed maximum
 	 * The test passes if the validateAttackConditions() method returns false
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@Test
 	public void test010_checkInvalidAttackConditions() throws Exception {

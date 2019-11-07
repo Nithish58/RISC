@@ -44,7 +44,7 @@ public class ReinforceGameControllerTest {
 
     /**
      * setup method to construct attributes before each test
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Before
     public void setUp() throws Exception {
@@ -60,7 +60,7 @@ public class ReinforceGameControllerTest {
     /**
      * read a valid domination map
      * @return
-     * @throws Exception
+     * @throws Exception on invalid
      */
     private String getFile() throws Exception{
         URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
@@ -71,7 +71,7 @@ public class ReinforceGameControllerTest {
     /**
      * read an invalid command for reinforcement
      * expects the test to throw an IllegalArgumentException
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test(expected = IllegalArgumentException.class)
     public void readInvalidCommand() throws Exception {
@@ -82,8 +82,8 @@ public class ReinforceGameControllerTest {
 
     /**
      * sucessfully add a soldier from reinforcement to the country occupied
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws URISyntaxException on invalid URI
+     * @throws IOException on invalid IO
      */
     @Test
     public void reinforceValidArmyNumberToValidCountry() throws URISyntaxException, IOException {
@@ -106,8 +106,8 @@ public class ReinforceGameControllerTest {
     /**
      * if player reinforce armies to the country that is occupied by other player
      * expect: throw an ReinforceParsingException
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws URISyntaxException on invalid URI on invalid URI
+     * @throws IOException on invalid IO on invalid IO 
      */
     @Test(expected = ReinforceParsingException.class)
     public void reinforceValidNumberToCountryOccupiedByOtherPlayer() throws URISyntaxException, IOException{
@@ -119,8 +119,8 @@ public class ReinforceGameControllerTest {
     /**
      * if the player reinforce armies to the countries which the number is larger than the army he gets in reinforcement phase
      * expect: throw an ReinforceParsingException
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws URISyntaxException on invalid URI
+     * @throws IOException on invalid IO
      */
     @Test(expected = ReinforceParsingException.class)
     public void reinforceArmyNumberGreaterThanActualReinforcedArmies() throws URISyntaxException, IOException{
@@ -132,8 +132,8 @@ public class ReinforceGameControllerTest {
     /**
      * if the player reinforce negative armies to the countries
      * expect: throw an ReinforceParsingException
-     * @throws URISyntaxException
-     * @throws IOException
+     * @throws URISyntaxException on invalid URI
+     * @throws IOException on invalid IO
      */
     @Test(expected = ReinforceParsingException.class)
     public void reinforceNegativeArmyNumber() throws URISyntaxException, IOException{
@@ -162,8 +162,8 @@ public class ReinforceGameControllerTest {
      * mock the player, and occupation information
      * one continents with three countries
      * player jenny occupy 2 countries and player jake occupy 1 country
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationOne() throws IOException, URISyntaxException {
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
@@ -179,8 +179,8 @@ public class ReinforceGameControllerTest {
 
     /**
      * mock the player, and occupation data
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationTwo() throws IOException, URISyntaxException{
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
@@ -195,8 +195,8 @@ public class ReinforceGameControllerTest {
 
     /**
      * mock the player, and occupation data, cardList
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationThree() throws IOException, URISyntaxException{
 
@@ -209,8 +209,8 @@ public class ReinforceGameControllerTest {
 
     /**
      * mock the player, and occupation data, cardList
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationFour() throws IOException, URISyntaxException{
         List<Card> cardList = new ArrayList<>();
@@ -222,8 +222,8 @@ public class ReinforceGameControllerTest {
 
     /**
      * mock the player, and three cards the player has with two cards the same
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationFive() throws IOException, URISyntaxException{
         List<Card> cardList = new ArrayList<>();
@@ -235,8 +235,8 @@ public class ReinforceGameControllerTest {
 
     /**
      * mock the player, and five cards the player has
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationSix() throws IOException, URISyntaxException{
         List<Card> cardList = new ArrayList<>();
@@ -256,10 +256,10 @@ public class ReinforceGameControllerTest {
      * test the reinforcement army calculation based on rule 1 and rule 3
      * the player occupy 2 countries and did not occupy a whole continent
      * rule 1: armyNum += country/3
-     * rule 3: armyNum < 3, armyNum will be three
+     * rule 3: armyNum less than 3, armyNum will be three
      * expect the reinforceArmy number be 3
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     @Test
     public void calculateReinforcedArmiesWithCountriesOccupied() throws IOException, URISyntaxException {
@@ -274,8 +274,8 @@ public class ReinforceGameControllerTest {
      * rule 1: army += country / 3
      * rule 3: army += continent value (5)
      * expect the reinforceArmy number be 6
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO on IO error
+     * @throws URISyntaxException on invalid URI on URI being invalid
      */
     @Test
     public void calculateReinforceArmiesWithWholeContinentOccupied() throws IOException, URISyntaxException {
@@ -288,6 +288,8 @@ public class ReinforceGameControllerTest {
      * test the reinforcement army calculation based on card exchanges
      * if the players exchange three same cards, army += tradeTime * 5
      * expect result to be 5
+     * @throws IOException on invalid IO on IO error
+     * @throws URISyntaxException on invalid URI on invalid URI
      */
     @Test
     public void exchangeThreeSameCards() throws IOException, URISyntaxException {
@@ -301,6 +303,8 @@ public class ReinforceGameControllerTest {
      * test the reinforcement army calculation based on card exchanges
      * if the players exchange three different cards, army += tradeTime * 5
      * expect result to be 5
+     * @throws IOException on invalid IO on IO error
+     * @throws URISyntaxException on invalid URI on invalid URI
      */
     @Test
     public void exchangeThreeDifferentCards() throws IOException, URISyntaxException {
@@ -314,6 +318,8 @@ public class ReinforceGameControllerTest {
      * test the reinforcement army calculation based on card exchanges
      * if the players exchange Two sames cards and 1 different card(artillery, artillery, infantry) different cards
      * expect reinforced number to be 0
+     * @throws IOException on invalid IO on IO error
+     * @throws URISyntaxException on invalid URI on invalid URI
      */
     @Test
     public void exchangeTwoSameCardsOneDifferentCard() throws IOException, URISyntaxException{
@@ -326,8 +332,8 @@ public class ReinforceGameControllerTest {
     /**
      * test when users have equal or greater than 5 cards but choose not to exchange cards
      * exect the card exchange state to keep false
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO on invalid IO
+     * @throws URISyntaxException on invalid URI on invalid URI
      */
     @Test
     public void exchangeNoneWithFiveCards() throws IOException, URISyntaxException{

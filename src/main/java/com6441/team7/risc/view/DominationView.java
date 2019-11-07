@@ -26,7 +26,7 @@ public class DominationView implements GameView {
 
     /**
      * extends method from GameView to displayMessage
-     * @param string
+     * @param string String
      */
     @Override
     public void displayMessage(String string) {
@@ -37,8 +37,8 @@ public class DominationView implements GameView {
     /**
      * when the total armies, percentage of occupied countries, occupied continents of the player has been changed,
      * the update() will call and display changes to the domination view
-     * @param o
-     * @param arg
+     * @param o object o
+     * @param arg argument
      */
     @Override
     public void update(Observable o, Object arg) {

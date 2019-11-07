@@ -69,7 +69,7 @@ public class PhaseView implements GameView {
 
     /**
      * add controller to controller lists
-     * @param list
+     * @param list List
      */
     public void addController(List<Controller> list){
         list.forEach(controller -> {
@@ -129,7 +129,7 @@ public class PhaseView implements GameView {
 
     /**
      * extends method from GameView to displayMessage
-     * @param string
+     * @param string String
      */
     @Override
     public void displayMessage(String string) {
@@ -139,8 +139,8 @@ public class PhaseView implements GameView {
     /**
      * whenever users input valid or non-valid, or changes in the model,
      * the update() will call and display changes to the phase view
-     * @param o
-     * @param arg
+     * @param o observable o
+     * @param arg argument
      */
     @Override
     public void update(Observable o, Object arg) {

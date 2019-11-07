@@ -44,7 +44,7 @@ public class ReinforcedArmyWrapper {
 
     /**
      * set the player
-     * @param player
+     * @param player Player
      */
     public void setPlayer(Player player) {
         this.player = player;
@@ -60,7 +60,7 @@ public class ReinforcedArmyWrapper {
 
     /**
      * set country name
-     * @param countryName
+     * @param countryName Country Name
      */
     public void setCountryName(String countryName) {
         this.countryName = countryName;
@@ -68,7 +68,7 @@ public class ReinforcedArmyWrapper {
 
     /**
      * return the soldier number
-     * @return
+     * @return Num
      */
     public Integer getNum() {
         return num;
@@ -76,7 +76,7 @@ public class ReinforcedArmyWrapper {
 
     /**
      * set the soldier number
-     * @param num
+     * @param num Num
      */
     public void setNum(Integer num) {
         this.num = num;

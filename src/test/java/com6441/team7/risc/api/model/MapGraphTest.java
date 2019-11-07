@@ -21,7 +21,7 @@ public class MapGraphTest {
 	
 	/**
 	 * Instantiate a MapGraph object
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -34,7 +34,7 @@ public class MapGraphTest {
 	/**
 	 * Assigning a value to the variable.
 	 * Invoke setMapGraph with testGraph as param.
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@Before
 	public void setUp() throws Exception {

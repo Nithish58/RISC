@@ -56,7 +56,7 @@ public class MapLoaderControllerTest {
 
     /**
      * setup method to set up the attributes
-     * @throws Exception
+     * @throws Exception exception on Invalid
      */
     @Before
     public void setUp() throws Exception {
@@ -104,7 +104,7 @@ public class MapLoaderControllerTest {
     /**
      * read existing map from the directory given by its map name
      * The test will pass if it ables to read and parses the map file and returns true
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test
     public void readExistingFile() throws Exception{
@@ -118,7 +118,7 @@ public class MapLoaderControllerTest {
     /**
      * read a map does not exist given by its map name
      * The test should be able to create a new map file and return true
-     * @throws Exception
+     * @throws Exception exception on error
      */
     @Test
     public void readNewCreatedFile() throws Exception{
@@ -135,7 +135,7 @@ public class MapLoaderControllerTest {
      * create continent objects by valid continent strings
      * The test should be able to read and parse the strings and creates continents
      * the test will pass if the number of newly created continents is 6
-     * @throws Exception
+     * @throws Exception exception on error
      */
     @Test
     public void createContinentFromValidContinentInfo() throws Exception{
@@ -148,7 +148,7 @@ public class MapLoaderControllerTest {
     /**
      * create continent objects if missing continent power
      * The test should throw an exception when continent power is missing
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected=ContinentParsingException.class)
     public void createContinentMissingContinentPower() throws Exception{
@@ -168,7 +168,7 @@ public class MapLoaderControllerTest {
     /**
      * create continents if the continent power is not an integer
      * The test should throw an exception when continent power is not an integer
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected = ContinentParsingException.class)
     public void createContinentWithContinentPowerNotInteger() throws Exception{
@@ -186,7 +186,7 @@ public class MapLoaderControllerTest {
     /**
      * create countries with valid country information
      * pass the tests if the number of newly created countries is 5.
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test
     public void createCountriesFromValidCountryInfo() throws Exception{
@@ -204,7 +204,7 @@ public class MapLoaderControllerTest {
     /**
      * create countries with continent id missing
      * the test should throw an countryParsingException
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected = CountryParsingException.class)
     public void createCountriesMissingContinentInfo() throws Exception{
@@ -226,7 +226,7 @@ public class MapLoaderControllerTest {
     /**
      * create countries with continent id not exist
      * the test should throw CountryParsingException
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected = CountryParsingException.class)
     public void createCountriesWithInvalidContinentInfo() throws Exception{
@@ -248,7 +248,7 @@ public class MapLoaderControllerTest {
     /**
      * create countries with country id missing when reading existing map file
      * the tests should throw CountryParsingException
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected = CountryParsingException.class)
     public void createCountriesMissingUniqueIdentifier() throws Exception{
@@ -271,7 +271,7 @@ public class MapLoaderControllerTest {
     /**
      * create countries with continent id not an integer when reading map file
      * the test should throw a CountryParsingException
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected = CountryParsingException.class)
     public void createCountriesWithContinentIdNotInteger() throws Exception{
@@ -294,7 +294,7 @@ public class MapLoaderControllerTest {
     /**
      * create adjacency countries with valid information
      * expect the number of newly created adjacency countries info is 5
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test
     public void createAdjascencyCountriesWithValidInfo() throws Exception{
@@ -319,7 +319,7 @@ public class MapLoaderControllerTest {
     /**
      * create a neighboring info with no adjacency countries id
      * the test should throw a neighboringParsingException
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithNoAdjacency() throws Exception{
@@ -341,7 +341,7 @@ public class MapLoaderControllerTest {
     /**
      * create adjacency Countries Information with Countries ID not exist
      * the test should throw a neighboringParsingException
-     * @throws Exception
+     * @throws Exception exception on invalid
      */
     @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithInvalidCountryIdAdjacency() throws Exception{
@@ -364,7 +364,7 @@ public class MapLoaderControllerTest {
     /**
      * create adjacency countries with countries id not an integer
      * expect the test to throw a NeighboringParsingException
-     * @throws Exception
+     * @throws Exception exception exception
      */
     @Test(expected = NeighborParsingException.class)
     public void createAdjacencyCountriesWithValueNotInteger() throws Exception{
@@ -388,7 +388,7 @@ public class MapLoaderControllerTest {
     /**
      * parse a valid editcontinent command to add three continents and remove an existing continent
      * the test will pass if the number of continents in the mapService is 2
-     * @throws Exception
+     * @throws Exception exception
      */
     @Test
     public void testValidEditContinentCommand() throws Exception{
@@ -404,7 +404,7 @@ public class MapLoaderControllerTest {
     /**
      * parse an editcontinent command to add three continents while one continent missing continent power
      * the test will pass if the number of continents in the mapService is 2
-     * @throws Exception
+     * @throws Exception exception
      */
     @Test
     public void testInvalidAddContinentCommand() throws Exception{
@@ -421,7 +421,7 @@ public class MapLoaderControllerTest {
      * parse an editcontinent command to add three continents and to remove a continent
      * add Asia is not valid, add America and add Africa is valid, remove is not valid
      * pass the test if the number of continents in the mapService is 2
-     * @throws Exception
+     * @throws Exception exception
      */
     @Test
     public void testInvalidRemoveContinentCommand() throws Exception{
@@ -437,7 +437,7 @@ public class MapLoaderControllerTest {
     /**
      * test the editcountry command with three addition of countries
      * the test will pass if the number of newly added country is 3
-     * @throws Exception
+     * @throws Exception exception
      */
     @Test
     public void testValidAddCountryCommand() throws Exception{
@@ -453,7 +453,7 @@ public class MapLoaderControllerTest {
     /**
      * test the addCountry command with one invalid addition and 2 valid addition
      * will pass the test if the number of newly added country is 2
-     * @throws Exception
+     * @throws Exception exception
      */
     @Test
     public void testInValidAddCountryCommand() throws Exception{
@@ -606,7 +606,7 @@ public class MapLoaderControllerTest {
 	 * <p>The method receives the <i>file</i>param from the context
 	 * and then it is parsed. The runner passes the test if the result
 	 * returns true.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test001_readFile() throws Exception{
@@ -619,7 +619,7 @@ public class MapLoaderControllerTest {
 	 * test002_addOneContinent() tests adding one continent to the continent list.
 	 * The method uses continentcommand1 as the command to be checked.
 	 * The test passes if the number of continent increases by 1 after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test002_addContinent() throws Exception{
@@ -633,7 +633,7 @@ public class MapLoaderControllerTest {
 	 * test004_removeOneContinent() tests deleting one continent.
 	 * The method uses continentcommand3 as the command to be checked.
 	 * The test passes if the number of continents decreases by 1 after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test004_removeContinent() throws Exception{
@@ -648,7 +648,7 @@ public class MapLoaderControllerTest {
 	 * test005_addAndRemoveContinent() tests adding and removing one continent from the continent list in one command.
 	 * The method uses continentcommand5.
 	 * The test passes if the number of continents stays the same after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test005_addAndRemoveContinent() throws Exception{
@@ -663,7 +663,7 @@ public class MapLoaderControllerTest {
 	 * test006_addCountry() tests adding one country to the country list.
 	 * The method uses countrycommand1 as the command to be checked.
 	 * The test passes if the number of countries increases by 1 after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test006_addCountry() throws Exception{
@@ -678,7 +678,7 @@ public class MapLoaderControllerTest {
 	 * test007_removeCountry() tests removing one country from the country list.
 	 * The method uses countrycommand3 as the command to be checked.
 	 * The test passes if the number of countries decreases by 1 after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test007_removeCountry() throws Exception{
@@ -694,7 +694,7 @@ public class MapLoaderControllerTest {
 	 * test008_addAndRemoveCountry() tests adding and removing one country from the country list in one command.
 	 * The method uses countrycommand5 as the command to be checked.
 	 * The test passes if the number of countries stays the same after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test008_addAndRemoveCountry() throws Exception{
@@ -710,7 +710,7 @@ public class MapLoaderControllerTest {
 	 * The test passes if the origin country exists in the adjacency list of
 	 * the entire map and the neighboring country is among the
 	 * origin country's adjacency's list after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test009_addNeighbor() throws Exception{
@@ -728,7 +728,7 @@ public class MapLoaderControllerTest {
 	 * The test passes if the origin country exists in the adjacency list of
 	 * the entire map and the neighboring country is not among the
 	 * origin country's adjacency's list after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test010_removeNeighbor() throws Exception{
@@ -748,7 +748,7 @@ public class MapLoaderControllerTest {
 	 * the entire map, the added neighboring country is among the
 	 * origin country's adjacency's list, and the removed neighboring country
 	 * is not among the origin country's adjacency's list after the test.
-	 * @throws Exception upon invalid values
+	 * @throws Exception exception upon invalid values
 	 */
 	@Test
 	public void test011_addAndRemoveNeighbor() throws Exception{
@@ -807,7 +807,7 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * test015_validateEmptyMap() tests if map if empty
-	 * @throws IOException 
+	 * @throws IOException  on invalid IO
 	 */
 	@Test
 	public void test015_validateEmptyMap() throws IOException {
@@ -829,10 +829,10 @@ public class MapLoaderControllerTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test003_addContinent()}
-	 * @param name 
-	 * @param power
-	 * @throws IOException on invalid values
+	 * This method is executed by {@link #test002_addContinent()}
+	 * @param name Name
+	 * @param power Power
+	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addContinent(String name, String power) throws IOException {
 		testMapLoader.readCommand("editcontinent -add "+name+" "+power);
@@ -841,7 +841,7 @@ public class MapLoaderControllerTest {
 	/**
 	 * This method is executed by {@link #test004_removeContinent()}
 	 * @param name
-	 * @throws IOException on invalid values
+	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void removeContinent(String name) throws IOException {
 		testMapLoader.readCommand("editcontinent -remove "+name);
@@ -850,9 +850,9 @@ public class MapLoaderControllerTest {
 	/**
 	 * This method is executed by {@link #test005_addAndRemoveContinent()}
 	 * @param name1
-	 * @param power
+	 * @param power Power
 	 * @param name2
-	 * @throws IOException on invalid values
+	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addAndRemoveContinent(String name1, String power, String name2) throws IOException {
 		testMapLoader.readCommand("editcontinent -add "+name1+" "+power+" -remove "+name2);
@@ -862,7 +862,7 @@ public class MapLoaderControllerTest {
 	 * This method is executed by {@link #test006_addCountry()}
 	 * @param name
 	 * @param continentName
-	 * @throws IOException on invalid values
+	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addCountry(String name, String continentName) throws IOException {
 		testMapLoader.readCommand("editcountry -add "+name+" "+continentName);
@@ -871,7 +871,7 @@ public class MapLoaderControllerTest {
 	/**
 	 * This method is executed by {@link #test007_removeCountry()}
 	 * @param name
-	 * @throws IOException on invalid values
+	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void removeCountry(String name) throws IOException {
 		testMapLoader.readCommand("editcountry -remove "+name);
@@ -882,7 +882,7 @@ public class MapLoaderControllerTest {
 	 * @param name1
 	 * @param continentName1
 	 * @param name2
-	 * @throws IOException on invalid values
+	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addAndRemoveCountry(String name1, String continentName1, String name2) throws IOException {
 		testMapLoader.readCommand("editcountry -add "+name1+" "+continentName1+" "+" -remove "+name2);
@@ -892,7 +892,7 @@ public class MapLoaderControllerTest {
 	 * This method is executed by {@link #test009_addNeighbor()}
 	 * @param origin
 	 * @param neighborCountry
-	 * @throws IOException on invalid values
+	 * @throws IOException  on invalid IOon invalid values
 	 * country1 is the origin country retrieved by the testMapLoader
 	 * neighbor1 is the neighboring country retrieved by the testMapLoader
 	 * borders1 is the map that stores countries and their adjacent neighbors
@@ -910,7 +910,7 @@ public class MapLoaderControllerTest {
 	 * This method is executed by {@link #test010_removeNeighbor()}
 	 * @param origin
 	 * @param neighborCountry
-	 * @throws IOException on invalid values
+	 * @throws IOException  on invalid IOon invalid values
 	 * country1 is the origin country retrieved by the testMapLoader
 	 * neighbor1 is the neighboring country retrieved by the testMapLoader
 	 * borders1 is the map that stores countries and their adjacent neighbors
@@ -955,10 +955,9 @@ public class MapLoaderControllerTest {
 	
 	
 	/**
-	 * This method is executed by {@link #test003_addContinent()}
-	 * @param name 
-	 * @param power
-	 * @throws IOException on invalid values
+	 * This method is executed by {@link #test002_addContinent()}
+	 * @param name Name
+	 * @throws IOException  on invalid IO
 	 */
 	public void editMap(String name) throws IOException {
 		testMapLoader.readCommand("editmap "+name);
