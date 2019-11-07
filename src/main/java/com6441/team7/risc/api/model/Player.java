@@ -244,11 +244,13 @@ public class Player{
 
 
 	/**
-	 * add card to plaer
+	 * add card to player
+	 * @param card drawn/gained
 	 */
 	public void addCard(Card card){
 		cardList.add(card);
 	}
+	
 
 	/**
      * remove cards from players
@@ -716,16 +718,39 @@ public class Player{
 		if(boolCountryConquered) {
 			
 			this.boolDrawCard=true;
+			
 			if(isDefenderEliminatedFromGame()) {
 				
 				//transferCardsFromDefenderToAttacker
 				System.out.println("Need to transfer cards");
+				transferCardsFromDefenderToAttacker();
+				
+				
+				//Remove defender from game
+				playerService.removePlayer(defender.getName());
+				
+				//Display Domination View
+				playerService.evaluateWorldDomination();
+				
+
 			}
 		}
 		
 		return true;
 	}
 	
+	/**
+	 * Transfers card fron defender to attacker WHEN DEFENDER ELIMINATED FROM GAME
+	 */
+	public void transferCardsFromDefenderToAttacker() {
+		
+		for(Card card:defender.getCardList()) {
+			addCard(card); //add card to playerList
+		}
+		
+		//Not required as defender will be garbage collected
+		defender.getCardList().clear();
+	}
 	
 	/**
 	 * Check if all of the defender's soldiers have been eliminated
@@ -746,9 +771,6 @@ public class Player{
 			transferCountryOwnershipAfterAttack();
 					
 			checkPlayerWin();
-			
-			
-			//checkDefenderEliminatedFromGame()
 			
 	
 			
@@ -782,7 +804,7 @@ public class Player{
 			strSendAttackInfoToObservers="\n"+attacker.getName()+" Wins";
 			playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
 			
-			CommonUtils.endGame(null);
+			CommonUtils.endGame(playerService);
 			return;
 		}
 		
