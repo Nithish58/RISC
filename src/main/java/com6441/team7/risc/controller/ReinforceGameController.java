@@ -325,24 +325,24 @@ public class ReinforceGameController implements Controller{
 
     }
 
-//    /**
-//     * display cards owned by the player
-//     * @param player
-//     * @param view
-//     */
-//    private void  showCardsInfo(List<Card> list, GameView view){
-//        if (list.isEmpty()){
-//            view.displayMessage("card list:empty");
-//            return;
-//        }
-//
-//        int count = 1;
-//        view.displayMessage("card list: ");
-//        for(Card card: list){
-//            view.displayMessage(count + ":" + card.getName() + WHITESPACE);
-//            count ++;
-//        }
-//    }
+    /**
+     * display cards owned by the player
+     * @param player
+     * @param view
+     */
+    private void  showCardsInfo(List<Card> list, GameView view){
+        if (list.isEmpty()){
+            view.displayMessage("card list:empty");
+            return;
+        }
+
+        int count = 1;
+        view.displayMessage("card list: ");
+        for(Card card: list){
+            view.displayMessage(count + ":" + card.getName() + WHITESPACE);
+            count ++;
+        }
+    }
 
 
     /**
@@ -383,7 +383,7 @@ public class ReinforceGameController implements Controller{
         reinforcedArmies += playerService.calculateReinforcedArmyByTradingCards(player);
         //cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
        
-       // showCardsInfo(player.getCardList(), cardExchangeView);
+        showCardsInfo(player.getCardList(), cardExchangeView);
     }
 
     /**
