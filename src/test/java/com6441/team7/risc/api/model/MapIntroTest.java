@@ -14,7 +14,15 @@ import org.junit.Test;
  *
  */
 public class MapIntroTest {
-	static MapIntro mapIntro;
+
+	static
+	/**
+	 * MapIntro object reference
+	 */
+	MapIntro mapIntro;
+	/**
+	 * MapIntro test variable
+	 */
 	String mapIntroStr = "";
 
 	/**
@@ -26,18 +34,11 @@ public class MapIntroTest {
 		mapIntro = new MapIntro();
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	@Before
 	public void setUp() throws Exception {
 		mapIntroStr = "intro";
 		mapIntro.setMapIntro(mapIntroStr);
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**

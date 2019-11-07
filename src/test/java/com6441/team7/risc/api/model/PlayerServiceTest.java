@@ -63,6 +63,11 @@ public class PlayerServiceTest {
 	 */
 	PlayerAttackWrapper playerAttackWrapper;
 
+	/**
+	 * Method called before each test method.
+	 * It creates views and controllers, loads a valid map,
+	 * Adds 2 players, and populates all countries.
+	 */
 	@Before
 	public void setupTest(){
 		createObjects();
@@ -78,8 +83,6 @@ public class PlayerServiceTest {
 		mapService.setState(GameState.ATTACK);
 	}
 
-	@After
-	public void endTest() {}
 
 	/**
 	 * Tests addPlayer() method

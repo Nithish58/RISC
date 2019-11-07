@@ -11,9 +11,18 @@ import static org.junit.Assert.*;
  * the tests for MapService class
  */
 public class MapServiceTest {
+	
+	/**
+	 * Mapservice object reference
+	 */
     private MapService mapService;
 
 
+    /**
+     * Method called before each test method.
+     * Instantiates a mapservice object
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         mapService = new MapService();

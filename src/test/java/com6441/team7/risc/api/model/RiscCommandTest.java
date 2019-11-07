@@ -14,27 +14,27 @@ import org.junit.Test;
  *
  */
 public class RiscCommandTest {
+	
+	/**
+	 * Command name
+	 */
 	String command1;
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
+	/**
+	 * Method called before eacg test method
+	 * @throws Exception and error message
+	 */
 	@Before
 	public void setUp() throws Exception {
 		command1 = "validatemap";
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
+	/**
+	 * Tests if correct command name is output.
+	 * Basically tests the parsing method of the commands.
+	 */
 	@Test
-	public void test() {
+	public void test_commandParser() {
 		assertEquals(RiscCommand.VALIDATE_MAP, RiscCommand.parse(command1));
 	}
 

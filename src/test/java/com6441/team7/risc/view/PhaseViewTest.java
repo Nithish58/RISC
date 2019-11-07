@@ -156,7 +156,10 @@ public class PhaseViewTest implements GameView{
         });
     }
 
-
+    
+    /**
+     * Read command method. Not used here for testing
+     */
 	@Override
 	public void receiveCommand() {}
 

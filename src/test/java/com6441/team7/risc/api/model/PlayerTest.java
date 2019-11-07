@@ -75,15 +75,6 @@ public class PlayerTest {
 	 */
 	PlayerAttackWrapper playerAttackWrapper;
 
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
 	/**
 	 * Before every test is performed, the following are performed:
 	 * Calling createObjects() method
@@ -109,13 +100,6 @@ public class PlayerTest {
 
 	}
 
-	/**
-	 * This method is performed after every test
-	 * @throws Exception on invalid
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	/**
 	 * Testing the single attack method.
@@ -267,6 +251,7 @@ public class PlayerTest {
 
 		assertTrue(isTrue);
 	}
+	
 
 	/**
 	 * Tests rolling attacker's dice

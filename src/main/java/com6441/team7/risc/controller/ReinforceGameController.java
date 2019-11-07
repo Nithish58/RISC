@@ -82,8 +82,6 @@ public class ReinforceGameController implements Controller{
     @Override
     public void readCommand(String command) throws Exception {
 
-    	//skipping because of testing
-    	//playerService.getMapService().setState(GameState.ATTACK);
 
         Player player = playerService.getCurrentPlayer();
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -100,8 +98,8 @@ public class ReinforceGameController implements Controller{
                 
             case SHOW_CARDS:
             	//showCardsInfo(player.getCardList(),phaseView);
-            	createCardExchangeView();
-            	playerService.deleteObserver(cardExchangeView);
+            	//createCardExchangeView();
+            	//playerService.deleteObserver(cardExchangeView);
             	break;
                 
             case SHOW_PLAYER:
@@ -297,7 +295,7 @@ public class ReinforceGameController implements Controller{
         cardExchangeView = new CardExchangeView();
         playerService.addObserver(cardExchangeView);
         
-        showCardsInfo(playerService.getCurrentPlayer().getCardList(),cardExchangeView);
+        //showCardsInfo(playerService.getCurrentPlayer().getCardList(),cardExchangeView);
     }
 
 
@@ -324,8 +322,6 @@ public class ReinforceGameController implements Controller{
             phaseView.displayMessage(player.getName() + " get " + reinforcedArmies + " reinforced armies.");
             isExchangeCardOver = true;
         }
-
-
 
     }
 
@@ -386,7 +382,8 @@ public class ReinforceGameController implements Controller{
         playerService.removeCards(player, cardList);
         reinforcedArmies += player.getTradeInTimes() * 5;
         cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
-        showCardsInfo(player.getCardList(), cardExchangeView);
+       
+       // showCardsInfo(player.getCardList(), cardExchangeView);
     }
 
     /**
