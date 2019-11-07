@@ -96,13 +96,19 @@ public class ReinforceGameController implements Controller{
             case EXCHANGE_CARD:
                 exchangeCards(player, command);
                 break;
-            case SHOW_MAP:
-                //showMap();
-                MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
-                break;
+                
+            case SHOW_CARDS:
+            	showCardsInfo(player.getCardList(),phaseView);
+            	break;
+                
             case SHOW_PLAYER:
-                // showPlayerFortificationPhase(player);
+                // showPlayerFortificationPhase(player); (PREVIOUSLY IN BUILD 1)
+            	
                 MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
+                break;
+                
+            case SHOW_MAP:
+                MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
                 break;
 
             case SHOW_PLAYER_ALL_COUNTRIES:

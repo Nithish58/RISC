@@ -27,6 +27,7 @@ public enum RiscCommand {
     ATTACK("attack"),
     UNKNOWN("unknown"),
     
+    SHOW_CARDS("showcards"),
     
     //ATTACK Commands
     DEFEND("defend"),
@@ -39,8 +40,7 @@ public enum RiscCommand {
 	SHOW_PLAYER_COUNTRIES("showplayercountries"),
 	SHOW_ALL_PLAYERS("showallplayers"),
 	SHOW_FILE("showfile"),
-	EXIT("exit")
-	
+	EXIT("exit")	
 	;
 
     /**
