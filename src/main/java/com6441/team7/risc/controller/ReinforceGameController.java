@@ -293,6 +293,7 @@ public class ReinforceGameController implements Controller{
     private void createCardExchangeView(){
         cardExchangeView = new CardExchangeView();
         playerService.addObserver(cardExchangeView);
+        showCardsInfo(playerService.getCurrentPlayer().getCardList(),cardExchangeView);
 
     }
 
