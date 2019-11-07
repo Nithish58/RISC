@@ -249,6 +249,29 @@ public class ReinforceGameControllerTest {
         player.setCardList(cardList);
     }
 
+    /**
+     * mock the player, and ten cards the player has
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
+     */
+    private void mockPlayerCountryInformationSeven() throws IOException, URISyntaxException{
+        List<Card> cardList = new ArrayList<>();
+        cardList.add(Card.ARTILLERY);
+        cardList.add(Card.INFANTRY);
+        cardList.add(Card.CAVALRY);
+        cardList.add(Card.ARTILLERY);
+        cardList.add(Card.INFANTRY);
+        cardList.add(Card.CAVALRY);
+
+        cardList.add(Card.ARTILLERY);
+        cardList.add(Card.INFANTRY);
+        cardList.add(Card.ARTILLERY);
+        cardList.add(Card.INFANTRY);
+
+
+        player.setCardList(cardList);
+    }
+
 
 
 
@@ -341,5 +364,27 @@ public class ReinforceGameControllerTest {
         String command = "exchangecards -none";
         reinforceGameController.exchangeCards(player, command);
         assertFalse(reinforceGameController.isExchangeCardOver());
+    }
+
+
+    /**
+     * test when users trade cards in second time
+     * expect 1st time trade in would be 5, and 2nd time trade in would be 10
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    @Test
+    public void exchangeCardsWithFiveCards() throws IOException, URISyntaxException{
+        mockPlayerCountryInformationSeven();
+        String command = "exchangecards 1 2 3";
+        reinforceGameController.exchangeCards(player, command);
+        assertEquals(playerService.calculateReinforcedArmyByTradingCards(player), 5);
+        System.out.println("card trade in times " + player.getTradeInTimes());
+
+        reinforceGameController.exchangeCards(player, command);
+        System.out.println("card trade in times " + player.getTradeInTimes());
+        assertEquals(playerService.calculateReinforcedArmyByTradingCards(player), 10);
+        System.out.println("card trade in times " + player.getTradeInTimes());
+
     }
 }
