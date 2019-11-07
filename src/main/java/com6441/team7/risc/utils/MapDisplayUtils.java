@@ -41,9 +41,9 @@ public final class MapDisplayUtils {
 
 	/**
 	 * show current players map information
-	 * @param mapService
-	 * @param gameView
-	 * @param currentPlayer
+	 * @param mapService reference
+	 * @param gameView reference
+	 * @param currentPlayer reference
 	 */
     public static void showCurrentPlayerMap(MapService mapService, GameView gameView, Player currentPlayer) {
         requireNonNull(mapService);
@@ -88,11 +88,11 @@ public final class MapDisplayUtils {
 
 	/**
 	 * display country information
-	 * @param gameView
-	 * @param mapService
-	 * @param countriesIds
-	 * @param predicate
-	 * @param current
+	 * @param gameView reference
+	 * @param mapService reference
+	 * @param countriesIds reference
+	 * @param predicate of country and player
+	 * @param current currentplayer
 	 */
     private static void displayCountryInfo(GameView gameView, MapService mapService, Set<Integer> countriesIds, BiPredicate<Country, Player> predicate, Player current) {
         countriesIds.stream()
@@ -117,6 +117,7 @@ public final class MapDisplayUtils {
 
 	/**
 	 * show map information including countries, continents, and neighboring countries
+	 * @param mapservice reference
 	 */
 	public static void showMap(MapService mapService) {
         mapService.printCountryInfo();
@@ -129,6 +130,8 @@ public final class MapDisplayUtils {
 	 * print map in a format of continent, countries belong to the continent
 	 * for each country, print the players that occupy, the number of soldiers and
 	 * its neighboring countries
+	 * @param mapservice reference
+	 * @param view reference
 	 */
 	public static void showMapFullPopulated(MapService mapService, GameView view) {
     	
@@ -175,6 +178,8 @@ public final class MapDisplayUtils {
     /**
      * Used before populating countries. Does not display any ownership information
      * show map information with continents, each country relates to continents and its neighboring countries
+     *@param mapservice reference
+	 * @param view reference
      */
     public static void showMapFullUnpopulated(MapService mapService, GameView view) {
 
@@ -219,6 +224,8 @@ public final class MapDisplayUtils {
 	/**
 	 * show countries occupied by the current player and adjacent countries occupied by player only
 	 * this is useful in the fortification phase when player wants to know only about its countries
+	* @param mapservice reference
+	 * @param view reference
 	 */
 	public static void showPlayerCountries(MapService mapService, PlayerService playerService, GameView view) {
     	
@@ -284,7 +291,9 @@ public final class MapDisplayUtils {
     
 	/**
 	 * show current player name, number of armies, continent,
-	 * 	 * countries, and number of armies on each country
+	 * countries, and number of armies on each country
+	 *@param mapservice reference
+	 * @param view reference
 	 */
 	public static void showPlayer(MapService mapService, PlayerService playerService, GameView view) {
 		
@@ -320,6 +329,8 @@ public final class MapDisplayUtils {
 	/**
 	 * show players information including current player name, number of armies, continent,
 	 * countries, and number of armies on each country
+	 * @param mapservice reference
+	 * @param view reference
 	 */
 	public static void showAllPlayers(MapService mapService, PlayerService playerService, GameView view) {
     	
@@ -353,6 +364,8 @@ public final class MapDisplayUtils {
 	/**
 	 * show all countries occupied by current player and  information about all adjacent countries.
 	 * This is useful in the attack phase when player wants to know which countries it owns and which countries it can attack.
+	 * @param mapservice reference
+	 * @param view reference
 	 */
 	public static void showPlayerAllCountries(MapService mapService, PlayerService playerService,
 																	GameView view) {
