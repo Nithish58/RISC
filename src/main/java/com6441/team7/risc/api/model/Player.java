@@ -20,9 +20,12 @@ import java.security.SecureRandom;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
+import com6441.team7.risc.view.GameView;
+
 import static com6441.team7.risc.api.RiscConstants.MAX_ATTACKER_DICE_NUM;
 import static com6441.team7.risc.api.RiscConstants.MAX_DEFENDER_DICE_NUM;
 import static com6441.team7.risc.api.RiscConstants.MIN_ATTACKING_SOLDIERS;
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 /**
  * store player information
@@ -745,13 +748,50 @@ public class Player{
 	 */
 	public void transferCardsFromDefenderToAttacker() {
 		
+		if(defender.getCardList().size()==0) {
+			playerService.notifyPlayerServiceObservers("\nDefender has no cards to be transferred.");
+			return;
+		}
+		
+		//Show card details of defender
+		showCardsInfoPlayer(defender);
+		
 		for(Card card:defender.getCardList()) {
 			addCard(card); //add card to playerList
 		}
 		
 		//Not required as defender will be garbage collected
 		defender.getCardList().clear();
+		
+		showCardsInfoPlayer(this);
+		
+		playerService.notifyPlayerServiceObservers("\nCards transferred.");
+		
 	}
+	
+    /**
+     * display cards owned by the player
+     * @param player who's card list we want to view
+     */
+    private void  showCardsInfoPlayer(Player p){
+    	
+        if (p.getCardList().isEmpty()){
+        	playerService.notifyPlayerServiceObservers("Player card list:empty");
+            return;
+        }
+
+        int count = 1;
+        
+        String strCardList=p.getName()+" Card List: ";
+        
+        for(Card card: p.getCardList()){
+        	strCardList+=count + ":" + card.getName() + WHITESPACE;
+            count ++;
+        }
+        
+        playerService.notifyPlayerServiceObservers(strCardList);
+        
+    }
 	
 	/**
 	 * Check if all of the defender's soldiers have been eliminated
@@ -775,10 +815,10 @@ public class Player{
 			
 	
 			
-			System.out.println("Need to check player wins,"
-					+ "Need to fortify new country, check if defender is eliminated from the game,"
-					+ "need to transfer cards, need to check if cards >= 5, need to call exchange view immediately,"
-					+ "need to draw card when ending attack phase");
+			strSendAttackInfoToObservers+="Need to check player wins,\n"
+					+ "check if defender is eliminated from the game,"
+					+ "need to transfer cards\n"
+					+ "need to draw card when ending attack phase";
 			
 			
 			//notify after attack info to observers
@@ -803,6 +843,7 @@ public class Player{
 				.getCountries().size()) {
 			
 			strSendAttackInfoToObservers="\n"+attacker.getName()+" Wins";
+			
 			playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
 			
 			CommonUtils.endGame(playerService);
