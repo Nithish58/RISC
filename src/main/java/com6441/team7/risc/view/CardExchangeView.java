@@ -41,7 +41,6 @@ public class CardExchangeView implements GameView{
     @Override
     public void update(Observable o, Object arg) {
 
-
-
     }
+    
 }

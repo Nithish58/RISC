@@ -748,10 +748,13 @@ public class StartupGameController implements Controller{
 	 */
 	public void placeAll() {
     	
+		//For every player in list
     	for(Player p:playerService.getPlayerList()) {
     		
+    		//while armies are still remaining
     		while(p.getArmies()>0) {
     			
+    			//random placement + decrement random range size TO AVOID COLLISIONS
     			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.getCountryList().size());
     			
     			p.countryPlayerList.get(randomIndex).addSoldiers(1);
@@ -763,7 +766,7 @@ public class StartupGameController implements Controller{
     			
     			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
     			
-    			//playerService.evaluateWorldDomination();
+    			//playerService.evaluateWorldDomination();  //Commented out else too much updates
     		}
     		
 			playerService.evaluateWorldDomination();
@@ -774,16 +777,15 @@ public class StartupGameController implements Controller{
 
 
     	playerService.setCurrentPlayerIndex(0);
-    	//view.displayMessage("Player Turn: "+players.get(0).getName());
-    	
+    	//view.displayMessage("Player Turn: "+players.get(0).getName());    	
     	//this.boolStartUpPhaseOver.set(true);
+    	
     	this.mapService.setState(GameState.REINFORCE);
 
     	Player player = playerService.getCurrentPlayer();
-    	playerService.showCardsInfo(player);
-
-
     	
+    	//playerService.showCardsInfo(player);
+
     }
 	
 	/**

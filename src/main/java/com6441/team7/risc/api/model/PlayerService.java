@@ -56,132 +56,8 @@ public class PlayerService extends Observable {
 		//Because no players added when PlayerService object is being instantiated in App.class
 		this.currentPlayerIndex=-1;
 
-	}
-
-	//-------------------------DECK OF CARDS METHODS---------------------------------------
-
-	/**
-	 * Method initialised Deck of cards: 14 cards of each type
-	 */
-	public void initialiseDeckCards() {
-
-		this.deckCards=new Stack();
-
-		Card[] arrCard=new Card[] {Card.INFANTRY,Card.CAVALRY,Card.ARTILLERY};
-
-		for(int j=0;j<3;j++) {
-			for(int i=0;i<14;i++) {
-				deckCards.push(arrCard[j]);
-			}
-		}
-
-		//shuffle deck of cards thrice for randomisation
-		shuffleDeckCards();
-	}
-
-	public void shuffleDeckCards() {
-		Collections.shuffle(deckCards);
-		Collections.shuffle(deckCards);
-		Collections.shuffle(deckCards);
-	}
-
-	public Card drawFromDeck() {
-		return deckCards.pop();
-	}
-
-	public void returnToDeck(List<Card> cards) {
-
-		cards.forEach(card -> deckCards.push(card));
-		shuffleDeckCards();
-	}
-
-	public void returnToDeck(Card card){
-		deckCards.push(card);
-		shuffleDeckCards();
-	}
-
-//------------------------------------------------------------------------------------------------
-
-	/**
-	 * get mapService
-	 * @return the reference of mapService
-	 */
-	public MapService getMapService() {
-		return mapService;
-	}
-
-	/**
-	 * extends addObserver() from java
-	 * @param observer Observer
-	 */
-	@Override
-	public void addObserver(Observer observer) {
-
-		super.addObserver(observer);
-	}
-
-	/**
-	 * set current Player, notify the observers when player has been changed
-	 * @param num the index of player in PlayerList
-	 */
-	public void setCurrentPlayerIndex(int num) {
-		this.currentPlayerIndex=num;
-
-		Player currentPlayer=listPlayers.get(currentPlayerIndex);
-		PlayerChangeWrapper playerChangeWrapper=new PlayerChangeWrapper(currentPlayer);
-
-		setChanged();
-		notifyObservers(playerChangeWrapper);
-	}
-
-	/**
-	 * add a Player
-	 * @param name of the player
-	 * @return player
-	 */
-	public Player addPlayer(String name){
-		Player newPlayer=new Player(name);
-		listPlayers.add(newPlayer);
-
-		//Add Player to Wrapper function and send wrapper function to observers
-		PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
-		playerEditWrapper.setAddedPlayer(newPlayer);
-
-		setChanged();
-		notifyObservers(playerEditWrapper);
-
-		return newPlayer;
-	}
-
-	/**
-	 * remove the player by player name
-	 * @param playerName
-	 * @return true if player been removed successfully and notify the observers
-	 * 		   false if player has not been removed successfully
-	 */
-	public boolean removePlayer(String playerName){
-
-		for(int i=0;i<listPlayers.size();i++) {
-
-			if(listPlayers.get(i).getName().equals(playerName)) {
-
-				Player removedPlayer=listPlayers.remove(i);
-
-				//Add Player to Wrapper function and send wrapper function to observers
-				PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
-				playerEditWrapper.setRemovedPlayer(removedPlayer);
-
-				setChanged();
-				//NOTIFY BEFORE RETURN
-				notifyObservers(playerEditWrapper);
-
-				return true;
-			}
-		}
-
-		return false;
-	}
-
+	}	
+	
 	/**
 	 * return the list of players
 	 * @return
@@ -242,8 +118,190 @@ public class PlayerService extends Observable {
 
 		return currentPlayerIndex;
 	}
+	
+	
+	/**
+	 * get mapService
+	 * @return the reference of mapService
+	 */
+	public MapService getMapService() {
+		return mapService;
+	}
+	
+	/**
+	 * get the next player index.
+	 * if next index points to the last element in list, return 0
+	 * else return currentIndex + 1
+	 * @return int
+	 */
+	public int getNextPlayerIndex() {
+
+		if((currentPlayerIndex+1)<=listPlayers.size()-1) return currentPlayerIndex+1;
+
+		else return 0;
+	}
+
+	/**
+	 * get next Player
+	 * @return player
+	 */
+	public Player getNextPlayer() {
+		return listPlayers.get(getNextPlayerIndex());
+	}
+
+	/**
+	 * extends addObserver() from java
+	 * @param observer Observer
+	 */
+	@Override
+	public void addObserver(Observer observer) {
+
+		super.addObserver(observer);
+	}
+	
+	
+	
+	
+
+	//--------------------------------------------DECK OF CARDS METHODS---------------------------------------
+
+	
+	
+	/**
+	 * Method initialised Deck of cards: 14 cards of each type
+	 */
+	public void initialiseDeckCards() {
+
+		this.deckCards=new Stack();
+
+		Card[] arrCard=new Card[] {Card.INFANTRY,Card.CAVALRY,Card.ARTILLERY};
+
+		for(int j=0;j<3;j++) {
+			for(int i=0;i<14;i++) {
+				deckCards.push(arrCard[j]);
+			}
+		}
+
+		//shuffle deck of cards thrice for randomisation
+		shuffleDeckCards();
+	}
+
+	public void shuffleDeckCards() {
+		Collections.shuffle(deckCards);
+		Collections.shuffle(deckCards);
+		Collections.shuffle(deckCards);
+	}
+
+	public Card drawFromDeck() {
+		return deckCards.pop();
+	}
+
+	public void returnToDeck(List<Card> cards) {
+
+		cards.forEach(card -> deckCards.push(card));
+		shuffleDeckCards();
+	}
+
+	public void returnToDeck(Card card){
+		deckCards.push(card);
+		shuffleDeckCards();
+	}
+	
+	
+
+//-----------------------------------------END OF DECK OF CARD METHODS------------------------------------------
+	
+	
+	
+
+//*****************************************STARTUP GAME CONTROLLER METHODS**************************************
+
+	/**
+	 * set current Player, notify the observers when player has been changed
+	 * @param num the index of player in PlayerList
+	 * NOTIFIES OBSERVERS OF CURRENT PLAYER BY SENDING PlayerChangeWrapper.class
+	 */
+	public void setCurrentPlayerIndex(int num) {
+		this.currentPlayerIndex=num;
+
+		Player currentPlayer=listPlayers.get(currentPlayerIndex);
+		PlayerChangeWrapper playerChangeWrapper=new PlayerChangeWrapper(currentPlayer);
+
+		setChanged();
+		notifyObservers(playerChangeWrapper);
+	}
+
+	/**
+	 * add a Player
+	 * @param name of the player
+	 * @return player
+	 */
+	public Player addPlayer(String name){
+		Player newPlayer=new Player(name);
+		listPlayers.add(newPlayer);
+
+		//Add Player to Wrapper function and send wrapper function to observers
+		PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
+		playerEditWrapper.setAddedPlayer(newPlayer);
+
+		setChanged();
+		notifyObservers(playerEditWrapper);
+
+		return newPlayer;
+	}
+
+	/**
+	 * remove the player by player name
+	 * @param playerName
+	 * @return true if player been removed successfully and notify the observers
+	 * 		   false if player has not been removed successfully
+	 */
+	public boolean removePlayer(String playerName){
+
+		for(int i=0;i<listPlayers.size();i++) {
+
+			if(listPlayers.get(i).getName().equals(playerName)) {
+
+				Player removedPlayer=listPlayers.remove(i);
+
+				//Add Player to Wrapper function and send wrapper function to observers
+				PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
+				playerEditWrapper.setRemovedPlayer(removedPlayer);
+
+				setChanged();
+				//NOTIFY BEFORE RETURN
+				notifyObservers(playerEditWrapper);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 
+
+	
+	/**
+	 * This method keeps track of the currentPlayerIndex and switches to the next player as soon as a player's
+	 * turn is over.
+	 *Uses Atomic Boolean boolFortificationPhaseOver to take decisions.
+	 */
+	public void switchNextPlayer() {
+
+
+		if(currentPlayerIndex==listPlayers.size()-1) {
+			this.setCurrentPlayerIndex(0);
+		}
+
+		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
+
+	}	
+	
+	
+
+	//------------------------------------REINFORCEMENT UTILS -----------------------------------------------
+	
 
 	/**
 	 * set current player
@@ -296,20 +354,21 @@ public class PlayerService extends Observable {
 
 	/**
 	 * get countries names conquered by the player
-	 * @param player
-	 * @return
+	 * @param player reference
+	 * @return list of country names conquered by player
 	 */
 	public List<String> getConqueredContries(Player player){
-		return mapService.getConqueredCountriesNameByPlayer(player);}
+		return mapService.getConqueredCountriesNameByPlayer(player);
+		}
 
 
 
 
 	/**
 	 * reinforce army to the player of its country occupied
-	 * @param player
-	 * @param country
-	 * @param armyNum
+	 * @param player reference
+	 * @param country name to be reinforced
+	 * @param number of armies to be reinforced
 	 */
 	public void reinforceArmy(Player player, String country, int armyNum){
 		player.reinforceArmy(country, armyNum, mapService);
@@ -317,11 +376,24 @@ public class PlayerService extends Observable {
 		setChanged();
 		notifyObservers(reinforcedArmyWrapper);
 	}
+	
+	/**
+	 * calculate armies get from the player by the number of occupied countries
+	 * @param player reference
+	 * @return number of armies received
+	 */
+	public int calculateTotalPlayerArmies(Player player) {
+		int counter=0;
+		for(Country c:player.getCountryList()) counter+=c.getSoldiers().intValue();
+
+		return counter;
+	}
 
 
 	/**
-	 * show cards information of the player
-	 * @param player
+	 * Show cards information of the player
+	 * Sends notification to observers
+	 * @param player passed as parameter
 	 * 
 	 */
 	public void showCardsInfo(Player player){
@@ -355,56 +427,17 @@ public class PlayerService extends Observable {
 		returnToDeck(cardList);
 		notifyObservers(player);
 	}
+	
+	
+	//****************************** NOTIFY OBSERVERS + WORLD DOMINATION ******************************************
 
 
 	/**
-	 * check if Player is valid
-	 * @return always return false?
-	 */
-	public boolean isPlayerValid(){ return false; }
-
-
-
-	/**
-	 * This method keeps track of the currentPlayerIndex and switches to the next player as soon as a player's
-	 * turn is over.
-	 *Uses Atomic Boolean boolFortificationPhaseOver to take decisions.
-	 */
-	public void switchNextPlayer() {
-
-
-		if(currentPlayerIndex==listPlayers.size()-1) {
-			this.setCurrentPlayerIndex(0);
-		}
-
-		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
-
-	}
-
-	/**
-	 * get the next player index.
-	 * if next index points to the last element in list, return 0
-	 * else return currentIndex + 1
-	 * @return int
-	 */
-	public int getNextPlayerIndex() {
-
-		if((currentPlayerIndex+1)<=listPlayers.size()-1) return currentPlayerIndex+1;
-
-		else return 0;
-	}
-
-	/**
-	 * get next Player
-	 * @return player
-	 */
-	public Player getNextPlayer() {
-		return listPlayers.get(getNextPlayerIndex());
-	}
-
-
-	/**
-	 * Function that notifies all playerService observers that it has been changed and then sends an object to the observers
+	 * Function that notifies all playerService observers that it has been changed and then sends an object to
+	 *  the observers
+	 *  Wraps the setChanged and notify observers method so that they can be called by methods in game controllers
+	 *  or by methods in other models (such as player.class) when the latter perform some actions and want to notify
+	 *  observers.
 	 * @param object that can be of different classes (different wrapper classes)
 	 */
 	public void notifyPlayerServiceObservers(Object object) {
@@ -539,19 +572,6 @@ public class PlayerService extends Observable {
 		setChanged();
 		notifyObservers(listPlayerDomination);
 
-	}
-
-
-	/**
-	 * calculate armies get from the player by the number of occupied countries
-	 * @param player
-	 * @return number of armies received
-	 */
-	public int calculateTotalPlayerArmies(Player player) {
-		int counter=0;
-		for(Country c:player.getCountryList()) counter+=c.getSoldiers().intValue();
-
-		return counter;
 	}
 
 	

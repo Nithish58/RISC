@@ -212,17 +212,12 @@ public class  FortifyGameController implements Controller {
 				return;
 			}
 
-			// fortify();
+			// fortify(); (BUILD 1 PREVIOUSLY - LOGIC WAS IN CONTROLLER ITSELF - NOW CONTROLLER MOSTLY DOES ONLY VALIDATION)
 
 			// FORTIFY CALLED IN PLAYER CLASS
 
 			PlayerFortificationWrapper playerFortificationWrapper = new PlayerFortificationWrapper(fromCountry,
 					toCountry, numSoldiers);
-
-			// CAN DIRECTLY CALL CURRENT PLAYER...NO NEED TO GO THROUGH MAPSERVICE
-			// CAN PASS PLAYERSERVICE AS PARAMETER
-
-			// playerService.fortifyCurrentPlayer(playerFortificationWrapper);
 
 			playerService.getCurrentPlayer().fortify(playerService, playerFortificationWrapper);
 

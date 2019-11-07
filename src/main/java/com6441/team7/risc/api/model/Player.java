@@ -726,14 +726,12 @@ public class Player{
 			if(isDefenderEliminatedFromGame()) {
 				
 				//transferCardsFromDefenderToAttacker
-				System.out.println("Need to transfer cards");
 				transferCardsFromDefenderToAttacker();
-				
-				
+								
 				//Remove defender from game
 				playerService.removePlayer(defender.getName());
 				
-				//Display Domination View
+				//Display Domination View by notifying obervers
 				playerService.evaluateWorldDomination();
 				
 
@@ -748,9 +746,9 @@ public class Player{
 	 */
 	public void transferCardsFromDefenderToAttacker() {
 		
-		for(int i=0;i<5;i++) {
-			defender.addCard(Card.INFANTRY);
-		}
+		/*
+		 * for(int i=0;i<4;i++) { defender.addCard(Card.INFANTRY); }  //FOR TESTING ONLY
+		 */
 		
 		if(defender.getCardList().size()==0) {
 			playerService.notifyPlayerServiceObservers("\nDefender has no cards to be transferred.");
@@ -1352,8 +1350,7 @@ public class Player{
     	//Checks if boolean fortificationNone is true...calls fortifyNone method.
     	
     	if(this.playerFortificationWrapper.getBooleanFortificationNone()) {
-    		fortifyNone(playerService);
-    		
+    		fortifyNone(playerService);    		
     		return;
     	}
 
@@ -1383,7 +1380,8 @@ public class Player{
 		//Switch to Next player and Change State to Reinforcement
 		playerService.switchNextPlayer();
 		playerService.getMapService().setState(GameState.REINFORCE);
-		playerService.showCardsInfo(playerService.getCurrentPlayer());
+		
+		//playerService.showCardsInfo(playerService.getCurrentPlayer());
 		
     	
     }
@@ -1401,7 +1399,7 @@ public class Player{
     	
 		playerService.switchNextPlayer();
 		playerService.getMapService().setState(GameState.REINFORCE);
-		playerService.showCardsInfo(playerService.getCurrentPlayer());
+		//playerService.showCardsInfo(playerService.getCurrentPlayer());
     }
     
 	/**

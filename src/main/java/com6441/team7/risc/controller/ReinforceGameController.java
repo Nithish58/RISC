@@ -93,12 +93,15 @@ public class ReinforceGameController implements Controller{
             case REINFORCE:
                 reinforce(player, command);
                 break;
+                
             case EXCHANGE_CARD:
                 exchangeCards(player, command);
                 break;
                 
             case SHOW_CARDS:
-            	showCardsInfo(player.getCardList(),phaseView);
+            	//showCardsInfo(player.getCardList(),phaseView);
+            	createCardExchangeView();
+            	playerService.deleteObserver(cardExchangeView);
             	break;
                 
             case SHOW_PLAYER:
@@ -293,16 +296,17 @@ public class ReinforceGameController implements Controller{
     private void createCardExchangeView(){
         cardExchangeView = new CardExchangeView();
         playerService.addObserver(cardExchangeView);
+        
         showCardsInfo(playerService.getCurrentPlayer().getCardList(),cardExchangeView);
-
     }
 
 
     /**
-     * if the command is exchangecards -none, if the card number is greater than 5, ask player to exchange cards
+     * if the command is exchangecards -none, if the card number is greater than or equal to 5,
+     *  ask player to exchange cards
      *
-     * @param player
-     * @param commands
+     * @param player current player
+     * @param commands array of strings
      */
     public void tradeNone(Player player, String[] commands){
         if(!commands[1].equalsIgnoreCase("-none")){
