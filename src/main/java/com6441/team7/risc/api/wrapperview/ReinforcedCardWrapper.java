@@ -32,6 +32,15 @@ public class ReinforcedCardWrapper {
     }
 
     /**
+     * constructor
+     * @param player
+     * @param number
+     */
+    public ReinforcedCardWrapper(Player player, int number){
+        this.player = player;
+    }
+
+    /**
      * get the list of cards
      * @return
      */
@@ -62,4 +71,6 @@ public class ReinforcedCardWrapper {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+
 }

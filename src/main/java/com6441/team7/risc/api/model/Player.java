@@ -311,6 +311,14 @@ public class Player{
         this.tradeInTimes = tradeInTimes;
     }
 
+	/**
+	 * get number of reinforced armies by 5 * tradeInTimes
+	 * @return int
+	 */
+	public int calculateReinforcedArmyByTradingCards(){
+    	return tradeInTimes * 5;
+	}
+
     /**
      * check whether player has same card category
      * @param card card
@@ -776,23 +784,23 @@ public class Player{
      * @param player who's card list we want to view
      */
     private void  showCardsInfoPlayer(Player p){
-    	
+
         if (p.getCardList().isEmpty()){
         	playerService.notifyPlayerServiceObservers("Player card list:empty");
             return;
         }
 
         int count = 1;
-        
+
         String strCardList=p.getName()+" Card List: ";
-        
+
         for(Card card: p.getCardList()){
         	strCardList+=count + ":" + card.getName() + WHITESPACE;
             count ++;
         }
-        
+
         playerService.notifyPlayerServiceObservers(strCardList);
-        
+
     }
 	
 	/**
@@ -1381,7 +1389,7 @@ public class Player{
 		playerService.switchNextPlayer();
 		playerService.getMapService().setState(GameState.REINFORCE);
 		
-		//playerService.showCardsInfo(playerService.getCurrentPlayer());
+		playerService.showCardsInfo(playerService.getCurrentPlayer());
 		
     	
     }
@@ -1399,7 +1407,7 @@ public class Player{
     	
 		playerService.switchNextPlayer();
 		playerService.getMapService().setState(GameState.REINFORCE);
-		//playerService.showCardsInfo(playerService.getCurrentPlayer());
+		playerService.showCardsInfo(playerService.getCurrentPlayer());
     }
     
 	/**

@@ -784,7 +784,7 @@ public class StartupGameController implements Controller{
 
     	Player player = playerService.getCurrentPlayer();
     	
-    	//playerService.showCardsInfo(player);
+    	playerService.showCardsInfo(player);
 
     }
 	

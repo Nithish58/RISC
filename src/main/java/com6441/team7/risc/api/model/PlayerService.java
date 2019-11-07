@@ -403,7 +403,13 @@ public class PlayerService extends Observable {
 		notifyObservers(cardWrapper);
 	}
 
-
+	public int calculateReinforcedArmyByTradingCards(Player player){
+		int number = player.calculateReinforcedArmyByTradingCards();
+		ReinforcedArmyAfterTradingCard wrapper = new ReinforcedArmyAfterTradingCard(player, number);
+		setChanged();
+		notifyObservers(wrapper);
+		return number;
+	}
 
 	/**
 	 * check if the trade-in cards meet the trade-in condition
