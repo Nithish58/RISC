@@ -184,7 +184,6 @@ public class PlayerTest {
 	 * Tests attack until soldiers from either attacker or defender is out
 	 * @throws Exception on invalid
 	 */
-	@Ignore
 	@Test
 	public void test002_attackAllOut() throws Exception {
 		System.out.println("Attack all out");
@@ -246,7 +245,7 @@ public class PlayerTest {
 		currentPlayer.attack(playerService, playerAttackWrapper);
 
 		// If either one of the countries' loses a soldier, isTrue is set to true
-		if (currentPlayer.isAttackerLastManStanding() || currentPlayer.checkDefenderPushedOut())
+		if (currentPlayer.isAttackerLastManStanding() || currentPlayer.defenderPushedOut())
 			isTrue = true;
 
 		assertTrue(isTrue);
@@ -284,92 +283,12 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Tests if the player wins the game
-	 */
-	@Ignore
-	@Test
-	public void test005_checkPlayerWin() {
-		System.out.println("Check if the attacker wins the entire game");
-		Player currentPlayer = playerService.getCurrentPlayer();
-		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
-		System.out.println("Total country list  size: " + mapService.getCountries().size());
-
-		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
-		Country toAttackCountry = playerService.getNextPlayer().countryPlayerList.get(0);
-		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
-		// number of
-		// dices can be thrown
-		fromAttackCountry.setSoldiers(1000);
-		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
-
-		Set<Country> countryList = mapService.getCountries();
-
-		for (Player p : playerService.getPlayerList()) {
-
-			if (!p.getName().equals(fromAttackCountry.getPlayer().getName()))
-				for (Country c : p.getCountryList()) {
-					if (!c.getCountryName().equals(toAttackCountry.getCountryName()))
-						toAttackCountry.getPlayer().getCountryList().remove(c.getId());
-					currentPlayer.getCountryList().add(c);
-				}
-
-		}
-
-		for (Country country : countryList) {
-			System.out.println(country);
-		}
-
-		Set<Integer> toCountryAdjacencyList = mapService.getAdjacencyCountries(toAttackCountry.getId());
-
-		System.out.println("Attacker country list size after transfer: " + currentPlayer.getCountryList().size());
-		System.out.println("Total country list  size after: " + mapService.getCountries().size());
-		// numbers of soldiers on toAttackCountry is set to 2 to ensure that a valid
-		// number of
-		// dices can be thrown
-		toAttackCountry.setSoldiers(1);
-
-		// expectedAttackerSoldier is the expected number of attacker soldier if
-		// the attacker is only left with one soldier
-		Integer expectedAttackerSoldier = 1;
-
-		// expectedDefenderSoldier is the expected number of defender soldier if
-		// the defender lost all of his/her soldiers
-		Integer expectedDefenderSoldier = 0;
-
-		// This is for checking the condition after attack
-		boolean isTrue = false;
-
-		// Instantiate playerAttackWrapper
-		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
-
-		playerAttackWrapper.setBooleanAllOut();
-
-		// Set the number of attacker dices to 3
-		playerAttackWrapper.setNumDiceAttacker(3);
-
-		// Set the number of defender dices to 1
-		playerAttackWrapper.setNumDiceDefender(1);
-
-		// Call the attack function
-		currentPlayer.attack(playerService, playerAttackWrapper);
-		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
-		System.out.println("Total country list  size: " + mapService.getCountries().size());
-		// If either one of the countries' loses a soldier, isTrue is set to true
-		if (currentPlayer.getCountryList().size() == mapService.getCountries().size())
-			isTrue = true;
-
-		assertTrue(isTrue);
-	}
-
-
-	/**
 	 * This checks if the attacker owns all the territory
 	 * and is declared the winner
 	 * @throws Exception on invalid on invalid value
 	 */
 	@Test
-	public void test006_checkPlayerWinTheGame() throws Exception{
+	public void test005_checkPlayerWinTheGame() throws Exception{
 		System.out.println("Check if the attacker owns all countries and wins the entire game");
 		Player currentPlayer = playerService.getCurrentPlayer();
 		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
@@ -421,7 +340,7 @@ public class PlayerTest {
 	 * @throws Exception on invalid
 	 */
 	@Test
-	public void test007_validateAttackConditions() throws Exception {
+	public void test006_validateAttackConditions() throws Exception {
 		System.out.println("Validate attack conditions");
 		Player currentPlayer = playerService.getCurrentPlayer();
 
@@ -476,7 +395,7 @@ public class PlayerTest {
 	 * @throws Exception on invalid on invalid value
 	 */
 	@Test
-	public void test008_checkLastManStanding() throws Exception {
+	public void test007_checkLastManStanding() throws Exception {
 		System.out.println("Check last man standing for attacker");
 		Player currentPlayer = playerService.getCurrentPlayer();
 
@@ -539,22 +458,19 @@ public class PlayerTest {
 	 * The test passes if the method checkDefenderPushedOut returns true
 	 * @throws Exception on invalid 
 	 */
-	@Ignore
 	@Test
-	public void test009_checkIsDefenderPushedOut() throws Exception {
-		System.out.println("Check if defender has no soldiers left in a country");
+	public void test008_checkIsDefenderPushedOut() throws Exception {
+		System.out.println("Attack all out");
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
 		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
 
+		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// number of
+		// dices can be thrown
+		fromAttackCountry.setSoldiers(20);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
-
-		// print adjacency list
-		System.out.print("Adjacency list for attacker country " + fromAttackCountry.getCountryName()+" ");
-		for (Integer i : fromCountryAdjacencyList)
-			System.out.print(i + " ");
-		System.out.println();
 
 		// Get first adjacent country in country's list
 		Country toAttackCountry = null;
@@ -571,32 +487,39 @@ public class PlayerTest {
 				setUp();
 			}
 		}
-		
-		// numbers of soldiers on fromAttackCountry is set to 10
-		fromAttackCountry.setSoldiers(10);
-		
-		System.out.println("Defender country is " + toAttackCountry);
-		// numbers of soldiers on toAttackCouuntry is set to 2
+
+		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// number of
+		// dices can be thrown
 		toAttackCountry.setSoldiers(1);
 
-		// This is for checking the condition if the defender has no soldier left in a country
+		// expectedAttackerSoldier is the expected number of attacker soldier if
+		// the attacker is only left with one soldier
+		Integer expectedAttackerSoldier = 1;
+
+		// expectedDefenderSoldier is the expected number of defender soldier if
+		// the defender lost all of his/her soldiers
+		Integer expectedDefenderSoldier = 0;
+
+		// This is for checking the condition after attack
 		boolean isTrue = false;
 
 		// Instantiate playerAttackWrapper
 		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		playerAttackWrapper.setBooleanAllOut();
 
 		// Set the number of attacker dices to 3
 		playerAttackWrapper.setNumDiceAttacker(3);
 
 		// Set the number of defender dices to 1
 		playerAttackWrapper.setNumDiceDefender(1);
-		
+
 		// Call the attack function
 		currentPlayer.attack(playerService, playerAttackWrapper);
-		
-		boolean isDefenderHasOwnership=currentPlayer.checkDefenderOwnership();
-		// If the defender has no soldiers left in a country, isTrue is set to true
-		if (isDefenderHasOwnership)
+
+		// If either one of the countries' loses a soldier, isTrue is set to true
+		if (currentPlayer.defenderPushedOut())
 			isTrue = true;
 
 		assertTrue(isTrue);
@@ -609,7 +532,7 @@ public class PlayerTest {
 	 * @throws Exception on invalid
 	 */
 	@Test
-	public void test010_checkInvalidAttackConditions() throws Exception {
+	public void test009_checkInvalidAttackConditions() throws Exception {
 		System.out.println("Check invalid attack conditions");
 		Player currentPlayer = playerService.getCurrentPlayer();
 
