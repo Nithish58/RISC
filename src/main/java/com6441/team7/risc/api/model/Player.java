@@ -748,6 +748,10 @@ public class Player{
 	 */
 	public void transferCardsFromDefenderToAttacker() {
 		
+		for(int i=0;i<5;i++) {
+			defender.addCard(Card.INFANTRY);
+		}
+		
 		if(defender.getCardList().size()==0) {
 			playerService.notifyPlayerServiceObservers("\nDefender has no cards to be transferred.");
 			return;
