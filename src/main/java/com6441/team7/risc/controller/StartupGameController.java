@@ -124,8 +124,8 @@ public class StartupGameController implements Controller{
 
 	/**
 	 * constructor to set mapController and playerService
-	 * @param mapController
-	 * @param playerService
+	 * @param mapController MapController
+	 * @param playerService PlayerService
 	 */
 	public StartupGameController(Controller mapController, PlayerService playerService) {
 		this.mapLoaderController= (MapLoaderController) mapController;
@@ -142,7 +142,7 @@ public class StartupGameController implements Controller{
 
 	/**
 	 * set the view
-	 * @param view
+	 * @param view GameView
 	 */
 	public void setView(GameView view){
 	    this.phaseView = view;
@@ -154,8 +154,8 @@ public class StartupGameController implements Controller{
 	 * check the validity of the commands,
 	 * if the command is valid, call relative methods
 	 * if not, display error messages to the phase view
-	 * @param command
-	 * @throws Exception
+	 * @param command Command
+	 * @throws Exception on invalid
 	 */
 	@Override
     public void readCommand(String command) throws Exception {
@@ -628,7 +628,7 @@ public class StartupGameController implements Controller{
 	 *</ul>
 	 *This pattern goes on until a maximum of 9 players with 5 armies each.
 	 * 
-	 * @param numPlayers
+	 * @param numPlayers number of Players
 	 * @return number of intial armies allocated to each player
 	 */
 	public int determineNumInitialArmies(int numPlayers) {
@@ -656,7 +656,7 @@ public class StartupGameController implements Controller{
 	/**
 	 * place an army on the country by its countryName
 	 * by each player until all players have placed all their armies
-	 * @param countryName
+	 * @param countryName CountryName
 	 */
 	public void placeArmy(String countryName) {
     	

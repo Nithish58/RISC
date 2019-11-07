@@ -94,7 +94,7 @@ public class PlayerFortificationWrapper {
 
 	/**
 	 * set display message
-	 * @param str
+	 * @param str String
 	 */
 	public void setFortificationDisplayMessage(String str) {
 		this.displayMessage=str;

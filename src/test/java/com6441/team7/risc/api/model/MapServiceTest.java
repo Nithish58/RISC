@@ -23,7 +23,7 @@ public class MapServiceTest {
      * call createValidContinents method to add 5 continents to the continentSet in mapService
      * pass the test if the size of continents in mapService is 5.
      * pass the test if the continentCountriesMap has 5 keys for the continents.
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testAddContinentSet() throws Exception{
@@ -37,7 +37,7 @@ public class MapServiceTest {
      * add two continents to the mapService
      * pass the test if continentSet size is 2
      * pass the test if continentCountriesMap has 2 keys for 2 continents.
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testAddSingleContinent() throws Exception{
@@ -55,7 +55,7 @@ public class MapServiceTest {
     /**
      * add three continents and four countries to the mapService
      * pass the test if mapService has three continents and four countries.
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testAddCountrySet() throws Exception{
@@ -73,7 +73,7 @@ public class MapServiceTest {
     /**
      * add three continents and two countries
      * pass the tests if the number of continents is 3 and number of countries is 2.
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testAddSingleCountry() throws Exception{
@@ -93,7 +93,7 @@ public class MapServiceTest {
     /**
      * add three continents, four countries and add four neighboring info in adjacencyCountriesMap
      * pass the tests if the number of adjacencyCountriesMap is 4
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testAddNeighboringCountriesSet() throws Exception{
@@ -115,7 +115,7 @@ public class MapServiceTest {
      * pass the test if the number of countries is 3
      * pass the test if the continentMap does not contain id of china
      * pass the test if the adjacencyCountriesMap does not contain id of china
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testRemoveCountryByName() throws Exception{
@@ -133,7 +133,7 @@ public class MapServiceTest {
     /**
      * add a neighboring country china with us
      * pass the test if china neighboring countries is 2
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testAddNeighboringCountry() throws Exception{
@@ -149,7 +149,7 @@ public class MapServiceTest {
     /**
      * remove neighboring country from siberia with india
      * pass the tests if the number of adjacency for siberia is 1.
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Test
     public void testRemoveNeighboringCountry() throws Exception{

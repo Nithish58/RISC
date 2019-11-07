@@ -23,7 +23,7 @@ public enum Card {
 
     /**
      * get name of the card
-     * @return
+     * @return name
      */
     public String getName() {
         return name;

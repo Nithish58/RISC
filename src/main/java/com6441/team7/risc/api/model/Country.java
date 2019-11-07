@@ -105,7 +105,7 @@ public class Country{
 
     /**
      * setter method to set continent Id to country
-     * @param continentIdentifier
+     * @param continentIdentifier Continent Identifier
      * @return the country
      */
     public Country setContinentIdentifier(Integer continentIdentifier) {
@@ -201,7 +201,7 @@ public class Country{
 
     /**
      * To set the number of armies to the the country
-     * @param soldiers
+     * @param soldiers Soldiers
      */
     public void setSoldiers(Integer soldiers) {
         this.soldiers = soldiers;       

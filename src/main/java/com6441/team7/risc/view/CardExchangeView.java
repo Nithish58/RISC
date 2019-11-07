@@ -25,7 +25,7 @@ public class CardExchangeView implements GameView{
 
     /**
      * extends method from GameView to displayMessage
-     * @param string
+     * @param string String
      */
     @Override
     public void displayMessage(String string) {
@@ -35,8 +35,8 @@ public class CardExchangeView implements GameView{
 
     /**
      * when the cards has been added or removed from player, it will update method to show updates.
-     * @param o
-     * @param arg
+     * @param o observable o
+     * @param arg object arg
      */
     @Override
     public void update(Observable o, Object arg) {

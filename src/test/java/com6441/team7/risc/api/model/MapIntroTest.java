@@ -19,7 +19,7 @@ public class MapIntroTest {
 
 	/**
 	 * MapIntro object is instantiated here.
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

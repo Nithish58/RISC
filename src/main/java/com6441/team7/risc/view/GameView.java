@@ -17,7 +17,7 @@ public interface GameView extends Observer {
 
     /**
      * display messages
-     * @param string
+     * @param string String
      */
     void displayMessage(String string);
 }

@@ -354,10 +354,10 @@ public class StartupGameControllerTest {
 	   * It also most importantly tests whether more armies are removed (negative value of -1) when player
 	   * has no more armies left to place.
 	   * Context: loadmap, addplayers, set numArmies of player being tested only to 1.
-	   * Expected Result:
+	   * Expected Result:<ul>
 	   * <li> When placearmy called first time, numArmies must be decremented as expected.</li>
-	   * <li> message should also be displayed informing player that all his/her armies has been placed: "All armies placed for <playerName>"</li>  
-	   *<li>However when placearmy called again, it should not decrement again. Instead it should switch to next player and instead display error message.</li>
+	   * <li> message should also be displayed informing player that all his/her armies has been placed: "All armies placed for playerName"</li>  
+	   *<li>However when placearmy called again, it should not decrement again. Instead it should switch to next player and instead display error message.</li></ul>
 	   */
 	  @Test public void test013_placeArmyLowerBoundZeroArmyTest() {
 		  //Context
@@ -434,7 +434,7 @@ public class StartupGameControllerTest {
 	   * Method to load a map.
 	   * Method first exits from editmapphase by sending command exitmapedit.
 	   * Then command to loadmap is sent.
-	   * @param mapName
+	   * @param mapName MapName
 	   */
 	  	public void loadValidMap(String mapName) {
 	  		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase

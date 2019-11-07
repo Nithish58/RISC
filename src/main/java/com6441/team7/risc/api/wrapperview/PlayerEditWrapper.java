@@ -43,7 +43,7 @@ public class PlayerEditWrapper {
 
 	/**
 	 * set addedPlayer
-	 * @param player
+	 * @param player Player
 	 */
 	public void setAddedPlayer(Player player) {
 		this.addedPlayer=player;

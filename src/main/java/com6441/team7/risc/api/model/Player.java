@@ -62,7 +62,7 @@ public class Player{
 
     /**
      * constructor
-     * @param name
+     * @param name Name
      */
     public Player(String name) {
         this.armies = 0;
@@ -111,7 +111,7 @@ public class Player{
 
     /**
      * reduce the number of army from player
-     * @param number
+     * @param number Number
      */
     public void reduceArmy(int number){
         armies -= number;
@@ -119,7 +119,7 @@ public class Player{
 
     /**
      * add the number of army to player
-     * @param number
+     * @param number Number
      */
     public void addArmy(int number){
     	armies += number;
@@ -128,8 +128,9 @@ public class Player{
 
     /**
      * reinforce army to the player of its country occupied
-     * @param country
-     * @param armyNum
+     * @param country Country
+     * @param armyNum ArmyNum
+     * @param mapService MapService
      */
     public void reinforceArmy(String country, int armyNum, MapService mapService){
         mapService.reinforceArmyToCountry(country, armyNum);
@@ -155,7 +156,7 @@ public class Player{
 
     /**
      * check if the trade in cards meet the trade in condition
-     * @param cardList
+     * @param cardList Card List
      * @return true if valid false if not valid
      */
     public boolean meetTradeInCondition(List<Card> cardList){
@@ -170,7 +171,7 @@ public class Player{
 
     /**
      * check if the three cards are the same
-     * @param cardList
+     * @param cardList Card List
      * @return true if all the cards are the same, false if not
      */
     public boolean hasThreeSameCards(List<Card> cardList){
@@ -184,7 +185,7 @@ public class Player{
 
     /**
      * check if the three cards are all different
-     * @param cardList
+     * @param cardList Card List
      * @return true if all three cards are different, false if not
      */
     public boolean hasThreeDifferentCards(List<Card> cardList){
@@ -218,7 +219,7 @@ public class Player{
 
     /**
      * remove trade in cards from the player cards
-     * @param list
+     * @param list Card List
      */
     public void removeCards(List<Card> list){
         Card cardOne = cardList.stream()
@@ -604,8 +605,8 @@ public class Player{
      * throw their dices. 
      * Each side is assigned second dice value to be compared with each other
      * if both sides throw at least two dices.
-     * @param attackerDice
-     * @param defenderDice
+     * @param attackerDice attacker's dice
+     * @param defenderDice defender's dice
      */
 	public void decideBattleResult(int[] attackerDice, int[] defenderDice) {
 		
@@ -755,7 +756,7 @@ public class Player{
 	/**
 	 * Check if all of the defender's soldiers have been eliminated
 	 *If the defender lost all soldiers in his/her country, the attacker conquered the country
-	 * @return
+	 * @return if true
 	 */
 	public boolean checkDefenderPushedOut() {
 		strSendAttackInfoToObservers="";
@@ -864,7 +865,7 @@ public class Player{
 	/**
 	 * Method called when attackmove called.
 	 * Moves numSoldiers from attacking country to defeated country if validation check passes.
-	 * @param numSoldiersTransfer
+	 * @param numSoldiersTransfer Number of Soldiers Transfered
 	 */
     public void attackMove(int numSoldiersTransfer) {
     	
@@ -931,8 +932,8 @@ public class Player{
 	
     /**
      * Method for rolling attacker's dice
-     * @param numDiceAttacker
-     * @return
+     * @param numDiceAttacker number of attacker's dice
+     * @return attacker's dice
      */
     public int[] rollAttackerDice(int numDiceAttacker) {
     	attackerDice = new int[numDiceAttacker];
@@ -948,7 +949,7 @@ public class Player{
     /**
      * Method for rolling defender's dice
      * @param numDiceDefender
-     * @return
+     * @return defender's dice
      */
     public int[] rollDefenderDice(int numDiceDefender) {
     	defenderDice = new int[numDiceDefender];
@@ -1140,8 +1141,8 @@ public class Player{
 	
     /**
 	 * Displays information about attacker and defend dice rolls and attack outcome/
-	 * @param attackerDice
-	 * @param defenderDice
+	 * @param attackerDice attacker's dice
+	 * @param defenderDice defender's dice
 	 */
 	public void constructAndSendAttackBattleMessage(int[] attackerDice, int[] defenderDice) {
 		
@@ -1201,7 +1202,7 @@ public class Player{
 	
 	/**
 	 * Setter for boolAttackMoveRequired
-	 * @param boolean value
+	 * @param b is boolean value
 	 */
 	public void setBoolAttackMoveRequired(boolean b) {
 		this.boolAttackMoveRequired=b;
@@ -1209,7 +1210,7 @@ public class Player{
 	
 	/**
 	 * Setter for boolCountryConquered
-	 * @param boolean value
+	 * @param b is boolean value
 	 */
 	public void setBoolCountryConquered(boolean b) {
 		this.boolCountryConquered=b;
@@ -1293,8 +1294,8 @@ public class Player{
 	 * check if conditions of ownership, adjacency and numSoldiers are valid
 	 * if yes, implement fortification and notify observers
 	 * if not, notify observers with error messages
-	 * @param playerService
-	 * @param playerFortificationWrapper
+	 * @param playerService PlayerService
+	 * @param playerFortificationWrapper PlayerFortification Wrapper
 	 */
 	public void fortify(PlayerService playerService, PlayerFortificationWrapper playerFortificationWrapper) {
     	
@@ -1364,7 +1365,9 @@ public class Player{
 	 * <li>Both countries are adjacent </li>
 	 * <li>Both countries belong to player</li>
 	 * <li>at least 1 player will remain in the source country after fortification</li>
-	 * <ul>
+	 * </ul>
+	 * @param playerService PlayerService
+	 * @return boolFortifyValidationMet
 	 */
 	public boolean validateFortifyConditions(PlayerService playerService) {
 		
@@ -1482,8 +1485,8 @@ public class Player{
 
     /**
      * check if the two players are the same
-     * @param o
-     * @return
+     * @param o Object o
+     * @return Object that checks name equality
      */
     @Override
     public boolean equals(Object o) {
@@ -1495,7 +1498,7 @@ public class Player{
 
     /**
      * extend and override hashCode
-     * @return
+     * @return Object with name hash
      */
     @Override
     public int hashCode() {
@@ -1504,7 +1507,7 @@ public class Player{
 
     /**
      * extend and override toString() method
-     * @return
+     * @return name
      */
     @Override
     public String toString(){
