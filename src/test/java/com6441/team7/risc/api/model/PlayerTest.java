@@ -192,10 +192,10 @@ public class PlayerTest {
 		// Get first country in player list
 		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
 
-		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// numbers of soldiers on fromAttackCountry is set to 100 to ensure that a valid
 		// number of
 		// dices can be thrown
-		fromAttackCountry.setSoldiers(4);
+		fromAttackCountry.setSoldiers(100);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
 		// Get first adjacent country in country's list
@@ -214,18 +214,10 @@ public class PlayerTest {
 			}
 		}
 
-		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// numbers of soldiers on toAttackCouuntry is set to 5 to ensure that a valid
 		// number of
 		// dices can be thrown
-		toAttackCountry.setSoldiers(2);
-
-		// expectedAttackerSoldier is the expected number of attacker soldier if
-		// the attacker is only left with one soldier
-		Integer expectedAttackerSoldier = 1;
-
-		// expectedDefenderSoldier is the expected number of defender soldier if
-		// the defender lost all of his/her soldiers
-		Integer expectedDefenderSoldier = 0;
+		toAttackCountry.setSoldiers(5);
 
 		// This is for checking the condition after attack
 		boolean isTrue = false;
@@ -236,10 +228,10 @@ public class PlayerTest {
 		playerAttackWrapper.setBooleanAllOut();
 
 		// Set the number of attacker dices to 3
-		playerAttackWrapper.setNumDiceAttacker(3);
+		//playerAttackWrapper.setNumDiceAttacker(3);
 
 		// Set the number of defender dices to 1
-		playerAttackWrapper.setNumDiceDefender(1);
+		//playerAttackWrapper.setNumDiceDefender(1);
 
 		// Call the attack function
 		currentPlayer.attack(playerService, playerAttackWrapper);
@@ -366,7 +358,7 @@ public class PlayerTest {
 			}
 		}
 
-		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// numbers of soldiers on toAttackCountry is set to 2 to ensure that a valid
 		// number of
 		// dices can be thrown
 		toAttackCountry.setSoldiers(2);
@@ -463,10 +455,10 @@ public class PlayerTest {
 		// Get first country in player list
 		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
 
-		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// numbers of soldiers on fromAttackCouuntry is set to 100 to ensure that a valid
 		// number of
 		// dices can be thrown
-		fromAttackCountry.setSoldiers(20);
+		fromAttackCountry.setSoldiers(100);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
 		// Get first adjacent country in country's list
@@ -485,7 +477,7 @@ public class PlayerTest {
 			}
 		}
 
-		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// numbers of soldiers on toAttackCouuntry is set to 1 to ensure that a valid
 		// number of
 		// dices can be thrown
 		toAttackCountry.setSoldiers(1);
@@ -529,8 +521,8 @@ public class PlayerTest {
 	 * @throws Exception on invalid
 	 */
 	@Test
-	public void test009_checkInvalidAttackConditions() throws Exception {
-		System.out.println("Check invalid attack conditions");
+	public void test009_checkInvalidNumDice() throws Exception {
+		System.out.println("Check invalid dice number");
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
@@ -579,12 +571,169 @@ public class PlayerTest {
 	}
 	
 	/**
+	 * Tests if an attack condition is not valid
+	 * In this test, the attacker's dice is set to above the allowed maximum
+	 * The test passes if the validateAttackConditions() method returns false
+	 * @throws Exception on invalid
+	 */
+	@Test
+	public void test010_checkInvalidNumSoldiers() throws Exception {
+		System.out.println("Check invalid number of soldiers");
+		Player currentPlayer = playerService.getCurrentPlayer();
+
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+
+		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// number of
+		// dices can be thrown
+		fromAttackCountry.setSoldiers(1);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		// Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		while (toAttackCountry == null) {
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
+			}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
+		}
+
+		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// number of
+		// dices can be thrown
+		toAttackCountry.setSoldiers(2);
+
+		// Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		// Set the number of attacker dices to 3, which is a valid number of allowed attacker dice
+		playerAttackWrapper.setNumDiceAttacker(3);
+
+		// Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+
+		assertFalse(currentPlayer.validateAttackConditions(playerService));
+	}
+	
+	/**
+	 * Tests if an attack condition is not valid
+	 * In this test, the attacker's dice is set to above the allowed maximum
+	 * The test passes if the validateAttackConditions() method returns false
+	 * @throws Exception on invalid
+	 */
+	@Test
+	public void test011_checkInvalidCountryAdjacency() throws Exception {
+		System.out.println("Check invalid country adjacency");
+		Player currentPlayer = playerService.getCurrentPlayer();
+
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+
+		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// number of
+		// dices can be thrown
+		fromAttackCountry.setSoldiers(3);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		//Set toAttackCountry to same country as fromAttackCountry
+		Country toAttackCountry = fromAttackCountry;
+
+		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// number of
+		// dices can be thrown
+		toAttackCountry.setSoldiers(5);
+
+		// Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		// Set the number of attacker dices to 3, which is a valid number of allowed attacker dice
+		playerAttackWrapper.setNumDiceAttacker(3);
+
+		// Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+
+		assertFalse(currentPlayer.validateAttackConditions(playerService));
+		System.out.println(phaseViewTest.getStrDisplayMessage());
+	}
+	
+	/**
+	 * Tests validate attack conditions
+	 *
+	 * @throws Exception on invalid
+	 */
+	@Test
+	public void test012_invalidCountryOwnership() throws Exception {
+		System.out.println("Validate attack conditions");
+		Player currentPlayer = playerService.getCurrentPlayer();
+
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+
+		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// number of
+		// dices can be thrown
+		fromAttackCountry.setSoldiers(25);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		// Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		while (toAttackCountry == null) {
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
+			}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
+		}
+
+		// numbers of soldiers on toAttackCountry is set to 2 to ensure that a valid
+		// number of
+		// dices can be thrown
+		toAttackCountry.setSoldiers(25);	toAttackCountry.setPlayer(fromAttackCountry.getPlayer());
+
+		// Instantiate playerAttackWrapper
+		// Swapped attacker and defender so that ownership changes, but all other conditions are valid
+		//such as adjacency num dice and num of soldiers
+		playerAttackWrapper = new PlayerAttackWrapper(toAttackCountry, fromAttackCountry);
+
+		// Set the number of attacker dices to 3
+		playerAttackWrapper.setNumDiceAttacker(3);
+
+		// Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+
+		assertFalse(currentPlayer.validateAttackConditions(playerService));
+	}
+	
+	/**
 	 * Tests if attackmove is required after conquering a country
 	 * The test passes if the result returns true
 	 * @throws Exception 
 	 */
 	@Test
-	public void test010_validateMoveAfterConquer() throws Exception{
+	public void test013_validateMoveAfterConquer() throws Exception{
 		System.out.println("Validate move after conquer");
 		Player currentPlayer = playerService.getCurrentPlayer();
 
