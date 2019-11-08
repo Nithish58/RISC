@@ -40,7 +40,7 @@ public class PlayerService extends Observable {
 
 	/**
 	 * constructor of playerService
-	 * @param mapService
+	 * @param mapService reference
 	 */
 	public PlayerService(MapService mapService){
 
@@ -58,7 +58,7 @@ public class PlayerService extends Observable {
 	
 	/**
 	 * return the list of players
-	 * @return
+	 * @return list of players
 	 */
 	public ArrayList<Player> getPlayerList(){
 		return listPlayers;
@@ -82,7 +82,7 @@ public class PlayerService extends Observable {
 	 * get Player by name.
 	 * if the name does not exist, return null
 	 * if the name exist, return the player
-	 * @param name
+	 * @param name reference
 	 * @return the player
 	 */
 	public Player getPlayerByName(String name) {
@@ -250,7 +250,7 @@ public class PlayerService extends Observable {
 
 	/**
 	 * remove the player by player name
-	 * @param playerName
+	 * @param playerName reference player name
 	 * @return true if player been removed successfully and notify the observers
 	 * 		   false if player has not been removed successfully
 	 */
@@ -303,7 +303,7 @@ public class PlayerService extends Observable {
 
 	/**
 	 * set current player
-	 * @param player
+	 * @param player reference player
 	 */
 	public void setCurrentPlayer(Player player){
 		currentPlayer = player;
@@ -313,7 +313,7 @@ public class PlayerService extends Observable {
 
 	/**
 	 * check if the player exist
-	 * @param playerName
+	 * @param playerName reference player name
 	 * @return true if the player name exist, false if does not exist
 	 */
 	public boolean checkPlayerExistance(String playerName) {
@@ -330,8 +330,8 @@ public class PlayerService extends Observable {
 
 	/**
 	 * get total number of countries conquered by the player
-	 * @param player
-	 * @return
+	 * @param player reference player
+	 * @return player's conquered countries
 	 */
 	public long getConqueredCountriesNumber(Player player){
 
@@ -342,8 +342,8 @@ public class PlayerService extends Observable {
 
 	/**
 	 * get total number of reinforcedArmy if player has conquered the whole continents
-	 * @param player
-	 * @return
+	 * @param player reference player
+	 * @return player's army
 	 */
 	public long getReinforcedArmyByConqueredContinents(Player player){
 		return mapService.getReinforceArmyByConqueredContinents(player);
@@ -366,7 +366,7 @@ public class PlayerService extends Observable {
 	 * reinforce army to the player of its country occupied
 	 * @param player reference
 	 * @param country name to be reinforced
-	 * @param number of armies to be reinforced
+	 * @param armyNum number of armies to be reinforced
 	 */
 	public void reinforceArmy(Player player, String country, int armyNum){
 		player.reinforceArmy(country, armyNum, mapService);
@@ -405,7 +405,7 @@ public class PlayerService extends Observable {
 	 * caculate number of reinforced armies after trading in cards
 	 * after receiving reinforced army, it will notify cardExchangeView with ReinforceArmyAfterTradingCard wrapper
 	 * to display current player and number of reinforced armies
-	 * @param player
+	 * @param player reference player
 	 * @return number of reinforced army
 	 */
 	public int calculateReinforcedArmyByTradingCards(Player player){
@@ -418,9 +418,9 @@ public class PlayerService extends Observable {
 
 	/**
 	 * check if the trade-in cards meet the trade-in condition
-	 * @param player
-	 * @param cardList
-	 * @return
+	 * @param player reference player
+	 * @param cardList reference list of cards
+	 * @return player's card
 	 */
 	public boolean isTradeInCardsValid(Player player, List<Card> cardList){
 		return player.meetTradeInCondition(cardList);
@@ -429,8 +429,8 @@ public class PlayerService extends Observable {
 
 	/**
 	 * remove cards from cardList of the player
-	 * @param player
-	 * @param cardList
+	 * @param player reference player
+	 * @param cardList reference list of cards
 	 */
 	public void removeCards(Player player, List<Card> cardList){
 
