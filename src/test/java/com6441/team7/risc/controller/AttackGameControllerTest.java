@@ -104,13 +104,12 @@ public class AttackGameControllerTest {
 	}
 	
 	/**
-	 * Tests method to end attack phase.
 	 * The expected game state is "fortify"
 	 * It returns true if the game state after the method is called is "fortify"
 	 */
 	@Test public void test002_endAttack() {
 		String expected = "fortify";
-		attackController.endAttackPhase();
+		attackController.switchToFortification();
 		assertTrue(mapService.getGameState().getName().equals(expected));
 	}
 	
