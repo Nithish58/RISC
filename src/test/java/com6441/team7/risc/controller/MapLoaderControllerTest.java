@@ -829,17 +829,18 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * Test for unconnected map
-	 * Add country mauritius to continent afrori. Do not add any neighbours
+	 * Add country Mauritius to continent afrori. Do not add any neighbours
 	 * Expected: Map must be invalid
 	 * @throws IOException
 	 */
-	@Test public void test017_invalidUnconnectedMap() throws IOException {
+	@Test public void test017_invalidUnconnectedCountriesMap() throws IOException {
 		//Context: add unconnected country without neighbours
 		addCountry("Mauritius","afrori");
 		
 		//Evaluation
 		assertFalse(testMapLoader.getMapService().isMapValid());
 	}
+	
 	
 	/**
 	 * This method is executed by {@link #test002_addContinent()}
