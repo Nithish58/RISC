@@ -1,14 +1,10 @@
 package com6441.team7.risc.view;
 
-import com6441.team7.risc.api.model.Card;
 import com6441.team7.risc.api.model.Player;
-import com6441.team7.risc.api.wrapperview.ReinforcedArmyAfterTradingCard;
-import com6441.team7.risc.api.wrapperview.ReinforcedCardWrapper;
+import com6441.team7.risc.api.wrapperview.ReinforcedArmyAfterTradingCardWrapper;
 
-import java.util.List;
 import java.util.Observable;
 import static com6441.team7.risc.api.RiscConstants.CARD_EXCHANGE_VIEW_STRING;
-import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 /**
  * This view is created in reinforcement phase when player exchange cards
@@ -47,7 +43,7 @@ public class CardExchangeView implements GameView{
      */
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof ReinforcedArmyAfterTradingCard){
+        if(arg instanceof ReinforcedArmyAfterTradingCardWrapper){
             displayReinforcedCard(arg);
         }
     }
@@ -55,8 +51,8 @@ public class CardExchangeView implements GameView{
 
     private void displayReinforcedCard(Object arg){
 
-        int number = ((ReinforcedArmyAfterTradingCard)arg).getSoldier();
-        Player player = ((ReinforcedArmyAfterTradingCard)arg).getPlayer();
+        int number = ((ReinforcedArmyAfterTradingCardWrapper)arg).getSoldier();
+        Player player = ((ReinforcedArmyAfterTradingCardWrapper)arg).getPlayer();
 
         displayMessage("player " + player.getName() + ": receives " + number + " soldiers after exchanging cards");
     }
