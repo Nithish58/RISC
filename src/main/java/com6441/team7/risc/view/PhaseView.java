@@ -403,7 +403,8 @@ public class PhaseView implements GameView {
     	
     	//Display message if attack is over
     	if(playerAttackWrapper.getBoolAttackOver()) {
-    		
+    		strMsg+="Attacker "+fromPlayerName+" has "+fromPlayer.getArmies()+" armies left.\n";
+    		strMsg+="Defender "+toPlayerName+" has "+toPlayer.getArmies()+" armies left.";
     	}
     	
     	//Display message if allout attack chosen

@@ -1216,9 +1216,14 @@ public class Player{
 		}
 		
 		diceMessage+="\n";
-		strSendAttackInfoToObservers=diceMessage+strSendAttackInfoToObservers;
+		strSendAttackInfoToObservers=diceMessage+strSendAttackInfoToObservers; //Already formed during various method calls of decideBattleResult
 		
+		//Notify playerservice observers of what happened during battle phase (Concatenated String)
 		playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
+		
+		//Notify playerservice observers of num armies remaining for attacker and defender
+		PlayerAttackWrapper playerAttackWrapper=new PlayerAttackWrapper(fromCountryAttack,toCountryAttack);
+		playerAttackWrapper.setBoolAttackOver();
 				
 	}
 	

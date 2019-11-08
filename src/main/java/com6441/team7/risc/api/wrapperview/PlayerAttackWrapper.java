@@ -141,6 +141,10 @@ public class PlayerAttackWrapper {
 	public boolean getBoolAttackOver() {
 		return boolAttackOver;
 	}
+	
+	public void setBoolAttackOver() {
+		this.boolAttackOver=true;
+	}
 
 	/**
 	 * set attackDisplayMessage
