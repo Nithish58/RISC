@@ -94,9 +94,7 @@ public class MapLoaderControllerTest {
 
 		//This sets the variable for map saving command.
 		savename = "edittedmap.map";
-        
-        
-        
+       
         
     }
 
@@ -820,12 +818,27 @@ public class MapLoaderControllerTest {
 	 * test016_validateDuplicateCountry() tests if duplicate countries exist
 	 * @throws IOException
 	 */
+	@Ignore
 	@Test
 	public void test016_validateDuplicateCountry() throws IOException {
 		message = "Duplicate contries exist";
 		addCountry("nippon", "south_afrori");
 		addCountry("nippon", "south_afrori");
 		assertTrue(message, testMapLoader.getMapService().isMapNotValid());
+	}
+	
+	/**
+	 * Test for unconnected map
+	 * Add country mauritius to continent afrori. Do not add any neighbours
+	 * Expected: Map must be invalid
+	 * @throws IOException
+	 */
+	@Test public void test017_invalidUnconnectedMap() throws IOException {
+		//Context: add unconnected country without neighbours
+		addCountry("Mauritius","afrori");
+		
+		//Evaluation
+		assertFalse(testMapLoader.getMapService().isMapValid());
 	}
 	
 	/**
