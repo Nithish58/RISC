@@ -128,7 +128,9 @@ public class PlayerTest {
 			System.out.print(i + " ");
 		System.out.println();
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -289,21 +291,63 @@ public class PlayerTest {
 
 		// Get first country in player list
 		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
-		Country toAttackCountry = playerService.getNextPlayer().countryPlayerList.get(0);
-
+		
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
 		Set<Country> countryList = mapService.getCountries();
-
+		
+		// Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		while (toAttackCountry == null) {
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
+			}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
+		}
+		
+		
 		for (Player p : playerService.getPlayerList()) {
 
 			if (!p.getName().equals(fromAttackCountry.getPlayer().getName()))
 				for (Country c : p.getCountryList()) {
+					if (!c.getCountryName().equals(toAttackCountry.getCountryName())) {
 					toAttackCountry.getPlayer().getCountryList().remove(c.getId());
 					currentPlayer.getCountryList().add(c);
+					System.out.println("Transfer "+c.getCountryName()+ " from "+p.getName());
+					System.out.println();
+					System.out.println(currentPlayer.getName()+" has "+currentPlayer.getCountryList().size()+" num of countries");
+					}
+					else
+						System.out.println("Same country. It's "+c.getCountryName());
 				}
 
 		}
+		
+
+//		for (Player p : playerService.getPlayerList()) {
+//
+//			if (!p.getName().equals(fromAttackCountry.getPlayer().getName()))
+//				for (Country c : p.getCountryList()) {
+//					if (!c.getCountryName().equals(toAttackCountry.getCountryName()) || !c.getCountryName().equals(fromAttackCountry.getCountryName())) {
+//					toAttackCountry.getPlayer().getCountryList().remove(c.getId());
+//					currentPlayer.getCountryList().add(c);
+//					System.out.println("Transfer "+c.getCountryName()+ " from "+p.getName());
+//					System.out.println();
+//					System.out.println(currentPlayer.getName()+" has "+currentPlayer.getCountryList().size()+" num of countries");
+//					}
+//					else
+//						System.out.println("Same country. It's "+c.getCountryName());
+//				}
+//
+//		}
+	
 		
 		// numbers of soldiers on fromAttackCouuntry is set to 1000 to ensure that a valid
 		// number of
@@ -316,7 +360,7 @@ public class PlayerTest {
 		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
 
 		//Set the allout condition to true
-		playerAttackWrapper.setBooleanAllOut();
+		//playerAttackWrapper.setBooleanAllOut();
 
 		// Set the number of attacker dices to 3
 		//playerAttackWrapper.setNumDiceAttacker(3);
@@ -325,20 +369,18 @@ public class PlayerTest {
 		//playerAttackWrapper.setNumDiceDefender(1);
 
 		// Call the attack function
+		System.out.println(currentPlayer.getCountryList().size());
+		System.out.println(playerService.getMapService().getCountries().size());
 		currentPlayer.attack(playerService, playerAttackWrapper);
-		
-		
-		
-		
-		
-		
 
+		toAttackCountry.getPlayer().getCountryList().remove(toAttackCountry.getCountryName());
+		currentPlayer.getCountryList().add(toAttackCountry);
+		
 		System.out.println("Attacker country list size after transfer: " + currentPlayer.getCountryList().size());
 		System.out.println("Total country list  size after: " + mapService.getCountries().size());
 
 		// This is for checking the condition after attack
 		boolean isTrue = false;
-
 
 		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
 		System.out.println("Total country list  size: " + mapService.getCountries().size());
