@@ -877,8 +877,6 @@ public class Player{
 
 		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 		
-		//toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
-		
 		for ( int i = 0 ; i < 3; i++) {
 			addCard(Card.INFANTRY);
 			addCard(Card.ARTILLERY);
