@@ -196,12 +196,14 @@ public class PhaseView implements GameView {
         		displayMessage(displayMessage);
         		return;
         	}
-
+        	
+        	//For Reinforcement phase
         	if(arg instanceof ReinforcedArmyWrapper){
         	    displayReinforcedArmy(arg);
                 return; 
             }
 
+        	//For card 
             if(arg instanceof ReinforcedCardWrapper){
                 displayReinforcedCard(arg);
                 return;
