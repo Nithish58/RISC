@@ -369,7 +369,7 @@ public class ReinforceGameControllerTest {
 
     /**
      * test when users trade cards in second time
-     * expect 1st time trade in would be 5, and 2nd time trade in would be 10
+     * expect 1st time trade in would be 5, and 2nd time trade in would be 10, 3rd time trade in would be 15
      * @throws IOException
      * @throws URISyntaxException
      */
@@ -377,9 +377,9 @@ public class ReinforceGameControllerTest {
     public void exchangeCardsWithFiveCards() throws IOException, URISyntaxException{
         mockPlayerCountryInformationSeven();
         String command = "exchangecards 1 2 3";
+
         reinforceGameController.exchangeCards(player, command);
         assertEquals(playerService.calculateReinforcedArmyByTradingCards(player), 5);
-
 
         reinforceGameController.exchangeCards(player, command);
         assertEquals(playerService.calculateReinforcedArmyByTradingCards(player), 10);
