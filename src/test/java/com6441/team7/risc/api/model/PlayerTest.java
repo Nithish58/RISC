@@ -788,10 +788,10 @@ public class PlayerTest {
 		// Get first country in player list
 		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
 
-		// numbers of soldiers on fromAttackCouuntry is set to 25 to ensure that a valid
+		// numbers of soldiers on fromAttackCouuntry is set to 1000 to ensure that a valid
 		// number of
 		// dices can be thrown and increasing chance of defender being defeated after 1 attack
-		fromAttackCountry.setSoldiers(25);
+		fromAttackCountry.setSoldiers(1000);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
 		// Get first adjacent country in country's list
