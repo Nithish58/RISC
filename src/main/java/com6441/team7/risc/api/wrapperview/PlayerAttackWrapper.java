@@ -67,7 +67,7 @@ public class PlayerAttackWrapper {
 
 	/**
 	 * set number of dice from Attacker
-	 * @param n
+	 * @param n reference number of attacker's dice
 	 */
 	public void setNumDiceAttacker(int n) {
 		this.numDiceAttacker=n;
@@ -75,7 +75,7 @@ public class PlayerAttackWrapper {
 
 	/**
 	 * set number of dice from defender
-	 * @param n
+	 * @param n reference num of defender's dice
 	 */
 	public void setNumDiceDefender(int n) {
 		this.numDiceDefender=n;
@@ -147,7 +147,7 @@ public class PlayerAttackWrapper {
 
 	/**
 	 * set attackDisplayMessage
-	 * @param str
+	 * @param str reference message string
 	 */
 	public void setAttackDisplayMessage(String str) {
 		this.strAttackDisplayMessage = str;

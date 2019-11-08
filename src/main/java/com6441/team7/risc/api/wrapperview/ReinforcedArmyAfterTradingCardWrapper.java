@@ -23,8 +23,8 @@ public class ReinforcedArmyAfterTradingCardWrapper {
 
     /**
      * constructor
-     * @param player
-     * @param soldier
+     * @param player reference player
+     * @param soldier reference num of soldier
      */
     public ReinforcedArmyAfterTradingCardWrapper(Player player, int soldier) {
         this.player = player;
@@ -34,7 +34,7 @@ public class ReinforcedArmyAfterTradingCardWrapper {
 
     /**
      * get the current player
-     * @return
+     * @return player
      */
     public Player getPlayer() {
         return player;
@@ -42,7 +42,7 @@ public class ReinforcedArmyAfterTradingCardWrapper {
 
     /**
      * set the current player
-     * @param player
+     * @param player reference player
      */
     public void setPlayer(Player player) {
         this.player = player;
@@ -50,7 +50,7 @@ public class ReinforcedArmyAfterTradingCardWrapper {
 
     /**
      * get the number of soldiers
-     * @return
+     * @return soldier
      */
     public int getSoldier() {
         return soldier;
@@ -58,7 +58,7 @@ public class ReinforcedArmyAfterTradingCardWrapper {
 
     /**
      * set the number of soldiers
-     * @param soldier
+     * @param soldier reference num of soldier
      */
     public void setSoldier(int soldier) {
         this.soldier = soldier;

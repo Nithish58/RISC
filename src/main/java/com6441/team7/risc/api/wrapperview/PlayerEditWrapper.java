@@ -51,7 +51,7 @@ public class PlayerEditWrapper {
 
 	/**
 	 * set removedPlayer
-	 * @param player
+	 * @param player reference player
 	 */
 	public void setRemovedPlayer(Player player) {
 		this.removedPlayer=player;

@@ -23,8 +23,8 @@ public class ReinforcedCardWrapper {
 
     /**
      * constructor
-     * @param player
-     * @param cards
+     * @param player reference player
+     * @param cards reference card list
      */
     public ReinforcedCardWrapper(Player player, List<Card> cards) {
         this.player = player;
@@ -33,8 +33,8 @@ public class ReinforcedCardWrapper {
 
     /**
      * constructor
-     * @param player
-     * @param number
+     * @param player reference player
+     * @param number reference number of card
      */
     public ReinforcedCardWrapper(Player player, int number){
         this.player = player;
@@ -42,7 +42,7 @@ public class ReinforcedCardWrapper {
 
     /**
      * get the list of cards
-     * @return
+     * @return cards
      */
     public List<Card> getCards() {
         return cards;
@@ -50,7 +50,7 @@ public class ReinforcedCardWrapper {
 
     /**
      * set the list of cards
-     * @param cards
+     * @param cards reference card list
      */
     public void setCards(List<Card> cards) {
         this.cards = cards;
@@ -58,7 +58,7 @@ public class ReinforcedCardWrapper {
 
     /**
      * get current player
-     * @return
+     * @return player
      */
     public Player getPlayer() {
         return player;
@@ -66,7 +66,7 @@ public class ReinforcedCardWrapper {
 
     /**
      * set current player
-     * @param player
+     * @param player reference player
      */
     public void setPlayer(Player player) {
         this.player = player;

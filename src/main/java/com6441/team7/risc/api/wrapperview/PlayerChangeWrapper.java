@@ -14,7 +14,7 @@ public class PlayerChangeWrapper {
 
 	/**
 	 * the constructor to set current player
-	 * @param player
+	 * @param player reference player
 	 */
 	public PlayerChangeWrapper(Player player) {
 		this.currentPlayer=player;
