@@ -375,11 +375,7 @@ public class Player{
     
     //----------------------------------ATTACK--------------------------------------------------
 	
-	
-	
-	
-	
-	
+		
 
 	/**
 	 * a reference of attack country
@@ -875,12 +871,11 @@ public class Player{
 		
 		toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
 
-		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
-		
-		
+		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());		
 		
 		//Hardcoded to test exchangercards functions during build 2 demo
 		//Attacker allocated 9 cards whenever it conquers country, just to test exchangecards
+
 		for ( int i = 0 ; i < 3; i++) {
 			addCard(Card.INFANTRY);
 			addCard(Card.ARTILLERY);
