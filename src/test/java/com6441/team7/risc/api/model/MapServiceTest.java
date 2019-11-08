@@ -21,7 +21,7 @@ public class MapServiceTest {
     /**
      * Method called before each test method.
      * Instantiates a mapservice object
-     * @throws Exception
+     * @throws Exception on invalid
      */
     @Before
     public void setUp() throws Exception {
