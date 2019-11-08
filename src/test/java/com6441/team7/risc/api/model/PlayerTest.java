@@ -315,11 +315,8 @@ public class PlayerTest {
 
 		}
 
-
-
 		System.out.println("Attacker country list size after transfer: " + currentPlayer.getCountryList().size());
 		System.out.println("Total country list  size after: " + mapService.getCountries().size());
-
 
 		// This is for checking the condition after attack
 		boolean isTrue = false;
@@ -579,6 +576,69 @@ public class PlayerTest {
 		currentPlayer.attack(playerService, playerAttackWrapper);
 
 		assertFalse(currentPlayer.validateAttackConditions(playerService));
+	}
+	
+	/**
+	 * Tests if attackmove is required after conquering a country
+	 * The test passes if the result returns true
+	 * @throws Exception 
+	 */
+	@Test
+	public void test010_validateMoveAfterConquer() throws Exception{
+		System.out.println("Validate move after conquer");
+		Player currentPlayer = playerService.getCurrentPlayer();
+
+		// Get first country in player list
+		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+
+		// numbers of soldiers on fromAttackCouuntry is set to 25 to ensure that a valid
+		// number of
+		// dices can be thrown and increasing chance of defender being defeated after 1 attack
+		fromAttackCountry.setSoldiers(25);
+		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
+
+		// Get first adjacent country in country's list
+		Country toAttackCountry = null;
+		while (toAttackCountry == null) {
+			for (Integer i : fromCountryAdjacencyList) {
+				if (!mapService.getCountryById(i).get().getPlayer().getName().equals(currentPlayer.getName())) {
+					toAttackCountry = mapService.getCountryById(i).get();
+					System.out.println("Defender country is " + toAttackCountry.getCountryName());
+					break;
+				}
+			}
+			if (toAttackCountry == null) {
+				System.out.println("No adjacent defender country found. Retrying the set up.");
+				setUp();
+			}
+		}
+
+		// numbers of soldiers on toAttackCouuntry is set to 1 to ensure that a valid
+		// number of
+		// dices can be thrown and increasing chance of defender being defeated after 1 attack
+		toAttackCountry.setSoldiers(1);
+
+		// This is for checking the condition after attack
+		boolean isTrue = false;
+
+		// Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		playerAttackWrapper.setBooleanAllOut();
+
+		// Set the number of attacker dices to 3
+		playerAttackWrapper.setNumDiceAttacker(3);
+
+		// Set the number of defender dices to 1
+		playerAttackWrapper.setNumDiceDefender(1);
+
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+
+		// If attackmove is required, isTrue is set to true
+		if (currentPlayer.getBoolAttackMoveRequired())
+			isTrue = true;
+		assertTrue(isTrue);
 	}
 
 	/**

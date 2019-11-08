@@ -87,52 +87,26 @@ public class AttackGameControllerTest {
 		mapService.setState(GameState.ATTACK);
 		
 		this.currentPlayer=playerService.getCurrentPlayer();
+		attackController.setView(phaseViewTest);
 		
 	}
 	
 	/**
-	 * Tests validAttackCommand() method on the AttackGameController
+	 * Tests a valid attack command on the AttackGameController
+	 * It returns true if the game state after the command is executed is "fortify"
+	 * @throws Exception  on invalid
 	 */
-	@Ignore
-	@Test public void test001_validAttackCommand() {
-		
-		Country fromCountryAttack=currentPlayer.getCountryList().get(0);
-		
-		//Get adjacent country in chosen country
-		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromCountryAttack.getId());
-				
-		//Get first adjacent country in country's list
-		Country toCountryAttack = null;								
-		for(Integer i: fromCountryAdjacencyList) {
-			toCountryAttack=mapService.getCountryById(i).get();
-			break;
-			}
-		
-		String fromCountryName=fromCountryAttack.getCountryName();
-		String toCountryName=toCountryAttack.getCountryName();
-		
-		int numDiceAttacker=3;
-		int numDiceDefender=2;
-		
-		currentPlayer.setNumDiceAttacker(numDiceAttacker);
-		currentPlayer.setNumDiceDefender(numDiceDefender);
-		
-		fromCountryAttack.setSoldiers(10);
-		toCountryAttack.setSoldiers(10);
-		
-		int[] arrDiceAttacker=  {6,6,6};
-		int[] arrDiceDefender= {5,5};
-		
-		currentPlayer.decideBattleResult(arrDiceAttacker, arrDiceDefender);
-		
-		assertEquals(mapService.getCountryByName(fromCountryName).get().getSoldiers().intValue(),10);
-		assertEquals(mapService.getCountryByName(toCountryName).get().getSoldiers().intValue(),8);
+	@Test public void test001_validAttackCommand() throws Exception {
+		String expected = "fortify";
+		attackController.readCommand("attack -noattack");
+		assertTrue(mapService.getGameState().getName().equals(expected));
 		
 	}
 	
 	/**
 	 * Tests method to end attack phase.
 	 * The expected game state is "fortify"
+	 * It returns true if the game state after the method is called is "fortify"
 	 */
 	@Test public void test002_endAttack() {
 		String expected = "fortify";
