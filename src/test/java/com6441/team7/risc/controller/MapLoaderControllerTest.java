@@ -816,7 +816,7 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * test016_validateDuplicateCountry() tests if duplicate countries exist
-	 * @throws IOException
+	 * @throws IOException on invalid IO
 	 */
 	@Ignore
 	@Test
@@ -831,7 +831,7 @@ public class MapLoaderControllerTest {
 	 * Test for unconnected map
 	 * Add country Mauritius to continent afrori. Do not add any neighbours
 	 * Expected: Map must be invalid
-	 * @throws IOException
+	 * @throws IOException on invalid IO
 	 */
 	@Test public void test017_invalidUnconnectedCountriesMap() throws IOException {
 		//Context: add unconnected country without neighbours
@@ -846,7 +846,7 @@ public class MapLoaderControllerTest {
 	 * This method is executed by {@link #test002_addContinent()}
 	 * @param name Name
 	 * @param power Power
-	 * @throws IOException  on invalid IOon invalid values
+	 * @throws IOException  on invalid IO
 	 */
 	public void addContinent(String name, String power) throws IOException {
 		testMapLoader.readCommand("editcontinent -add "+name+" "+power);
@@ -854,7 +854,7 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test004_removeContinent()}
-	 * @param name
+	 * @param name is the name of the continent to be removed
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void removeContinent(String name) throws IOException {
@@ -863,9 +863,9 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test005_addAndRemoveContinent()}
-	 * @param name1
+	 * @param name1 is the name of the continent to be added
 	 * @param power Power
-	 * @param name2
+	 * @param name2 is the name of the continent to be removed
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addAndRemoveContinent(String name1, String power, String name2) throws IOException {
@@ -874,8 +874,8 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test006_addCountry()}
-	 * @param name
-	 * @param continentName
+	 * @param name is the name of the country to be added
+	 * @param continentName is the continent of the added country
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addCountry(String name, String continentName) throws IOException {
@@ -884,7 +884,7 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test007_removeCountry()}
-	 * @param name
+	 * @param name is the name of the country to be removed
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void removeCountry(String name) throws IOException {
@@ -893,9 +893,9 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test008_addAndRemoveCountry()}
-	 * @param name1
-	 * @param continentName1
-	 * @param name2
+	 * @param name1 is the country to be added
+	 * @param continentName1 is the continent of the added country
+	 * @param name2 is the country to be removed
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addAndRemoveCountry(String name1, String continentName1, String name2) throws IOException {
@@ -904,9 +904,9 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test009_addNeighbor()}
-	 * @param origin
-	 * @param neighborCountry
-	 * @throws IOException  on invalid IOon invalid values
+	 * @param origin receives the country whose neighbor will be added
+	 * @param neighborCountry receives the neighbor country to be added
+	 * @throws IOException  on invalid IO
 	 * country1 is the origin country retrieved by the testMapLoader
 	 * neighbor1 is the neighboring country retrieved by the testMapLoader
 	 * borders1 is the map that stores countries and their adjacent neighbors
@@ -922,9 +922,9 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test010_removeNeighbor()}
-	 * @param origin
-	 * @param neighborCountry
-	 * @throws IOException  on invalid IOon invalid values
+	 * @param origin receives the country whose neighbor will be removed
+	 * @param neighborCountry receives the neighbor country to be removed
+	 * @throws IOException  on invalid IO
 	 * country1 is the origin country retrieved by the testMapLoader
 	 * neighbor1 is the neighboring country retrieved by the testMapLoader
 	 * borders1 is the map that stores countries and their adjacent neighbors
@@ -940,11 +940,11 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * This method is executed by {@link #test011_addAndRemoveNeighbor()}
-	 * @param origin1
-	 * @param neighborCountry1
-	 * @param origin2
-	 * @param neighborCountry2
-	 * @throws IOException
+	 * @param origin1 receives the country whose neighbor will be added
+	 * @param neighborCountry1 receives the neighbor country to be added
+	 * @param origin2 receives the country whose neighbor will be removed
+	 * @param neighborCountry2 receives the neighbor country to be removed
+	 * @throws IOException on invalid IO
 	 * country1 is the first origin country retrieved by the testMapLoader
 	 * neighbor1 is the to-be-added neighboring country retrieved by the testMapLoader
 	 * borders1 is the map that stores countries and their adjacent neighbors

@@ -96,7 +96,7 @@ public class MapService extends Observable {
     /**
      * add one country
      *
-     * @param country
+     * @param country reference country
      */
     public void addCountry(Country country) {
         countries.add(country);
@@ -117,7 +117,7 @@ public class MapService extends Observable {
     /**
      * add a collection of countries
      *
-     * @param countriesCollection
+     * @param countriesCollection reference collection of countries
      */
     public void addCountry(Collection<Country> countriesCollection) {
         countriesCollection.forEach(country -> {
@@ -139,7 +139,7 @@ public class MapService extends Observable {
     /**
      * add a continent
      *
-     * @param continent
+     * @param continent reference continent
      */
     public void addContinent(Continent continent) {
         continents.add(continent);
@@ -489,7 +489,7 @@ public class MapService extends Observable {
     /**
      * remove a continent by a given name, if continent exist, remove from continents, contries, neighboring map
      *
-     * @param continentName
+     * @param continentName reference name of continent
      */
     public void removeContinentByName(String continentName) {
         if (isNull(continentName)) {
@@ -892,7 +892,7 @@ public class MapService extends Observable {
 
     /**
      * count number of countries occupied by the player
-     * @param player
+     * @param player reference player
      * @return number of countries
      */
     public long getConqueredCountriesNumber(Player player){
@@ -907,8 +907,8 @@ public class MapService extends Observable {
 
     /**
      * count number of reinforced armies get if occupying whole continents by the player
-     * @param player
-     * @return
+     * @param player reference player
+     * @return num of reinforcements
      */
     public long getReinforceArmyByConqueredContinents(Player player){
         List<Integer> countriesId = getCountryIdOccupiedByPlayer(player);
@@ -929,7 +929,7 @@ public class MapService extends Observable {
 
     /**
      * find corresponding continent power by continent id
-     * @param id
+     * @param id reference continent id
      * @return continent power
      */
     public Optional<Integer> findCorrespoindingContinentValueByContinentId(int id) {
@@ -943,7 +943,7 @@ public class MapService extends Observable {
 
     /**
      * get conquered countries by the player
-     * @param player
+     * @param player refrence player
      * @return list of country names occupied the player
      */
     public List<String> getConqueredCountriesNameByPlayer (Player player){
@@ -970,8 +970,8 @@ public class MapService extends Observable {
 
     /**
      * reinforce the number of soldiers to the country
-     * @param name
-     * @param armyNum
+     * @param name reference name
+     * @param armyNum reference num of armies
      */
     public void reinforceArmyToCountry(String name, int armyNum){
         int id = findCorrespondingIdByCountryName(name).get();

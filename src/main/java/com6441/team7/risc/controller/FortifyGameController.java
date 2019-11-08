@@ -175,13 +175,6 @@ public class  FortifyGameController implements Controller {
 
 		if (orders.length == 2 && orders[1].equalsIgnoreCase("none")) {
 
-			// phaseView.displayMessage("Fortification Phase Over.");
-
-			/*
-			 * this.playerService.switchNextPlayer();
-			 * this.mapService.setState(GameState.REINFORCE);
-			 */
-
 			// FORTIFY CALLED IN PLAYER CLASS
 			PlayerFortificationWrapper playerFortificationWrapper = new PlayerFortificationWrapper();
 

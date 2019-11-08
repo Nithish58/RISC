@@ -24,9 +24,9 @@ public class ReinforcedArmyWrapper {
 
     /**
      * constructor of ReinforcedArmyWrapper
-     * @param player
-     * @param countryName
-     * @param num
+     * @param player reference player
+     * @param countryName reference name of country
+     * @param num reference num of army
      */
     public ReinforcedArmyWrapper(Player player, String countryName, Integer num) {
         this.player = player;

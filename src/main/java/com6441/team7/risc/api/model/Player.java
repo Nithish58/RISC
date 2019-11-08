@@ -848,6 +848,7 @@ public class Player{
 
 	/**
 	 * check if attack has conquered all the countries
+	 * @return true if player wins
 	 */
 	public boolean checkPlayerWin() {
 		 
@@ -1007,7 +1008,7 @@ public class Player{
     
     /**
      * Method for rolling defender's dice
-     * @param numDiceDefender
+     * @param numDiceDefender num of defender's dice
      * @return defender's dice
      */
     public int[] rollDefenderDice(int numDiceDefender) {

@@ -230,12 +230,6 @@ public class PlayerTest {
 		//Set the allout condition to true
 		playerAttackWrapper.setBooleanAllOut();
 
-		// Set the number of attacker dices to 3
-		//playerAttackWrapper.setNumDiceAttacker(3);
-
-		// Set the number of defender dices to 1
-		//playerAttackWrapper.setNumDiceDefender(1);
-
 		// Call the attack function
 		currentPlayer.attack(playerService, playerAttackWrapper);
 
@@ -390,7 +384,9 @@ public class PlayerTest {
 		fromAttackCountry.setSoldiers(25);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -429,7 +425,7 @@ public class PlayerTest {
 	/**
 	 * Testing if the attacker only has one soldier left in his/her country
 	 * The test passes if the method isAttackerLastManStanding returns true
-	 * @throws Exception on invalid on invalid value
+	 * @throws Exception on invalid value
 	 */
 	@Test
 	public void test007_checkLastManStanding() throws Exception {
@@ -449,7 +445,9 @@ public class PlayerTest {
 			System.out.print(i + " ");
 		System.out.println();
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -509,7 +507,9 @@ public class PlayerTest {
 		fromAttackCountry.setSoldiers(100);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -530,20 +530,13 @@ public class PlayerTest {
 		// dices can be thrown
 		toAttackCountry.setSoldiers(1);
 
-		// expectedAttackerSoldier is the expected number of attacker soldier if
-		// the attacker is only left with one soldier
-		Integer expectedAttackerSoldier = 1;
-
-		// expectedDefenderSoldier is the expected number of defender soldier if
-		// the defender lost all of his/her soldiers
-		Integer expectedDefenderSoldier = 0;
-
 		// This is for checking the condition after attack
 		boolean isTrue = false;
 
 		// Instantiate playerAttackWrapper
 		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
 
+		// Set the attack condition to allout
 		playerAttackWrapper.setBooleanAllOut();
 
 		// Set the number of attacker dices to 3
@@ -582,7 +575,9 @@ public class PlayerTest {
 		fromAttackCountry.setSoldiers(4);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -638,7 +633,9 @@ public class PlayerTest {
 		fromAttackCountry.setSoldiers(1);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -675,9 +672,8 @@ public class PlayerTest {
 	}
 	
 	/**
-	 * Tests if an attack condition is not valid
-	 * In this test, the attacker's dice is set to above the allowed maximum
-	 * The test passes if the validateAttackConditions() method returns false
+	 * Tests if country adjacency is invalid
+	 * The test passes if the validateAttackConditions returns false
 	 * @throws Exception on invalid
 	 */
 	@Test
@@ -688,7 +684,7 @@ public class PlayerTest {
 		// Get first country in player list
 		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
 
-		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
+		// numbers of soldiers on fromAttackCountry is set to 3 to ensure that a valid
 		// number of
 		// dices can be thrown
 		fromAttackCountry.setSoldiers(3);
@@ -697,7 +693,7 @@ public class PlayerTest {
 		//Set toAttackCountry to same country as fromAttackCountry
 		Country toAttackCountry = fromAttackCountry;
 
-		// numbers of soldiers on toAttackCouuntry is set to 2 to ensure that a valid
+		// numbers of soldiers on toAttackCountry is set to 5 to ensure that a valid
 		// number of
 		// dices can be thrown
 		toAttackCountry.setSoldiers(5);
@@ -719,8 +715,8 @@ public class PlayerTest {
 	}
 	
 	/**
-	 * Tests validate attack conditions
-	 *
+	 * Tests invalid country ownership
+	 * The test passes if validateAttackConditions returns false
 	 * @throws Exception on invalid
 	 */
 	@Test
@@ -737,7 +733,9 @@ public class PlayerTest {
 		fromAttackCountry.setSoldiers(25);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -753,10 +751,12 @@ public class PlayerTest {
 			}
 		}
 
-		// numbers of soldiers on toAttackCountry is set to 2 to ensure that a valid
+		// numbers of soldiers on toAttackCountry is set to 25 to ensure that a valid
 		// number of
 		// dices can be thrown
-		toAttackCountry.setSoldiers(25);	toAttackCountry.setPlayer(fromAttackCountry.getPlayer());
+		toAttackCountry.setSoldiers(25);	
+		//The owner of the defender's country is set to the attacker
+		toAttackCountry.setPlayer(fromAttackCountry.getPlayer());
 
 		// Instantiate playerAttackWrapper
 		// Swapped attacker and defender so that ownership changes, but all other conditions are valid
@@ -778,7 +778,7 @@ public class PlayerTest {
 	/**
 	 * Tests if attackmove is required after conquering a country
 	 * The test passes if the result returns true
-	 * @throws Exception 
+	 * @throws Exception on invalid
 	 */
 	@Test
 	public void test013_validateMoveAfterConquer() throws Exception{
@@ -794,7 +794,9 @@ public class PlayerTest {
 		fromAttackCountry.setSoldiers(1000);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
-		// Get first adjacent country in country's list
+		// Get a country in the adjacency list that does not belong to the attacker
+		// If any of the opposing country does not exist in the adjacency list,
+		// the setUp method will be run until any opposing country is found in the adjacency list 
 		Country toAttackCountry = null;
 		while (toAttackCountry == null) {
 			for (Integer i : fromCountryAdjacencyList) {
@@ -820,7 +822,8 @@ public class PlayerTest {
 
 		// Instantiate playerAttackWrapper
 		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
-
+		
+		// Set the attack condition to allout
 		playerAttackWrapper.setBooleanAllOut();
 
 		// Set the number of attacker dices to 3
@@ -842,7 +845,7 @@ public class PlayerTest {
 	 * Method to load a map. Method first exits from editmapphase by sending command
 	 * exitmapedit. Then command to loadmap is sent.
 	 *
-	 * @param mapName
+	 * @param mapName receives map name
 	 */
 	public void loadValidMap(String mapName) {
 		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase

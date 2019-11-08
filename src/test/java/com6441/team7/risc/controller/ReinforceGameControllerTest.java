@@ -370,8 +370,8 @@ public class ReinforceGameControllerTest {
     /**
      * test when users trade cards in second time
      * expect 1st time trade in would be 5, and 2nd time trade in would be 10, 3rd time trade in would be 15
-     * @throws IOException
-     * @throws URISyntaxException
+     * @throws IOException on invalid IO
+     * @throws URISyntaxException on invalid URI
      */
     @Test
     public void exchangeCardsWithFiveCards() throws IOException, URISyntaxException{

@@ -31,9 +31,9 @@ public class PlayerDominationWrapper {
 
 	/**
 	 * constructor set player name, occupation percentage and total number of armies
-	 * @param pName
-	 * @param percentage
-	 * @param numArmies
+	 * @param pName reference player name
+	 * @param percentage reference percentage of player's dominated territory
+	 * @param numArmies reference num of armies
 	 */
 	public PlayerDominationWrapper(String pName, float percentage, int numArmies) {
 		
@@ -47,7 +47,7 @@ public class PlayerDominationWrapper {
 
 	/**
 	 * add continent name to list of listContinentsOwned
-	 * @param continentName
+	 * @param continentName reference continent name
 	 */
 	public void addContinentNameToWrapperList(String continentName) {
 		listContinentsOwned.add(continentName);
