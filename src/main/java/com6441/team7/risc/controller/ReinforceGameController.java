@@ -244,7 +244,7 @@ public class ReinforceGameController implements Controller{
 
     /**
      * exchange cards
-     * construct card exchange view
+     * construct card exchange view, subscribe playerService as observer
      * validate exchange commands, if it is not valid, throw an exception
      * else if the command is trade in, call tradeInCards() to exchange soliders
      * else if the command is exchange -none, call tradeNone()

@@ -4,8 +4,6 @@ import com6441.team7.risc.api.wrapperview.*;
 
 import java.util.*;
 
-import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
-
 public class PlayerService extends Observable {
 
 	/**
@@ -405,12 +403,14 @@ public class PlayerService extends Observable {
 
 	/**
 	 * caculate number of reinforced armies after trading in cards
+	 * after receiving reinforced army, it will notify cardExchangeView with ReinforceArmyAfterTradingCard wrapper
+	 * to display current player and number of reinforced armies
 	 * @param player
 	 * @return number of reinforced army
 	 */
 	public int calculateReinforcedArmyByTradingCards(Player player){
 		int number = player.calculateReinforcedArmyByTradingCards();
-		ReinforcedArmyAfterTradingCard wrapper = new ReinforcedArmyAfterTradingCard(player, number);
+		ReinforcedArmyAfterTradingCardWrapper wrapper = new ReinforcedArmyAfterTradingCardWrapper(player, number);
 		setChanged();
 		notifyObservers(wrapper);
 		return number;

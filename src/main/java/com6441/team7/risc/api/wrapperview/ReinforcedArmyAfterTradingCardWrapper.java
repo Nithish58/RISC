@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * a self-defined wrapper to show reinforce information after trading in
  */
-public class ReinforcedArmyAfterTradingCard {
+public class ReinforcedArmyAfterTradingCardWrapper {
 
 
     /**
@@ -26,7 +26,7 @@ public class ReinforcedArmyAfterTradingCard {
      * @param player
      * @param soldier
      */
-    public ReinforcedArmyAfterTradingCard(Player player, int soldier) {
+    public ReinforcedArmyAfterTradingCardWrapper(Player player, int soldier) {
         this.player = player;
         this.soldier = soldier;
 
