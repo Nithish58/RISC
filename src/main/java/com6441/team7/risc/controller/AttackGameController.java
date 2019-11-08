@@ -25,8 +25,17 @@ import com6441.team7.risc.view.GameView;
  */
 public class AttackGameController implements Controller {
 
+	/**
+	 * Reference to playerservice
+	 */
     private PlayerService playerService;
+    /**
+     * Reference to mapservice
+     */
     private MapService mapService;
+    /**
+     * Reference to phaseview
+     */
     private GameView phaseView;
 
     /**
@@ -37,7 +46,6 @@ public class AttackGameController implements Controller {
     /**
      * Used to control gameflow. WHen it is set to true, only defend <numdice> command will be valid
      */
-    //private boolean boolDefenderDiceRequired;
     private AtomicBoolean boolDefenderDiceRequired;
 
 	/**
@@ -78,9 +86,7 @@ public class AttackGameController implements Controller {
         String[] commands = {};
         
         commands = command.split("\\s");
-       
         
-    	
     	switch(commandType) {
     	
     	case ATTACK:
@@ -97,6 +103,7 @@ public class AttackGameController implements Controller {
     		
     	case ATTACKMOVE:
     		validateAttackMoveCommand(commands);
+    		
     		break;
     		
     	case SHOW_PLAYER:
@@ -163,6 +170,7 @@ public class AttackGameController implements Controller {
     		return;
     	}
 		
+		//call attackMove in player.class after all validations passed
 		playerService.getCurrentPlayer().attackMove(numSoldierTransfer);
 	}
 
@@ -208,7 +216,7 @@ public class AttackGameController implements Controller {
     	//Reset to false so that other commands can go through
     	this.boolDefenderDiceRequired.set(false);
     	
-    	//Launch attack
+    	//Launch attack after defender has entered valid number of dice
     	playerService.getCurrentPlayer().attack(playerService, playerAttackWrapper);    	
 
     }
@@ -222,26 +230,29 @@ public class AttackGameController implements Controller {
 	private void validateAttackCommand(String[] arrCommand) {
     	
         if(boolDefenderDiceRequired.get()) {
-        	//validateDefendCommand(arrCommand);
+
         	phaseView.displayMessage("Defend command required now.");
         	return;
         }
         
         if(playerService.getCurrentPlayer().getBoolAttackMoveRequired()) {
+        	
         	phaseView.displayMessage("attackmove command required now");
         	return;
         }
     	
     	if(!(arrCommand.length==2 || arrCommand.length==4)) {
+    		
     		phaseView.displayMessage("Invalid Attack Command");
     		return;
     	}
     	
     	//Validates attack -noattack command and ends phase
     	if(arrCommand.length==2 && arrCommand[1].equalsIgnoreCase("-noattack")) {
+    		
     		playerService.getCurrentPlayer().endAttackPhase(playerService);
     		switchToFortification();
-    		//endAttackPhase();
+    		
     		return;
     	}
     	
@@ -253,7 +264,9 @@ public class AttackGameController implements Controller {
     		
     		//Check if fromCountry and toCountry are present in map
     		if(!(mapService.getCountryByName(fromCountryName).isPresent() ||
+    				
     				mapService.getContinentByName(toCountryName).isPresent())) {
+    			
     			phaseView.displayMessage("Invalid fromCountry or toCountry");
     			return;
     		}
@@ -291,19 +304,22 @@ public class AttackGameController implements Controller {
     			phaseView.displayMessage("Invalid numDice entered.");
     			return;
     		}
+    		
     		//If integer valid, notify observers and launch attack
     		playerAttackWrapper.setNumDiceAttacker(numDice);
     		
     		//Set boolDefenderDiceRequired to true
     		this.boolDefenderDiceRequired.set(true);
+    		
     		playerAttackWrapper.setBoolaDefenderDiceRequired(boolDefenderDiceRequired);
     		
     		playerService.notifyPlayerServiceObservers(playerAttackWrapper);
     		
+    		//Will wait for defender to enter numDice, then will launch attack in validateDefend Method
+    		
     		phaseView.displayMessage("Please choose number of dices Defender:");
 
     		
-    		//Will wait for defender to enter numDice, then will launch attack in validateDefend Method
     		return;
     	} // End of If
     	

@@ -827,7 +827,7 @@ public class Player{
 			
 	
 			
-			strSendAttackInfoToObservers+="Need to check player wins,\n"
+			strSendAttackInfoToObservers+="\nNeed to check player wins, "
 					+ "check if defender is eliminated from the game,"
 					+ "need to transfer cards\n"
 					+ "need to draw card when ending attack phase";
@@ -877,8 +877,10 @@ public class Player{
 
 		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 		
-		//toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
 		
+		
+		//Hardcoded to test exchangercards functions during build 2 demo
+		//Attacker allocated 9 cards whenever it conquers country, just to test exchangecards
 		for ( int i = 0 ; i < 3; i++) {
 			addCard(Card.INFANTRY);
 			addCard(Card.ARTILLERY);
@@ -888,6 +890,7 @@ public class Player{
 		strSendAttackInfoToObservers+="Country ownership transferred.\n Attacker conquers country.";
 		
 	}
+	
 
 	/**
 	 * validate if the defender occupy 0 country
@@ -1242,7 +1245,7 @@ public class Player{
 		strSendAttackInfoToObservers+=fromCountryName+" ("+attackerName+") wants to attack "+
 		toCountryName+" ("+defenderName+")";
 		
-		strSendAttackInfoToObservers+="\n"+fromCountryName+" has "+numAttackingSoldiers+"soldiers, "+
+		strSendAttackInfoToObservers+="\n"+fromCountryName+" has "+numAttackingSoldiers+" soldiers, "+
 		toCountryName+" has "+numDefendingSoldiers+" soldiers.";
 		
 		strSendAttackInfoToObservers+="\n"+attackerName+" rolls "+numDiceAttacker+

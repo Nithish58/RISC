@@ -52,12 +52,7 @@ import com6441.team7.risc.view.PhaseView;
  * @author Keshav
  *
  */
-
-//TODO: FILL IN THE EXISTING CODE IN THIS PART
-//TODO: move the logic relating to player to PlayerService.class
 public class StartupGameController implements Controller{
-
-	//Keshav Refactoring Part
 	
     /**
      * Boolean that checks if map is loaded.
@@ -89,22 +84,11 @@ public class StartupGameController implements Controller{
 	 * If true, allows proceeding to next phase; else program keep looping over players until all armies have been placed.
 	 */
 	private boolean[] boolArrayCountriesPlaced;
-	
-	
-	//JENNY REFACTORING PART
-
 
 	/**
 	 * private Controller mapLoaderController;
 	 */
 	private MapLoaderController mapLoaderController; //Casted it here instead of casting everytime
-	
-	
-     // as playerService class has a reference for mapService,
-     // we don't need to have a attribute here. But in coding efficiency, I provide here.
-     // the value of mapService will come from playerService.getMapService();
-     // I don't have domination view because, it is the model to update domination view,
-     // so i don't give reference here.
 
 	/**
 	 * a reference of mapService
@@ -163,11 +147,6 @@ public class StartupGameController implements Controller{
     	RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
         String[] commands = {};
-
-		/*
-		 * if(command.contains("-")){ command = StringUtils.substringAfter(command,
-		 * "-"); commands = StringUtils.split(command, "-"); }
-		 */
 
         if(command.toLowerCase(Locale.CANADA).contains("-add") ||
         	command.toLowerCase(Locale.CANADA).contains("-remove")){
@@ -488,10 +467,12 @@ public class StartupGameController implements Controller{
 	 * longer in order of id. This is done by using a stack.
 	 * The countries which are mixed and no longer in order are then allocated to players in round-robin fashion.
 	 * Then assigns 1 army to each country.
+	 * Triggers Notification to PlayerService Observers when every country is assigned to player.
+	 * Also triggers world domination view update when 
 	 */
 	public void populateCountries() {
 		
-				//If countries already populated, do not proceed again
+				//If countries already populated, do not proceed again/
 				if(boolCountriesPopulated) {
 					phaseView.displayMessage("Countries already populated");
 					return;
@@ -506,9 +487,8 @@ public class StartupGameController implements Controller{
 				int numInitialArmies=determineNumInitialArmies(numPlayers);
 				assignInitialArmies(numInitialArmies);
 				
+				//Keeps track of which players have placed all their armies
 				this.boolArrayCountriesPlaced=new boolean[playerService.getPlayerList().size()];
-				
-				//view.displayMessage("Number of Initial Armies:"+numInitialArmies+"\n");
 				
 				Stack<Country> stackCountry=new Stack<>();
 				
@@ -518,11 +498,14 @@ public class StartupGameController implements Controller{
 					stackCountry.push((Country) setIter.next());
 				}
 				
+				//shuffle countries in stack to make them random
 				Collections.shuffle(stackCountry);
 				Collections.shuffle(stackCountry);
 				Collections.shuffle(stackCountry);
 				
 				int currentPlayerIndex=0;
+				
+				//allocate randomly shuffled countries in stack to players in round-robin fashion.
 				
 				while(!stackCountry.isEmpty()) {
 					
@@ -530,11 +513,11 @@ public class StartupGameController implements Controller{
 					
 					Country currentCountry=stackCountry.pop();
 					
-					currentCountry.setPlayer(currentPlayer);
+					currentCountry.setPlayer(currentPlayer);  //allocation of country to player
 					
-					currentPlayer.reduceArmy(1);
+					currentPlayer.reduceArmy(1);   //reduce numArmies remaining to be placed
 					
-					currentCountry.addSoldiers(1);
+					currentCountry.addSoldiers(1);  //add army to country
 								
 					currentPlayer.addCountryToPlayerList(currentCountry);
 					
@@ -542,42 +525,28 @@ public class StartupGameController implements Controller{
 						boolArrayCountriesPlaced[currentPlayerIndex]=true;
 					}
 					
-					//NOTIFY playerService Observers
+					
+					//Trigger to NOTIFY playerService Observers after assigning country to player
 					PlayerInitialCountryAssignmentWrapper playerInitialCountryAssignment
 					=new PlayerInitialCountryAssignmentWrapper(currentPlayer,currentCountry);
 					
 					
 					playerService.notifyPlayerServiceObservers(playerInitialCountryAssignment);
-					//playerService.notifyObservers(playerInitialCountryAssignment);
 					
 					
 					currentPlayerIndex++;
 					
 					//reset index to 0 when end of player list reached
 					if(currentPlayerIndex==playerService.getPlayerList().size())
-						currentPlayerIndex=0;
-					
+						currentPlayerIndex=0;					
 				}
-				
-				/*
-				for(Country c:mapService.getCountries()) {
-					view.displayMessage(c.getId()+" "+c.getCountryName()+" "+c.getPlayer().getName()
-							+" "+c.getSoldiers());
-				}
-				*/
 				
 				phaseView.displayMessage("Countries Populated. Start placing your armies now.\n");
 				
+				//Trigger to Notify PlayerService Observers after assigning all countries
 				playerService.evaluateWorldDomination();
 				
 				this.boolCountriesPopulated=true;
-				
-				/*
-				for(Player p:players) {
-					view.displayMessage("Remaining Armies for "+p.getName()
-											+": "+p.getArmies());
-				}
-				*/
 				
 				playerService.setCurrentPlayerIndex(0);
 		
@@ -637,6 +606,7 @@ public class StartupGameController implements Controller{
 	
 	/**
 	 * Set the number of initial armies for every player respectively.
+	 * Triggers notification to playerservice observers using PlayerInitialArmyWrapper
 	 * @param numArmies number of initial armies allocated
 	 */
 	private void assignInitialArmies(int numArmies) {
@@ -656,6 +626,8 @@ public class StartupGameController implements Controller{
 	/**
 	 * place an army on the country by its countryName
 	 * by each player until all players have placed all their armies
+	 * Triggers notification to playerservice observers using PlaceArmyWrapper
+	 * Triggers notification to domination view
 	 * @param countryName CountryName
 	 */
 	public void placeArmy(String countryName) {
@@ -685,8 +657,6 @@ public class StartupGameController implements Controller{
         			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
         			
         			playerService.evaluateWorldDomination();
-        			
-        			//phaseView.displayMessage(currentPlayer.getName()+" placed army successfully.");
         			
         			if(currentPlayer.getArmies()==0) {
         				boolArrayCountriesPlaced[currentPlayerIndex]=true;        				
@@ -745,6 +715,8 @@ public class StartupGameController implements Controller{
 	
 	/**
 	 * automatically randomly place all remaining unplaced armies for all players
+	 * Triggers notification to playerservice observers using PlaceArmyWrapper
+	 * Triggers notification to domination view after all armies have been placed
 	 */
 	public void placeAll() {
     	
@@ -775,11 +747,10 @@ public class StartupGameController implements Controller{
 
     	phaseView.displayMessage("All Players Placed.");
 
-
+    	//Observers notified in state-setting method in playerservice
     	playerService.setCurrentPlayerIndex(0);
-    	//view.displayMessage("Player Turn: "+players.get(0).getName());    	
-    	//this.boolStartUpPhaseOver.set(true);
     	
+    	//Observers notified in state-setting method in mapservice
     	this.mapService.setState(GameState.REINFORCE);
 
     	Player player = playerService.getCurrentPlayer();
