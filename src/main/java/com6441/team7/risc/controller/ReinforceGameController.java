@@ -96,12 +96,6 @@ public class ReinforceGameController implements Controller{
                 exchangeCards(player, command);
                 break;
                 
-            case SHOW_CARDS:
-            	//showCardsInfo(player.getCardList(),phaseView);
-            	//createCardExchangeView();
-            	//playerService.deleteObserver(cardExchangeView);
-            	break;
-                
             case SHOW_PLAYER:
                 // showPlayerFortificationPhase(player); (PREVIOUSLY IN BUILD 1)
             	
