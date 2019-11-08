@@ -109,7 +109,7 @@ public class PlayerServiceTest {
 	/**
 	 * Testing switch player method
 	 * Evaluation: should switch player and then return to first player of list (round-robin) when
-	 * switch player has beel called by last player.
+	 * switch player has been called by last player.
 	 */
 	@Test public void test003_switchNextPlayer() {
 		
@@ -143,7 +143,7 @@ public class PlayerServiceTest {
 	 * Method to load a map. Method first exits from editmapphase by sending command
 	 * exitmapedit. Then command to loadmap is sent.
 	 *
-	 * @param mapName
+	 * @param mapName receives value from map name
 	 */
 	public void loadValidMap(String mapName) {
 		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase
