@@ -821,7 +821,9 @@ public class Player{
 			
 			transferCountryOwnershipAfterAttack();
 					
-			checkPlayerWin();
+			if (checkPlayerWin())
+				CommonUtils.endGame(playerService);
+				
 			
 	
 			
@@ -847,7 +849,7 @@ public class Player{
 	/**
 	 * check if attack has conquered all the countries
 	 */
-	public void checkPlayerWin() {
+	public boolean checkPlayerWin() {
 		 
 		if(attacker.getCountryList().size()==playerService.getMapService()
 				.getCountries().size()) {
@@ -856,11 +858,11 @@ public class Player{
 			
 			playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
 			
-			CommonUtils.endGame(playerService);
-			return;
+			return true;
 		}
 		
 		strSendAttackInfoToObservers+="\nYou must now transfer some soldiers from attacking country to defending country.";
+		return false;
 	}
 
 	/**

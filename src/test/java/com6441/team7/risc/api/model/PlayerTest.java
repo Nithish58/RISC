@@ -225,6 +225,7 @@ public class PlayerTest {
 		// Instantiate playerAttackWrapper
 		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
 
+		//Set the allout condition to true
 		playerAttackWrapper.setBooleanAllOut();
 
 		// Set the number of attacker dices to 3
@@ -289,10 +290,7 @@ public class PlayerTest {
 		// Get first country in player list
 		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
 		Country toAttackCountry = playerService.getNextPlayer().countryPlayerList.get(0);
-		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
-		// number of
-		// dices can be thrown
-		fromAttackCountry.setSoldiers(1000);
+
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
 		Set<Country> countryList = mapService.getCountries();
@@ -306,6 +304,34 @@ public class PlayerTest {
 				}
 
 		}
+		
+		// numbers of soldiers on fromAttackCouuntry is set to 1000 to ensure that a valid
+		// number of
+		// dices can be thrown and allout attack completes
+		fromAttackCountry.setSoldiers(1000);
+		
+		toAttackCountry.setSoldiers(5);
+		
+		// Instantiate playerAttackWrapper
+		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
+
+		//Set the allout condition to true
+		playerAttackWrapper.setBooleanAllOut();
+
+		// Set the number of attacker dices to 3
+		//playerAttackWrapper.setNumDiceAttacker(3);
+
+		// Set the number of defender dices to 1
+		//playerAttackWrapper.setNumDiceDefender(1);
+
+		// Call the attack function
+		currentPlayer.attack(playerService, playerAttackWrapper);
+		
+		
+		
+		
+		
+		
 
 		System.out.println("Attacker country list size after transfer: " + currentPlayer.getCountryList().size());
 		System.out.println("Total country list  size after: " + mapService.getCountries().size());
@@ -317,7 +343,7 @@ public class PlayerTest {
 		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
 		System.out.println("Total country list  size: " + mapService.getCountries().size());
 		// If either one of the countries' loses a soldier, isTrue is set to true
-		if (currentPlayer.getCountryList().size() == mapService.getCountries().size())
+		if (currentPlayer.checkPlayerWin())
 			isTrue = true;
 
 		assertTrue(isTrue);
