@@ -875,6 +875,12 @@ public class Player{
 		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());
 		
 		//toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
+		
+		for ( int i = 0 ; i < 3; i++) {
+			addCard(Card.INFANTRY);
+			addCard(Card.ARTILLERY);
+			addCard(Card.CAVALRY);
+		}
 
 		strSendAttackInfoToObservers+="Country ownership transferred.\n Attacker conquers country.";
 		
