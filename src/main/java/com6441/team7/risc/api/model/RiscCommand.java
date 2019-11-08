@@ -58,7 +58,7 @@ public enum RiscCommand {
 
     /**
      * get name of command
-     * @return
+     * @return name
      */
     public String getName() {
         return name;

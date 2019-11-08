@@ -54,7 +54,7 @@ public class ReinforceGameController implements Controller{
 
     /**
      * constructor
-     * @param playerService
+     * @param playerService reference PlayerService
      */
     public ReinforceGameController(PlayerService playerService) {
         this.playerService = playerService;
@@ -64,7 +64,7 @@ public class ReinforceGameController implements Controller{
 
     /**
      * connect the view to the reinforce controller
-     * @param view
+     * @param view reference the GameView
      */
     public void setView(GameView view){
         this.phaseView = view;
@@ -76,8 +76,8 @@ public class ReinforceGameController implements Controller{
      * if it is exchange card, call exchangeCards()
      * if it is show map, call showmap()
      * else the command is not valid, will throw an exception
-     * @param command
-     * @throws Exception
+     * @param command reference command
+     * @throws Exception on invalid value
      */
     @Override
     public void readCommand(String command) throws Exception {
@@ -143,8 +143,8 @@ public class ReinforceGameController implements Controller{
     /**
      * validate reinforce command, if the command is valid, call reinforceArmy to put extra armies on countries occupied
      * if the command is not valid, throw an exception and display error message to phaseView
-     * @param player
-     * @param command
+     * @param player reference player
+     * @param command reference command
      */
     public void reinforce(Player player, String command){
         try{
@@ -177,9 +177,9 @@ public class ReinforceGameController implements Controller{
      * calculate the reinforced armies, if the army number is 0, reinforce stage is over.
      * else if the army number is not valid, will throw an exception
      * else will reinforce army on the country specified and reduce reinforced army number
-     * @param player
-     * @param country
-     * @param armNum
+     * @param player reference player
+     * @param country reference country
+     * @param armNum reference num of armies
      */
     public void reinforceArmy(Player player, String country, int armNum){
 
@@ -228,8 +228,8 @@ public class ReinforceGameController implements Controller{
      * rule 1: all conquered countries divided by 3
      * rule 2: get the power of the continent if it is occupied by the player
      * rule 3: if the total number of reinforced armies is less than 3, make it three
-     * @param player
-     * @return
+     * @param player reference player
+     * @return number of reinforcer armies
      */
     public int calculateReinforcedArmies(Player player){
 
@@ -248,8 +248,8 @@ public class ReinforceGameController implements Controller{
      * validate exchange commands, if it is not valid, throw an exception
      * else if the command is trade in, call tradeInCards() to exchange soliders
      * else if the command is exchange -none, call tradeNone()
-     * @param player
-     * @param command
+     * @param player reference player
+     * @param command reference command
      */
     public void exchangeCards(Player player, String command){
         try{
@@ -350,10 +350,10 @@ public class ReinforceGameController implements Controller{
      * trade in cards from player
      * validate the command, if it is not valid, throw an exception
      * if it is valid, remove corresponding cards from player and display the change on the card exchange view
-     * @param player
-     * @param cardOne
-     * @param cardTwo
-     * @param cardThree
+     * @param player is the player
+     * @param cardOne is the first card
+     * @param cardTwo is the second card
+     * @param cardThree is the third card
      */
     public void tradeInCards(Player player, int cardOne, int cardTwo, int cardThree) {
         int cardSize = player.getCardList().size();
@@ -397,7 +397,7 @@ public class ReinforceGameController implements Controller{
 
     /**
      * check if the exchange cards state is over
-     * @return
+     * @return if exchange cards state if over
      */
     public boolean isExchangeCardOver() {
         return isExchangeCardOver;
