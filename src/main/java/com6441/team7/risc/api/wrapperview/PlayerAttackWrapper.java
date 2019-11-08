@@ -36,8 +36,16 @@ public class PlayerAttackWrapper {
 
 	/**
 	 * boolean value to validate if attack is over
+	 * Used for display purposes
 	 */
 	boolean boolAttackOver;
+	
+	/**
+	 * boolean value to validate if attackmove is over
+	 * Used for display purposes
+	 */
+	boolean boolAttackMoveOver;
+
 
 
 	AtomicBoolean boolDefenderDiceRequired;
@@ -141,9 +149,28 @@ public class PlayerAttackWrapper {
 	public boolean getBoolAttackOver() {
 		return boolAttackOver;
 	}
-	
+	/**
+	 * Setter for boolAttackOver
+	 * Alsways sets to true
+	 */
 	public void setBoolAttackOver() {
 		this.boolAttackOver=true;
+	}
+	
+	/**
+	 * get boolean value of boolAttackMoveOver
+	 * @return boolAttackOver
+	 */
+	public boolean getBoolAttackMoveOver() {
+		return boolAttackMoveOver;
+	}
+	
+	/**
+	 * Setter for boolAttackMoveOver
+	 * Always sets to true
+	 */
+	public void setBoolAttackMoveOver() {
+		this.boolAttackMoveOver=true;
 	}
 
 	/**

@@ -812,7 +812,7 @@ public class Player{
 		if(defenderPushedOut()) {
 		
 			//Need attack move next
-			//playerService.setBoolAttackMoveRequired(true);
+
 			this.boolAttackMoveRequired=true;
 			
 			transferCountryOwnershipAfterAttack();
@@ -929,6 +929,12 @@ public class Player{
     		
     		fromCountryAttack.removeSoldiers(numSoldiersTransfer);
     		toCountryAttack.addSoldiers(numSoldiersTransfer);
+    		
+    		//Notify playerService Observers
+    		PlayerAttackWrapper playerAttackWrapper=new PlayerAttackWrapper(fromCountryAttack,toCountryAttack);
+    		playerAttackWrapper.setBoolAttackMoveOver(); //Set flag for display in views
+    		
+    		playerService.notifyPlayerServiceObservers(playerAttackWrapper);
     		
 	    	playerService.evaluateWorldDomination();	
 	    	
