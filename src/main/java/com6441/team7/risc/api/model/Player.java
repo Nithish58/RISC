@@ -1219,11 +1219,16 @@ public class Player{
 		strSendAttackInfoToObservers=diceMessage+strSendAttackInfoToObservers; //Already formed during various method calls of decideBattleResult
 		
 		//Notify playerservice observers of what happened during battle phase (Concatenated String)
+		
 		playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
 		
 		//Notify playerservice observers of num armies remaining for attacker and defender
+		
 		PlayerAttackWrapper playerAttackWrapper=new PlayerAttackWrapper(fromCountryAttack,toCountryAttack);
-		playerAttackWrapper.setBoolAttackOver();
+		playerAttackWrapper.setBoolAttackOver(); //Set flag for display in views
+		
+		playerService.notifyPlayerServiceObservers(playerAttackWrapper);
+		
 				
 	}
 	
