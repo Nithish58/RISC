@@ -265,7 +265,7 @@ public class ReinforceGameControllerTest {
 
         cardList.add(Card.ARTILLERY);
         cardList.add(Card.INFANTRY);
-        cardList.add(Card.ARTILLERY);
+        cardList.add(Card.CAVALRY);
         cardList.add(Card.INFANTRY);
 
 
@@ -379,12 +379,13 @@ public class ReinforceGameControllerTest {
         String command = "exchangecards 1 2 3";
         reinforceGameController.exchangeCards(player, command);
         assertEquals(playerService.calculateReinforcedArmyByTradingCards(player), 5);
-        System.out.println("card trade in times " + player.getTradeInTimes());
+
 
         reinforceGameController.exchangeCards(player, command);
-        System.out.println("card trade in times " + player.getTradeInTimes());
         assertEquals(playerService.calculateReinforcedArmyByTradingCards(player), 10);
-        System.out.println("card trade in times " + player.getTradeInTimes());
+
+        reinforceGameController.exchangeCards(player, command);
+        assertEquals(playerService.calculateReinforcedArmyByTradingCards(player), 15);
 
     }
 }

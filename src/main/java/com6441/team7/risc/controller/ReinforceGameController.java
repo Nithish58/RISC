@@ -384,6 +384,7 @@ public class ReinforceGameController implements Controller{
         //cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
        
         showCardsInfo(player.getCardList(), cardExchangeView);
+        playerService.deleteObserver(cardExchangeView);
     }
 
     /**
