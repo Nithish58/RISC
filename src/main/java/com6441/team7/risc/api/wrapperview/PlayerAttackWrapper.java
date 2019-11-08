@@ -60,9 +60,6 @@ public class PlayerAttackWrapper {
 		
 		this.boolAttackOver=false; //for display purposes in view
 		
-	//	this.boolDefenderDiceRequired.set(false);
-	//	this.boolAttackMoveRequired.set(false);
-		
 	}
 
 	/**

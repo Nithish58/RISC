@@ -346,30 +346,6 @@ public class PhaseView implements GameView {
      * Displays information about fromCountry and toCountry during fortification phase.
      * @param arg PlayerFortificationWrapper.class object
      */
-    /*
-    private void playerFortificationStatus(Object arg) {
-    	PlayerFortificationWrapper playerFortificationWrapper
-    	=((PlayerFortificationWrapper) arg);
-    	Country fromCountry=playerFortificationWrapper.getCountryFrom();
-    	Country toCountry=playerFortificationWrapper.getCountryTo();
-    	int numSoldiers=playerFortificationWrapper.getNumSoldiers();
-    	
-    	displayMessage("Before Fortification, From: "+fromCountry.getCountryName()+
-    			" had "+(fromCountry.getSoldiers()+numSoldiers)+" soldiers, To: "
-    			+toCountry.getCountryName()+" had "+(toCountry.getSoldiers()-numSoldiers)
-    			+" soldiers.");
-    	
-    	displayMessage("After Fortification, From: "+fromCountry.getCountryName()+
-    			" now has "+fromCountry.getSoldiers()+" soldiers, To: "
-    			+toCountry.getCountryName()+" now has "+toCountry.getSoldiers()+" soldiers.\n");
-    	
-    }
-    */
-
-    /**
-     *
-     * @param arg
-     */
     private void playerFortificationStatus(Object arg) {
 
     	PlayerFortificationWrapper playerFortificationWrapper
@@ -423,18 +399,20 @@ public class PhaseView implements GameView {
     	String fromPlayerName=fromPlayer.getName();
     	String toPlayerName=toPlayer.getName();
     	
-    	if(playerAttackWrapper.getBoolAttackOver()) {
-    		//Do something
-    		return;
-    	}
-    	
     	String strMsg="";
     	
-    	if(playerAttackWrapper.getBoolAllOut()) {
+    	//Display message if attack is over
+    	if(playerAttackWrapper.getBoolAttackOver()) {
+    		
+    	}
+    	
+    	//Display message if allout attack chosen
+    	else if(playerAttackWrapper.getBoolAllOut()) {
     		strMsg=fromPlayerName+" decides to attack from "+fromCountryName+
     				" to "+toCountryName+" ("+toPlayerName+") ALLOUT!!!";
     	}
     	
+    	//Display message if single attack is chosen
     	else {
     		
     		int numDiceAttacker=playerAttackWrapper.getNumDiceAttacker();

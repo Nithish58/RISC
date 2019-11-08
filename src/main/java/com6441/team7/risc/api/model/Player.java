@@ -872,18 +872,16 @@ public class Player{
 		toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
 
 		toCountryAttack.setPlayer(fromCountryAttack.getPlayer());		
+
+		strSendAttackInfoToObservers+="Country ownership transferred.\n Attacker conquers country.";
 		
 		//Hardcoded to test exchangercards functions during build 2 demo
 		//Attacker allocated 9 cards whenever it conquers country, just to test exchangecards
-
 		for ( int i = 0 ; i < 3; i++) {
 			addCard(Card.INFANTRY);
 			addCard(Card.ARTILLERY);
 			addCard(Card.CAVALRY);
 		}
-
-		strSendAttackInfoToObservers+="Country ownership transferred.\n Attacker conquers country.";
-		
 	}
 	
 
