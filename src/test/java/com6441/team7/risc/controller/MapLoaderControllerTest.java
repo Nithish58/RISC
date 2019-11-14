@@ -816,15 +816,14 @@ public class MapLoaderControllerTest {
 	
 	/**
 	 * test016_validateDuplicateCountry() tests if duplicate countries exist
+	 *Expected: Duplicate countries not added and map remains valid
 	 * @throws IOException on invalid IO
 	 */
 	@Ignore
 	@Test
 	public void test016_validateDuplicateCountry() throws IOException {
-		message = "Duplicate contries exist";
 		addCountry("nippon", "south_afrori");
-		addCountry("nippon", "south_afrori");
-		assertTrue(message, testMapLoader.getMapService().isMapNotValid());
+		assertFalse(testMapLoader.getMapService().isMapValid());
 	}
 	
 	/**

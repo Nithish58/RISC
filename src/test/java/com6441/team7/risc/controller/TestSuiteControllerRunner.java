@@ -8,7 +8,6 @@ import org.junit.runner.notification.Failure;
 /**
  * It is the main class to run testSuiteController class
  */
-
 public class TestSuiteControllerRunner {
 
 	/**

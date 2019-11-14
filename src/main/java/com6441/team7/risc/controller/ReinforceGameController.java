@@ -98,6 +98,7 @@ public class ReinforceGameController implements Controller{
                 
             case SHOW_PLAYER:
                 // showPlayerFortificationPhase(player); (PREVIOUSLY IN BUILD 1)
+            	//Left the commented code out to explain to TA in Build 2
             	
                 MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
                 break;

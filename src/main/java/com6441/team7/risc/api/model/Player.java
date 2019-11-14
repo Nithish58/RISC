@@ -92,9 +92,50 @@ public class Player{
     public void setName(String name) {
         this.name = name;
     }
+    
+	/**
+	 * add the country to the countryPlayerList
+	 * @param c country
+	 */
+	public void addCountryToPlayerList(Country c) {
+    	
+    	this.countryPlayerList.add(c);
+    }
+	
+
+	/**
+	 * remove country c from countryPlayerList
+	 * @param c country
+	 */
+	public void removeCountryFromPlayerList(Country c) {
+		
+		String countryName=c.getCountryName();
+		
+		for(int i=0;i<countryPlayerList.size();i++) {
+			if(countryPlayerList.get(i).getCountryName().equals(countryName)) {
+				countryPlayerList.remove(i);
+				break;
+			}
+		}
+		
+		
+	}
+
+	/**
+	 * get country list occupied of the player
+	 * @return list of country
+	 */
+	public ArrayList<Country> getCountryList() {
+    	return countryPlayerList;
+    }
+    
+
+
 
 
     //------------------------------------REINFORCEMENT-----------------------------------------
+	
+	
 
     /**
      * get number of armies
@@ -331,42 +372,6 @@ public class Player{
     }
 
 
-	/**
-	 * add the country to the countryPlayerList
-	 * @param c country
-	 */
-	public void addCountryToPlayerList(Country c) {
-    	
-    	this.countryPlayerList.add(c);
-    }
-	
-
-	/**
-	 * remove country c from countryPlayerList
-	 * @param c country
-	 */
-	public void removeCountryFromPlayerList(Country c) {
-		
-		String countryName=c.getCountryName();
-		
-		for(int i=0;i<countryPlayerList.size();i++) {
-			if(countryPlayerList.get(i).getCountryName().equals(countryName)) {
-				countryPlayerList.remove(i);
-				break;
-			}
-		}
-		
-		
-	}
-
-	/**
-	 * get country list occupied of the player
-	 * @return list of country
-	 */
-	public ArrayList<Country> getCountryList() {
-    	return countryPlayerList;
-    }
-    
 
     
 
@@ -516,6 +521,8 @@ public class Player{
 			
 			
 			//If boolAllOut is chosen
+			//boolAllOut is set to true in playerAttackWrapper by GameController.We retrieve and
+			//check this boolean here.
       		if(boolAllOut) {
     			attackAllOut(playerService);
     			return;
@@ -530,6 +537,7 @@ public class Player{
 	 * attack once
 	 * check if the attack is valid, if yes, roll the dice and compare the results
 	 * if not, just return
+	 * Triggers notification to playerservice observers about validation if not passed
 	 * @param playerService a reference of PlayerService
 	 */
 	public void attackSingle(PlayerService playerService) {
@@ -561,6 +569,7 @@ public class Player{
 	 * validate the validity of attack, if yes, roll the dice and compare attacking results
 	 * if not, just return
 	 * @param playerService a reference of PlayerService
+	 * Notifies playerservice observers when validation conditions not met
 	 */
 	public void attackAllOut(PlayerService playerService) {
     	
@@ -574,8 +583,6 @@ public class Player{
     		//Update numSoldiers everytime attack is being done
     		this.numAttackingSoldiers=fromCountryAttack.getSoldiers();
     		this.numDefendingSoldiers=toCountryAttack.getSoldiers();
-    		
-		//	playerService.evaluateWorldDomination();
     		
 			//Checks the condition of both sides to determine how many number of dices are allowed
 			if (this.numAttackingSoldiers <= MAX_ATTACKER_DICE_NUM)
@@ -614,6 +621,8 @@ public class Player{
      * if both sides throw at least two dices.
      * @param attackerDice attacker's dice
      * @param defenderDice defender's dice
+     * Calls constructAndSendInitialInfo method to trigger notif to playerservice observers.
+     * Triggers notif to domination view
      */
 	public void decideBattleResult(int[] attackerDice, int[] defenderDice) {
 		
@@ -653,7 +662,6 @@ public class Player{
 			defenderSecondMaxValue = defenderDice[0];
 			break;
 		case 1:
-			//defenderMaxValue = defenderDice[0];
 			defenderMaxValue=defenderDice[0];
 			break;
 		}
@@ -716,7 +724,8 @@ public class Player{
 	}
 	
 	/**
-	 * Checks if defending country has been conquered
+	 * Checks if defending country has been conquered and if defender eliminated from game
+	 * If defender eliminated from game, triggers notif to dom view
 	 * @return true if defender country conquered
 	 */
 	public boolean checkDefenderOwnership() {
@@ -746,7 +755,9 @@ public class Player{
 	}
 	
 	/**
-	 * Transfers card fron defender to attacker WHEN DEFENDER ELIMINATED FROM GAME
+	 * Transfers card fron=m defender to attacker WHEN DEFENDER ELIMINATED FROM GAME
+	 * Triggers notif to show defender cards before transfer
+	 * Triggers notif to show attack cards after transfer
 	 */
 	public void transferCardsFromDefenderToAttacker() {
 		
@@ -803,6 +814,7 @@ public class Player{
 	 * Check if all of the defender's soldiers have been eliminated
 	 *If the defender lost all soldiers in his/her country, the attacker conquered the country
 	 * @return if true
+	 * Triggers notif to playerservice observers when country conquered.
 	 */
 	public boolean checkDefenderPushedOut() {
 		strSendAttackInfoToObservers="";
@@ -864,6 +876,7 @@ public class Player{
 
 	/**
 	 * transfer ownership of the country after attack
+	 * Give attacker 9 cards just for testing exchange during build 2 demo
 	 */
 	public void transferCountryOwnershipAfterAttack() {
 		
@@ -922,6 +935,8 @@ public class Player{
 	 * Method called when attackmove called.
 	 * Moves numSoldiers from attacking country to defeated country if validation check passes.
 	 * @param numSoldiersTransfer Number of Soldiers Transfered
+	 * Triggers notif to playerservice using PlayerAttackWrapper (booleAttackMoveOver=true)
+	 * triggers notif to dom view
 	 */
     public void attackMove(int numSoldiersTransfer) {
     	
@@ -1053,8 +1068,8 @@ public class Player{
 				neighbouringCountries =  adjacentCountriesList.get(fromId.get());
 				
 				if(!neighbouringCountries.contains(toId.get())) {
+					
 					this.boolAttackValidationMet=false;
-					//this.playerAttackWrapper.setAttackDisplayMessage
 					strSendAttackInfoToObservers+="\nCountries not adjacent to each other";
 				}
 			}			
@@ -1203,6 +1218,7 @@ public class Player{
 	
     /**
 	 * Displays information about attacker and defend dice rolls and attack outcome/
+	 * Triggers Notification of this information to playerservicer observers.
 	 * @param attackerDice attacker's dice
 	 * @param defenderDice defender's dice
 	 */
@@ -1240,7 +1256,7 @@ public class Player{
 	
 	/**
 	 * This method comes up with initial single attack display message
-	 *  and notifies observers of playerservice
+	 *  and notifies observers of playerservice about initial attack information
 	 */
 	public void constructAndSendInitialSingleAttackInformation() {
 		
@@ -1291,14 +1307,21 @@ public class Player{
 	/**
 	 * Getter for boolCountryConquered
 	 * @return boolean value
+	 * Notifies observers about card drawn
 	 */
 	public boolean getBoolCountryConquered() {
 		return boolCountryConquered;
 	}
 	
+	/**
+	 * Called when attack -noattack valid command entered
+	 * Draws card from deck and gives to attacker
+	 * @param playerService reference
+	 * Triggers notification about what card is drawn
+	 */
 	public void endAttackPhase(PlayerService playerService) {
 		
-		//Check if card needs to be drawn
+		//Check if card needs to be drawn-set to true when country conquered
 		if(boolDrawCard) {
 			Card c=playerService.drawFromDeck();
 			addCard(c);
@@ -1310,7 +1333,6 @@ public class Player{
 		
 		resetBooleanValues();
 		
-		//playerService.getMapService().setState(GameState.FORTIFY);
 	}
 	
 	/**
@@ -1368,6 +1390,8 @@ public class Player{
 	 * if not, notify observers with error messages
 	 * @param playerService PlayerService
 	 * @param playerFortificationWrapper PlayerFortification Wrapper
+	 * Triggers notification for validation messages and successful fortification
+	 * Triggers notification to domination view
 	 */
 	public void fortify(PlayerService playerService, PlayerFortificationWrapper playerFortificationWrapper) {
     	

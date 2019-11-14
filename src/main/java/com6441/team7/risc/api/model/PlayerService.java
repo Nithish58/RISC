@@ -4,6 +4,12 @@ import com6441.team7.risc.api.wrapperview.*;
 
 import java.util.*;
 
+/**
+ * Contains state of players
+ * It is observed by different views and hence extends observable
+ * @author Keshav
+ *
+ */
 public class PlayerService extends Observable {
 
 	/**
@@ -45,7 +51,6 @@ public class PlayerService extends Observable {
 	public PlayerService(MapService mapService){
 
 		this.mapService = mapService;
-		//playerList = new CircularFifoQueue<>();
 
 		this.listPlayers=new ArrayList<Player>();
 
@@ -184,22 +189,37 @@ public class PlayerService extends Observable {
 		shuffleDeckCards();
 	}
 
+	/**
+	 * Method to shuffle deck
+	 */
 	public void shuffleDeckCards() {
 		Collections.shuffle(deckCards);
 		Collections.shuffle(deckCards);
 		Collections.shuffle(deckCards);
 	}
 
+	/**
+	 * Card is drawn from deck by just popping the stacl
+	 * @return drawn card
+	 */
 	public Card drawFromDeck() {
 		return deckCards.pop();
 	}
 
+	/**
+	 * Adds list of cards returned to deck and shuffles the deck
+	 * @param cards list
+	 */
 	public void returnToDeck(List<Card> cards) {
 
 		cards.forEach(card -> deckCards.push(card));
 		shuffleDeckCards();
 	}
 
+	/**
+	 * Pushes card returned to stack and shuffles the deck
+	 * @param card returned
+	 */
 	public void returnToDeck(Card card){
 		deckCards.push(card);
 		shuffleDeckCards();
@@ -232,7 +252,8 @@ public class PlayerService extends Observable {
 	/**
 	 * add a Player
 	 * @param name of the player
-	 * @return player
+	 * @return player added
+	 * Notifies players when player added
 	 */
 	public Player addPlayer(String name){
 		Player newPlayer=new Player(name);
@@ -252,7 +273,8 @@ public class PlayerService extends Observable {
 	 * remove the player by player name
 	 * @param playerName reference player name
 	 * @return true if player been removed successfully and notify the observers
-	 * 		   false if player has not been removed successfully
+	 * false if player has not been removed successfully
+	 * Notifies observers when player removed
 	 */
 	public boolean removePlayer(String playerName){
 
@@ -540,15 +562,18 @@ public class PlayerService extends Observable {
 	/**
 	 *Determines percentage controlled by every player, ownership of continents by every player,
 	 *number of soldiers controller by every player and then notifies observers of playerservice.
+	 *Notifies Domination view by sending list of players and their corresponding info using PlayerDominationWrapper
 	 */
 	public void evaluateWorldDomination() {
 
+		//Check if any player owns any continents
 		Map<Integer, String> continentOwnerMap=checkContinentOwners();
 
 		int numCountries=mapService.getCountries().size();
 
 		ArrayList<PlayerDominationWrapper> listPlayerDomination=new ArrayList<>();
-
+		
+		//Loop through every player, calculate percentage and other info
 		for(Player p: listPlayers) {
 
 			String playerName=p.getName();
