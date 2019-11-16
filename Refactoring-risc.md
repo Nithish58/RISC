@@ -32,7 +32,9 @@
     
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build two")
 
-4. ### remove logic relating to reinforce() from reinforceController to model Player.class
+
+4. ### remove logic relating to reinforce(), exchangeCards() from reinforceController to model Player.class. The reinforceController is used to check the validity of the command 
+
 
     At build 1   
 
@@ -43,12 +45,16 @@
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
 
 
-5. ### remove logic relating fortify() from fortifyController to model Player.class 
+
+5. ### remove logic relating fortify() from fortifyController to model Player.class. The fortifyGameController is used to check the validity of the command
     At build 1
-       ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+    
+    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
        
     At build 2
-       ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+    
+    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+
        
 
 6.  ### add GameView and Controller as the interface
@@ -65,7 +71,9 @@
  7. ### refactor mapLoaderTests including extracting logics and parameters in different methods to make tests more readable and understandable.  
  
     At build 1
+    
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
     
     At build 2
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+    
+

@@ -5,14 +5,27 @@ package com6441.team7.risc.api.exception;
  */
 public class NeighborParsingException extends RiscGameException {
 
+    /**
+     * constructor of NeighborParsingException
+     * @param rootCause Exception
+     */
     public NeighborParsingException(Exception rootCause){
         super(rootCause);
     }
 
+    /**
+     * constructor of NeighborParsingException
+     * @param message String
+     * @param rootCause Exception
+     */
     public NeighborParsingException(String message, Exception rootCause){
         super(message, rootCause);
     }
 
+    /**
+     * constructor of NeighborParsingException
+     * @param message String
+     */
     public NeighborParsingException(String message){
         super(message);
     }

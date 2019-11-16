@@ -2,7 +2,9 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.exception.*;
 import com6441.team7.risc.api.model.*;
-import com6441.team7.risc.view.CommandPromptView;
+import com6441.team7.risc.utils.MapDisplayUtils;
+import com6441.team7.risc.view.GameView;
+import com6441.team7.risc.view.PhaseView;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -26,39 +28,69 @@ import static java.util.Objects.isNull;
  * It calls the methods in mapService.
  */
 
-public class MapLoaderController {
+public class MapLoaderController implements Controller{
 
+    /**
+     * generates id for continents
+     */
     private AtomicInteger continentIdGenerator;
+
+    /**
+     * generates id for countries
+     */
     private AtomicInteger countryIdGenerator;
-    
+
+    /**
+     * a reference of mapService
+     */
     private MapService mapService;
-    private CommandPromptView view;
+
+    /**
+     * a reference of gameView
+     */
+    private GameView view;
+
+    /**
+     * a reference of mapGraph
+     */
     private MapGraph mapGraph;
+
+    /**
+     * a reference of mapIntro
+     */
     private MapIntro mapIntro;
 
+
+    /**
+     * constructor to set mapService
+     * @param mapService MapService
+     */
     public MapLoaderController(MapService mapService) {
         this.mapService = mapService;
         this.continentIdGenerator = new AtomicInteger();
         this.countryIdGenerator = new AtomicInteger();
         this.mapGraph = new MapGraph();
         this.mapIntro = new MapIntro();
+        this.view = new PhaseView();
     }
 
 
     /**
      * read commands from user input to call different methods. If commands are not recognized, throw an exception
-     * @param command
-     * @throws IOException
+     * @param command Command
+     * @throws IOException on invalid
      */
+    @Override
     public void readCommand(String command) throws IOException {
 
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
         String[] commands = {};
 
-        if(command.contains("-")){
+        if(command.toLowerCase(Locale.CANADA).contains("-add") || command.toLowerCase(Locale.CANADA).contains("-remove")){
+
             command = StringUtils.substringAfter(command, "-");
-            commands = StringUtils.split(command, "-");
+            commands = command.split("\\s-");
         }
 
         switch (commandType) {
@@ -102,7 +134,7 @@ public class MapLoaderController {
      */
     private void exitEditMap(){
         if(mapService.isMapNotValid()) {
-            System.out.println("Map Not Valid");
+            view.displayMessage("Map Not Valid");
         }
         this.mapService.setState(GameState.START_UP);
     }
@@ -135,8 +167,8 @@ public class MapLoaderController {
 
     /**
      * save the map, if the map is valid, it could be saved. if not, will throw an exception
-     * @param command
-     * @throws IOException
+     * @param command Command
+     * @throws IOException on Error
      */
     public void saveMap(String command) throws IOException {
         if (mapService.isMapNotValid()) {
@@ -305,7 +337,7 @@ public class MapLoaderController {
 
             continent.setColor("null");
             mapService.addContinent(continent);
-            System.out.println("continent has been successfully added");
+            view.displayMessage("continent has been successfully added");
         } catch (Exception e) {
             throw new ContinentEditException("edit continent command: cannot add it is not valid", e);
         }
@@ -448,7 +480,7 @@ public class MapLoaderController {
 
             if (mapService.countryNameExist(countryName) && mapService.countryNameExist(neighborCountry)) {
                 mapService.addNeighboringCountries(countryName, neighborCountry);
-                System.out.println("neighbor country been successfully added");
+                view.displayMessage("neighbor country been successfully added");
                 return;
             }
 
@@ -535,12 +567,19 @@ public class MapLoaderController {
      * @param name
      */
     void createFile(String name) {
+    	
+    	if(!(mapService.getGameState()==GameState.LOAD_MAP)) {
+    		view.displayMessage("Sorry, you can only create and edit maps in the loadmap phase.");
+    		return;
+    	}
+    	
+    	
         File file = new File(name);
         try {
             FileUtils.writeStringToFile(file, "", StandardCharsets.UTF_8.name());
-            System.out.println("a file " + file.getName() + " has been created.");
+            view.displayMessage("a file " + file.getName() + " has been created.");
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            view.displayMessage(e.getMessage());
         }
     }
 
@@ -732,7 +771,7 @@ public class MapLoaderController {
      * @return
      */
     private List<Integer> createAdjacencyCountriesFromRaw(String s) {
-        List<String> adjacency = Arrays.asList(StringUtils.split(s, " "));
+        List<String> adjacency = Arrays.asList(StringUtils.split(s, WHITESPACE));
 
         throwWhenNoNeighboringCountry(s, adjacency);
         throwWhenNeighbouringCountriesIdInvalid(s, adjacency);
@@ -803,7 +842,7 @@ public class MapLoaderController {
      * set the command view
      * @param view view to this view
      */
-    public void setView(CommandPromptView view) {
+    public void setView(GameView view) {
         this.view = view;
     }
 
@@ -821,7 +860,7 @@ public class MapLoaderController {
 	 */
 	private void endGame() {
     	view.displayMessage("Game Ends");
-    	System.exit(0);;
+    	System.exit(0);
     }
 
     /**
@@ -832,49 +871,5 @@ public class MapLoaderController {
     	this.countryIdGenerator.set(num);
     }
 
-    /**
-     * show map information with continents, each country relates to continents and its neighboring countries
-     */
-    public void showMapFull() {
-
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-
-    		int key=(int) item.getKey();
-
-
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-
-    		System.out.println("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		System.out.println();
-
-    		Set<Integer> value=item.getValue();
-
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-
-    			Country currentCountry=optionalCountry.get();
-    			String strCountryOutput="";
-
-    			strCountryOutput+=currentCountry.getCountryName();
-
-    			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-
-    			if(adjCountryList != null) {
-                    for (Integer j : adjCountryList) {
-                        strCountryOutput += " --> " + mapService.getCountryById(j).get().getCountryName();
-                    }
-                }
-
-    			System.out.println(strCountryOutput+"\n");
-    		}
-
-    	}
-
-    }
-
-    
 
 }

@@ -22,8 +22,16 @@ public enum RiscCommand {
     PLACE_ARMY("placearmy"),
     PLACE_ALL("placeall"),
     REINFORCE("reinforce"),
+    EXCHANGE_CARD("exchangecards"),
     FORTIFY("fortify"),
+    ATTACK("attack"),
     UNKNOWN("unknown"),
+    
+    SHOW_CARDS("showcards"),
+    
+    //ATTACK Commands
+    DEFEND("defend"),
+    ATTACKMOVE("attackmove"),
 
 
 	EXIT_MAPEDIT("exitmapedit"),
@@ -32,8 +40,7 @@ public enum RiscCommand {
 	SHOW_PLAYER_COUNTRIES("showplayercountries"),
 	SHOW_ALL_PLAYERS("showallplayers"),
 	SHOW_FILE("showfile"),
-	EXIT("exit")
-	
+	EXIT("exit")	
 	;
 
     /**
@@ -51,7 +58,7 @@ public enum RiscCommand {
 
     /**
      * get name of command
-     * @return
+     * @return name
      */
     public String getName() {
         return name;

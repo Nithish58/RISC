@@ -14,30 +14,31 @@ import org.junit.Test;
  *
  */
 public class MapIntroTest {
-	static MapIntro mapIntro;
+
+	static
+	/**
+	 * MapIntro object reference
+	 */
+	MapIntro mapIntro;
+	/**
+	 * MapIntro test variable
+	 */
 	String mapIntroStr = "";
 
 	/**
 	 * MapIntro object is instantiated here.
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mapIntro = new MapIntro();
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 
 	@Before
 	public void setUp() throws Exception {
 		mapIntroStr = "intro";
 		mapIntro.setMapIntro(mapIntroStr);
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	/**

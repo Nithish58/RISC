@@ -14,27 +14,30 @@ import org.junit.Test;
  *
  */
 public class MapGraphTest {
-	static //declare object class
+	static
+	/**
+	 * MapGraph object
+	 */
 	MapGraph mapGraph;
-	//declare variable for testing
+
+	/**
+	 * Testing variable for mapGraph
+	 */
 	String testGraph = "";
 	
 	/**
 	 * Instantiate a MapGraph object
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mapGraph = new MapGraph();
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
 	/**
 	 * Assigning a value to the variable.
 	 * Invoke setMapGraph with testGraph as param.
-	 * @throws Exception
+	 * @throws Exception on invalid
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -43,9 +46,6 @@ public class MapGraphTest {
 		mapGraph.setMapGraph(testGraph);
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	/**
 	 * Test if getMapGraph returns the same value 

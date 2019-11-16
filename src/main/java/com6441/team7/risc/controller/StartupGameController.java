@@ -1,52 +1,34 @@
 package com6441.team7.risc.controller;
-
-import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
-import static java.util.Objects.isNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Scanner;
-import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com6441.team7.risc.view.CommandPromptView;
-import org.apache.commons.io.FileUtils;
+import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
+import static com6441.team7.risc.api.RiscConstants.MAX_NUM_PLAYERS;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
+import com6441.team7.risc.api.model.PlayerService;
+import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.api.wrapperview.PlayerInitialArmyWrapper;
+import com6441.team7.risc.api.wrapperview.PlayerInitialCountryAssignmentWrapper;
+import com6441.team7.risc.api.wrapperview.PlayerPlaceArmyWrapper;
+import com6441.team7.risc.utils.CommonUtils;
+import com6441.team7.risc.utils.MapDisplayUtils;
+import com6441.team7.risc.view.DominationView;
+import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.api.exception.ContinentEditException;
-import com6441.team7.risc.api.exception.ContinentParsingException;
-import com6441.team7.risc.api.exception.CountryParsingException;
-import com6441.team7.risc.api.exception.MissingInfoException;
-import com6441.team7.risc.api.exception.NeighborParsingException;
 import com6441.team7.risc.api.exception.PlayerEditException;
-import com6441.team7.risc.api.model.Continent;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
-import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.view.PhaseView;
 
 /**
  * 
@@ -70,18 +52,8 @@ import com6441.team7.risc.api.model.RiscCommand;
  * @author Keshav
  *
  */
-public class StartupGameController {
+public class StartupGameController implements Controller{
 	
-	/**
-	 * Reference to map loader controller
-	 */
-	private MapLoaderController mapLoaderController;
-	
-	/**
-	 * Reference to view
-	 */
-	private CommandPromptView view;
-
     /**
      * Boolean that checks if map is loaded.
      * Used to control game flow.
@@ -112,73 +84,77 @@ public class StartupGameController {
 	 * If true, allows proceeding to next phase; else program keep looping over players until all armies have been placed.
 	 */
 	private boolean[] boolArrayCountriesPlaced;
+
 	/**
-	 * Atomic Boolean that is set to true after all countries have been populated.
-	 * When true, does not give control to startup phase again.
+	 * private Controller mapLoaderController;
 	 */
-	private AtomicBoolean boolStartUpPhaseOver;
+	private MapLoaderController mapLoaderController; //Casted it here instead of casting everytime
+
 	/**
-	 * Keeps track of current player index to access current player from list of players
-	 */
-	int currentPlayerIndex;
-	/**
-	 * Reference to mapService model
+	 * a reference of mapService
 	 */
 	private MapService mapService;
+
 	/**
-	 * List of players playing the game
+	 * a reference of plaerService
 	 */
-	private ArrayList<Player> players;
-	
+	private PlayerService playerService;
+
 	/**
-	 * This is the constructor of the startup controller.
-	 * @param mapController Used for calling some file parsing and map loading methods that had already been used in the map loading phase.
-	 * @param mapService Main map is passed as a reference.
-	 * @param players list of all players passed as reference as well.
-	 * 
+	 * a reference of phaseView
 	 */
-	public StartupGameController(MapLoaderController mapController ,MapService mapService,
-			ArrayList<Player> players) {
+	private GameView phaseView;
+
+
+	/**
+	 * constructor to set mapController and playerService
+	 * @param mapController MapController
+	 * @param playerService PlayerService
+	 */
+	public StartupGameController(Controller mapController, PlayerService playerService) {
+		this.mapLoaderController= (MapLoaderController) mapController;
+
+		this.playerService = playerService;
+		this.mapService = playerService.getMapService();
 		
-		this.mapLoaderController=mapController;
-		
-		this.boolMapLoaded=false;
-		
-		
+		this.boolMapLoaded=false;	
 		this.boolAllGamePlayersAdded=false;
 		this.boolGamePlayerAdded=false;
-		this.boolCountriesPopulated=false;
-			
-		this.mapService=mapService;
-		
-		this.players=players; 
+		this.boolCountriesPopulated=false;		
 
 	}
-	
-/**
- * This method "routes" different commands to their respective functions.
- * <ul>
- * <li>It first analyses the commands itself and check for their validity.</li>
- * <li> If valid, it calls their functions </li>
- * 
- * </ul>
- * @param command String of user command
- * @param boolStartUpPhaseOver true if start up phase is over (when all armies placed). This boolean value then allows switching to next state.
- * 
- */
-	public void readCommand(String command, AtomicBoolean boolStartUpPhaseOver) {
-		
-        RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
+
+	/**
+	 * set the view
+	 * @param view GameView
+	 */
+	public void setView(GameView view){
+	    this.phaseView = view;
+    }
+
+
+	/**
+	 * extends method from IController to read command from the view
+	 * check the validity of the commands,
+	 * if the command is valid, call relative methods
+	 * if not, display error messages to the phase view
+	 * @param command Command
+	 * @throws Exception on invalid
+	 */
+	@Override
+    public void readCommand(String command) throws Exception {
+    	
+    	RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
         String[] commands = {};
 
-        if(command.contains("-")){
+        if(command.toLowerCase(Locale.CANADA).contains("-add") ||
+        	command.toLowerCase(Locale.CANADA).contains("-remove")){
+
             command = StringUtils.substringAfter(command, "-");
-            commands = StringUtils.split(command, "-");
+            commands = command.split("\\s-");
         }
         
-        this.boolStartUpPhaseOver=boolStartUpPhaseOver;
-
         switch(commandType) {
         	
         case LOAD_MAP:
@@ -197,9 +173,11 @@ public class StartupGameController {
             		loadMap(command);
         		}
         		else {
-        			if(!boolMapLoaded) view.displayMessage("Load Map First");
         			
-        			else if(boolCountriesPopulated) view.displayMessage("Countries already populated. Cannot "
+        			if(!boolMapLoaded) phaseView.displayMessage("Load Map First");
+        			
+        			else if(boolCountriesPopulated)
+        				phaseView.displayMessage("Countries already populated. Cannot "
         					+ "load new map now.");
         		}
         	}
@@ -214,9 +192,10 @@ public class StartupGameController {
         	
         	else {
         		
-        		if(!boolMapLoaded) view.displayMessage("Load Map First.");
+        		if(!boolMapLoaded) phaseView.displayMessage("Load Map First.");
         		
-        		else if(boolAllGamePlayersAdded)	view.displayMessage("You are past adding phase.All Players Added/Removed");
+        		else if(boolAllGamePlayersAdded) phaseView.displayMessage
+        		("You are past adding phase.All Players Added/Removed");
         	}
         	
         	break;
@@ -225,7 +204,7 @@ public class StartupGameController {
         	
         	if(boolMapLoaded) {
         		
-        		if(!players.isEmpty()) {
+        		if(!playerService.getPlayerList().isEmpty()) {
         			
         			boolAllGamePlayersAdded=true;
                 	populateCountries();               	
@@ -233,15 +212,16 @@ public class StartupGameController {
         		
         		else {
         			
-        			view.displayMessage("No Player Added. Add 1 player atleast");
+        			phaseView.displayMessage("No Player Added. Add 1 player atleast");
         		}
         	}
         	
         	else {
         		
-        		view.displayMessage("Load a Map first");
+        		phaseView.displayMessage("Load a Map first");
         		
-        		if(players.isEmpty()) view.displayMessage("No Player Added. Add 1 player atleast");
+        		if(playerService.getPlayerList().isEmpty()) 
+        			phaseView.displayMessage("No Player Added. Add 1 player atleast");
 
         	}
         	
@@ -249,9 +229,16 @@ public class StartupGameController {
         	
         case PLACE_ARMY:
         	
+        	//Reconcatenate broken countryname split by '-' command:
+        	
+        	if(!boolCountriesPopulated) {
+        		phaseView.displayMessage("Populate countries first");
+        		return;
+        	}
+        	
         	String[] strArr=StringUtils.split(command, WHITESPACE);
         	
-        	if(strArr.length!=2) view.displayMessage("Invalid Placearmy command");
+        	if(strArr.length!=2) phaseView.displayMessage("Invalid Placearmy command");
         	else {
         		placeArmy(strArr[1]);
         	}
@@ -259,173 +246,116 @@ public class StartupGameController {
         	break;
         	
         case PLACE_ALL:
+        	
+        	if(!boolCountriesPopulated) {
+        		phaseView.displayMessage("Populate countries first");
+        		return;
+        	}
+        	
         	placeAll();
         	break;
         	
         case SHOW_PLAYER:
-        	showPlayer();
+        	
+        	MapDisplayUtils.showPlayer(mapService,playerService,phaseView);
         	break;
         	
         case SHOW_ALL_PLAYERS:
-        	showAllPlayers();
+
+        	MapDisplayUtils.showAllPlayers(mapService,playerService,phaseView);
         	break;
         	
-        case SHOW_PLAYER_ALL_COUNTRIES:       	
-        	showPlayerAllCountries();
+        case SHOW_PLAYER_ALL_COUNTRIES:
+
+        	MapDisplayUtils.showPlayerAllCountries(mapService,playerService,phaseView);
         	break;
         
         case SHOW_PLAYER_COUNTRIES:
-        	showPlayerCountries();
+
+        	MapDisplayUtils.showPlayerCountries(mapService,playerService,phaseView);
         	break;
         	
         case SHOW_MAP:
+        	//If countries populated, shows version with ownership and numArmies
+        	if(boolCountriesPopulated) MapDisplayUtils.showMapFullPopulated(mapService, phaseView);
         	
-        	if(boolCountriesPopulated) showMapFull();
-        	
-        	else mapLoaderController.showMapFull();
+        	//If countries not yet populated, shows version with no ownership and numArmies      	
+        	else MapDisplayUtils.showMapFullUnpopulated(mapService, phaseView);
         	
         	break;
         	
         case EXIT:
-        	endGame();
+        	CommonUtils.endGame(phaseView);
         	break;
         	
         default:
             throw new IllegalArgumentException("cannot recognize this command");
 
-        }
+        } //End of switch    	
         
-	}
+    } //End of readcommand function
 
-	/**
-	 * This method randomly assigns countries to players.
-	 * The random technique used in this method is shuffling the list of countries 3 times so that they are no
-	 * longer in order of id. This is done by using a stack.
-	 * The countries which are mixed and no longer in order are then allocated to players in round-robin fashion.
-	 * Then assigns 1 army to each country.
+
+    
+    /**
+	 * load map from the map file
+	 * @param mapname
+	 * @return a string instead of null if map not loaded successfully, that is why optional is used/
 	 */
-	private void populateCountries() {
-		
-		if(!boolCountriesPopulated) {
+	Optional<String> loadMap(String s) {
 			
-			int numPlayers=players.size();
-			view.displayMessage("NumPlayers: "+numPlayers);
-			
-			//CHECK IF ONLY 1 PLAYER: PLAYER WINS
-			if(numPlayers==1) {
-				view.displayMessage("PLAYER "+players.get(0).getName()+" WINS");
-				endGame();
-			}
-			
-			else if(numPlayers==0) {
-				view.displayMessage("No Players Added. Try again");
-			}
-			
-			else if(numPlayers>9) {
-				view.displayMessage("Player limit exceeded. Cannot Proceed");
-			}
-			
-			else {
-				
-				int numInitialArmies=determineNumInitialArmies(numPlayers);
-				assignInitialArmies(numInitialArmies);
-				
-				view.displayMessage("Number of Initial Armies:"+numInitialArmies+"\n");
-				
-				Stack<Country> stackCountry=new Stack<>();
-				
-				Iterator setIter=mapService.getCountries().iterator();
-				
-				while(setIter.hasNext()) {
-					stackCountry.push((Country) setIter.next());
-				}
-				
-				Collections.shuffle(stackCountry);
-				Collections.shuffle(stackCountry);
-				Collections.shuffle(stackCountry);
-				
-				int currentPlayerIndex=0;
-				
-				while(!stackCountry.isEmpty()) {
-					
-					Country currentCountry=stackCountry.pop();
-					
-					currentCountry.setPlayer(players.get(currentPlayerIndex));
-					
-					currentCountry.addSoldiers(1);
-					
-					players.get(currentPlayerIndex).reduceArmy(1);
-					
-					players.get(currentPlayerIndex).countryPlayerList.add(currentCountry);
-					
-					currentPlayerIndex++;
-					
-					if(currentPlayerIndex==players.size()) currentPlayerIndex=0;
-					
-				}
-				
-				
-				for(Country c:mapService.getCountries()) {
-					view.displayMessage(c.getId()+" "+c.getCountryName()+" "+c.getPlayer().getName()
-							+" "+c.getSoldiers());
-				}
-				
-				view.displayMessage("Countries Populated. Start placing your armies now.");
-				
-				this.boolCountriesPopulated=true;
-				
-				this.boolArrayCountriesPlaced=new boolean[players.size()];
-				
-				for(Player p:players) {
-					view.displayMessage("Remaining Armies for "+p.getName()
-											+": "+p.getArmies());
-				}
-				
-				this.currentPlayerIndex=0;
-				view.displayMessage("\nCurrent Player:"+players.get(this.currentPlayerIndex).getName());
-				
-			}
+	        String[] commands = StringUtils.split(s, " ");
 
-		}
-		
-		else {
-			view.displayMessage("Countries already populated");
-		}
+	        if (commands.length != 2) {
+	        
+	           phaseView.displayMessage("Command LoadMap is not valid"); 
+	            return Optional.empty();
+	        }
+
+	        String command = commands[0];
+	        String path = commands[1];
+
+	        if (command.toLowerCase(Locale.CANADA).equals("loadmap")) {
+
+	        	this.mapLoaderController.setContinentIdGenerator(0);
+	            this.mapLoaderController.setCountryIdGenerator(0);
+	        	mapService.emptyMap();
+	        	mapLoaderController.readFile(path);
+	        	
+	        	//If Map not valid, boolMapLoaded will be false.
+	        	//Consequently, user will not be able to proceed without loading a valid map.
+	        	if(validateMap()) {
+	        		this.boolMapLoaded=true;
+	        	}
+	        	else {
+	        		this.boolMapLoaded=false;
+	        		phaseView.displayMessage("Please load a Valid Map before proceeding.");
+	        	}
+	        	
+	            return Optional.of(path);
+	        }
+
+	        phaseView.displayMessage("Command LoadMap is not valid"); 
+	        return Optional.empty();
 		
 	}
-	
+    
 	/**
-	 * This method determines the initial number of armies allocated to each player.
-	 * The rules are an approved adaptation of Hasbro 1 by Mr Joey Paquet.
-	 * They are as follows:
-	 * <ul>
-	 * <li>2 Players: 40 armies</li>
-	 * <li>3 Players: 35 armies</li>
-	 * <li>4 Players: 30 armies</li>
-	 * <li>...</li>
-	 *</ul>
-	 *This pattern goes on until a maximum of 9 players with 5 armies each.
-	 * 
-	 * @param numPlayers
-	 * @return number of intial armies allocated to each player
+	 * validate the map
+	 * @return true if valid, false if not valid
 	 */
-	private int determineNumInitialArmies(int numPlayers) {
-		return 40-((numPlayers-2)*5);
-	}
-	
-	/**
-	 * Set the number of initial armies for every player respectively.
-	 * @param numArmies number of initial armies allocated
-	 */
-	private void assignInitialArmies(int numArmies) {
-		
-		for(Player p: players) {
-			p.setArmies(numArmies);
-		}
-		
-	}
+	private boolean validateMap() {
 
+        if(mapService.isMapValid()){
+        	
+            return true;
+        }
+        else{
 
+            return false;
+        }
+    }
+    
 	/**
 	 * for each string, call editPlayerFromUserInput method
 	 * @param s
@@ -435,8 +365,7 @@ public class StartupGameController {
 			 Arrays.stream(s).forEach(this::editPlayerFromUserInput);				
 	
 	}
-
-
+    
 	/**
 	 * if the command is add, call addPlayer()
 	 * if the command is remove, call removePlayer()
@@ -453,10 +382,11 @@ public class StartupGameController {
                 removePlayer(commands);
                 break;
             default:
-                throw new ContinentEditException("The gameplayer command " + s + " is not valid.");
+                throw new PlayerEditException("The gameplayer command " + s + " is not valid.");
         }
     }
-
+    
+    
 	/**
 	 * validate each player info, if player info is valid, add it to the list of players
 	 * if not valid, throw an exception
@@ -464,39 +394,36 @@ public class StartupGameController {
 	 */
 	private void addPlayer(String[] s) {
     	
-    	if(players.size()<9) {
+    	if(playerService.getPlayerList().size()<MAX_NUM_PLAYERS) {
     		
         	try {
         		
         		String playerName=convertFormat(s[1]);
         		
-        		boolean nameFound=false;
-        		
-        		for(int i=0;i<players.size();i++) {
-        			if(players.get(i).getName().equals(playerName)) {
-        				nameFound=true;
-        				view.displayMessage("Player Already Exists. Try different name");
-        				break;
-        			}
-        		}
+        		boolean nameFound=playerService.checkPlayerExistance(playerName);
         		
         		if(!nameFound) {
-        			players.add(new Player(playerName));
-        			view.displayMessage("Player Added: "+playerName);
+        			
+        			Player newPlayer=playerService.addPlayer(playerName);       			
+        			
+        			this.boolGamePlayerAdded=true;
         		}
         		
-        		
+        		else {
+        			phaseView.displayMessage("Player Already Exists. Try different name.");
+        		}
         		
         	}
         	
         	catch(Exception e) {
+        		e.printStackTrace();
         		throw new PlayerEditException("gameplayer command: cannot add/remove it is not valid", e);
         	}
     		
     	}
     	
     	else {
-    		view.displayMessage("Limit of 9 players reached.");
+    		phaseView.displayMessage("Limit of "+MAX_NUM_PLAYERS+" players reached.");
     	}
     	
 
@@ -514,18 +441,17 @@ public class StartupGameController {
     		
     		String playerName=convertFormat(s[1]);
     		
-    		boolean nameFound=false;
+    		boolean playerRemoved=playerService.removePlayer(playerName);
     		
-    		for(int i=0;i<players.size();i++) {
-    			if(players.get(i).getName().equals(playerName)) {
-    				nameFound=true;
-    				players.remove(i);
-    				view.displayMessage("Player Removed: "+playerName);
-    				break;
-    			}
+    		//If playerList is empty after player removed, cannot proceed to populatecountries
+    		//therefore boolean gamePlayerAdded must be reset to false
+    		if(playerRemoved) {
+    			
+    			if(playerService.getPlayerList().isEmpty())
+    				this.boolGamePlayerAdded=false;
     		}
     		
-    		if(!nameFound) view.displayMessage("gameplayer command: cannot remove, player does not exist");
+    		else phaseView.displayMessage("Cannot remove, player does not exist.");
     		
     	}
     	
@@ -533,125 +459,189 @@ public class StartupGameController {
     		throw new PlayerEditException("gameplayer command: cannot add/remove it is not valid", e);
     	}
     }
-	
-	/**
-	 * Getter Method for view
-	 * @return view 
-	 */
-    public CommandPromptView getView() {
-    	return view;
-    }
     
-    /**
-     * Setter method for view
-     * @param view
-     */
-    public void setView(CommandPromptView v) {
-    	this.view=v;
-    	
-    }
-
+    
 	/**
-	 * load map from the map file
-	 * @param mapname
-	 * @return a string instead of null if map not loaded successfully, that is why optional is used/
+	 * This method randomly assigns countries to players.
+	 * The random technique used in this method is shuffling the list of countries 3 times so that they are no
+	 * longer in order of id. This is done by using a stack.
+	 * The countries which are mixed and no longer in order are then allocated to players in round-robin fashion.
+	 * Then assigns 1 army to each country.
+	 * Triggers Notification to PlayerService Observers when every country is assigned to player.
+	 * Also triggers world domination view update when 
 	 */
-	Optional<String> loadMap(String s) {
+	public void populateCountries() {
 		
+				//If countries already populated, do not proceed again/
+				if(boolCountriesPopulated) {
+					phaseView.displayMessage("Countries already populated");
+					return;
+				}
+							
+				//If number of players invalid (0 or greater than player limit or if only 1 player present)
+				if(!checkNumPlayersValid()) return;
+				
+				
+				int numPlayers=playerService.getPlayerList().size();
+			
+				int numInitialArmies=determineNumInitialArmies(numPlayers);
+				assignInitialArmies(numInitialArmies);
+				
+				//Keeps track of which players have placed all their armies
+				this.boolArrayCountriesPlaced=new boolean[playerService.getPlayerList().size()];
+				
+				Stack<Country> stackCountry=new Stack<>();
+				
+				Iterator setIter=mapService.getCountries().iterator();
+				
+				while(setIter.hasNext()) {
+					stackCountry.push((Country) setIter.next());
+				}
+				
+				//shuffle countries in stack to make them random
+				Collections.shuffle(stackCountry);
+				Collections.shuffle(stackCountry);
+				Collections.shuffle(stackCountry);
+				
+				int currentPlayerIndex=0;
+				
+				//allocate randomly shuffled countries in stack to players in round-robin fashion.
+				
+				while(!stackCountry.isEmpty()) {
+					
+					Player currentPlayer=playerService.getPlayerList().get(currentPlayerIndex);
+					
+					Country currentCountry=stackCountry.pop();
+					
+					currentCountry.setPlayer(currentPlayer);  //allocation of country to player
+					
+					currentPlayer.reduceArmy(1);   //reduce numArmies remaining to be placed
+					
+					currentCountry.addSoldiers(1);  //add army to country
+								
+					currentPlayer.addCountryToPlayerList(currentCountry);
+					
+					if(currentPlayer.getArmies()==0) {
+						boolArrayCountriesPlaced[currentPlayerIndex]=true;
+					}
+					
+					
+					//Trigger to NOTIFY playerService Observers after assigning country to player
+					PlayerInitialCountryAssignmentWrapper playerInitialCountryAssignment
+					=new PlayerInitialCountryAssignmentWrapper(currentPlayer,currentCountry);
+					
+					
+					playerService.notifyPlayerServiceObservers(playerInitialCountryAssignment);
+					
+					
+					currentPlayerIndex++;
+					
+					//reset index to 0 when end of player list reached
+					if(currentPlayerIndex==playerService.getPlayerList().size())
+						currentPlayerIndex=0;					
+				}
+				
+				phaseView.displayMessage("Countries Populated. Start placing your armies now.\n");
+				
+				//Trigger to Notify PlayerService Observers after assigning all countries
+				playerService.evaluateWorldDomination();
+				
+				this.boolCountriesPopulated=true;
+				
+				playerService.setCurrentPlayerIndex(0);
+		
+	}  //End of PopulateCountries
 	
-	        String[] commands = StringUtils.split(s, " ");
-
-	        if (commands.length != 2) {
-	        	
-	          //  view.displayMessage("The command editmap is not valid");
-	           view.displayMessage("Command LoadMap is not valid"); 
-	            return Optional.empty();
-	        }
-
-	        String command = commands[0];
-	        String path = commands[1];
-
-	        if (command.toLowerCase(Locale.CANADA).equals("loadmap")) {
-
-	        	this.mapLoaderController.setContinentIdGenerator(0);
-	            this.mapLoaderController.setCountryIdGenerator(0);
-	        	mapService.emptyMap();
-	        	mapLoaderController.readFile(path);
-	        
-	        	showMap();
-	        	
-	        	if(validateMap()) {
-	        		boolMapLoaded=true;
-	        	}
-	        	
-	            return Optional.of(path);
-	        }
-
-	        view.displayMessage("Command LoadMap is not valid"); 
-	        return Optional.empty();
+	/**
+	 * Method that checks if number of players is valid before populating countries
+	 * Checks the following conditions:
+	 * <li>If only 1 player present, player automatically wins</li>
+	 * <li>If no player present, cannot proceed to country population</li>
+	 * <li>If more than max num players present, cannot proceed to country population</li>
+	 * @return true if number of players valid, else false.
+	 */
+	private boolean checkNumPlayersValid() {
+		int numPlayers=playerService.getPlayerList().size();
+		phaseView.displayMessage("NumPlayers: "+numPlayers);
+		
+		//CHECK IF ONLY 1 PLAYER: PLAYER WINS
+		if(numPlayers==1) {
+			phaseView.displayMessage("PLAYER "+playerService.getPlayerList()
+											.get(0).getName()+" WINS");
+			CommonUtils.endGame(phaseView);
+			return false;
+		}
+		
+		else if(numPlayers==0) {
+			phaseView.displayMessage("No Players Added. Try again");
+			return false;
+		}
+		
+		else if(numPlayers>MAX_NUM_PLAYERS) {
+			phaseView.displayMessage("Player limit exceeded. Cannot Proceed");
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * This method determines the initial number of armies allocated to each player.
+	 * The rules are an approved adaptation of Hasbro 1 by Mr Joey Paquet.
+	 * They are as follows:
+	 * <ul>
+	 * <li>2 Players: 40 armies</li>
+	 * <li>3 Players: 35 armies</li>
+	 * <li>4 Players: 30 armies</li>
+	 * <li>...</li>
+	 *</ul>
+	 *This pattern goes on until a maximum of 9 players with 5 armies each.
+	 * 
+	 * @param numPlayers number of Players
+	 * @return number of intial armies allocated to each player
+	 */
+	public int determineNumInitialArmies(int numPlayers) {
+		return 40-((numPlayers-2)*5);
+	}
+	
+	/**
+	 * Set the number of initial armies for every player respectively.
+	 * Triggers notification to playerservice observers using PlayerInitialArmyWrapper
+	 * @param numArmies number of initial armies allocated
+	 */
+	private void assignInitialArmies(int numArmies) {
+		
+		//DOCUMENT SUBJECT OF OBSERVABLE CLASS AND METHODS THAT NOTIFY OBSERVERS
+		
+		for(Player p: playerService.getPlayerList()) {
+			p.setArmies(numArmies);
+			
+			PlayerInitialArmyWrapper playerInitialArmyWrapper=new PlayerInitialArmyWrapper(p);
+			playerService.notifyPlayerServiceObservers(playerInitialArmyWrapper);
+			
+		}
 		
 	}
-
-
-	/**
-	 * validate the map
-	 * @return true if valid, false if not valid
-	 */
-	private boolean validateMap() {
-
-        if(mapService.isMapValid()){
-            //view.displayMessage("map is valid");
-        	view.displayMessage("Map is Valid");
-            return true;
-        }
-        else{
-            //view.displayMessage("map is not valid");
-        	view.displayMessage("Map is not Valid");
-            return false;
-        }
-    }
-
-	/**
-	 * show map information including countries, continents, and neighboring countries
-	 */
-	private void showMap() {
-        mapService.printCountryInfo();
-        mapService.printContinentInfo();
-        mapService.printNeighboringCountryInfo();
-    }
-
-	/**
-	 * delete white spaces and make the string to lower cases
-	 * @param name
-	 * @return
-	 */
-	private String convertFormat(String name) {
-        return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
-    }
-
-	/**
-	 * end the game
-	 * called when only 1 player is present.
-	 */
-	private void endGame() {
-    	view.displayMessage("Game Ends");
-    	System.exit(0);;
-    }
-
+	
 	/**
 	 * place an army on the country by its countryName
 	 * by each player until all players have placed all their armies
-	 * @param countryName
+	 * Triggers notification to playerservice observers using PlaceArmyWrapper
+	 * Triggers notification to domination view
+	 * @param countryName CountryName
 	 */
 	public void placeArmy(String countryName) {
     	
     	boolean countryFound=false;
-    	Player currentPlayer=players.get(currentPlayerIndex);
     	
-    	//Check if all armies of a specific player placed: if yes: switch to next player, else place army
+    	Player currentPlayer=playerService.getCurrentPlayer();
+    	int currentPlayerIndex=playerService.getCurrentPlayerIndex();
+    	
+    	//Check if all armies of a specific player placed.
+    	//if yes: switch to next player, else place army
     	if(!boolArrayCountriesPlaced[currentPlayerIndex]) {
     		
-    		for(Country c:currentPlayer.countryPlayerList) {
+    		for(Country c:currentPlayer.getCountryList()) {
     		    
         		if(countryName.equalsIgnoreCase(c.getCountryName())) {
         			countryFound=true;
@@ -660,7 +650,14 @@ public class StartupGameController {
         			
         			c.addSoldiers(1);		
         			
-        			view.displayMessage(currentPlayer.getName()+" placed army successfully.");
+        			//Notify observers
+        			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
+        			=new PlayerPlaceArmyWrapper(currentPlayer,c);
+
+        			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
+        			
+        			playerService.evaluateWorldDomination();
+        			
         			if(currentPlayer.getArmies()==0) {
         				boolArrayCountriesPlaced[currentPlayerIndex]=true;        				
         			}
@@ -668,305 +665,107 @@ public class StartupGameController {
         		}
         	}
         	
-        	if(!countryFound) view.displayMessage("Wrong Country Name!!");
+        	if(!countryFound) {
+        		phaseView.displayMessage("Wrong Country Name!!");
+        	}
         	
-        	else {
+        	else { //country successfully placed - switch to next player
         		
         		if(currentPlayer.getArmies()==0) {
         			boolArrayCountriesPlaced[currentPlayerIndex]=true;
-        			view.displayMessage("All armies placed for "+currentPlayer.getName());
+        			phaseView.displayMessage("All armies placed for "+currentPlayer.getName());
         		}
         		
         		//IF ALL Players have numArmies 0: Startup Phase Over, Switch To Next Phase 
-        		boolStartUpPhaseOver.set(true);
+        		boolean boolAllCountriesPlaced=true;
         		
         		for(boolean b: boolArrayCountriesPlaced) {
         			
         			if(!b) {
-        				boolStartUpPhaseOver.set(false);
+        				boolAllCountriesPlaced=false;
+        				break;
         			}    			
         		}
         		
-        		if(boolStartUpPhaseOver.get()) {
-        			view.displayMessage("All Armies Placed for all players.\n.");
+        		if(boolAllCountriesPlaced) {
+        			
+        			phaseView.displayMessage("All Armies Placed for all players.\n.");
+        			
+        			playerService.setCurrentPlayerIndex(0);
+        			
         			this.mapService.setState(GameState.REINFORCE);
-        			switchToNextPlayer();
         		}
         		
         		else {
         			//Switch to Next Player
-            		switchToNextPlayer();
+            		playerService.switchNextPlayer();
         		}
         	}
     		
     	}
 
     	else {
-    		switchToNextPlayer();
+    		phaseView.displayMessage(currentPlayer.getName()+" has already placed all its armies.");
+    		playerService.switchNextPlayer();
     	}
 	
     }
-
-	/**
-	 * switchPlayers
-	 */
-	private void switchToNextPlayer() {
-    	if(currentPlayerIndex==(players.size()-1)) currentPlayerIndex=0;
-		
-		else currentPlayerIndex++;
-    	
-    	view.displayMessage("Player Turn: "+players.get(currentPlayerIndex).getName());
-    	//showPlayer();
-    	
-    }
-
+	
+	
+	
 	/**
 	 * automatically randomly place all remaining unplaced armies for all players
+	 * Triggers notification to playerservice observers using PlaceArmyWrapper
+	 * Triggers notification to domination view after all armies have been placed
 	 */
 	public void placeAll() {
     	
-    	for(Player p:players) {
+		//For every player in list
+    	for(Player p:playerService.getPlayerList()) {
     		
+    		//while armies are still remaining
     		while(p.getArmies()>0) {
     			
-    			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.countryPlayerList.size());
+    			//random placement + decrement random range size TO AVOID COLLISIONS
+    			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.getCountryList().size());
     			
     			p.countryPlayerList.get(randomIndex).addSoldiers(1);
     			p.reduceArmy(1);
     			
+    			//Notify Observers - Same as placeArmy
+    			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
+    			=new PlayerPlaceArmyWrapper(p,p.countryPlayerList.get(randomIndex));
+    			
+    			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
+    			
+    			//playerService.evaluateWorldDomination();  //Commented out else too much updates
     		}
     		
+			playerService.evaluateWorldDomination();
+    		
     	}
-    	view.displayMessage("All Players Placed.");
-    	showAllPlayers();
+
+    	phaseView.displayMessage("All Players Placed.");
+
+    	//Observers notified in state-setting method in playerservice
+    	playerService.setCurrentPlayerIndex(0);
     	
-    	this.boolStartUpPhaseOver.set(true);
+    	//Observers notified in state-setting method in mapservice
     	this.mapService.setState(GameState.REINFORCE);
+
+    	Player player = playerService.getCurrentPlayer();
     	
-    	view.displayMessage("Player Turn: "+players.get(0).getName());
-    }
-
-	/**
-	 * show players information including current player name, number of armies, continent,
-	 * countries, and number of armies on each country
-	 */
-	public void showAllPlayers() {
-    	
-    	for(Player p:players) {
-    		
-        	Collections.sort(p.countryPlayerList, new Comparator<Country>() {
-
-    			@Override
-    			public int compare(Country c1, Country c2) {
-
-    				return c1.getContinentName().compareTo(c2.getContinentName());
-    			}
-        		
-        	}
-        	);
-        	
-        	view.displayMessage("Current Player: "+p.getName()+
-        			" , Num Armies Remaining: "+p.getArmies());
-        	
-        	for(Country c :p.countryPlayerList) {
-        		view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()
-        						+"\t"+c.getSoldiers());
-        	}
-
-    	}
+    	playerService.showCardsInfo(player);
 
     }
-
-	/**
-	 * show all the players including current player name, number of armies, continent,
-	 * 	 * countries, and number of armies on each country
-	 */
-	public void showPlayer() {
-    	
-    	Collections.sort(players.get(currentPlayerIndex).countryPlayerList, new Comparator<Country>() {
-
-			@Override
-			public int compare(Country c1, Country c2) {
-
-				return c1.getContinentName().compareTo(c2.getContinentName());
-			}
-    		
-    	}
-    	);
-    	
-    	view.displayMessage("Current Player: "+players.get(currentPlayerIndex).getName()+
-    			" , Num Armies Remaining: "+players.get(currentPlayerIndex).getArmies());
-    	
-    	for(Country c:players.get(currentPlayerIndex).countryPlayerList) {
-    		view.displayMessage(c.getContinentName()+"\t"+c.getCountryName()+"\t"+c.getSoldiers());
-    	}
-    	
-    }
-
-
-	/**
-	 * show countries occupied by the current player
-	 */
-	public void showPlayerCountries() {
-    	
-    	Player currentPlayer=players.get(currentPlayerIndex);
-    	
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-    		
-    		int key=(int) item.getKey();
-    		   		
-    		
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-    		
-    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		view.displayMessage("\n");
-    		
-    		Set<Integer> value=item.getValue();
-    		
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
-    			Country currentCountry=optionalCountry.get();
-    			
-    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-    				
-        			String strCountryOutput="";
-        			
-        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-        					", "+currentCountry.getSoldiers()+" soldiers   ";
-        			
-        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-        			
-        			for(Integer j:adjCountryList) {
-        				
-        				if(mapService.getCountryById(j).get().getPlayer().getName()
-        						.equalsIgnoreCase(currentPlayer.getName())){
-        	        				
-        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
-        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
-        						}
-        				
-        			}
-        			
-        			view.displayMessage(strCountryOutput+"\n");    				
-    				
-    			}
-    			
-
-    		}
-
-    	}
-
-    }
-
-	/**
-	 * show all players and their occupying countries
-	 */
-	public void showPlayerAllCountries() {
-    	
-    	Player currentPlayer=players.get(currentPlayerIndex);
-    	
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-    		
-    		int key=(int) item.getKey();
-    		   		
-    		
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-    		
-    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		view.displayMessage("\n");
-    		
-    		Set<Integer> value=item.getValue();
-    		
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
-    			Country currentCountry=optionalCountry.get();
-    			
-    			if(currentCountry.getPlayer().getName().equalsIgnoreCase(currentPlayer.getName())) {
-    				
-        			String strCountryOutput="";
-        			
-        			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-        					", "+currentCountry.getSoldiers()+" soldiers   ";
-        			
-        			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-        			
-        			for(Integer j:adjCountryList) {
-        	        				
-        	        		strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-        	        				"("+mapService.getCountryById(j).get().getPlayer().getName()+
-        	        				":"+mapService.getCountryById(j).get().getSoldiers()+")";
-        						
-        				
-        			}
-        			
-        			view.displayMessage(strCountryOutput+"\n");    				
-    				
-    			}
-    			
-
-    		}
-
-    	}
-
-    }
-
-
-	/**
-	 * print map in a format of continent, countries belong to the continent
-	 * for each country, print the players that occupy, the number of soldiers and
-	 * its neighboring countries
-	 */
-	public void showMapFull() {
-    	
-    	for(Map.Entry<Integer, Set<Integer>> item :
-    						mapService.getContinentCountriesMap().entrySet()) {
-    		
-    		int key=(int) item.getKey();
-    		   		
-    		
-    		Optional<Continent> optionalContinent=mapService.getContinentById(key);
-    		Continent currentContinent= (Continent) optionalContinent.get();
-    		
-    		view.displayMessage("\t\t\t\t\t\t\t\t\tContinent "+currentContinent.getName());
-    		view.displayMessage("\n");
-    		
-    		Set<Integer> value=item.getValue();
-    		
-    		for(Integer i:value) {
-    			//For Each Country In Continent, Get details + Adjacency Countries
-    			Optional<Country> optionalCountry=mapService.getCountryById(i);
-    			
-    			Country currentCountry=optionalCountry.get();
-    			String strCountryOutput="";
-    			
-    			strCountryOutput+=currentCountry.getCountryName().toUpperCase()+":"+currentCountry.getPlayer().getName().toUpperCase()+
-    					", "+currentCountry.getSoldiers()+" soldiers   ";
-    			
-    			Set<Integer> adjCountryList= mapService.getAdjacencyCountriesMap().get(i);
-    			
-    			for(Integer j:adjCountryList) {
-    				strCountryOutput+=" --> "+mapService.getCountryById(j).get().getCountryName()+
-    						"("+mapService.getCountryById(j).get().getPlayer().getName()+
-    						":"+mapService.getCountryById(j).get().getSoldiers()+")";
-    			}
-    			
-    			view.displayMessage(strCountryOutput+"\n");
-    		}
-
-    	}
-
-    }
-    
-
 	
-    
-}
+	/**
+	 * delete white spaces and make the string to lower cases
+	 * @param name
+	 * @return
+	 */
+	private String convertFormat(String name) {
+        return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
+    }
+	
+}   //END OF CLASS
