@@ -32,7 +32,9 @@
     
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build two")
 
+
 4. ### remove logic relating to reinforce(), exchangeCards() from reinforceController to model Player.class. The reinforceController is used to check the validity of the command 
+
 
     At build 1   
 
@@ -43,6 +45,7 @@
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
 
 
+
 5. ### remove logic relating fortify() from fortifyController to model Player.class. The fortifyGameController is used to check the validity of the command
     At build 1
     
@@ -51,6 +54,7 @@
     At build 2
     
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+
        
 
 6.  ### add GameView and Controller as the interface
@@ -72,4 +76,4 @@
     
     At build 2
     
-    ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build one")
+
