@@ -29,13 +29,13 @@ public class App {
 
         List<Controller> controllerList = new ArrayList<>();
 
-        MapLoaderController mapLoaderController = new MapLoaderController(mapService);
-        StartupGameController startupGameController = new StartupGameController(mapLoaderController, playerService);
+        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
+        StartupGameController startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
         ReinforceGameController reinforceGameController = new ReinforceGameController(playerService);
         FortifyGameController fortifyGameController = new FortifyGameController(playerService);
         AttackGameController attackController = new AttackGameController(playerService);
 
-        controllerList.add(mapLoaderController);
+        controllerList.add(mapLoaderAdapter);
         controllerList.add(startupGameController);
         controllerList.add(reinforceGameController);
         controllerList.add(fortifyGameController);
@@ -43,7 +43,7 @@ public class App {
 
         phaseView.addController(controllerList);
 
-        mapLoaderController.setView(phaseView);
+        mapLoaderAdapter.setView(phaseView);
         startupGameController.setView(phaseView);
         reinforceGameController.setView(phaseView);
         fortifyGameController.setView(phaseView);

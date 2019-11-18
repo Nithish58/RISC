@@ -8,7 +8,6 @@ import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.view.PhaseView;
-import com6441.team7.risc.view.PhaseViewTest;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,12 +36,12 @@ import static org.junit.Assert.assertTrue;
  * tests for mapLoader Controller
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MapLoaderControllerTest {
+public class MapLoaderAdapterTest {
 
     /**
-     * a reference of mapLoaderController
+     * a reference of mapLoaderAdapter
      */
-    private MapLoaderController mapLoaderController;
+    private MapLoaderAdapter mapLoaderAdapter;
     /**
      * a reference of GameView
      */
@@ -61,9 +60,9 @@ public class MapLoaderControllerTest {
     @Before
     public void setUp() throws Exception {
         mapService = new MapService();
-        mapLoaderController = new MapLoaderController(mapService);
+        mapLoaderAdapter = new MapLoaderAdapter(mapService);
         view = new PhaseView();
-        mapLoaderController.setView(view);
+        mapLoaderAdapter.setView(view);
         
         //Binsar variables
         
@@ -109,7 +108,7 @@ public class MapLoaderControllerTest {
         URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 
-        boolean result = mapLoaderController.parseFile(file);
+        boolean result = mapLoaderAdapter.parseFile(file);
         assertTrue(result);
     }
 
@@ -123,7 +122,7 @@ public class MapLoaderControllerTest {
         URI uri = getClass().getClassLoader().getResource("test.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 
-        boolean result = mapLoaderController.parseFile(file);
+        boolean result = mapLoaderAdapter.parseFile(file);
 
         assertTrue(result);
     }
@@ -138,7 +137,7 @@ public class MapLoaderControllerTest {
     @Test
     public void createContinentFromValidContinentInfo() throws Exception{
         String continentsInfo = validContinentString();
-        Set<Continent> continents =  mapLoaderController.parseRawContinents(continentsInfo);
+        Set<Continent> continents =  mapLoaderAdapter.parseRawContinents(continentsInfo);
         assertEquals(continents.size(), 6);
     }
 
@@ -158,7 +157,7 @@ public class MapLoaderControllerTest {
                 "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
-      mapLoaderController.parseRawContinents(continentsInfo);
+      mapLoaderAdapter.parseRawContinents(continentsInfo);
 
     }
 
@@ -178,7 +177,7 @@ public class MapLoaderControllerTest {
                 "afrori 5 #ffd780\r\n" +
                 "ulstrailia 5 magenta";
 
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
     }
 
     /**
@@ -190,11 +189,11 @@ public class MapLoaderControllerTest {
     public void createCountriesFromValidCountryInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
 
-        Set<Country> countries =  mapLoaderController.parseRawCountries(countriesInfo);
+        Set<Country> countries =  mapLoaderAdapter.parseRawCountries(countriesInfo);
         assertEquals(countries.size(), 5);
 
     }
@@ -208,7 +207,7 @@ public class MapLoaderControllerTest {
     public void createCountriesMissingContinentInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = "[countries]\r\n" +
                 "1 siberia 329 152\r\n" +
@@ -217,7 +216,7 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-        mapLoaderController.parseRawCountries(countriesInfo);
+        mapLoaderAdapter.parseRawCountries(countriesInfo);
 
     }
 
@@ -230,7 +229,7 @@ public class MapLoaderControllerTest {
     public void createCountriesWithInvalidContinentInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = "[countries]\r\n" +
                 "1 siberia 10 329 152\r\n" +
@@ -239,7 +238,7 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-       mapLoaderController.parseRawCountries(countriesInfo);
+       mapLoaderAdapter.parseRawCountries(countriesInfo);
     }
 
 
@@ -252,7 +251,7 @@ public class MapLoaderControllerTest {
     public void createCountriesMissingUniqueIdentifier() throws Exception{
 
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = "[countries]\r\n" +
                 "siberia 1 329 152\r\n" +
@@ -261,7 +260,7 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-        mapLoaderController.parseRawCountries(countriesInfo);
+        mapLoaderAdapter.parseRawCountries(countriesInfo);
 
     }
 
@@ -274,7 +273,7 @@ public class MapLoaderControllerTest {
     @Test(expected = CountryParsingException.class)
     public void createCountriesWithContinentIdNotInteger() throws Exception{
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = "[countries]\r\n" +
                 "1 siberia one 329 152\r\n" +
@@ -283,7 +282,7 @@ public class MapLoaderControllerTest {
                 "4 kongrolo 1 278 295\r\n" +
                 "5 china 1 311 350\r\n";
 
-        mapLoaderController.parseRawCountries(countriesInfo);
+        mapLoaderAdapter.parseRawCountries(countriesInfo);
 
 
     }
@@ -298,10 +297,10 @@ public class MapLoaderControllerTest {
     public void createAdjascencyCountriesWithValidInfo() throws Exception{
 
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        mapLoaderController.parseRawCountries(countriesInfo);
+        mapLoaderAdapter.parseRawCountries(countriesInfo);
 
         String adjacencyInfo = "[borders]\r\n" +
                 "1 2 3 4\r\n" +
@@ -309,7 +308,7 @@ public class MapLoaderControllerTest {
                 "3 1 5\r\n" +
                 "4 2 1\r\n" +
                 "5 2 3 4\r\n";
-        Map<Integer, Set<Integer>> adjacencyMap = mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
+        Map<Integer, Set<Integer>> adjacencyMap = mapLoaderAdapter.parseRawNeighboringCountries(adjacencyInfo);
         assertEquals(adjacencyMap.size(), 5);
 
     }
@@ -322,10 +321,10 @@ public class MapLoaderControllerTest {
     @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithNoAdjacency() throws Exception{
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        mapLoaderController.parseRawCountries(countriesInfo);
+        mapLoaderAdapter.parseRawCountries(countriesInfo);
 
         String adjacencyInfo = "[borders]\r\n" +
                 "1\r\n" +
@@ -333,7 +332,7 @@ public class MapLoaderControllerTest {
                 "3 1 5\r\n" +
                 "4 2 1\r\n" +
                 "5 2 3 4\r\n";
-        mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
+        mapLoaderAdapter.parseRawNeighboringCountries(adjacencyInfo);
     }
 
     /**
@@ -344,10 +343,10 @@ public class MapLoaderControllerTest {
     @Test(expected = NeighborParsingException.class)
     public void createAdjascencyCountriesWithInvalidCountryIdAdjacency() throws Exception{
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        mapLoaderController.parseRawCountries(countriesInfo);
+        mapLoaderAdapter.parseRawCountries(countriesInfo);
 
         String adjacencyInfo = "[borders]\r\n" +
                 "1 100\r\n" +
@@ -355,7 +354,7 @@ public class MapLoaderControllerTest {
                 "3 1 5\r\n" +
                 "4 2 1\r\n" +
                 "5 2 3 4\r\n";
-        mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
+        mapLoaderAdapter.parseRawNeighboringCountries(adjacencyInfo);
 
     }
 
@@ -368,10 +367,10 @@ public class MapLoaderControllerTest {
     public void createAdjacencyCountriesWithValueNotInteger() throws Exception{
 
         String continentsInfo = validContinentString();
-        mapLoaderController.parseRawContinents(continentsInfo);
+        mapLoaderAdapter.parseRawContinents(continentsInfo);
 
         String countriesInfo = validCountryString();
-        mapLoaderController.parseRawCountries(countriesInfo);
+        mapLoaderAdapter.parseRawCountries(countriesInfo);
 
         String adjacencyInfo = "[borders]\r\n" +
                 "1 two\r\n" +
@@ -379,7 +378,7 @@ public class MapLoaderControllerTest {
                 "3 1 5\r\n" +
                 "4 2 1\r\n" +
                 "5 2 3 4\r\n";
-        mapLoaderController.parseRawNeighboringCountries(adjacencyInfo);
+        mapLoaderAdapter.parseRawNeighboringCountries(adjacencyInfo);
 
     }
 
@@ -395,8 +394,8 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        mapLoaderController.editContinents(commands);
-        assertEquals(mapLoaderController.getMapService().getContinents().size(),2);
+        mapLoaderAdapter.editContinents(commands);
+        assertEquals(mapLoaderAdapter.getMapService().getContinents().size(),2);
     }
 
     /**
@@ -410,8 +409,8 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        mapLoaderController.editContinents(commands);
-        assertEquals(mapLoaderController.getMapService().getContinents().size(), 2);
+        mapLoaderAdapter.editContinents(commands);
+        assertEquals(mapLoaderAdapter.getMapService().getContinents().size(), 2);
 
     }
 
@@ -427,8 +426,8 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        mapLoaderController.editContinents(commands);
-        assertEquals(mapLoaderController.getMapService().getContinents().size(), 2);
+        mapLoaderAdapter.editContinents(commands);
+        assertEquals(mapLoaderAdapter.getMapService().getContinents().size(), 2);
 
     }
 
@@ -444,7 +443,7 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        mapLoaderController.editCountries(commands);
+        mapLoaderAdapter.editCountries(commands);
         assertEquals(3, mapService.getCountries().size());
     }
 
@@ -461,7 +460,7 @@ public class MapLoaderControllerTest {
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
 
-        mapLoaderController.editCountries(commands);
+        mapLoaderAdapter.editCountries(commands);
         assertEquals(mapService.getCountries().size(), 2);
     }
 
@@ -471,7 +470,7 @@ public class MapLoaderControllerTest {
      * @return mapService
      */
     private MapService addValidContinentInfo(){
-        MapService mapService = mapLoaderController.getMapService();
+        MapService mapService = mapLoaderAdapter.getMapService();
         Continent asia = new Continent(1, "asia", 5);
         Continent america = new Continent(2, "america", 6);
         Continent africa = new Continent(3, "africa", 4);
@@ -522,9 +521,9 @@ public class MapLoaderControllerTest {
      */
 	static private MapService testMapService;
 	/**
-	 * testMapLoader controller is a MapLoaderController object to read map commands
+	 * testMapLoader controller is a MapLoaderAdapter object to read map commands
 	 */
-	static private MapLoaderController testMapLoader;
+	static private MapLoaderAdapter testMapLoader;
 
 	/**
 	 * uri is a URI variable that handles reading from a file
@@ -566,14 +565,14 @@ public class MapLoaderControllerTest {
 	/**
 	 * This method is called at the very beginning of the test.
 	 * testCounter value is initialized as 0.
-	 * testMapService, testMapLoader, and testPhaseView are instantiated from MapService, MapLoaderController, and PhaseView.
+	 * testMapService, testMapLoader, and testPhaseView are instantiated from MapService, MapLoaderAdapter, and PhaseView.
 	 * testMapLoader sets testPhaseView as the view.
 	 */
 	@BeforeClass
 	public static void beginClass() {
 		testCounter = 0;
 		testMapService = new MapService();
-		testMapLoader = new MapLoaderController(testMapService);
+		testMapLoader = new MapLoaderAdapter(testMapService);
 		testPhaseView = new PhaseView();
 		testMapLoader.setView(testPhaseView);
 

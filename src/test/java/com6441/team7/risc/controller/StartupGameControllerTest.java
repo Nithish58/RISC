@@ -2,19 +2,11 @@ package com6441.team7.risc.controller;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -52,7 +44,7 @@ public class StartupGameControllerTest {
 	 /**
 	  * Controller to load map
 	  */
-	 MapLoaderController mapLoaderController;
+	 MapLoaderAdapter mapLoaderAdapter;
 	 /**
 	  * Controller for startup phase
 	  */
@@ -469,16 +461,16 @@ public class StartupGameControllerTest {
 		phaseViewTest = new PhaseViewTest();
 		controllerList = new ArrayList<>();
 
-		mapLoaderController = new MapLoaderController(mapService);
-		startupGameController = new StartupGameController(mapLoaderController, playerService);
+		mapLoaderAdapter = new MapLoaderAdapter(mapService);
+		startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
 
 
-		controllerList.add(mapLoaderController);
+		controllerList.add(mapLoaderAdapter);
 		controllerList.add(startupGameController);
 		
 		phaseViewTest.addController(controllerList);
 
-		mapLoaderController.setView(phaseViewTest);
+		mapLoaderAdapter.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
 
 		mapService.addObserver(phaseViewTest);

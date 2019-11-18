@@ -1,26 +1,11 @@
 package com6441.team7.risc.view;
 
-import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
-
 import java.util.List;
 import java.util.Observable;
 
-import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
-import com6441.team7.risc.api.model.Player;
-import com6441.team7.risc.api.model.PlayerService;
-import com6441.team7.risc.api.wrapperview.PlayerChangeWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerEditWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerInitialArmyWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerInitialCountryAssignmentWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerPlaceArmyWrapper;
-import com6441.team7.risc.controller.AttackGameController;
-import com6441.team7.risc.controller.Controller;
-import com6441.team7.risc.controller.FortifyGameController;
-import com6441.team7.risc.controller.MapLoaderController;
-import com6441.team7.risc.controller.ReinforceGameController;
-import com6441.team7.risc.controller.StartupGameController;
+import com6441.team7.risc.controller.*;
+import com6441.team7.risc.controller.MapLoaderAdapter;
 
 /**
  * The test class for phase view
@@ -138,7 +123,7 @@ public class PhaseViewTest implements GameView{
      */
     public void addController(List<Controller> list){
         list.forEach(controller -> {
-            if(controller instanceof MapLoaderController){
+            if(controller instanceof MapLoaderAdapter){
                 this.mapLoaderController = controller;
             }
             else if(controller instanceof StartupGameController){

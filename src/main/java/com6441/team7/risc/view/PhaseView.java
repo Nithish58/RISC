@@ -73,7 +73,7 @@ public class PhaseView implements GameView {
      */
     public void addController(List<Controller> list){
         list.forEach(controller -> {
-            if(controller instanceof MapLoaderController){
+            if(controller instanceof MapLoaderAdapter){
                 this.mapLoaderController = controller;
             }
             else if(controller instanceof StartupGameController){
@@ -109,7 +109,6 @@ public class PhaseView implements GameView {
                         startUpGameController.readCommand(command);
                         break;
                     case REINFORCE:
-
                         reinforceGameController.readCommand(command);
                         break;
                     case ATTACK:

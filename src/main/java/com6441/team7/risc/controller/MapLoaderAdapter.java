@@ -14,6 +14,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,7 +29,12 @@ import static java.util.Objects.isNull;
  * It calls the methods in mapService.
  */
 
-public class MapLoaderController implements Controller{
+public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDominationReaderWriter{
+
+    private DominateReaderWriter dominateReaderWriter;
+    private ConquestReaderWriter conquestReaderWriter;
+    private AtomicBoolean turn;
+
 
     /**
      * generates id for continents
@@ -60,12 +66,14 @@ public class MapLoaderController implements Controller{
      */
     private MapIntro mapIntro;
 
+    //add by jenny
+    private IBuilder builder;
+    public void setGameBuilder(IBuilder builder){
+        this.builder = builder;
+    }
 
-    /**
-     * constructor to set mapService
-     * @param mapService MapService
-     */
-    public MapLoaderController(MapService mapService) {
+
+    public MapLoaderAdapter(MapService mapService) {
         this.mapService = mapService;
         this.continentIdGenerator = new AtomicInteger();
         this.countryIdGenerator = new AtomicInteger();
@@ -74,15 +82,8 @@ public class MapLoaderController implements Controller{
         this.view = new PhaseView();
     }
 
-
-    /**
-     * read commands from user input to call different methods. If commands are not recognized, throw an exception
-     * @param command Command
-     * @throws IOException on invalid
-     */
     @Override
-    public void readCommand(String command) throws IOException {
-
+    public void readCommand(String command) throws Exception {
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
         String[] commands = {};
@@ -104,7 +105,7 @@ public class MapLoaderController implements Controller{
                 editNeighbor(commands);
                 break;
             case SHOW_MAP:
-            	showMap();
+                showMap();
                 break;
             case SAVE_MAP:
                 saveMap(command);
@@ -116,17 +117,16 @@ public class MapLoaderController implements Controller{
                 validateMap();
                 break;
             case EXIT_MAPEDIT:
-            	exitEditMap();
+                exitEditMap();
                 break;
-                
+
             case EXIT:
-            	endGame();
-            	break;
-                
+                endGame();
+                break;
+
             default:
                 throw new IllegalArgumentException("cannot recognize this command");
         }
-
     }
 
     /**
@@ -202,8 +202,8 @@ public class MapLoaderController implements Controller{
         File file = new File(filename);
         FileUtils.writeStringToFile(file, stringBuilder.toString(), StandardCharsets.UTF_8.name());
         view.displayMessage("the map is successfully saved.");
-        
-    //    mapService.setState(GameState.START_UP);
+
+        //    mapService.setState(GameState.START_UP);
     }
 
     /**
@@ -567,13 +567,13 @@ public class MapLoaderController implements Controller{
      * @param name
      */
     void createFile(String name) {
-    	
-    	if(!(mapService.getGameState()==GameState.LOAD_MAP)) {
-    		view.displayMessage("Sorry, you can only create and edit maps in the loadmap phase.");
-    		return;
-    	}
-    	
-    	
+
+        if(!(mapService.getGameState()==GameState.LOAD_MAP)) {
+            view.displayMessage("Sorry, you can only create and edit maps in the loadmap phase.");
+            return;
+        }
+
+
         File file = new File(name);
         try {
             FileUtils.writeStringToFile(file, "", StandardCharsets.UTF_8.name());
@@ -851,25 +851,60 @@ public class MapLoaderController implements Controller{
      * @param num number to set
      */
     public void setContinentIdGenerator(int num) {
-    	this.continentIdGenerator.set(num);
+        this.continentIdGenerator.set(num);
     }
-    
-	/**
-	 * end the game
-	 * called when only 1 player is present.
-	 */
-	private void endGame() {
-    	view.displayMessage("Game Ends");
-    	System.exit(0);
+
+    /**
+     * end the game
+     * called when only 1 player is present.
+     */
+    private void endGame() {
+        view.displayMessage("Game Ends");
+        System.exit(0);
     }
+
 
     /**
      * set country id generator
      * @param num number to set
      */
     public void setCountryIdGenerator(int num) {
-    	this.countryIdGenerator.set(num);
+        this.countryIdGenerator.set(num);
     }
+
+
+
+    @Override
+    public void editDominationContinent(String command) {
+    }
+
+    @Override
+    public void editDominationCountry(String command) {
+
+    }
+
+    @Override
+    public void editDominationNeighbor(String command) {
+
+    }
+
+
+
+    @Override
+    public void editConquestContinent(String command) {
+
+    }
+
+    @Override
+    public void editConquestCountry(String command) {
+
+    }
+
+    @Override
+    public void editConquestNeighbor(String command) {
+
+    }
+
 
 
 }

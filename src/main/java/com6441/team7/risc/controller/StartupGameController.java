@@ -2,7 +2,6 @@ package com6441.team7.risc.controller;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Stack;
@@ -20,15 +19,12 @@ import com6441.team7.risc.api.wrapperview.PlayerInitialCountryAssignmentWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerPlaceArmyWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
-import com6441.team7.risc.view.DominationView;
 import com6441.team7.risc.view.GameView;
-import com6441.team7.risc.api.exception.ContinentEditException;
 import com6441.team7.risc.api.exception.PlayerEditException;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
-import com6441.team7.risc.view.PhaseView;
 
 /**
  * 
@@ -86,9 +82,9 @@ public class StartupGameController implements Controller{
 	private boolean[] boolArrayCountriesPlaced;
 
 	/**
-	 * private Controller mapLoaderController;
+	 * private Controller mapLoaderAdapter;
 	 */
-	private MapLoaderController mapLoaderController; //Casted it here instead of casting everytime
+	private MapLoaderAdapter mapLoaderAdapter; //Casted it here instead of casting everytime
 
 	/**
 	 * a reference of mapService
@@ -112,7 +108,7 @@ public class StartupGameController implements Controller{
 	 * @param playerService PlayerService
 	 */
 	public StartupGameController(Controller mapController, PlayerService playerService) {
-		this.mapLoaderController= (MapLoaderController) mapController;
+		this.mapLoaderAdapter = (MapLoaderAdapter) mapController;
 
 		this.playerService = playerService;
 		this.mapService = playerService.getMapService();
@@ -131,6 +127,13 @@ public class StartupGameController implements Controller{
 	public void setView(GameView view){
 	    this.phaseView = view;
     }
+
+
+	//add by jenny
+	private IBuilder builder;
+	public void setGameBuilder(IBuilder builder){
+		this.builder = builder;
+	}
 
 
 	/**
@@ -317,10 +320,10 @@ public class StartupGameController implements Controller{
 
 	        if (command.toLowerCase(Locale.CANADA).equals("loadmap")) {
 
-	        	this.mapLoaderController.setContinentIdGenerator(0);
-	            this.mapLoaderController.setCountryIdGenerator(0);
+	        	this.mapLoaderAdapter.setContinentIdGenerator(0);
+	            this.mapLoaderAdapter.setCountryIdGenerator(0);
 	        	mapService.emptyMap();
-	        	mapLoaderController.readFile(path);
+	        	mapLoaderAdapter.readFile(path);
 	        	
 	        	//If Map not valid, boolMapLoaded will be false.
 	        	//Consequently, user will not be able to proceed without loading a valid map.

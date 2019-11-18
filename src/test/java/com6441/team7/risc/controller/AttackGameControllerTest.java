@@ -4,15 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
@@ -42,7 +39,7 @@ public class AttackGameControllerTest {
 	 /**
 	  * Controller to load map
 	  */
-	 MapLoaderController mapLoaderController;
+	 MapLoaderAdapter mapLoaderAdapter;
 	 /**
 	  * Controller for startup phase
 	  */
@@ -126,13 +123,13 @@ public class AttackGameControllerTest {
 		phaseViewTest = new PhaseViewTest();
 		controllerList = new ArrayList<>();
 
-		mapLoaderController = new MapLoaderController(mapService);
-		startupGameController = new StartupGameController(mapLoaderController, playerService);
+		mapLoaderAdapter = new MapLoaderAdapter(mapService);
+		startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
         reinforceGameController = new ReinforceGameController(playerService);
         fortifyGameController = new FortifyGameController(playerService);
         attackController = new AttackGameController(playerService);
 
-		controllerList.add(mapLoaderController);
+		controllerList.add(mapLoaderAdapter);
 		controllerList.add(startupGameController);
         controllerList.add(reinforceGameController);
         controllerList.add(fortifyGameController);
@@ -140,7 +137,7 @@ public class AttackGameControllerTest {
 		
 		phaseViewTest.addController(controllerList);
 
-		mapLoaderController.setView(phaseViewTest);
+		mapLoaderAdapter.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
         reinforceGameController.setView(phaseViewTest);
         fortifyGameController.setView(phaseViewTest);

@@ -61,6 +61,12 @@ public class AttackGameController implements Controller {
         
     }
 
+    //add by jenny
+	private IBuilder builder;
+	public void setGameBuilder(IBuilder builder){
+		this.builder = builder;
+	}
+
 	/**
 	 * set the view in the attack controller
 	 * @param view for GameView

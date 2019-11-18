@@ -70,6 +70,12 @@ public class ReinforceGameController implements Controller{
         this.phaseView = view;
     }
 
+    //add by jenny
+    private IBuilder builder;
+    public void setGameBuilder(IBuilder builder){
+        this.builder = builder;
+    }
+
     /**
      * receive commands from phase view
      * check the command type, if it is reinforce, call reinforce()

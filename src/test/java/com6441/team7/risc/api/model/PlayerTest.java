@@ -6,22 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.AfterClass;
+import com6441.team7.risc.controller.*;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
-import com6441.team7.risc.controller.AttackGameController;
-import com6441.team7.risc.controller.Controller;
-import com6441.team7.risc.controller.FortifyGameController;
-import com6441.team7.risc.controller.MapLoaderController;
-import com6441.team7.risc.controller.ReinforceGameController;
-import com6441.team7.risc.controller.StartupGameController;
+import com6441.team7.risc.controller.MapLoaderAdapter;
 import com6441.team7.risc.view.PhaseViewTest;
 
 /**
@@ -49,7 +41,7 @@ public class PlayerTest {
 	/**
 	 * Controller to load map
 	 */
-	MapLoaderController mapLoaderController;
+	MapLoaderAdapter mapLoaderAdapter;
 	/**
 	 * Controller for startup phase
 	 */
@@ -882,13 +874,13 @@ public class PlayerTest {
 		phaseViewTest = new PhaseViewTest();
 		controllerList = new ArrayList<>();
 
-		mapLoaderController = new MapLoaderController(mapService);
-		startupGameController = new StartupGameController(mapLoaderController, playerService);
+		mapLoaderAdapter = new MapLoaderAdapter(mapService);
+		startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
 		reinforceGameController = new ReinforceGameController(playerService);
 		fortifyGameController = new FortifyGameController(playerService);
 		attackController = new AttackGameController(playerService);
 
-		controllerList.add(mapLoaderController);
+		controllerList.add(mapLoaderAdapter);
 		controllerList.add(startupGameController);
 		controllerList.add(reinforceGameController);
 		controllerList.add(fortifyGameController);
@@ -896,7 +888,7 @@ public class PlayerTest {
 
 		phaseViewTest.addController(controllerList);
 
-		mapLoaderController.setView(phaseViewTest);
+		mapLoaderAdapter.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
 		reinforceGameController.setView(phaseViewTest);
 		fortifyGameController.setView(phaseViewTest);

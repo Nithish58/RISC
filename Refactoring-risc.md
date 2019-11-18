@@ -2,7 +2,7 @@
 (We write tests for reinforce, startup and fortify phase before refactoring)
 
 1. ### remove duplicated showCommands   
-    At build 1, showCommands such as showPlayer(), showAllPlayer(), showMap() exist in every controller including mapLoaderController, gameController, startUpGameController, reinforceGameController and fortifyGameController.
+    At build 1, showCommands such as showPlayer(), showAllPlayer(), showMap() exist in every controller including mapLoaderAdapter, gameController, startUpGameController, reinforceGameController and fortifyGameController.
 
     ![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "build two")
 

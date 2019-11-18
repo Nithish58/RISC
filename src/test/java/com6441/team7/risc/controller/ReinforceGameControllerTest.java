@@ -1,6 +1,5 @@
 package com6441.team7.risc.controller;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.view.PhaseView;
@@ -166,10 +165,10 @@ public class ReinforceGameControllerTest {
      * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationOne() throws IOException, URISyntaxException {
-        MapLoaderController mapLoaderController = new MapLoaderController(mapService);
+        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
         URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        mapLoaderController.parseFile(file);
+        mapLoaderAdapter.parseFile(file);
 
         Player player2 = new Player("jake");
         occupyCountry(player, "siberia", 10);
@@ -183,10 +182,10 @@ public class ReinforceGameControllerTest {
      * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationTwo() throws IOException, URISyntaxException{
-        MapLoaderController mapLoaderController = new MapLoaderController(mapService);
+        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
         URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        mapLoaderController.parseFile(file);
+        mapLoaderAdapter.parseFile(file);
 
         occupyCountry(player, "siberia", 10);
         occupyCountry(player, "yazteck", 20);

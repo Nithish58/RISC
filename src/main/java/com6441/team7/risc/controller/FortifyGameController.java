@@ -104,6 +104,13 @@ public class  FortifyGameController implements Controller {
 	}
 
 
+	//add by jenny
+	private IBuilder builder;
+	public void setGameBuilder(IBuilder builder){
+		this.builder = builder;
+	}
+
+
 	/**
 	 * extends from method in IController
 	 * check validity of the commands from player
