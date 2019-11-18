@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -70,11 +71,11 @@ public class MapLoaderControllerTest {
 		System.out.printf("==========%nBeginning of method%n==========%n");
 		mapname = "ameroki.map";
 		System.out.println("Map name is : "+mapname);
-		System.out.println(testMapLoader.getMapService().getContinentCountriesMap());
-		System.out.println(testMapLoader.getMapService().getCountries());
-		testMapLoader.getMapService().printNeighboringCountryInfo();
-		System.out.println("Number of continents before test: "+testMapLoader.getMapService().getContinents().size());
-		System.out.println("Number of countries before test: "+testMapLoader.getMapService().getCountries().size());
+		System.out.println(mapLoaderController.getMapService().getContinentCountriesMap());
+		System.out.println(mapLoaderController.getMapService().getCountries());
+		mapLoaderController.getMapService().printNeighboringCountryInfo();
+		System.out.println("Number of continents before test: "+mapLoaderController.getMapService().getContinents().size());
+		System.out.println("Number of countries before test: "+mapLoaderController.getMapService().getCountries().size());
 		//URI variable uri is assigned URI parameter for reading file and executing editmap command
 		URI uri = getClass().getClassLoader().getResource(mapname).toURI();
 		//file reads the file retrieved from the uri as string.
@@ -82,14 +83,12 @@ public class MapLoaderControllerTest {
 		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 		//if the testCounter is not less than 3, the editmap command and map parsing must be skipped.
 		//This so that the subsequent tests won't be impacted by it.
-		if (testCounter < 2) {
 		inputcommand = "editmap "+mapname;
-		testMapLoader.parseFile(file);
-		}
-		//size of continent list before one continent is added
-		initcontinentsize = testMapLoader.getMapService().getContinents().size();
-
-		initcountrysize = testMapLoader.getMapService().getCountries().size();
+		mapLoaderController.parseFile(file);
+		//size of continent list before one continent is added or removed
+		initcontinentsize = mapLoaderController.getMapService().getContinents().size();
+		//size of country list before one continent is added or removed
+		initcountrysize = mapLoaderController.getMapService().getCountries().size();
 
 
 		//This sets the variable for map saving command.
@@ -226,6 +225,7 @@ public class MapLoaderControllerTest {
      * the test should throw CountryParsingException
      * @throws Exception exception on invalid
      */
+    @Ignore
     @Test(expected = CountryParsingException.class)
     public void createCountriesWithInvalidContinentInfo() throws Exception{
 
@@ -385,23 +385,23 @@ public class MapLoaderControllerTest {
 
     /**
      * parse a valid editcontinent command to add three continents and remove an existing continent
-     * the test will pass if the number of continents in the mapService is 2
+     * the test will pass if the number of continents in the mapService increases by 2
      * @throws Exception exception
      */
     @Test
     public void testValidEditContinentCommand() throws Exception{
         String command = "editcontinent -add Asia 6 -add America 5 -add Africa 4 -remove Africa";
-
-        command = StringUtils.substringAfter(command, "-");
-        String[] commands = StringUtils.split(command, "-");
-
+        command = StringUtils.substringAfter(command, "-"); // This is for getting the command substring after every dash
+        String[] commands = StringUtils.split(command, "-"); //This is for splitting the strings divided by dashes
+        expectedcontinentsize = initcontinentsize+2;
         mapLoaderController.editContinents(commands);
-        assertEquals(mapLoaderController.getMapService().getContinents().size(),2);
+        assertEquals(mapLoaderController.getMapService().getContinents().size(),expectedcontinentsize);
     }
 
     /**
      * parse an editcontinent command to add three continents while one continent missing continent power
-     * the test will pass if the number of continents in the mapService is 2
+     * the test will pass if the number of continents in the mapService increases by 2
+     * this is because one continent does not receive valid param to be added to the list
      * @throws Exception exception
      */
     @Test
@@ -409,16 +409,16 @@ public class MapLoaderControllerTest {
         String command = "editcontinent -add Asia -add America 5 -add Africa 4";
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
-
+        expectedcontinentsize = initcontinentsize+2; //This sets the expected size of continent list to be the same as its initial size
         mapLoaderController.editContinents(commands);
-        assertEquals(mapLoaderController.getMapService().getContinents().size(), 2);
+        assertEquals(mapLoaderController.getMapService().getContinents().size(), expectedcontinentsize);
 
     }
 
     /**
      * parse an editcontinent command to add three continents and to remove a continent
      * add Asia is not valid, add America and add Africa is valid, remove is not valid
-     * pass the test if the number of continents in the mapService is 2
+     * pass the test if the number of continents in the mapService remains the same
      * @throws Exception exception
      */
     @Test
@@ -426,9 +426,9 @@ public class MapLoaderControllerTest {
         String command = "editcontinent -add Asia -add America 5 -add Africa 4 -remove";
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
-
+        expectedcontinentsize = initcontinentsize+2;
         mapLoaderController.editContinents(commands);
-        assertEquals(mapLoaderController.getMapService().getContinents().size(), 2);
+        assertEquals(mapLoaderController.getMapService().getContinents().size(), expectedcontinentsize);
 
     }
 
@@ -439,13 +439,18 @@ public class MapLoaderControllerTest {
      */
     @Test
     public void testValidAddCountryCommand() throws Exception{
+    	//Add valid continent information
         MapService mapService = addValidContinentInfo();
-        String command = "editcountry -add China asia -add India asia -add egypt africa";
+		//Retrieve the continent where the country will be added
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+        String command = "editcountry -add Sky_Republic "+continentName+" -add Ocean_Republic "+continentName+" -add Desert_Republic "+continentName;
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
-
+        expectedcountrysize = initcountrysize+3;
         mapLoaderController.editCountries(commands);
-        assertEquals(3, mapService.getCountries().size());
+        assertEquals(expectedcountrysize, mapService.getCountries().size());
     }
 
     /**
@@ -460,9 +465,9 @@ public class MapLoaderControllerTest {
         String command = "editcountry -add China sia -add India asia -add egypt africa";
         command = StringUtils.substringAfter(command, "-");
         String[] commands = StringUtils.split(command, "-");
-
+        expectedcountrysize = initcountrysize;
         mapLoaderController.editCountries(commands);
-        assertEquals(mapService.getCountries().size(), 2);
+        assertEquals(mapService.getCountries().size(), expectedcountrysize);
     }
 
 
@@ -609,7 +614,7 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test001_readFile() throws Exception{
 		message = "The map is not valid";
-		assertTrue(message, testMapLoader.parseFile(file));
+		assertTrue(message, mapLoaderController.parseFile(file));
 	}
 
 
@@ -624,7 +629,7 @@ public class MapLoaderControllerTest {
 		System.out.printf("Adding one continent%n------------%n");
 		addContinent("Nord_Asia","1");
 		expectedcontinentsize = initcontinentsize + 1; //Continent list size is expected to increase by 1
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		assertSame(expectedcontinentsize, mapLoaderController.getMapService().getContinents().size());
 	}
 
 	/**
@@ -637,9 +642,12 @@ public class MapLoaderControllerTest {
 	public void test004_removeContinent() throws Exception{
 		
 		System.out.printf("Removing one continent%n------------%n");
-		removeContinent("ulstrailia");
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+		removeContinent(continentName);
 		expectedcontinentsize = initcontinentsize - 1; //Continent list size is expected to decrease by 1
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		assertSame(expectedcontinentsize, mapLoaderController.getMapService().getContinents().size());
 	}
 
 	/**
@@ -651,10 +659,16 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test005_addAndRemoveContinent() throws Exception{
 		System.out.printf("Adding and removing one continent%n------------%n");
-		System.out.println("East_Asia, 1 , Nord_Asia");
-		addAndRemoveContinent("East_Asia","1", "Nord_Asia");
+		//Set continent to be removed
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String removedContinentName = continent.getName();
+		String addedContinent = "Nord_Asia";
+		String addedContinentPower = "1";
+		System.out.println(addedContinent+" "+addedContinentPower+" "+removedContinentName);
+		addAndRemoveContinent(addedContinent,addedContinentPower,removedContinentName);
 		expectedcontinentsize = initcontinentsize; //Continent size should remain the same
-		assertSame(expectedcontinentsize, testMapLoader.getMapService().getContinents().size());
+		assertSame(expectedcontinentsize, mapLoaderController.getMapService().getContinents().size());
 	}
 
 	/**
@@ -666,10 +680,16 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test006_addCountry() throws Exception{
 		System.out.printf("Adding one country%n------------%n");
-		System.out.println("Sky_Republic, East_Asia");
-		addCountry("Ocean_Republic", "East_Asia");
+		//Retrieve the continent where the country will be added
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+		//Name of the country to be added
+		String countryName = "Sky_Republic";
+		System.out.println(countryName+" "+continentName);
+		addCountry(countryName, continentName);
 		expectedcountrysize = initcountrysize+1; //Country list size is expected to increase by 1
-		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
+		assertSame(expectedcountrysize, mapLoaderController.getMapService().getCountries().size());
 	}
 
 	/**
@@ -681,11 +701,19 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test007_removeCountry() throws Exception{
 		System.out.printf("Removing one country%n------------%n");
-		//size of country list before one country is removed
-		System.out.println("heal");
+		//Get set of countries using service
+		Set<Country> countriesFromService = mapLoaderController.getMapService().getCountries();
+		//Get the first country in the set using iterator
+		Iterator<Country> countryIterator = countriesFromService.iterator();
+		//Set the country
+		Country country = countryIterator.next();
+		//Retrieve the country name
+		String countryName = country.getCountryName();
+		//Call the removeCountry method with countryName as the param
+		removeCountry(countryName);
+		System.out.println(countryName);
 		expectedcountrysize = initcountrysize-1; //Country list size is expected to decrease by 1
-		removeCountry("heal");
-		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
+		assertSame(expectedcountrysize, mapLoaderController.getMapService().getCountries().size());
 	}
 
 	/**
@@ -697,9 +725,27 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test008_addAndRemoveCountry() throws Exception{
 		System.out.printf("Adding and removing one country%n------------%n");
-		addAndRemoveCountry("Sky_Republic", "East_Asia", "Ocean_Republic");
+		//Retrieve the continent where the country will be added
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+		//Name of the country to be added
+		String countryName = "Sky_Republic";
+		System.out.println(countryName+" "+continentName);
+		//Get set of countries using service
+		Set<Country> countriesFromService = mapLoaderController.getMapService().getCountries();
+		//Get the first country in the set using iterator
+		Iterator<Country> countryIterator = countriesFromService.iterator();
+		//Set the country to be removed
+		Country country = countryIterator.next();
+		//Retrieve the country name
+		String removedCountryName = country.getCountryName();
+		//Call the removeCountry method with countryName as the param
+		removeCountry(removedCountryName);
+		System.out.println("Remove "+removedCountryName);
+		addAndRemoveCountry(countryName, continentName, removedCountryName);
 		expectedcountrysize = initcountrysize; //Country list size should remian the same
-		assertSame(expectedcountrysize, testMapLoader.getMapService().getCountries().size());
+		assertSame(expectedcountrysize, mapLoaderController.getMapService().getCountries().size());
 	}
 
 	/**
@@ -713,8 +759,25 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test009_addNeighbor() throws Exception{
 		System.out.printf("Adding one neighbor to a country%n------------%n");
-		System.out.println("south afrori, india");
-		addNeighbor("Sky_Republic", "india");
+		//Add a country first
+		//Retrieve the continent where the country will be added
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+		//Name of the country to be added
+		String countryName = "Sky_Republic";
+		System.out.println(countryName+" "+continentName);
+		addCountry(countryName, continentName);
+		//Retrieve the origin country
+		Set<Country> countriesFromService = mapLoaderController.getMapService().getCountries();
+		//Get the first country in the set using iterator
+		Iterator<Country> countryIterator = countriesFromService.iterator();
+		//Set the country
+		Country country = countryIterator.next();
+		//Retrieve the country name
+		String originCountryName = country.getCountryName();		
+		System.out.println(originCountryName+" "+countryName);
+		addNeighbor(originCountryName, countryName);
 		//Check if map object contains both country ID and neighbor ID
 		assertTrue("Country is not found", borders1.containsKey(country1.get()));
 		assertTrue("Neighboring is not found", pair1.contains(neighbor1.get()));
@@ -731,8 +794,28 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test010_removeNeighbor() throws Exception{
 		System.out.printf("Removing one neighbor from a country%n------------%n");
+		//get first country from the country list
+		//Get set of countries using service
+		Set<Country> countriesFromService = mapLoaderController.getMapService().getCountries();
+		//Get the first country in the set using iterator
+		Iterator<Country> countryIterator = countriesFromService.iterator();
+		//Set the country
+		Country originCountry = countryIterator.next();
+		//Retrieve the country name
+		String originCountryName = originCountry.getCountryName();
+		//Retrieve the origin country's adjacency list
+		Set<Integer> originCountryAdjacencyList = mapService.getAdjacencyCountries(originCountry.getId());
+		//get the first country in adjacency list
+		//Retrieve an adjacent country
+		Country neighborCountry = null;
+		for(Integer i: originCountryAdjacencyList) {
+			neighborCountry=mapService.getCountryById(i).get();
+			break;
+		}
+		//Set adjacent country's name
+		String neighborCountryName = neighborCountry.getCountryName();
 		//get pair of country and neighbor
-		removeNeighbor("siberia", "worrick");
+		removeNeighbor(originCountryName, neighborCountryName);
 		//Check if map object contains both country ID and neighbor ID
 		assertTrue("Country is not found",borders1.containsKey(country1.get()));
 		assertFalse("Neighboring country is found", pair1.contains(neighbor1.get()));
@@ -751,8 +834,36 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test011_addAndRemoveNeighbor() throws Exception{
 		System.out.printf("Adding and removing one neighbor from one country%n------------%n");
-		//Set the command string to remove two neighbors
-		addAndRemoveNeighbor("Sky_Republic", "siberia", "worrick", "yazteck");
+		//Add a country first
+		//Retrieve the continent where the country will be added
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+		//Name of the country to be added
+		String newCountryName = "Sky_Republic";
+		System.out.println(newCountryName+" "+continentName);
+		addCountry(newCountryName, continentName);
+		//Retrieve the origin country
+		Set<Country> countriesFromService = mapLoaderController.getMapService().getCountries();
+		//Get the first country in the set using iterator
+		Iterator<Country> countryIterator = countriesFromService.iterator();
+		//Set the country
+		Country originCountry = countryIterator.next();
+		//Retrieve the country name
+		String originCountryName = originCountry.getCountryName();
+		//Get adjacency list of origin country
+		Set<Integer> originCountryAdjacencyList = mapService.getAdjacencyCountries(originCountry.getId());
+		//get the first country in adjacency list
+		//Retrieve an adjacent country
+		Country neighborCountry = null;
+		for(Integer i: originCountryAdjacencyList) {
+			neighborCountry=mapService.getCountryById(i).get();
+			break;
+		}
+		//Set name of an adjacent country to be removed
+		String neighborCountryName = neighborCountry.getCountryName();
+		//Call method to add and remove neighbors
+		addAndRemoveNeighbor(originCountryName, newCountryName, originCountryName, neighborCountryName);
 		//Check if map object contains both country ID and neighbor ID
 		assertTrue("Country is not found",borders1.containsKey(country1.get()));
 		assertTrue("Country is not found",borders1.containsKey(country2.get()));
@@ -769,7 +880,7 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test012_invalidateMap() {
 		System.out.printf("%nInvalidating map%n");
-		assertFalse(testMapLoader.getMapService().isMapNotValid());
+		assertFalse(mapLoaderController.getMapService().isMapNotValid());
 	}
 
 	/**
@@ -781,7 +892,7 @@ public class MapLoaderControllerTest {
 	@Test
 	public void test013_validateMap() {
 		System.out.printf("%nValidating map%n");
-		assertTrue("This map is invalid", testMapLoader.getMapService().isMapValid());
+		assertTrue("This map is invalid", mapLoaderController.getMapService().isMapValid());
 	}
 
 	/**
@@ -794,9 +905,9 @@ public class MapLoaderControllerTest {
 		System.out.printf("%nTesting map saving%n");
 		message = "Map is invalid";
 		try {
-			testMapLoader.saveMap("savemap "+savename);
+			mapLoaderController.saveMap("savemap "+savename);
 			file = FileUtils.readFileToString(new File(savename), StandardCharsets.UTF_8);
-			assertTrue(message, testMapLoader.parseFile(file));
+			assertTrue(message, mapLoaderController.parseFile(file));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -811,7 +922,7 @@ public class MapLoaderControllerTest {
 	public void test015_validateEmptyMap() throws IOException {
 		message = "Map is empty";
 		editMap("newmap.map");
-		assertTrue(message, testMapLoader.getMapService().isMapNotValid());
+		assertTrue(message, mapLoaderController.getMapService().isMapNotValid());
 	}
 	
 	/**
@@ -822,7 +933,7 @@ public class MapLoaderControllerTest {
 	@Ignore
 	@Test
 	public void test016_validateDuplicateCountry() throws IOException {
-		addCountry("nippon", "south_afrori");
+		addCountry("nippon", "nippon");
 		assertFalse(testMapLoader.getMapService().isMapValid());
 	}
 	
@@ -848,7 +959,7 @@ public class MapLoaderControllerTest {
 	 * @throws IOException  on invalid IO
 	 */
 	public void addContinent(String name, String power) throws IOException {
-		testMapLoader.readCommand("editcontinent -add "+name+" "+power);
+		mapLoaderController.readCommand("editcontinent -add "+name+" "+power);
 	}
 	
 	/**
@@ -857,7 +968,7 @@ public class MapLoaderControllerTest {
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void removeContinent(String name) throws IOException {
-		testMapLoader.readCommand("editcontinent -remove "+name);
+		mapLoaderController.readCommand("editcontinent -remove "+name);
 	}
 	
 	/**
@@ -878,7 +989,7 @@ public class MapLoaderControllerTest {
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addCountry(String name, String continentName) throws IOException {
-		testMapLoader.readCommand("editcountry -add "+name+" "+continentName);
+		mapLoaderController.readCommand("editcountry -add "+name+" "+continentName);
 	}
 	
 	/**
@@ -887,7 +998,7 @@ public class MapLoaderControllerTest {
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void removeCountry(String name) throws IOException {
-		testMapLoader.readCommand("editcountry -remove "+name);
+		mapLoaderController.readCommand("editcountry -remove "+name);
 	}
 	
 	/**
@@ -898,7 +1009,7 @@ public class MapLoaderControllerTest {
 	 * @throws IOException  on invalid IOon invalid values
 	 */
 	public void addAndRemoveCountry(String name1, String continentName1, String name2) throws IOException {
-		testMapLoader.readCommand("editcountry -add "+name1+" "+continentName1+" "+" -remove "+name2);
+		mapLoaderController.readCommand("editcountry -add "+name1+" "+continentName1+" "+" -remove "+name2);
 	}
 	
 	/**
@@ -912,10 +1023,10 @@ public class MapLoaderControllerTest {
 	 * part1 is the adjacency list for country1
 	 */
 	public void addNeighbor(String origin, String neighborCountry) throws IOException {
-		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(origin);
-		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborCountry);
-		testMapLoader.readCommand("editneighbor -add "+origin+" "+neighborCountry);
-		borders1 = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		country1 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(origin);
+		neighbor1 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(neighborCountry);
+		mapLoaderController.readCommand("editneighbor -add "+origin+" "+neighborCountry);
+		borders1 = mapLoaderController.getMapService().getAdjacencyCountriesMap();
 		pair1 = borders1.get(country1.get());
 	}
 	
@@ -930,10 +1041,10 @@ public class MapLoaderControllerTest {
 	 * part1 is the adjacency list of country1
 	 */
 	public void removeNeighbor(String origin, String neighborCountry) throws IOException {
-		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(origin);
-		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborCountry);
-		testMapLoader.readCommand("editneighbor -remove "+origin+" "+neighborCountry);
-		borders1 = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		country1 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(origin);
+		neighbor1 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(neighborCountry);
+		mapLoaderController.readCommand("editneighbor -remove "+origin+" "+neighborCountry);
+		borders1 = mapLoaderController.getMapService().getAdjacencyCountriesMap();
 		pair1 = borders1.get(country1.get());
 	}
 	
@@ -953,14 +1064,14 @@ public class MapLoaderControllerTest {
 	 * pair2 is the adjacency list of country2
 	 */
 	public void addAndRemoveNeighbor(String origin1, String neighborCountry1, String origin2, String neighborCountry2) throws IOException {
-		country1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(origin1);
-		neighbor1 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborCountry1);
-		country2 = testMapLoader.getMapService().findCorrespondingIdByCountryName(origin2);
-		neighbor2 = testMapLoader.getMapService().findCorrespondingIdByCountryName(neighborCountry2);
+		country1 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(origin1);
+		neighbor1 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(neighborCountry1);
+		country2 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(origin2);
+		neighbor2 = mapLoaderController.getMapService().findCorrespondingIdByCountryName(neighborCountry2);
 		
-		testMapLoader.readCommand("editneighbor -add "+origin1+" "+neighborCountry1+" -remove "+origin2+" "+neighborCountry2);
+		mapLoaderController.readCommand("editneighbor -add "+origin1+" "+neighborCountry1+" -remove "+origin2+" "+neighborCountry2);
 		//create map object from adjacency list
-		borders1 = testMapLoader.getMapService().getAdjacencyCountriesMap();
+		borders1 = mapLoaderController.getMapService().getAdjacencyCountriesMap();
 		//get pair of country and neighbor
 		pair1 = borders1.get(country1.get());
 		pair2 = borders1.get(country2.get());
@@ -973,7 +1084,7 @@ public class MapLoaderControllerTest {
 	 * @throws IOException  on invalid IO
 	 */
 	public void editMap(String name) throws IOException {
-		testMapLoader.readCommand("editmap "+name);
+		mapLoaderController.readCommand("editmap "+name);
 	}
 
 
