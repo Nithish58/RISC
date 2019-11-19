@@ -16,6 +16,9 @@ public class RandomStrategy implements StrategyPlayer{
 	
 	@Override
 	public void reinforce() {
+		
+		//It makes no sense to call player's calculate reinf armies method and then pass it as param.
+		//Just follow the format we did for attack and fortify and expose the player for reinforcement
 		int numArmies = player.calculateReinforcedArmies(player);
 		
 		Country randomCountry = player.getCountryList().get(0);
