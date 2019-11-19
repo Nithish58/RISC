@@ -458,13 +458,7 @@ public class PlayerService extends Observable {
 		notifyObservers(cardWrapper);
 	}
 
-	/**
-	 * caculate number of reinforced armies after trading in cards
-	 * after receiving reinforced army, it will notify cardExchangeView with ReinforceArmyAfterTradingCard wrapper
-	 * to display current player and number of reinforced armies
-	 * @param player reference player
-	 * @return number of reinforced army
-	 */
+	//modify by jenny, not call this method anymore
 	public int calculateReinforcedArmyByTradingCards(Player player){
 		int number = player.calculateReinforcedArmyByTradingCards();
 		ReinforcedArmyAfterTradingCardWrapper wrapper = new ReinforcedArmyAfterTradingCardWrapper(player, number);

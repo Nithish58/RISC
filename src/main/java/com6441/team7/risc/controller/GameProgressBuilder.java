@@ -13,7 +13,7 @@ public class GameProgressBuilder implements IBuilder {
     }
 
     @Override
-    public void load() {
-
+    public GameProgress load() {
+        return null;
     }
 }

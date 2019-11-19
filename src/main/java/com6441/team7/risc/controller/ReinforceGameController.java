@@ -52,6 +52,10 @@ public class ReinforceGameController implements Controller{
      */
     private boolean isExchangeCardOver;
 
+    private Player player;
+
+    private MapService mapService;
+
     /**
      * constructor
      * @param playerService reference PlayerService
@@ -59,6 +63,8 @@ public class ReinforceGameController implements Controller{
     public ReinforceGameController(PlayerService playerService) {
         this.playerService = playerService;
         isExchangeCardOver = false;
+        this.player = playerService.getCurrentPlayer();
+        this.mapService = playerService.getMapService();
 
     }
 
@@ -88,8 +94,6 @@ public class ReinforceGameController implements Controller{
     @Override
     public void readCommand(String command) throws Exception {
 
-
-        Player player = playerService.getCurrentPlayer();
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
 
 
@@ -105,7 +109,7 @@ public class ReinforceGameController implements Controller{
             case SHOW_PLAYER:
                 // showPlayerFortificationPhase(player); (PREVIOUSLY IN BUILD 1)
             	//Left the commented code out to explain to TA in Build 2
-            	
+
                 MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
                 break;
                 
@@ -192,7 +196,9 @@ public class ReinforceGameController implements Controller{
             throw new ReinforceParsingException(country + " does not exist or it does not owned by the current player " + player.getName());
         }
 
-        playerService.reinforceArmy(player, country, armNum);
+        //playerService.reinforceArmy(player, country, armNum);
+        //modify by jenny
+        player.reinforceArmy(country, armNum, mapService);
         reinforcedArmies -= armNum;
         phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
 
@@ -329,7 +335,7 @@ public class ReinforceGameController implements Controller{
 
     /**
      * display cards owned by the player
-     * @param player
+     * @param
      * @param view
      */
     private void  showCardsInfo(List<Card> list, GameView view){
@@ -375,14 +381,20 @@ public class ReinforceGameController implements Controller{
         cardList.add(cardTwoName);
         cardList.add(cardThreeName);
 
-        boolean isValid = playerService.isTradeInCardsValid(player,cardList);
+        //modify by jenny
+        boolean isValid = player.meetTradeInCondition(cardList);
 
         if(!isValid){
             throw new ReinforceParsingException("cards should be all the same or all different.");
         }
 
-        playerService.removeCards(player, cardList);
-        reinforcedArmies += playerService.calculateReinforcedArmyByTradingCards(player);
+        //modify by jenny
+
+        player.removeCards(cardList);
+        //playerService.removeCards(player, cardList);
+
+        //reinforcedArmies += playerService.calculateReinforcedArmyByTradingCards(player);
+        reinforcedArmies += player.calculateReinforcedArmyByTradingCards();
         //cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
        
         showCardsInfo(player.getCardList(), cardExchangeView);

@@ -10,6 +10,8 @@ import java.security.SecureRandom;
 
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
+import com6441.team7.risc.api.wrapperview.ReinforcedArmyAfterTradingCardWrapper;
+import com6441.team7.risc.api.wrapperview.ReinforcedArmyWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.view.GameView;
 
@@ -105,7 +107,7 @@ public class Player{
     
     /**
      * Setter method for type of player
-     * @param category of player
+     * @param strCategory category of player
      */
     public void setPlayerCategory(String strCategory) {
     	
@@ -249,14 +251,12 @@ public class Player{
     }
 
 
-    /**
-     * reinforce army to the player of its country occupied
-     * @param country Country
-     * @param armyNum ArmyNum
-     * @param mapService MapService
-     */
+
+    //modify by jenny
     public void reinforceArmy(String country, int armyNum, MapService mapService){
         mapService.reinforceArmyToCountry(country, armyNum);
+        ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(this, country, armyNum);
+        playerService.notifyObservers(reinforcedArmyWrapper);
     }
 
     /**
@@ -344,6 +344,7 @@ public class Player{
      * remove trade in cards from the player cards
      * @param list Card List
      */
+    //modify by jenny
     public void removeCards(List<Card> list){
         Card cardOne = cardList.stream()
                 .filter(card -> card.getName().equalsIgnoreCase(list.get(0).getName()))
@@ -364,6 +365,8 @@ public class Player{
 
         tradeInTimes ++;
 
+        playerService.returnToDeck(list);
+        playerService.notifyObservers(this);
     }
 
 
@@ -463,6 +466,9 @@ public class Player{
         reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
 
         if(reinforcedArmies < 3){ reinforcedArmies = 3; }
+
+        ReinforcedArmyAfterTradingCardWrapper wrapper = new ReinforcedArmyAfterTradingCardWrapper(player, reinforcedArmies);
+        playerService.notifyObservers(wrapper);
 
         return reinforcedArmies;
     }
@@ -887,7 +893,7 @@ public class Player{
 
     /**
      * display cards owned by the player
-     * @param player who's card list we want to view
+     * @param p player who's card list we want to view
      */
     private void  showCardsInfoPlayer(Player p){
 
