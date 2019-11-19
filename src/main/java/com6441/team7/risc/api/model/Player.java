@@ -21,7 +21,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 /**
  * store player information
  */
-public abstract class Player{
+public class Player{
 
     /**
      * player name
