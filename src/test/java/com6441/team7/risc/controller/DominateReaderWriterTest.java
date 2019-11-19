@@ -16,6 +16,8 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.Assert.*;
 
 public class DominateReaderWriterTest {
@@ -24,12 +26,20 @@ public class DominateReaderWriterTest {
     private MapLoaderAdapter mapLoaderAdapter;
 
 
+    /**
+     * generates id for countries
+     */
+    private AtomicInteger countryIdGenerator;
+
+
     @Before
     public void setUp() throws Exception {
         MapService mapService = new MapService();
         GameView view = new PhaseView();
         mapLoaderAdapter = new MapLoaderAdapter(mapService);
-        dominateReaderWriter = new DominateReaderWriter(mapService, view);
+        AtomicInteger continentIdGenerator = new AtomicInteger(0);
+        AtomicInteger countryIdGenerator = new AtomicInteger(0);
+        dominateReaderWriter = new DominateReaderWriter(mapService, view, continentIdGenerator, countryIdGenerator);
     }
 
 

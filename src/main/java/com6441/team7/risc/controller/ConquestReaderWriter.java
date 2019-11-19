@@ -40,10 +40,17 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      */
     private AtomicInteger countryIdGenerator;
 
-    public ConquestReaderWriter(MapService mapService, GameView view) {
+
+    public ConquestReaderWriter(MapService mapService, GameView view, AtomicInteger continentIdGenerator, AtomicInteger countryIdGenerator) {
         this.mapService = mapService;
         this.view = view;
+        this.continentIdGenerator = continentIdGenerator;
+        this.countryIdGenerator = countryIdGenerator;
         this.mapGraph = new MapGraph();
+    }
+
+    public MapService getMapService(){
+        return mapService;
     }
 
 
@@ -59,17 +66,10 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
 
         StringBuilder stringBuilder =
                 new StringBuilder()
-                        .append("[Map]")
-                        .append(EOL)
                         .append(getMapGraphString())
-                        .append("[continents]")
-                        .append(EOL)
                         .append(getContinentString())
-                        .append(EOL)
-                        .append("[Territories]")
-                        .append(EOL)
                         .append(getTerritoryString())
-                        .append(EOL);
+                        .append("\n");
 
         File file = new File(fileName);
         FileUtils.writeStringToFile(file, stringBuilder.toString(), StandardCharsets.UTF_8.name());
@@ -83,7 +83,8 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      * @return
      */
     private String getMapGraphString() {
-        return mapGraph.getMapGraph();
+
+        return "\n" + "[Map]" + "\n" + mapGraph.getMapGraph();
     }
 
 
@@ -94,6 +95,11 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      */
     private String getContinentString() {
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n");
+        stringBuilder.append("[continents]");
+        stringBuilder.append("\n");
+
+
         mapService.getContinents().forEach(continent -> {
             stringBuilder.append(continent.getName()).append("=");
             stringBuilder.append(continent.getContinentValue()).append(EOL);
@@ -110,23 +116,41 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
          */
 
         StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("\n");
+        stringBuilder.append("[Territories]");
+        stringBuilder.append("\n");
+
+
         mapService.getCountries().forEach(country -> {
             stringBuilder.append(country.getCountryName()).append(COMMA);
             stringBuilder.append(country.getCoordinateX()).append(COMMA);
             stringBuilder.append(country.getCoordinateY()).append(COMMA);
             stringBuilder.append(country.getContinentName()).append(COMMA);
-        });
 
-        for (Map.Entry<Integer, Set<Integer>> entry : mapService.getAdjacencyCountriesMap().entrySet()) {
 
-            stringBuilder.append(mapService.findCorrespondingNameByCountryId(entry.getKey())).append(COMMA);
+            for (Map.Entry<Integer, Set<Integer>> entry : mapService.getAdjacencyCountriesMap().entrySet()) {
 
-            for (Integer integer : entry.getValue()) {
-                stringBuilder.append(mapService.findCorrespondingNameByCountryId(integer)).append(COMMA);
+                if(entry.getKey().equals(country.getId())){
+
+                    int size = 0;
+
+                    for (Integer integer : entry.getValue()) {
+                        stringBuilder.append(mapService.findCorrespondingNameByCountryId(integer).get());
+                        size ++;
+
+                        if(size != entry.getValue().size()){
+                            stringBuilder.append(COMMA);
+                        }
+                    }
+
+                    stringBuilder.append("\n");
+                }
+
+
             }
 
-            stringBuilder.append(EOL);
-        }
+        });
+
 
         return stringBuilder.toString();
     }
@@ -161,18 +185,18 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      * @param s exsting map as a string
      * @return
      */
-    boolean parseFile(String s) {
+     boolean parseFile(String s) {
         String[] parts = StringUtils.split(s, "[");
 
         try {
-            if (parts.length != 4) {
+            if (parts.length != 3) {
                 throw new MissingInfoException("The map is not valid");
             }
 
-            parseMapGraphInfo(parts[1]);
-            parseRawContinents(parts[2]);
-            parseRawCountries(parts[3]);
-            parseRawNeighboringCountries(parts[3]);
+            parseMapGraphInfo(parts[0]);
+            parseRawContinents(parts[1]);
+            parseRawCountries(parts[2]);
+            parseRawNeighboringCountries(parts[2]);
 
         } catch (Exception e) {
             view.displayMessage(e.getMessage());
@@ -191,7 +215,7 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      */
     void parseMapGraphInfo(String part) {
 
-        mapGraph.setMapGraph(StringUtils.substringAfter(part, "]\r\n"));
+        mapGraph.setMapGraph(StringUtils.substringAfter(part, "]\\S+"));
     }
 
 
@@ -203,9 +227,9 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      * @return
      */
     Set<Continent> parseRawContinents(String part) {
-        String continentInfo = StringUtils.substringAfter(part, "]\r\n");
+        String continentInfo = StringUtils.substringAfter(part, "]\n");
 
-        Set<Continent> continentSet = Optional.of(StringUtils.split(continentInfo, EOL))
+        Set<Continent> continentSet = Optional.of(StringUtils.split(continentInfo, "\n"))
                 .map(Arrays::stream)
                 .orElseGet(Stream::empty)
                 .map(this::createContinentFromRaw)
@@ -253,7 +277,7 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      * @return
      */
     Set<Country> parseRawCountries(String part) {
-        String countryInfo = StringUtils.substringAfter(part, "]\r\n");
+        String countryInfo = StringUtils.substringAfter(part, "(\\r?\n");
         Set<Country> countrySet = Optional.of(StringUtils.split(countryInfo, EOL))
                 .map(Arrays::stream)
                 .orElseGet(Stream::empty)
@@ -312,7 +336,8 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
      */
     Map<Integer, Set<Integer>> parseRawNeighboringCountries(String part) {
 
-        String[] adjacencyInfo = StringUtils.split(part, EOL);
+        part = StringUtils.substringAfter(part, "]\n");
+        String[] adjacencyInfo = StringUtils.split(part, "\n");
         Map<Integer, Set<Integer>> adjacencyMap = new HashMap<>();
 
         Arrays.stream(adjacencyInfo)
@@ -343,9 +368,10 @@ public class ConquestReaderWriter implements IConquestReaderWriter {
         throwWhenNoNeighboringCountry(s, adjacency);
         throwWhenNeighbouringCountriesIdInvalid(s, adjacency.subList(4, adjacency.size()));
 
+
         list.add(mapService.findCorrespondingIdByCountryName(adjacency.get(0)).get());
 
-        for (String country : adjacency) {
+        for (String country : adjacency.subList(4, adjacency.size())) {
             list.add(mapService.findCorrespondingIdByCountryName(country).get());
 
         }

@@ -199,14 +199,14 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
 
         if(commands.length == 3 && convertFormat(commands[0]).equals(RiscCommand.EDIT_MAP.getName()) &&
                 convertFormat(commands[2]).equals(MapCategory.CONQUEST.getName())){
-            conquestReaderWriter = new ConquestReaderWriter(mapService, view);
+            conquestReaderWriter = new ConquestReaderWriter(mapService, view, countryIdGenerator, continentIdGenerator);
             readConquestMapFile(commands[1]);
             validateMap();
             return;
         }
 
         if(commands.length == 2 && convertFormat(commands[0]).equals(RiscCommand.EDIT_MAP.getName())){
-            dominateReaderWriter = new DominateReaderWriter(mapService, view);
+            dominateReaderWriter = new DominateReaderWriter(mapService, view, countryIdGenerator, continentIdGenerator);
             readDominateMapFile(commands[1]);
             validateMap();
             return;

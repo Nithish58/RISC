@@ -54,10 +54,10 @@ public class DominateReaderWriter implements IDominationReaderWriter {
     private GameView view;
 
 
-    public DominateReaderWriter(MapService mapService, GameView view){
+    public DominateReaderWriter(MapService mapService, GameView view, AtomicInteger countryIdGenerator, AtomicInteger continentIdGenerator){
         this.mapService = mapService;
-        this.continentIdGenerator = new AtomicInteger();
-        this.countryIdGenerator = new AtomicInteger();
+        this.continentIdGenerator = continentIdGenerator;
+        this.countryIdGenerator = countryIdGenerator;
         this.mapGraph = new MapGraph();
         this.mapIntro = new MapIntro();
         this.view = view;
