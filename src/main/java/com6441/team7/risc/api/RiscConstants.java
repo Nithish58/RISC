@@ -21,6 +21,14 @@ public final class RiscConstants {
      */
     public static final String WHITESPACE = " ";
 
+
+    public static final String ASSIGNMENT = "=";
+
+    public static final String COMMA = ",";
+
+
+    public static final String NON_EXIST = "non_exist";
+
     /**
      * a static final reference of new line
      */
@@ -63,4 +71,6 @@ public final class RiscConstants {
      * a static final reference for maximum allowed number of dice(s) for defender to roll
      */
     public static final int MAX_DEFENDER_DICE_NUM=2;
+
+
 }

@@ -1,5 +1,6 @@
 package com6441.team7.risc.api.model;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.OptionalPropertyMode;
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
@@ -460,6 +461,14 @@ public class MapService extends Observable {
         return continents.stream()
                 .filter(continent -> continent.getId() == id)
                 .map(Continent::getName)
+                .findFirst();
+    }
+
+    //add by jenny
+    public Optional<String> findCorrespondingNameByCountryId(Integer id){
+        return countries.stream()
+                .filter(country -> country.getId() == id)
+                .map(Country::getCountryName)
                 .findFirst();
     }
 

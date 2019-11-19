@@ -3,7 +3,7 @@ package com6441.team7.risc.controller;
 import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.CommonUtils;
-import com6441.team7.risc.utils.MapDisplayUtils;
+//import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.*;
 import org.apache.commons.lang3.StringUtils;
 import java.util.*;
@@ -24,7 +24,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * <li></li>
  * </ul>
  * <b>Note: In any case, the minimum number of reinforcement armies is 3. </b>
- * 
+ *
  */
 public class ReinforceGameController implements Controller{
     /**
@@ -87,58 +87,58 @@ public class ReinforceGameController implements Controller{
      */
     @Override
     public void readCommand(String command) throws Exception {
-
-
-        Player player = playerService.getCurrentPlayer();
-        RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
-
-
-        switch (commandType) {
-            case REINFORCE:
-                reinforce(player, command);
-                break;
-                
-            case EXCHANGE_CARD:
-                exchangeCards(player, command);
-                break;
-                
-            case SHOW_PLAYER:
-                // showPlayerFortificationPhase(player); (PREVIOUSLY IN BUILD 1)
-            	//Left the commented code out to explain to TA in Build 2
-            	
-                MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
-                break;
-                
-            case SHOW_MAP:
-                MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
-                break;
-
-            case SHOW_PLAYER_ALL_COUNTRIES:
-                // showPlayerAllCountriesFortification();
-                MapDisplayUtils.showPlayerAllCountries(playerService.getMapService(), playerService, phaseView);
-                break;
-
-            case SHOW_PLAYER_COUNTRIES:
-                // showPlayerCountriesFortification();
-                MapDisplayUtils.showPlayerCountries(playerService.getMapService(), playerService, phaseView);
-                break;
-
-            case EXIT:
-                CommonUtils.endGame(phaseView);
-                break;
-
-            default:
-                throw new IllegalArgumentException("cannot recognize this command");
-        }
+//
+//
+//        Player player = playerService.getCurrentPlayer();
+//        RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
+//
+//
+//        switch (commandType) {
+//            case REINFORCE:
+//                reinforce(player, command);
+//                break;
+//
+//            case EXCHANGE_CARD:
+//                exchangeCards(player, command);
+//                break;
+//
+//            case SHOW_PLAYER:
+//                // showPlayerFortificationPhase(player); (PREVIOUSLY IN BUILD 1)
+//            	//Left the commented code out to explain to TA in Build 2
+//
+//                MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
+//                break;
+//
+//            case SHOW_MAP:
+//                MapDisplayUtils.showMapFullPopulated(playerService.getMapService(), phaseView);
+//                break;
+//
+//            case SHOW_PLAYER_ALL_COUNTRIES:
+//                // showPlayerAllCountriesFortification();
+//                MapDisplayUtils.showPlayerAllCountries(playerService.getMapService(), playerService, phaseView);
+//                break;
+//
+//            case SHOW_PLAYER_COUNTRIES:
+//                // showPlayerCountriesFortification();
+//                MapDisplayUtils.showPlayerCountries(playerService.getMapService(), playerService, phaseView);
+//                break;
+//
+//            case EXIT:
+//                CommonUtils.endGame(phaseView);
+//                break;
+//
+//            default:
+//                throw new IllegalArgumentException("cannot recognize this command");
+//        }
     }
 
 
     /**
      * show map information
      */
-    public void showMap(){
-        MapDisplayUtils.showFullMap(playerService.getMapService(), phaseView);
-    }
+//    public void showMap(){
+//        MapDisplayUtils.showFullMap(playerService.getMapService(), phaseView);
+//    }
 
 
     /**
@@ -164,7 +164,7 @@ public class ReinforceGameController implements Controller{
             String country = commands[1];
             int armyNum = Integer.parseInt(commands[2]);
 
-            reinforceArmy(player, country, armyNum);
+            //reinforceArmy(player, country, armyNum);
 
 
 
@@ -182,28 +182,28 @@ public class ReinforceGameController implements Controller{
      * @param country reference country
      * @param armNum reference num of armies
      */
-    public void reinforceArmy(Player player, String country, int armNum){
-
-        if(armNum < 0 || armNum > reinforcedArmies){
-            throw new ReinforceParsingException("the number is less than 0 or larger than the number of reinforced solider you have");
-        }
-
-        if(notOccupiedByPlayer(player, country)){
-            throw new ReinforceParsingException(country + " does not exist or it does not owned by the current player " + player.getName());
-        }
-
-        playerService.reinforceArmy(player, country, armNum);
-        reinforcedArmies -= armNum;
-        phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
-
-
-        if(isReinforceOver()){
-            playerService.getMapService().setState(GameState.ATTACK);
-            isExchangeCardOver = false;
-            return;
-        }
-
-    }
+//    public void reinforceArmy(Player player, String country, int armNum){
+//
+//        if(armNum < 0 || armNum > reinforcedArmies){
+//            throw new ReinforceParsingException("the number is less than 0 or larger than the number of reinforced solider you have");
+//        }
+//
+//        if(notOccupiedByPlayer(player, country)){
+//            throw new ReinforceParsingException(country + " does not exist or it does not owned by the current player " + player.getName());
+//        }
+//
+//        playerService.reinforceArmy(player, country, armNum);
+//        reinforcedArmies -= armNum;
+//        phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
+//
+//
+//        if(isReinforceOver()){
+//            playerService.getMapService().setState(GameState.ATTACK);
+//            isExchangeCardOver = false;
+//            return;
+//        }
+//
+//    }
 
     /**
      * if the reinforced army number is reduced to 0
@@ -220,28 +220,28 @@ public class ReinforceGameController implements Controller{
      * @param country
      * @return
      */
-    private boolean notOccupiedByPlayer(Player player, String country){
-        return !playerService.getConqueredContries(player).contains(convertFormat(country));
-    }
-
-    /**
-     * caculate the number of reinforced armies
-     * rule 1: all conquered countries divided by 3
-     * rule 2: get the power of the continent if it is occupied by the player
-     * rule 3: if the total number of reinforced armies is less than 3, make it three
-     * @param player reference player
-     * @return number of reinforcer armies
-     */
-    public int calculateReinforcedArmies(Player player){
-
-        reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
-
-        reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
-
-        if(reinforcedArmies < 3){ reinforcedArmies = 3; }
-
-        return reinforcedArmies;
-    }
+//    private boolean notOccupiedByPlayer(Player player, String country){
+//        return !playerService.getConqueredContries(player).contains(convertFormat(country));
+//    }
+//
+//    /**
+//     * caculate the number of reinforced armies
+//     * rule 1: all conquered countries divided by 3
+//     * rule 2: get the power of the continent if it is occupied by the player
+//     * rule 3: if the total number of reinforced armies is less than 3, make it three
+//     * @param player reference player
+//     * @return number of reinforcer armies
+//     */
+//    public int calculateReinforcedArmies(Player player){
+//
+//        reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
+//
+//        reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
+//
+//        if(reinforcedArmies < 3){ reinforcedArmies = 3; }
+//
+//        return reinforcedArmies;
+//    }
 
     /**
      * exchange cards
@@ -252,41 +252,41 @@ public class ReinforceGameController implements Controller{
      * @param player reference player
      * @param command reference command
      */
-    public void exchangeCards(Player player, String command){
-        try{
-
-            createCardExchangeView();
-
-            if(isExchangeCardOver){
-                cardExchangeView.displayMessage("the exchange cards stage terminates. enter reinforce command");
-                return;
-            }
-
-            String[] commands = StringUtils.split(command, WHITESPACE);
-
-            if(commands.length == 4){
-                int cardOne = Integer.parseInt(commands[1]);
-                int cardTwo = Integer.parseInt(commands[2]);
-                int cardThree = Integer.parseInt(commands[3]);
-
-                tradeInCards(player, cardOne, cardTwo, cardThree);
-            }
-
-            else if(commands.length == 2){
-                tradeNone(player, commands);
-            }
-            else{
-                throw new ReinforceParsingException(command + " is not valid.");
-            }
-
-        } catch (Exception e){
-            cardExchangeView.displayMessage( e.getMessage());
-        }finally {
-            cardExchangeView.displayMessage("card exchange view close");
-            playerService.deleteObserver(cardExchangeView);
-        }
-
-    }
+//    public void exchangeCards(Player player, String command){
+//        try{
+//
+//            createCardExchangeView();
+//
+//            if(isExchangeCardOver){
+//                cardExchangeView.displayMessage("the exchange cards stage terminates. enter reinforce command");
+//                return;
+//            }
+//
+//            String[] commands = StringUtils.split(command, WHITESPACE);
+//
+//            if(commands.length == 4){
+//                int cardOne = Integer.parseInt(commands[1]);
+//                int cardTwo = Integer.parseInt(commands[2]);
+//                int cardThree = Integer.parseInt(commands[3]);
+//
+//                tradeInCards(player, cardOne, cardTwo, cardThree);
+//            }
+//
+//            else if(commands.length == 2){
+//                tradeNone(player, commands);
+//            }
+//            else{
+//                throw new ReinforceParsingException(command + " is not valid.");
+//            }
+//
+//        } catch (Exception e){
+//            cardExchangeView.displayMessage( e.getMessage());
+//        }finally {
+//            cardExchangeView.displayMessage("card exchange view close");
+//            playerService.deleteObserver(cardExchangeView);
+//        }
+//
+//    }
 
 
     /**
@@ -296,7 +296,7 @@ public class ReinforceGameController implements Controller{
     private void createCardExchangeView(){
         cardExchangeView = new CardExchangeView();
         playerService.addObserver(cardExchangeView);
-        
+
         //showCardsInfo(playerService.getCurrentPlayer().getCardList(),cardExchangeView);
     }
 
@@ -308,24 +308,24 @@ public class ReinforceGameController implements Controller{
      * @param player current player
      * @param commands array of strings
      */
-    public void tradeNone(Player player, String[] commands){
-        if(!commands[1].equalsIgnoreCase("-none")){
-            throw new ReinforceParsingException(commands[0] + " " + commands[1] + " is not valid");
-        }
-
-        int cardNum = player.getCardList().size();
-
-        if(cardNum >=5){
-            phaseView.displayMessage("you must exchange the cards");
-        }
-        else{
-            cardExchangeView.displayMessage("the exchange card phase terminates");
-            calculateReinforcedArmies(player);
-            phaseView.displayMessage(player.getName() + " get " + reinforcedArmies + " reinforced armies.");
-            isExchangeCardOver = true;
-        }
-
-    }
+//    public void tradeNone(Player player, String[] commands){
+//        if(!commands[1].equalsIgnoreCase("-none")){
+//            throw new ReinforceParsingException(commands[0] + " " + commands[1] + " is not valid");
+//        }
+//
+//        int cardNum = player.getCardList().size();
+//
+//        if(cardNum >=5){
+//            phaseView.displayMessage("you must exchange the cards");
+//        }
+//        else{
+//            cardExchangeView.displayMessage("the exchange card phase terminates");
+//            calculateReinforcedArmies(player);
+//            phaseView.displayMessage(player.getName() + " get " + reinforcedArmies + " reinforced armies.");
+//            isExchangeCardOver = true;
+//        }
+//
+//    }
 
     /**
      * display cards owned by the player
@@ -356,37 +356,37 @@ public class ReinforceGameController implements Controller{
      * @param cardTwo is the second card
      * @param cardThree is the third card
      */
-    public void tradeInCards(Player player, int cardOne, int cardTwo, int cardThree) {
-        int cardSize = player.getCardList().size();
-
-        if(cardOne == cardTwo || cardTwo == cardThree || cardOne == cardThree){
-            throw new ReinforceParsingException("card num is not valid");
-        }
-        if(cardOne > cardSize || cardTwo > cardSize || cardThree > cardSize){
-            throw new ReinforceParsingException("card num is not valid");
-        }
-
-        Card cardOneName = player.getCardList().get(cardOne - 1);
-        Card cardTwoName = player.getCardList().get(cardTwo - 1);
-        Card cardThreeName = player.getCardList().get(cardThree - 1);
-
-        List<Card> cardList = new ArrayList<>();
-        cardList.add(cardOneName);
-        cardList.add(cardTwoName);
-        cardList.add(cardThreeName);
-
-        boolean isValid = playerService.isTradeInCardsValid(player,cardList);
-
-        if(!isValid){
-            throw new ReinforceParsingException("cards should be all the same or all different.");
-        }
-
-        playerService.removeCards(player, cardList);
-        reinforcedArmies += playerService.calculateReinforcedArmyByTradingCards(player);
-        //cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
-       
-        showCardsInfo(player.getCardList(), cardExchangeView);
-    }
+//    public void tradeInCards(Player player, int cardOne, int cardTwo, int cardThree) {
+//        int cardSize = player.getCardList().size();
+//
+//        if(cardOne == cardTwo || cardTwo == cardThree || cardOne == cardThree){
+//            throw new ReinforceParsingException("card num is not valid");
+//        }
+//        if(cardOne > cardSize || cardTwo > cardSize || cardThree > cardSize){
+//            throw new ReinforceParsingException("card num is not valid");
+//        }
+//
+//        Card cardOneName = player.getCardList().get(cardOne - 1);
+//        Card cardTwoName = player.getCardList().get(cardTwo - 1);
+//        Card cardThreeName = player.getCardList().get(cardThree - 1);
+//
+//        List<Card> cardList = new ArrayList<>();
+//        cardList.add(cardOneName);
+//        cardList.add(cardTwoName);
+//        cardList.add(cardThreeName);
+//
+//        boolean isValid = playerService.isTradeInCardsValid(player,cardList);
+//
+//        if(!isValid){
+//            throw new ReinforceParsingException("cards should be all the same or all different.");
+//        }
+//
+//        playerService.removeCards(player, cardList);
+//        reinforcedArmies += playerService.calculateReinforcedArmyByTradingCards(player);
+//        //cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
+//
+//        showCardsInfo(player.getCardList(), cardExchangeView);
+//    }
 
     /**
      * get number of reinforce armies

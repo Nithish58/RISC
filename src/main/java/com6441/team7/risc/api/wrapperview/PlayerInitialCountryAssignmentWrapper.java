@@ -3,9 +3,9 @@ package com6441.team7.risc.api.wrapperview;
 import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.Player;
 
-/**
- * a self-defined wrapper for assigning country to player
- */
+///**
+// * a self-defined wrapper for assigning country to player
+// */
 public class PlayerInitialCountryAssignmentWrapper {
 
 	/**
@@ -43,5 +43,5 @@ public class PlayerInitialCountryAssignmentWrapper {
 	public Country getCountry() {
 		return country;
 	}
-	
+//
 }

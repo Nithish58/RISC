@@ -2,26 +2,14 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.exception.*;
 import com6441.team7.risc.api.model.*;
-import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.view.PhaseView;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com6441.team7.risc.api.RiscConstants.EOL;
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
-import static java.util.Objects.isNull;
 
 /**
  * This class handles the map editor commands from user input.
@@ -33,8 +21,18 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
 
     private DominateReaderWriter dominateReaderWriter;
     private ConquestReaderWriter conquestReaderWriter;
-    private AtomicBoolean turn;
+    private MapCategory mapCategory;
 
+    /**
+     * a reference of mapService
+     */
+    private MapService mapService;
+
+
+    /**
+     * a reference of gameView
+     */
+    private GameView view;
 
     /**
      * generates id for continents
@@ -46,25 +44,6 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
      */
     private AtomicInteger countryIdGenerator;
 
-    /**
-     * a reference of mapService
-     */
-    private MapService mapService;
-
-    /**
-     * a reference of gameView
-     */
-    private GameView view;
-
-    /**
-     * a reference of mapGraph
-     */
-    private MapGraph mapGraph;
-
-    /**
-     * a reference of mapIntro
-     */
-    private MapIntro mapIntro;
 
     //add by jenny
     private IBuilder builder;
@@ -75,11 +54,11 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
 
     public MapLoaderAdapter(MapService mapService) {
         this.mapService = mapService;
+        this.view = new PhaseView();
+        this.mapCategory = MapCategory.UNKNOWN;
         this.continentIdGenerator = new AtomicInteger();
         this.countryIdGenerator = new AtomicInteger();
-        this.mapGraph = new MapGraph();
-        this.mapIntro = new MapIntro();
-        this.view = new PhaseView();
+
     }
 
     @Override
@@ -95,6 +74,9 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
         }
 
         switch (commandType) {
+            case EDIT_MAP:
+                editMap(command);
+                break;
             case EDIT_CONTINENT:
                 editContinents(commands);
                 break;
@@ -102,7 +84,7 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
                 editCountries(commands);
                 break;
             case EDIT_NEIGHBOR:
-                editNeighbor(commands);
+                editNeighbors(commands);
                 break;
             case SHOW_MAP:
                 showMap();
@@ -110,16 +92,12 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
             case SAVE_MAP:
                 saveMap(command);
                 break;
-            case EDIT_MAP:
-                editMap(command);
-                break;
             case VALIDATE_MAP:
                 validateMap();
                 break;
             case EXIT_MAPEDIT:
                 exitEditMap();
                 break;
-
             case EXIT:
                 endGame();
                 break;
@@ -128,6 +106,41 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
                 throw new IllegalArgumentException("cannot recognize this command");
         }
     }
+
+
+    @Override
+    public void readConquestMapFile(String fileName) {
+        conquestReaderWriter.readConquestMapFile(fileName);
+    }
+
+
+    @Override
+    public void readDominateMapFile(String fileName) {
+        dominateReaderWriter.readDominateMapFile(fileName);
+    }
+
+
+    @Override
+    public void saveDominateMap(String fileName) throws IOException {
+        dominateReaderWriter.saveDominateMap(fileName);
+    }
+
+    @Override
+    public void saveConquestMap(String fileName) throws IOException {
+        conquestReaderWriter.saveConquestMap(fileName);
+    }
+
+    @Override
+    public void showDominateMap() {
+        dominateReaderWriter.showDominateMap();
+    }
+
+
+    @Override
+    public void showConquestMap() {
+        conquestReaderWriter.showConquestMap();
+    }
+
 
     /**
      * exit the map editing
@@ -139,12 +152,73 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
         this.mapService.setState(GameState.START_UP);
     }
 
-    /**
-     * validate if the map is valid
-     * @return true if valid false if not
-     */
-    private boolean validateMap() {
 
+    /**
+     * get the MapService object
+     * @return MapService
+     */
+    public MapService getMapService() {
+        return mapService;
+    }
+
+    /**
+     * set the command view
+     * @param view view to this view
+     */
+    public void setView(GameView view) {
+        this.view = view;
+    }
+
+
+    /**
+     * end the game
+     * called when only 1 player is present.
+     */
+    private void endGame() {
+        view.displayMessage("Game Ends");
+        System.exit(0);
+    }
+
+    /**
+     * delete whitespace and lower cases the string
+     * @param name
+     * @return
+     */
+    private String convertFormat(String name) {
+        return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
+    }
+
+
+    private void editMap(String s){
+
+        mapService.emptyMap();
+        countryIdGenerator.set(0);
+        continentIdGenerator.set(0);
+        String[] commands = StringUtils.split(s, " ");
+
+
+        if(commands.length == 3 && convertFormat(commands[0]).equals(RiscCommand.EDIT_MAP.getName()) &&
+                convertFormat(commands[2]).equals(MapCategory.CONQUEST.getName())){
+            conquestReaderWriter = new ConquestReaderWriter(mapService, view);
+            readConquestMapFile(commands[1]);
+            validateMap();
+            return;
+        }
+
+        if(commands.length == 2 && convertFormat(commands[0]).equals(RiscCommand.EDIT_MAP.getName())){
+            dominateReaderWriter = new DominateReaderWriter(mapService, view);
+            readDominateMapFile(commands[1]);
+            validateMap();
+            return;
+        }
+
+        view.displayMessage("The command editmap is not valid");
+
+    }
+
+
+
+    public boolean validateMap(){
         if(mapService.isMapValid()){
             view.displayMessage("map is valid");
             return true;
@@ -155,131 +229,49 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
         }
     }
 
-    /**
-     * show all countries, all continents, and their neighbors of the map
-     */
-    public void showMap() {
-        mapService.printCountryInfo();
-        mapService.printContinentInfo();
-        mapService.printNeighboringCountryInfo();
-    }
 
 
-    /**
-     * save the map, if the map is valid, it could be saved. if not, will throw an exception
-     * @param command Command
-     * @throws IOException on Error
-     */
-    public void saveMap(String command) throws IOException {
+    private void saveMap(String command) throws IOException {
+
         if (mapService.isMapNotValid()) {
             throw new MapInvalidException("the map is not valid, cannot be saved");
         }
         String filename = command.split(" ")[1];
 
-        String mapIntro = getMapIntroString();
-        if(mapIntro.length() == 0){
-            mapIntro = filename;
+        if(mapCategory.equals(MapCategory.DOMINATION)){
+            saveDominateMap(filename);
+            return;
         }
-        StringBuilder stringBuilder =
-                new StringBuilder()
-                        .append(mapIntro)
-                        .append(EOL)
-                        .append("[files]")
-                        .append(EOL)
-                        .append(getMapGraphString())
-                        .append("[continent]")
-                        .append(EOL)
-                        .append(getContinentString())
-                        .append(EOL)
-                        .append("[countries]")
-                        .append(EOL)
-                        .append(getCountryString())
-                        .append(EOL)
-                        .append("[borders]")
-                        .append(EOL)
-                        .append(getBorderString());
 
-        File file = new File(filename);
-        FileUtils.writeStringToFile(file, stringBuilder.toString(), StandardCharsets.UTF_8.name());
-        view.displayMessage("the map is successfully saved.");
-
-        //    mapService.setState(GameState.START_UP);
-    }
-
-    /**
-     * get mapIntro in string
-     * @return
-     */
-    private String getMapIntroString(){
-        return mapIntro.getMapIntro();
-    }
-
-    /**
-     * get maptGraph in strings
-     * @return
-     */
-    private String getMapGraphString(){
-        return mapGraph.getMapGraph();
-    }
-
-    /**
-     * get continents string
-     * @return
-     */
-    private String getContinentString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        mapService.getContinents().forEach(continent -> {
-            stringBuilder.append(continent.getName()).append(" ");
-            stringBuilder.append(continent.getContinentValue()).append(" ");
-            stringBuilder.append(continent.getColor()).append(EOL);
-
-        });
-
-
-        return stringBuilder.toString();
-    }
-
-    /**
-     * get string of countries
-     * @return arrays of string
-     */
-    private String getCountryString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        mapService.getCountries().forEach(country -> {
-            stringBuilder.append(country.toString());
-        });
-
-        return stringBuilder.toString();
-//        return mapService.getCountries()
-//                .stream()
-//                .map(Country::toString)
-//                .reduce(String::concat)
-//                .orElseThrow(RuntimeException::new);
-    }
-
-    /**
-     * get border
-     * @return
-     */
-    private String getBorderString() {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (Map.Entry<Integer, Set<Integer>> entry : mapService.getAdjacencyCountriesMap().entrySet()) {
-            stringBuilder.append(entry.getKey()).append(WHITESPACE);
-            for (Integer integer : entry.getValue()) {
-                stringBuilder.append(integer).append(WHITESPACE);
-            }
-            stringBuilder.append(EOL);
+        if(mapCategory.equals(MapCategory.CONQUEST)){
+            saveConquestMap(filename);
+            return;
         }
-        return stringBuilder.toString();
+
+        view.displayMessage("cannot recognize the map category");
     }
 
-    /**
-     * edit the coninents
-     * @param s arrays of string
-     */
-    void editContinents(String[] s) {
+
+    private void showMap(){
+        if(mapCategory.equals(MapCategory.CONQUEST)){
+            showConquestMap();
+            return;
+        }
+
+        if(mapCategory.equals(MapCategory.DOMINATION)){
+            showDominateMap();
+            return;
+        }
+
+        view.displayMessage("cannot recognize the map category");
+
+    }
+
+
+
+    private void editContinents(String[] s) {
         Arrays.stream(s).forEach(this::editContinentFromUserInput);
+
     }
 
     /**
@@ -359,7 +351,7 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
 
 
 
-    void editCountries(String[] s) {
+    private void editCountries(String[] s) {
         Arrays.stream(s).forEach(this::editCountryFromUserInput);
     }
 
@@ -380,6 +372,24 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
                 break;
             default:
                 throw new ContinentEditException("The editCountry command " + s + " is not valid.");
+        }
+    }
+
+    /**
+     * receive remove country commands
+     * @param s string array remove country
+     */
+    private void removeCountry(String[] s) {
+        try {
+            String countryName = convertFormat(s[1]);
+            if (mapService.countryNameNotExist(countryName)) {
+                view.displayMessage("editcountry -remove command: The country does not exist");
+                return;
+            }
+            mapService.removeCountryByName(countryName);
+            view.displayMessage("the country is successfully removed");
+        } catch (Exception e) {
+            throw new CountryEditException("cannot remove country, editcountry -remove command is not valid");
         }
     }
 
@@ -424,26 +434,7 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
         view.displayMessage("the country is successfully added");
     }
 
-    /**
-     * receive remove country commands
-     * @param s string array remove country
-     */
-    private void removeCountry(String[] s) {
-        try {
-            String countryName = convertFormat(s[1]);
-            if (mapService.countryNameNotExist(countryName)) {
-                view.displayMessage("editcountry -remove command: The country does not exist");
-                return;
-            }
-            mapService.removeCountryByName(countryName);
-            view.displayMessage("the country is successfully removed");
-        } catch (Exception e) {
-            throw new CountryEditException("cannot remove country, editcountry -remove command is not valid");
-        }
-    }
-
-
-    void editNeighbor(String[] s) {
+    void editNeighbors(String[] s) {
         Arrays.stream(s).forEach(this::editNeighborFromUserInput);
     }
 
@@ -513,398 +504,16 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
         }
     }
 
-    /**
-     * handle editmap command from user
-     * @param s command
-     * @return if map has contents, will return map file name, else return empty
-     */
-    Optional<String> editMap(String s) {
 
-        mapService.emptyMap();
-        continentIdGenerator.set(0);
-        countryIdGenerator.set(0);
-        String[] commands = StringUtils.split(s, " ");
 
-        if (commands.length != 2) {
-            view.displayMessage("The command editmap is not valid");
-            return Optional.empty();
-        }
 
-        String command = commands[0];
-        String path = commands[1];
 
-        if (command.toLowerCase(Locale.CANADA).equals("editmap")) {
-            readFile(path);
-            return Optional.of(path);
-        }
 
-        view.displayMessage("The command editmap is not valid");
-        return Optional.empty();
+    private boolean isDominationMap(){
+        return mapCategory.equals(MapCategory.DOMINATION);
     }
 
-
-    /**
-     * read an existing map
-     * @param name the map file name
-     * @return if map has contents, will return string, else return empty
-     */
-    public Optional<String> readFile(String name){
-        try {
-            URI uri = Paths.get(name).toUri();
-            String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8.name());
-            parseFile(file);
-            return Optional.of(file);
-
-        } catch (IOException|NullPointerException e) {
-            createFile(name);
-        }
-
-        return Optional.empty();
+    private boolean isConquestMap(){
+        return mapCategory.equals(MapCategory.CONQUEST);
     }
-
-    /**
-     * create a new map if the map file name does not exist
-     * @param name
-     */
-    void createFile(String name) {
-
-        if(!(mapService.getGameState()==GameState.LOAD_MAP)) {
-            view.displayMessage("Sorry, you can only create and edit maps in the loadmap phase.");
-            return;
-        }
-
-
-        File file = new File(name);
-        try {
-            FileUtils.writeStringToFile(file, "", StandardCharsets.UTF_8.name());
-            view.displayMessage("a file " + file.getName() + " has been created.");
-        } catch (IOException e) {
-            view.displayMessage(e.getMessage());
-        }
-    }
-
-
-    /**
-     * read existing map and create continent, country and its neighbors.
-     * @param s exsting map as a string
-     * @return
-     */
-    boolean parseFile(String s) {
-        String[] parts = StringUtils.split(s, "[");
-
-        try {
-            if (parts.length != 5) {
-                throw new MissingInfoException("The map is not valid");
-            }
-
-            parseMapIntro(parts[0]);
-            parseMapGraphInfo(parts[1]);
-            parseRawContinents(parts[2]);
-            parseRawCountries(parts[3]);
-            parseRawNeighboringCountries(parts[4]);
-
-            validateMap();
-
-        } catch (Exception e) {
-            view.displayMessage(e.getMessage());
-            return false;
-        }
-
-        return mapService.isStronglyConnected();
-
-    }
-
-    /**
-     * add map introduction information
-     * @param part
-     */
-    void parseMapIntro(String part){
-        mapIntro.setMapIntro(part);
-    }
-
-    /**
-     * add map graph information
-     * @param part
-     */
-    void parseMapGraphInfo(String part){
-
-        mapGraph.setMapGraph(StringUtils.substringAfter(part, "]\r\n"));
-    }
-
-    /**
-     * read continent string from existing map and split it with new line,
-     * for each line, call createContinentFromRaw to create new continent.
-     * @param part continent string
-     * @return
-     */
-    Set<Continent> parseRawContinents(String part) {
-        String continentInfo = StringUtils.substringAfter(part, "]\r\n");
-
-        Set<Continent> continentSet = Optional.of(StringUtils.split(continentInfo, EOL))
-                .map(Arrays::stream)
-                .orElseGet(Stream::empty)
-                .map(this::createContinentFromRaw)
-                .collect(Collectors.toSet());
-
-        mapService.addContinent(continentSet);
-
-        return continentSet;
-
-    }
-
-    /**
-     * read continent string from the existing map file and save each valid continent to the mapService
-     * if the continent is not valid, will throw an exception
-     * @param s continent string
-     * @return
-     */
-    private Continent createContinentFromRaw(String s) {
-
-        try {
-
-            String[] continentInfo = StringUtils.split(s, " ");
-
-            if (isNull(continentInfo) || continentInfo.length != 3) {
-                throw new ContinentParsingException("continent: " + s + " is not valid ");
-            }
-
-            String name = convertFormat(continentInfo[0]);
-            int continentValue = Integer.parseInt(continentInfo[1]);
-            String color = convertFormat(continentInfo[2]);
-
-            Continent continent = new Continent(continentIdGenerator.incrementAndGet(), name, continentValue);
-            continent.setColor(color);
-
-            return continent;
-
-        } catch (NumberFormatException e) {
-            throw new ContinentParsingException(e);
-        }
-
-    }
-
-
-    /**
-     * read country string from existing map and split it with new line,
-     * for each line, call createCountryFromRaw to create new country.
-     * @param
-     * @return
-     */
-    Set<Country> parseRawCountries(String part) {
-        String countryInfo = StringUtils.substringAfter(part, "]\r\n");
-        Set<Country> countrySet = Optional.of(StringUtils.split(countryInfo, EOL))
-                .map(Arrays::stream)
-                .orElseGet(Stream::empty)
-                .map(this::createCountryFromRaw)
-                .collect(Collectors.toSet());
-
-        mapService.addCountry(countrySet);
-        return countrySet;
-    }
-
-    /**
-     * read country string from the existing map file and save each valid country to the mapService
-     * if the country is not valid, will throw an exception
-     * @param s
-     * @return
-     */
-    private Country createCountryFromRaw(String s) {
-        try {
-            String[] countryInfo = StringUtils.split(s, " ");
-
-            if (countryInfo.length != 5) {
-                throw new CountryParsingException("country: " + s + " is not valid.");
-            }
-
-            int countryId = Integer.parseInt(countryInfo[0]);
-            String countryName = convertFormat(countryInfo[1]);
-            int continentId = Integer.parseInt(countryInfo[2]);
-            int coordinateX = Integer.parseInt(countryInfo[3]);
-            int coordinateY = Integer.parseInt(countryInfo[4]);
-
-            if (mapService.continentIdNotExist(continentId)) {
-                throw new CountryParsingException("country: " + s + " contains invalid continent information");
-            }
-
-            String continentName = mapService.findCorrespondingNameByContidentId(continentId).get();
-            Country country = new Country(countryId, countryName, continentId);
-            country.setCoordinateX(coordinateX);
-            country.setCoordinateY(coordinateY);
-            country.setContinentName(continentName);
-
-            return country;
-
-        } catch (NumberFormatException e) {
-            throw new CountryParsingException(e);
-        }
-    }
-
-    /**
-     * read strings from the existing file, save neighboring countries info in the mapServer
-     * @param part string for borders(neighboring countries)
-     * @return
-     */
-    Map<Integer, Set<Integer>> parseRawNeighboringCountries(String part) {
-
-        String borderInfo = StringUtils.substringAfter(part, "]");
-
-        String[] adjacencyInfo = StringUtils.split(borderInfo, EOL);
-        Map<Integer, Set<Integer>> adjacencyMap = new HashMap<>();
-
-        Arrays.stream(adjacencyInfo)
-                .map(this::createAdjacencyCountriesFromRaw)
-                .forEach(list -> {
-                    int countryId = list.get(0);
-                    Set<Integer> adjacencyId = new HashSet<>(list.subList(1, list.size()));
-                    adjacencyMap.put(countryId, adjacencyId);
-                });
-
-        mapService.addNeighboringCountries(adjacencyMap);
-
-        return adjacencyMap;
-    }
-
-
-    /**
-     * read neighboring countries id
-     * @param s a line for neighboring countries
-     * @return
-     */
-    private List<Integer> createAdjacencyCountriesFromRaw(String s) {
-        List<String> adjacency = Arrays.asList(StringUtils.split(s, WHITESPACE));
-
-        throwWhenNoNeighboringCountry(s, adjacency);
-        throwWhenNeighbouringCountriesIdInvalid(s, adjacency);
-
-        return adjacency.stream()
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * throw an exception when neighboring countries id is not valid or is not an integer
-     * @param s
-     * @param adjacency
-     */
-    private void throwWhenNeighbouringCountriesIdInvalid(String s, List<String> adjacency) {
-        adjacency.stream()
-                .map(rawInt -> {
-                    if (!NumberUtils.isDigits(rawInt)) {
-                        throw new NeighborParsingException("adjacency: " + s + " Element " + rawInt + "is not valid");
-                    }
-                    return Integer.parseInt(rawInt);
-                })
-                .filter(this::isCountryIdNotValid)
-                .findFirst()
-                .ifPresent(invalidId -> {
-                    throw new NeighborParsingException("adjacency: " + s + " is not valid for the country id does not exist");
-                });
-    }
-
-    /**
-     * throw an exception if the country been read does not have neighboring country
-     * @param s
-     * @param adjacency
-     */
-    private void throwWhenNoNeighboringCountry(String s, List<String> adjacency) {
-        if (adjacency.size() <= 1) {
-            throw new NeighborParsingException("adjacency: " + s + " is not valid for not having adjacent countries ");
-        }
-    }
-
-    /**
-     * check country id is not valid
-     * @param id id to be checked
-     * @return true if country id is not valid
-     */
-    private boolean isCountryIdNotValid(int id) {
-        return !mapService.countryIdExist(id);
-    }
-
-    /**
-     * delete whitespace and lower cases the string
-     * @param name
-     * @return
-     */
-    private String convertFormat(String name) {
-        return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
-    }
-
-    /**
-     * get the MapService object
-     * @return MapService
-     */
-    public MapService getMapService() {
-        return mapService;
-    }
-
-    /**
-     * set the command view
-     * @param view view to this view
-     */
-    public void setView(GameView view) {
-        this.view = view;
-    }
-
-    /**
-     * set continent id generator
-     * @param num number to set
-     */
-    public void setContinentIdGenerator(int num) {
-        this.continentIdGenerator.set(num);
-    }
-
-    /**
-     * end the game
-     * called when only 1 player is present.
-     */
-    private void endGame() {
-        view.displayMessage("Game Ends");
-        System.exit(0);
-    }
-
-
-    /**
-     * set country id generator
-     * @param num number to set
-     */
-    public void setCountryIdGenerator(int num) {
-        this.countryIdGenerator.set(num);
-    }
-
-
-
-    @Override
-    public void editDominationContinent(String command) {
-    }
-
-    @Override
-    public void editDominationCountry(String command) {
-
-    }
-
-    @Override
-    public void editDominationNeighbor(String command) {
-
-    }
-
-
-
-    @Override
-    public void editConquestContinent(String command) {
-
-    }
-
-    @Override
-    public void editConquestCountry(String command) {
-
-    }
-
-    @Override
-    public void editConquestNeighbor(String command) {
-
-    }
-
-
-
 }

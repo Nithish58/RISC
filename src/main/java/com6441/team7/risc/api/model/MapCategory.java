@@ -2,7 +2,8 @@ package com6441.team7.risc.api.model;
 
 public enum  MapCategory {
     CONQUEST("conquest"),
-    DOMINATION("domination");
+    DOMINATION("domination"),
+    UNKNOWN("unknown");
 
     private String name;
 
