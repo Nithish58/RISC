@@ -451,8 +451,9 @@ public class Player{
     }
 
     
+    
     //by Keshav
-    //for build 3
+    //for build 3 -- Copied jenny's code and pasted it here
     private int reinforcedArmies;    
     
     public int calculateReinforcedArmies(Player player){
@@ -465,6 +466,12 @@ public class Player{
 
         return reinforcedArmies;
     }
+    
+    //We need to move getConqueredCountriesNumber method and getReinforcedArmyByConqueredContinents here in the player itself.
+    //You used mapservice for the above 2 methods
+    //Just pass playerService as reference in the reinfController when calling player.reinforceArmy....
+    //Then from playerService just get mapService 
+    // Check out fortification controller for example
 
 
 
