@@ -76,6 +76,8 @@ public class Player{
     }
 
 
+
+
     //add by jenny
 	public Player(String name, PlayerCategory category){
     	this.name = name;
@@ -253,7 +255,7 @@ public class Player{
 
 
     //modify by jenny
-    public void reinforceArmy(String country, int armyNum, MapService mapService){
+    public void reinforceArmy(String country, int armyNum, MapService mapService, PlayerService playerService){
         mapService.reinforceArmyToCountry(country, armyNum);
         ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(this, country, armyNum);
         playerService.notifyObservers(reinforcedArmyWrapper);
@@ -345,7 +347,7 @@ public class Player{
      * @param list Card List
      */
     //modify by jenny
-    public void removeCards(List<Card> list){
+    public void removeCards(List<Card> list, PlayerService playerService){
         Card cardOne = cardList.stream()
                 .filter(card -> card.getName().equalsIgnoreCase(list.get(0).getName()))
                 .findFirst().get();
