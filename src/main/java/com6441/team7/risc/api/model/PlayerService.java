@@ -419,18 +419,18 @@ public class PlayerService extends Observable {
 
 
 
-	/**
-	 * reinforce army to the player of its country occupied
-	 * @param player reference
-	 * @param country name to be reinforced
-	 * @param armyNum number of armies to be reinforced
-	 */
-	public void reinforceArmy(Player player, String country, int armyNum){
-		player.reinforceArmy(country, armyNum, mapService);
-		ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(player, country, armyNum);
-		setChanged();
-		notifyObservers(reinforcedArmyWrapper);
-	}
+//	/**
+//	 * reinforce army to the player of its country occupied
+//	 * @param player reference
+//	 * @param country name to be reinforced
+//	 * @param armyNum number of armies to be reinforced
+//	 */
+//	public void reinforceArmy(Player player, String country, int armyNum, PlayerService playerService){
+//		player.reinforceArmy(country, armyNum, mapService, playerService);
+//		ReinforcedArmyWrapper reinforcedArmyWrapper = new ReinforcedArmyWrapper(player, country, armyNum);
+//		setChanged();
+//		notifyObservers(reinforcedArmyWrapper);
+//	}
 	
 	/**
 	 * calculate armies get from the player by the number of occupied countries
@@ -478,18 +478,18 @@ public class PlayerService extends Observable {
 	}
 
 
-	/**
-	 * remove cards from cardList of the player
-	 * @param player reference player
-	 * @param cardList reference list of cards
-	 */
-	public void removeCards(Player player, List<Card> cardList){
-
-		player.removeCards(cardList);
-		returnToDeck(cardList);
-		notifyObservers(player);
-	}
-	
+//	/**
+//	 * remove cards from cardList of the player
+//	 * @param player reference player
+//	 * @param cardList reference list of cards
+//	 */
+//	public void removeCards(Player player, List<Card> cardList){
+//
+//		player.removeCards(cardList);
+//		returnToDeck(cardList);
+//		notifyObservers(player);
+//	}
+//
 	
 	//****************************** NOTIFY OBSERVERS + WORLD DOMINATION ******************************************
 

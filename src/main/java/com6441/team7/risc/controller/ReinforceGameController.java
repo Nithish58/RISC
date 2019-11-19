@@ -198,7 +198,7 @@ public class ReinforceGameController implements Controller{
 
         //playerService.reinforceArmy(player, country, armNum);
         //modify by jenny
-        player.reinforceArmy(country, armNum, mapService);
+        player.reinforceArmy(country, armNum, mapService, playerService);
         reinforcedArmies -= armNum;
         phaseView.displayMessage("Now, the left reinforced army is: " + reinforcedArmies);
 
@@ -390,7 +390,7 @@ public class ReinforceGameController implements Controller{
 
         //modify by jenny
 
-        player.removeCards(cardList);
+        player.removeCards(cardList, playerService);
         //playerService.removeCards(player, cardList);
 
         //reinforcedArmies += playerService.calculateReinforcedArmyByTradingCards(player);
