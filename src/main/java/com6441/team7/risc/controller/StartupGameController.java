@@ -401,13 +401,19 @@ public class StartupGameController implements Controller{
     		
         	try {
         		
+        		if(s.length!=3) {
+        			phaseView.displayMessage("Invalid Add Command. Try again");
+        			return;
+        		}
+        		
         		String playerName=convertFormat(s[1]);
+        		String playerType=convertFormat(s[2]);
         		
         		boolean nameFound=playerService.checkPlayerExistance(playerName);
         		
         		if(!nameFound) {
         			
-        			Player newPlayer=playerService.addPlayer(playerName);       			
+        			Player newPlayer=playerService.addPlayer(playerName, playerType);       			
         			
         			this.boolGamePlayerAdded=true;
         		}
@@ -419,7 +425,6 @@ public class StartupGameController implements Controller{
         	}
         	
         	catch(Exception e) {
-        		e.printStackTrace();
         		throw new PlayerEditException("gameplayer command: cannot add/remove it is not valid", e);
         	}
     		

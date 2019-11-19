@@ -86,7 +86,7 @@ public class PlayerServiceTest {
 	@Test
 	public void test001_addPlayer() {
 		String name = "John";
-		playerService.addPlayer(name);
+		playerService.addPlayer(name,"human");
 		String expectedName = name;
 		assertTrue(playerService.getPlayerByName(name).getName().equals(expectedName));
 	}
@@ -152,7 +152,7 @@ public class PlayerServiceTest {
 	 * @param name of player
 	 */
 	public void addPlayer(String name) {
-		phaseViewTest.receiveCommand("gameplayer -add " + name);
+		phaseViewTest.receiveCommand("gameplayer -add " + name+" human");
 	}
 
 	/**

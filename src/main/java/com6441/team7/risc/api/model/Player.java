@@ -95,8 +95,45 @@ public class Player{
         //TODO
     }
 
+    /**
+     * Method to get type of player 
+     * @return Enum of Player category
+     */
     public PlayerCategory getPlayerCategory(){
         return playerCategory;
+    }
+    
+    /**
+     * Setter method for type of player
+     * @param category of player
+     */
+    public void setPlayerCategory(String strCategory) {
+    	
+    	switch(strCategory) {
+    		
+    		case "aggressive":
+    			this.playerCategory=PlayerCategory.AGGRESSIVE;
+    			break;
+  
+    		case "random":
+    			this.playerCategory=PlayerCategory.RANDOM;
+    			break;
+    			
+    		case "cheater":
+    			this.playerCategory=PlayerCategory.CHEATER;
+    			break;
+    			
+    		case "benevolent":
+    			this.playerCategory=PlayerCategory.BENEVOLENT;
+    			break;
+    			
+    		default:
+    			this.playerCategory=PlayerCategory.HUMAN;
+    			break;
+    	}
+    		
+   
+    	
     }
 
 
@@ -903,7 +940,6 @@ public class Player{
 
     /**
      * transfer ownership of the country after attack
-     * Give attacker 9 cards just for testing exchange during build 2 demo
      */
     public void transferCountryOwnershipAfterAttack() {
 
@@ -915,13 +951,6 @@ public class Player{
 
         strSendAttackInfoToObservers+="Country ownership transferred.\n Attacker conquers country.";
 
-        //Hardcoded to test exchangercards functions during build 2 demo
-        //Attacker allocated 9 cards whenever it conquers country, just to test exchangecards
-        for ( int i = 0 ; i < 3; i++) {
-            addCard(Card.INFANTRY);
-            addCard(Card.ARTILLERY);
-            addCard(Card.CAVALRY);
-        }
     }
 
 

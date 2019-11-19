@@ -480,7 +480,7 @@ public class FortifyGameControllerTest {
 	 * @param name of player
 	 */
 	public void addPlayer(String name) {
-		phaseViewTest.receiveCommand("gameplayer -add " + name);
+		phaseViewTest.receiveCommand("gameplayer -add " + name+ " human");
 	}
 	
 	/**

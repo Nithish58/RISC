@@ -262,7 +262,7 @@ public class PhaseView implements GameView {
 		Player addedPlayer=playerEditWrapper.getAddedPlayer();
 		Player removedPlayer=playerEditWrapper.getRemovedPlayer();
 		
-		if(addedPlayer!=null) displayMessage("Player Added: "+addedPlayer.getName());
+		if(addedPlayer!=null) displayMessage("Player Added: "+addedPlayer.getName()+", Type:"+addedPlayer.getPlayerCategory().getName());
 		
 		else displayMessage("Player Removed: "+removedPlayer.getName());
 		

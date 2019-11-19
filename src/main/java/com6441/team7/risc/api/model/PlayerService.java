@@ -255,8 +255,9 @@ public class PlayerService extends Observable {
 	 * @return player added
 	 * Notifies players when player added
 	 */
-	public Player addPlayer(String name){
+	public Player addPlayer(String name, String type){
 		Player newPlayer=new Player(name);
+		newPlayer.setPlayerCategory(type);
 		listPlayers.add(newPlayer);
 
 		//Add Player to Wrapper function and send wrapper function to observers
@@ -298,9 +299,6 @@ public class PlayerService extends Observable {
 
 		return false;
 	}
-
-
-
 	
 	/**
 	 * This method keeps track of the currentPlayerIndex and switches to the next player as soon as a player's
@@ -316,7 +314,21 @@ public class PlayerService extends Observable {
 
 		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
 
-	}	
+	}
+	
+	
+	//---------------------------------Utils for autoplaying game------------------------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

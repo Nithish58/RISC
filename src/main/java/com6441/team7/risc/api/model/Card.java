@@ -15,7 +15,7 @@ public enum Card {
 
     /**
      * constructor
-     * @param name
+     * @param name of card type
      */
     Card(String name) {
         this.name = name;
@@ -23,7 +23,7 @@ public enum Card {
 
     /**
      * get name of the card
-     * @return name
+     * @return name of card type
      */
     public String getName() {
         return name;
