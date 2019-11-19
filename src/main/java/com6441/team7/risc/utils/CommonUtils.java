@@ -31,6 +31,7 @@ public class CommonUtils {
 	 */
 	public static void endGame(PlayerService playerService) {
 
+			//playerService.evaluateWorldDomination();
 	    	playerService.notifyPlayerServiceObservers("Game Ends");
 	    	System.exit(0);
 	    
