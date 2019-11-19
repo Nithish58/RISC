@@ -242,7 +242,7 @@ public class PlayerService extends Observable {
 	public void setCurrentPlayerIndex(int num) {
 		this.currentPlayerIndex=num;
 
-		Player currentPlayer=listPlayers.get(currentPlayerIndex);
+		currentPlayer=listPlayers.get(currentPlayerIndex);
 		PlayerChangeWrapper playerChangeWrapper=new PlayerChangeWrapper(currentPlayer);
 
 		setChanged();
@@ -313,12 +313,35 @@ public class PlayerService extends Observable {
 		}
 
 		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
+		
+		automateGame();
 
 	}
 	
 	
 	//---------------------------------Utils for autoplaying game------------------------------------------
 	
+	public void automateGame() {
+		
+		System.out.println("Entered");
+		System.out.println(currentPlayer.getName());
+		System.out.println("Category "+currentPlayer.getPlayerCategory().getName());
+		
+		if(currentPlayer.getPlayerCategory()==PlayerCategory.HUMAN) {
+			System.out.println("Human");
+			return;
+		}
+		else {
+			System.out.println("Random");
+			currentPlayer.setStrategy(new RandomStrategy(this));
+			//currentPlayer.getStrategy().reinforce();
+			currentPlayer.getStrategy().attack();
+			currentPlayer.getStrategy().fortify();
+		}
+		
+
+		
+	}
 	
 	
 	

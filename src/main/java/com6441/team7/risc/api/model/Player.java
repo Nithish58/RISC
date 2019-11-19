@@ -194,7 +194,22 @@ public class Player{
     }
 
 
+    
+    //---------------------------------STRATEGY UTILS------------------------------------------
+    
+    
+    private StrategyPlayer strategy;
+    
+    public void setStrategy(StrategyPlayer strategy) {
+    	
+    	this.strategy = strategy;
+    	
+    }
+    
 
+    public StrategyPlayer getStrategy() {
+    	return strategy;
+    }
 
 
     //------------------------------------REINFORCEMENT-----------------------------------------
@@ -435,8 +450,21 @@ public class Player{
                 .count() == CARD_CATEGORY_NUMBER;
     }
 
+    
+    //by Keshav
+    //for build 3
+    private int reinforcedArmies;    
+    
+    public int calculateReinforcedArmies(Player player){
 
+        reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
 
+        reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
+
+        if(reinforcedArmies < 3){ reinforcedArmies = 3; }
+
+        return reinforcedArmies;
+    }
 
 
 
