@@ -116,4 +116,12 @@ public class PlayerFortificationWrapper {
 		this.toCountry=c;
 	}
 	
+	/**
+	 * set num of soldier
+	 * @param n num of soldiers
+	 */
+	public void setNumSoldiers(int n) {
+		this.numSoldiers=n;
+	}
+	
 }

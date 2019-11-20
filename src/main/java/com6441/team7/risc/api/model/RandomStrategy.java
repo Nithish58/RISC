@@ -23,7 +23,7 @@ public class RandomStrategy implements StrategyPlayer{
 		
 		Country randomCountry = player.getCountryList().get(0);
 		
-		player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService());
+		player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService(), playerService);
 		
 		
 	}
