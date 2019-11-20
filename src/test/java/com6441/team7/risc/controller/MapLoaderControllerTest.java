@@ -929,10 +929,10 @@ public class MapLoaderControllerTest {
 	 * Expected: Duplicate countries not added and map remains valid.
 	 * @throws IOException on invalid IO
 	 */
-	@Ignore
+//	@Ignore
 	@Test
 	public void test016_validateDuplicateCountry() throws IOException {
-		addCountry("nippon", "nippon");
+		addCountry("japan", "azio");
 		assertFalse(testMapLoader.getMapService().isMapValid());
 	}
 	
