@@ -248,6 +248,31 @@ public class PlayerService extends Observable {
 		setChanged();
 		notifyObservers(playerChangeWrapper);
 	}
+	
+
+	/**
+	 * set current player
+	 * @param player reference player
+	 */
+	public void setCurrentPlayer(Player player){
+		currentPlayer = player;
+	}
+
+	/**
+	 * check if the player exist
+	 * @param playerName reference player name
+	 * @return true if the player name exist, false if does not exist
+	 */
+	public boolean checkPlayerExistance(String playerName) {
+
+		for(int i=0;i<listPlayers.size();i++) {
+			if(listPlayers.get(i).getName().equals(playerName)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * add a Player
@@ -346,45 +371,9 @@ public class PlayerService extends Observable {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	//------------------------------------REINFORCEMENT UTILS -----------------------------------------------
 	
-
-	/**
-	 * set current player
-	 * @param player reference player
-	 */
-	public void setCurrentPlayer(Player player){
-		currentPlayer = player;
-	}
-
-	// public boolean isPlayerValid(){ return false; }
-
-	/**
-	 * check if the player exist
-	 * @param playerName reference player name
-	 * @return true if the player name exist, false if does not exist
-	 */
-	public boolean checkPlayerExistance(String playerName) {
-
-		for(int i=0;i<listPlayers.size();i++) {
-			if(listPlayers.get(i).getName().equals(playerName)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-
 	/**
 	 * get total number of countries conquered by the player
 	 * @param player reference player
