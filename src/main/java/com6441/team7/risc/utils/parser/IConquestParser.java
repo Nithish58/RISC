@@ -8,5 +8,5 @@ import java.io.IOException;
 public interface IConquestParser {
     void showConquestMap(GameView gameView, MapService mapService);
     boolean saveConquestMap(String fileName, MapService mapService);
-    void readConquestMapFile(String filename, GameView gameView, MapService mapService);
+    boolean readConquestMapFile(String filename, GameView gameView, MapService mapService);
 }

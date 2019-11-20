@@ -27,8 +27,8 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     }
 
     @Override
-    public void readConquestMapFile(String filename, GameView gameView, MapService mapService) {
-        conquestParser.readConquestMapFile(filename, gameView, mapService);
+    public boolean readConquestMapFile(String filename, GameView gameView, MapService mapService) {
+        return conquestParser.readConquestMapFile(filename, gameView, mapService);
     }
 
     @Override
@@ -42,8 +42,8 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     }
 
     @Override
-    public void readDominateMapFile(String fileName, GameView view, MapService mapService) {
-        dominationParser.readDominateMapFile(fileName, view, mapService);
+    public boolean readDominateMapFile(String fileName, GameView view, MapService mapService) {
+        return dominationParser.readDominateMapFile(fileName, view, mapService);
     }
 
     public void showMap(MapCategory mapCategory, GameView view, MapService mapService){

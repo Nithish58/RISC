@@ -151,15 +151,15 @@ public class DominateParser implements IDominationParser {
     }
 
     @Override
-    public void readDominateMapFile(String fileName, GameView view, MapService mapService) {
+    public boolean readDominateMapFile(String fileName, GameView view, MapService mapService) {
         String file = CommonUtils.readFile(fileName);
 
         if(file.equalsIgnoreCase(NON_EXIST)){
             createFile(fileName, view);
-            return;
+            return true;
         }
 
-        parseFile(file, view, mapService);
+        return parseFile(file, view, mapService);
     }
 
 
@@ -190,7 +190,7 @@ public class DominateParser implements IDominationParser {
 
         try {
             if (parts.length != 5) {
-                throw new MissingInfoException("The map is not valid");
+                return false;
             }
 
             parseMapIntro(parts[0]);

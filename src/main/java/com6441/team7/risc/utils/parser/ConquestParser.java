@@ -150,14 +150,14 @@ public class ConquestParser implements IConquestParser {
 
 
     @Override
-    public void readConquestMapFile(String filename, GameView view, MapService mapService) {
+    public boolean readConquestMapFile(String filename, GameView view, MapService mapService) {
         String rawFileContent = CommonUtils.readFile(filename);
 
         if(rawFileContent.equalsIgnoreCase(NON_EXIST)){
             createFile(filename, view);
-            return;
+            return true;
         }
-        parseFile(rawFileContent, view, mapService);
+        return parseFile(rawFileContent, view, mapService);
     }
 
     private void createFile(String fileName, GameView view) {
@@ -182,7 +182,7 @@ public class ConquestParser implements IConquestParser {
 
         try {
             if (parts.length != 3) {
-                throw new MissingInfoException("The map is not valid");
+                return false;
             }
 
             parseMapGraphInfo(parts[0]);

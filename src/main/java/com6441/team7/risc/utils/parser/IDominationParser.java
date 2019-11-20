@@ -8,6 +8,6 @@ import java.io.IOException;
 public interface IDominationParser {
     boolean saveDominateMap(String fileName, MapService mapService) throws IOException;
     void showDominateMap(MapService mapService);
-    void readDominateMapFile(String fileName, GameView view, MapService mapService);
+    boolean readDominateMapFile(String fileName, GameView view, MapService mapService);
 
 }
