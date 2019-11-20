@@ -37,13 +37,13 @@ public class BenevolentStrategy implements StrategyPlayer{
 		//Get country with min num of soldiers using maxCountryIndex
 		Country minCountry = player.getCountryList().get(minCountryIndex);
 		//Reinforce the country with the smallest number of soldiers
-		player.reinforceArmy(minCountry.getCountryName(), numArmies, playerService.getMapService(), playerService);
+		player.reinforceArmy(minCountry.getCountryName(), numArmies, playerService.getMapService());
 		
 	}
 	
 	@Override
 	public void attack() {
-		System.out.println("Benevolent skips attack phase");		
+		playerService.notifyPlayerServiceObservers("Benevolent skips attack phase");		
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class BenevolentStrategy implements StrategyPlayer{
 			playerFortificationWrapper.setFromCountry(neighborMinCountry);
 			playerFortificationWrapper.setToCountry(minCountry);
 			playerFortificationWrapper.setNumSoldiers(neighborMinCountry.getSoldiers()-1);
-			playerFortificationWrapper.setBooleanFortificationNon(false);
+			playerFortificationWrapper.setBooleanFortificationNone(false);
 			player.fortify(playerService, playerFortificationWrapper);
 		}
 		else {

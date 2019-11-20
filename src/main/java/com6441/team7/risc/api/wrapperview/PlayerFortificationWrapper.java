@@ -115,5 +115,15 @@ public class PlayerFortificationWrapper {
 	public void setToCountry(Country c) {
 		this.toCountry=c;
 	}
+
+	public void setNumSoldiers(int i) {
+		this.numSoldiers=i;
+		
+	}
+
+	public void setBooleanFortificationNone(boolean b) {
+		this.fortifyNone=b;
+		
+	}
 	
 }

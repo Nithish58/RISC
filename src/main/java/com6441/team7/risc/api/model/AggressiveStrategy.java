@@ -42,7 +42,7 @@ public class AggressiveStrategy implements StrategyPlayer{
 		//Get country with max num of soldiers using maxCountryIndex
 		Country maxCountry = player.getCountryList().get(maxCountryIndex);
 		//Reinforce the country with the largest number of soldiers
-		player.reinforceArmy(maxCountry.getCountryName(), numArmies, playerService.getMapService(), playerService);
+		player.reinforceArmy(maxCountry.getCountryName(), numArmies, playerService.getMapService());
 	}
 	
 	@Override
@@ -95,7 +95,7 @@ public class AggressiveStrategy implements StrategyPlayer{
 			playerFortificationWrapper.setFromCountry(maxCountry);
 			playerFortificationWrapper.setToCountry(neighborMaxCountry);
 			playerFortificationWrapper.setNumSoldiers(maxCountry.getSoldiers()-1);
-			playerFortificationWrapper.setBooleanFortificationNon(false);
+			playerFortificationWrapper.setBooleanFortificationNone(false);
 			player.fortify(playerService, playerFortificationWrapper);
 		}
 		else {
