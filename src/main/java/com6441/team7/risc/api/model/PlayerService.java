@@ -357,8 +357,24 @@ public class PlayerService extends Observable {
 		}
 		else {
 			
-			currentPlayer.setStrategy(new RandomStrategy(this));
+			switch(currentPlayer.getPlayerCategory()) {
 			
+			case RANDOM:
+				currentPlayer.setStrategy(new RandomStrategy(this));
+				break;
+			case AGGRESSIVE:
+				currentPlayer.setStrategy(new AggressiveStrategy(this));
+				break;
+			case BENEVOLENT:
+				currentPlayer.setStrategy(new BenevolentStrategy(this));
+				break;
+			case CHEATER:
+				currentPlayer.setStrategy(new CheaterStrategy(this));
+				break;
+			default:				
+			
+			}
+						
 			//currentPlayer.getStrategy().reinforce();
 			this.mapService.setState(GameState.ATTACK);
 			currentPlayer.getStrategy().attack();
