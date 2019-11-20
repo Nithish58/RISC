@@ -1,6 +1,7 @@
 package com6441.team7.risc.api.model;
 
 import com6441.team7.risc.api.wrapperview.*;
+import com6441.team7.risc.utils.CommonUtils;
 
 import java.util.*;
 
@@ -362,6 +363,9 @@ public class PlayerService extends Observable {
 			currentPlayer.getStrategy().fortify();
 		}
 		
+		if(listPlayers.size()==1) {
+			CommonUtils.endGame(this);;
+		}
 
 		
 	}

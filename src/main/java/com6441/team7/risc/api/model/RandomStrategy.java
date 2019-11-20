@@ -36,6 +36,10 @@ public class RandomStrategy implements StrategyPlayer{
 		Country randomFromAttackCountry=null;
 		Country randomToAttackCountry=null;
 		
+		//Loop through every country in player list
+		//Find adjacency country list
+		//Find adjacent country that does not belong to player
+		//Attack that adjacent country
 		for(Country c:player.getCountryList()) {
 			
 			boolean boolTargetFound=false;
@@ -83,6 +87,8 @@ public class RandomStrategy implements StrategyPlayer{
 		
 		Country toCountry = null;
 		
+		boolean boolFortificationConditionMet=false;
+		
 		for ( int i = 0; i < player.getCountryList().size(); i++ ) {
 			
 			fromCountry=player.getCountryList().get(i);
@@ -93,6 +99,7 @@ public class RandomStrategy implements StrategyPlayer{
 			for (Integer j : fromCountryAdjacencyList) {
 				if (playerService.getMapService().getCountryById(j).get().getPlayer().getName().equals(player.getName())) {
 					toCountry = playerService.getMapService().getCountryById(j).get();
+					boolFortificationConditionMet=true;
 					break;
 				}
 			}		
@@ -100,7 +107,7 @@ public class RandomStrategy implements StrategyPlayer{
 		
 		//Actual Fortification
 		PlayerFortificationWrapper playerFortificationWrapper;
-		if(fromCountry.getSoldiers()>1) {			
+		if(fromCountry.getSoldiers()>1 && boolFortificationConditionMet) {			
 			playerFortificationWrapper = new PlayerFortificationWrapper(fromCountry,
 					toCountry, 1);			
 		}

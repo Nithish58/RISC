@@ -354,7 +354,7 @@ public class PhaseView implements GameView {
     	//Or check if fortification not successful, retrieve error message
     	
     	if(playerFortificationWrapper.getBooleanFortificationNone()
-    	|| (!playerFortificationWrapper.getFortificationDisplayMessage().equalsIgnoreCase("success"))) {
+    	|| (!playerFortificationWrapper.getFortificationDisplayMessage().equalsIgnoreCase("Fortification Success"))) {
     		
     		displayMessage(playerFortificationWrapper.getFortificationDisplayMessage());
 
