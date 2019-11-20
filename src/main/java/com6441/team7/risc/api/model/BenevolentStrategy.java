@@ -97,7 +97,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 			while (benefactorCountry == null) {
 				for (Integer i : weakCountryAdjacencyList) {
 					if (playerService.getMapService().getCountryById(i).get().getPlayer().getName()
-							.equals(player.getName())) {
+							.equals(player.getName()) && playerService.getMapService().getCountryById(i).get().getSoldiers()>1) {
 
 						weakestCountry = c;
 
