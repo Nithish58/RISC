@@ -338,9 +338,23 @@ public class PlayerService extends Observable {
 			currentPlayer.getStrategy().attack();
 			currentPlayer.getStrategy().fortify();
 		}
+		else if (currentPlayer.getPlayerCategory()==PlayerCategory.BENEVOLENT){
+			System.out.println("Benevolent");
+			currentPlayer.setStrategy(new BenevolentStrategy(this));
+			//currentPlayer.getStrategy().reinforce();
+			currentPlayer.getStrategy().attack();
+			currentPlayer.getStrategy().fortify();
+		}
 		else if (currentPlayer.getPlayerCategory()==PlayerCategory.RANDOM){
 			System.out.println("Random");
 			currentPlayer.setStrategy(new RandomStrategy(this));
+			//currentPlayer.getStrategy().reinforce();
+			currentPlayer.getStrategy().attack();
+			currentPlayer.getStrategy().fortify();
+		}
+		else {
+			System.out.println("Cheater");
+			currentPlayer.setStrategy(new CheaterStrategy(this));
 			//currentPlayer.getStrategy().reinforce();
 			currentPlayer.getStrategy().attack();
 			currentPlayer.getStrategy().fortify();

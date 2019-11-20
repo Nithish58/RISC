@@ -81,10 +81,8 @@ public class AggressiveStrategy implements StrategyPlayer{
 			for (Integer i : maxCountryAdjacencyList) {
 				if (playerService.getMapService().getCountryById(i).get().getPlayer().getName().equals(player.getName())) {
 					neighborMaxCountry = playerService.getMapService().getCountryById(i).get();
-					if (neighborMaxCountry.getSoldiers()>1) {
 					System.out.println("Owned neighbor country is " + neighborMaxCountry.getCountryName());
 					break;
-					}
 				}
 			}
 			if (neighborMaxCountry == null) {
@@ -93,10 +91,11 @@ public class AggressiveStrategy implements StrategyPlayer{
 		}
 		
 		//determines whether or not to fortify
-		if (neighborMaxCountry != null ) {
+		if (neighborMaxCountry != null && maxCountry.getSoldiers()>1) {
 			playerFortificationWrapper.setFromCountry(maxCountry);
 			playerFortificationWrapper.setToCountry(neighborMaxCountry);
-			playerFortificationWrapper.setNumSoldiers(neighborMaxCountry.getSoldiers()-1);
+			playerFortificationWrapper.setNumSoldiers(maxCountry.getSoldiers()-1);
+			playerFortificationWrapper.setBooleanFortificationNon(false);
 			player.fortify(playerService, playerFortificationWrapper);
 		}
 		else {

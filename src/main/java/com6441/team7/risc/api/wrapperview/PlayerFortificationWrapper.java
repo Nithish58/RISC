@@ -124,4 +124,12 @@ public class PlayerFortificationWrapper {
 		this.numSoldiers=n;
 	}
 	
+	/**
+	 * set boolean of fortificationNone
+	 * @param b boolean
+	 */
+	public void setBooleanFortificationNon(boolean b) {
+		this.fortifyNone = b;
+	}
+	
 }
