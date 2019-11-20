@@ -70,6 +70,8 @@ public class RandomStrategy implements StrategyPlayer{
 				
 				player.endAttackPhase(playerService);
 				
+				//End Attack
+				
 				return;				
 			}
 			
