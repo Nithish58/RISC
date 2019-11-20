@@ -982,5 +982,12 @@ public class MapService extends Observable {
                 .ifPresent(country -> country.addSoldiers(armyNum));
     }
 
+    public Optional<String> findCorrespondingNameByCountryId(Integer id){
+        return countries.stream()
+                .filter(country -> country.getId() == id)
+                .map(Country::getCountryName)
+                .findFirst();
+    }
+
 
 }

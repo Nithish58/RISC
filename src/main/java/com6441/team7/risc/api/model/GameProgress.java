@@ -10,28 +10,25 @@ public class GameProgress {
     private List<Player> gameResult;
     private Player currentPlayer;
 
-    public List<Player> getPlayerList() {
-        return playerList;
-    }
-
     public void setPlayerList(List<Player> playerList) {
         this.playerList = playerList;
+    }
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+  ,
+
+    public List<Player> getPlayerList() {
+        return playerList;
     }
 
     public GameState getGameState() {
         return gameState;
     }
 
-    public void setGameState(GameState gameState) {
-        this.gameState = gameState;
-    }
-
     public int getMaximumTurn() {
         return maximumTurn;
-    }
-
-    public void setMaximumTurn(int maximumTurn) {
-        this.maximumTurn = maximumTurn;
     }
 
     public int getGameRound() {

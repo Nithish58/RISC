@@ -44,7 +44,7 @@ public class StartupGameControllerTest {
 	 /**
 	  * Controller to load map
 	  */
-	 MapLoaderAdapter mapLoaderAdapter;
+	 MapLoaderController mapLoaderController;
 	 /**
 	  * Controller for startup phase
 	  */
@@ -461,16 +461,16 @@ public class StartupGameControllerTest {
 		phaseViewTest = new PhaseViewTest();
 		controllerList = new ArrayList<>();
 
-		mapLoaderAdapter = new MapLoaderAdapter(mapService);
-		startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
+		mapLoaderController = new MapLoaderController(mapService);
+		startupGameController = new StartupGameController(mapLoaderController, playerService);
 
 
-		controllerList.add(mapLoaderAdapter);
+		controllerList.add(mapLoaderController);
 		controllerList.add(startupGameController);
 		
 		phaseViewTest.addController(controllerList);
 
-		mapLoaderAdapter.setView(phaseViewTest);
+		mapLoaderController.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
 
 		mapService.addObserver(phaseViewTest);
