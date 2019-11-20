@@ -830,6 +830,9 @@ public class Player{
 
                 //Display Domination View by notifying obervers
                 playerService.evaluateWorldDomination();
+                
+                if (checkPlayerWin())
+                    CommonUtils.endGame(playerService);
 
 
             }
@@ -913,12 +916,6 @@ public class Player{
 
             transferCountryOwnershipAfterAttack();
 
-            if (checkPlayerWin())
-                CommonUtils.endGame(playerService);
-
-
-
-
             strSendAttackInfoToObservers+="\nNeed to check player wins, "
                     + "check if defender is eliminated from the game,"
                     + "need to transfer cards\n"
@@ -928,6 +925,9 @@ public class Player{
             //notify after attack info to observers
             playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
 
+            if (checkPlayerWin())
+                CommonUtils.endGame(playerService);
+            
             return true;
         }
 
@@ -963,6 +963,11 @@ public class Player{
      */
     public void transferCountryOwnershipAfterAttack() {
 
+    	if(toCountryAttack.getPlayer().getName().
+    			equalsIgnoreCase(fromCountryAttack.getPlayer().getName())) {
+    		return;
+    	}
+    	
         fromCountryAttack.getPlayer().addCountryToPlayerList(toCountryAttack);
 
         toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
@@ -1397,6 +1402,8 @@ public class Player{
      */
     public void endAttackPhase(PlayerService playerService) {
 
+    	playerService.notifyPlayerServiceObservers("Attack Phase Ended");
+    	
         //Check if card needs to be drawn-set to true when country conquered
         if(boolDrawCard) {
             Card c=playerService.drawFromDeck();
