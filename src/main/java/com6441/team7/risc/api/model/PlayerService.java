@@ -352,7 +352,6 @@ public class PlayerService extends Observable {
 	public void automateGame() {
 		
 		if(currentPlayer.getPlayerCategory()==PlayerCategory.HUMAN) {
-			System.out.println("Human");
 			return;
 		}
 		else {
@@ -374,21 +373,29 @@ public class PlayerService extends Observable {
 			default:				
 			
 			}
-						
+			
+			counterGame++;			
+			System.out.println(counterGame);
+			
+			//3 Random: 1268 turns
+			
+			
+			if(counterGame>5000) {
+				System.out.println("Exited automated game");
+				System.exit(0);			
+				
+			}
+			
 			//currentPlayer.getStrategy().reinforce();
 			this.mapService.setState(GameState.ATTACK);
 			currentPlayer.getStrategy().attack();
 			currentPlayer.getStrategy().fortify();
-			System.out.println(counterGame);
-			counterGame++;
-		}
-		
-		if(counterGame>100) {
-			System.out.println("Exited automated game");
-			System.exit(0);			
+
+		//	counterGame++;
+			
+		//	System.out.println(counterGame);
 			
 		}
-
 		
 	}
 	
