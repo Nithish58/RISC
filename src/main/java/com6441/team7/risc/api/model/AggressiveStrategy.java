@@ -140,9 +140,10 @@ public class AggressiveStrategy implements StrategyPlayer {
 				for (Integer i : maxCountryAdjacencyList) {
 					if (playerService.getMapService().getCountryById(i).get().getPlayer().getName()
 							.equals(player.getName())) {
+						playerService.notifyPlayerServiceObservers("From Country "+maxCountry.getCountryName());
 						neighborMaxCountry = playerService.getMapService().getCountryById(i).get();
 						playerService.notifyPlayerServiceObservers(
-								"Owned neighbor country is " + neighborMaxCountry.getCountryName());
+								"To neighbor country is " + neighborMaxCountry.getCountryName());
 						neighborCountryFound = true;
 						break;
 					}
