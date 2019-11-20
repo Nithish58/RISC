@@ -1515,6 +1515,7 @@ public class Player{
 
         playerService.showCardsInfo(playerService.getCurrentPlayer());
 
+        playerService.automateGame();
 
     }
 
@@ -1532,6 +1533,8 @@ public class Player{
         playerService.switchNextPlayer();
         playerService.getMapService().setState(GameState.REINFORCE);
         playerService.showCardsInfo(playerService.getCurrentPlayer());
+        
+        playerService.automateGame();
     }
 
     /**

@@ -340,7 +340,7 @@ public class PlayerService extends Observable {
 
 		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
 		
-		automateGame();
+		//automateGame();
 
 	}
 	
