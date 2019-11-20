@@ -66,6 +66,7 @@ public class PhaseView implements GameView {
      */
     private Player currentPlayer=null;
 
+    
 
     /**
      * add controller to controller lists
@@ -133,6 +134,7 @@ public class PhaseView implements GameView {
     @Override
     public void displayMessage(String string) {
         System.out.println(PHASE_VIEW_STRING + string);
+        
     }
 
     /**

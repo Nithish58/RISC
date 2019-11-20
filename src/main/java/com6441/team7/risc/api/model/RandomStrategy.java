@@ -70,8 +70,6 @@ public class RandomStrategy implements StrategyPlayer{
 				
 				player.endAttackPhase(playerService);
 				
-				//End Attack
-				
 				return;				
 			}
 			
@@ -104,7 +102,9 @@ public class RandomStrategy implements StrategyPlayer{
 					boolFortificationConditionMet=true;
 					break;
 				}
-			}		
+			}	
+			
+			if(boolFortificationConditionMet) break;
 		}
 		
 		//Actual Fortification

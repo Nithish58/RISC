@@ -347,6 +347,8 @@ public class PlayerService extends Observable {
 	
 	//---------------------------------Utils for autoplaying game------------------------------------------
 	
+	private int counterGame=0;
+	
 	public void automateGame() {
 		
 		if(currentPlayer.getPlayerCategory()==PlayerCategory.HUMAN) {
@@ -361,10 +363,14 @@ public class PlayerService extends Observable {
 			this.mapService.setState(GameState.ATTACK);
 			currentPlayer.getStrategy().attack();
 			currentPlayer.getStrategy().fortify();
+			System.out.println(counterGame);
+			counterGame++;
 		}
 		
-		if(listPlayers.size()==1) {
-			CommonUtils.endGame(this);;
+		if(counterGame>100) {
+			System.out.println("Exited automated game");
+			System.exit(0);			
+			
 		}
 
 		
