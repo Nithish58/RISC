@@ -21,6 +21,7 @@ public class AggressiveStrategy implements StrategyPlayer {
 	public AggressiveStrategy(PlayerService playerService) {
 		this.playerService = playerService;
 		this.player = playerService.getCurrentPlayer();
+		this.playerService.notifyPlayerServiceObservers("Aggressive Strategy");
 	}
 
 	/**

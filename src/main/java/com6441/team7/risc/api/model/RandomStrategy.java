@@ -14,6 +14,7 @@ public class RandomStrategy implements StrategyPlayer{
 	public RandomStrategy(PlayerService playerService) {
 		this.playerService = playerService;
 		this.player = playerService.getCurrentPlayer();
+		this.playerService.notifyPlayerServiceObservers("Random Strategy");
 	}
 	
 	@Override
