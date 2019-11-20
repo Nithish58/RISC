@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
+import com6441.team7.risc.utils.MapDisplayUtils;
 
 public class RandomStrategy implements StrategyPlayer{
 	
@@ -108,15 +109,22 @@ public class RandomStrategy implements StrategyPlayer{
 			if(boolFortificationConditionMet) break;
 		}
 		
-		//Actual Fortification
+		//Actual Fortification	
 		PlayerFortificationWrapper playerFortificationWrapper;
-		if(fromCountry.getSoldiers()>1 && boolFortificationConditionMet) {			
+		
+		//System.out.println(fromCountry.getCountryName());
+		//System.out.println(toCountry.getCountryName());
+		
+		if(fromCountry.getSoldiers()>1 && boolFortificationConditionMet) {
+			playerService.notifyPlayerServiceObservers("Actual Fortification");
 			playerFortificationWrapper = new PlayerFortificationWrapper(fromCountry,
 					toCountry, 1);			
 		}
 		else {			
 			//By default boolFortifyNone is set to true
-			playerFortificationWrapper=new PlayerFortificationWrapper();			
+			playerService.notifyPlayerServiceObservers("Fortify NONE");
+			playerFortificationWrapper=new PlayerFortificationWrapper();
+			
 		}
 		
 		

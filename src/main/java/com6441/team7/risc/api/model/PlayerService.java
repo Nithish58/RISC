@@ -378,8 +378,7 @@ public class PlayerService extends Observable {
 			System.out.println(counterGame);
 			
 			//3 Random: 1268 turns
-			
-			
+						
 			if(counterGame>5000) {
 				System.out.println("Exited automated game");
 				System.exit(0);			
