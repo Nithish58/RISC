@@ -36,10 +36,13 @@ public class AggressiveStrategy implements StrategyPlayer {
 		// pass it as param.
 		// Just follow the format we did for attack and fortify and expose the player
 		// for reinforcement
-		int numArmies = player.calculateReinforcedArmies(player); // Calculate reinforcements
+		int numArmies = calculateReinforcedAggressiveArmies(player); // Calculate reinforcements
 
 		// get country with maximum number of armies
 		Country maxCountry = findMaxCountry();
+		
+		playerService.notifyPlayerServiceObservers(maxCountry.getCountryName()+" has "+maxCountry.getSoldiers()+ " soldier(s)"
+				+ " and will be receive "+numArmies+" reinforcement(s)");
 
 		// Reinforce the country with the largest number of soldiers
 		player.reinforceArmy(maxCountry.getCountryName(), numArmies, playerService.getMapService());
@@ -214,7 +217,10 @@ public class AggressiveStrategy implements StrategyPlayer {
 		// Get largest number of armies owned by the player
 		for (int i = 0; i < player.getCountryList().size(); i++) {
 			if (player.getCountryList().get(i).getSoldiers() > maxArmy) {
+				
+				//Get number of soldiers owned by the country
 				maxArmy = player.getCountryList().get(i).getSoldiers();
+				
 				// Get country with max num of soldiers using maxCountryIndex
 				maxCountry = player.getCountryList().get(i);
 			}
@@ -222,5 +228,23 @@ public class AggressiveStrategy implements StrategyPlayer {
 
 		return maxCountry;
 	}
+	
+	/**
+	 * This is for calculating aggressive country's reinforcements
+	 * @param player receives player param
+	 * @return number of calculated reinforced armies
+	 */
+    public int calculateReinforcedAggressiveArmies(Player player){
+
+    	int reinforcedArmies = 0;
+    	
+        reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
+
+        reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
+
+        if(reinforcedArmies < 3){ reinforcedArmies = 3; }
+
+        return reinforcedArmies;
+    }
 
 }

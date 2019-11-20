@@ -21,6 +21,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 	public BenevolentStrategy(PlayerService playerService) {
 		this.playerService = playerService;
 		this.player = playerService.getCurrentPlayer();
+		this.playerService.notifyPlayerServiceObservers("Benevolent Strategy");
 	}
 
 	@Override
@@ -30,25 +31,30 @@ public class BenevolentStrategy implements StrategyPlayer {
 		// pass it as param.
 		// Just follow the format we did for attack and fortify and expose the player
 		// for reinforcement
-		int numArmies = player.calculateReinforcedArmies(player); // Calculate reinforcements
-		int minArmy = 0; // Init local variable for minimum number of army
-		int minCountryIndex = 0; // init local variable for the index of the country with the smallest num of
-									// army
+		
+		//Calculate reinforcement
+		int numArmies = calculateReinforcedBenevolentArmies(player);
 
-		Country minCountry = null;
+		// get list of player's countries and sort it
+		ArrayList<Country> weakCountries = player.getCountryList();
 
-		// Get smallest number of armies owned by the player
-		for (int i = 0; i < player.getCountryList().size(); i++) {
-			if (player.getCountryList().get(i).getSoldiers() < minArmy) {
+		Collections.sort(weakCountries, new Comparator<Country>() {
 
-				minArmy = player.getCountryList().get(i).getSoldiers();
+			@Override
+			public int compare(Country c1, Country c2) {
 
-				minCountry = player.getCountryList().get(i);
+				return c1.getSoldiers().compareTo(c2.getSoldiers());
 			}
-		}
+
+		});
+		
+		Country weakestCountry = weakCountries.get(0);
+		
+		playerService.notifyPlayerServiceObservers(weakestCountry.getCountryName()+" has "+weakestCountry.getSoldiers()+ " soldier(s)"
+				+ " and will be receive "+numArmies+" reinforcement(s)");
 
 		// Reinforce the country with the smallest number of soldiers
-		player.reinforceArmy(minCountry.getCountryName(), numArmies, playerService.getMapService());
+		player.reinforceArmy(weakestCountry.getCountryName(), numArmies, playerService.getMapService());
 
 	}
 
@@ -134,5 +140,23 @@ public class BenevolentStrategy implements StrategyPlayer {
 		}
 
 	}
+	
+	/**
+	 * This is for calculating benevolent country's reinforcements
+	 * @param player receives player param
+	 * @return number of calculated reinforced armies
+	 */
+    public int calculateReinforcedBenevolentArmies(Player player){
+
+    	int reinforcedArmies = 0;
+    	
+        reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
+
+        reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
+
+        if(reinforcedArmies < 3){ reinforcedArmies = 3; }
+
+        return reinforcedArmies;
+    }
 
 }
