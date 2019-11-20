@@ -2,6 +2,7 @@ package com6441.team7.risc.api.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
 
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
@@ -48,34 +49,69 @@ public class AggressiveStrategy implements StrategyPlayer {
 		playerService.notifyPlayerServiceObservers("Attack Aggressive");
 
 		// get country with maximum number of armies
-		Country attackerCountry = findMaxCountry();
+		Country attackerCountry = null;
 
-		// check if no attackerCountry with max num of soldiers and enemy country in the
-		// adjacency list found
-		// if it's null, end attack phase and switch to next player
-		if (attackerCountry == null)
-			player.endAttackPhase(playerService);
+		// get list of player's countries
+		ArrayList<Country> attackerCountries = player.getCountryList();
 
-		else {
-			// get countries adjacent to maxCountry to be attacked
-			// if no adjacent country found, invoke attack noattack
-			Set<Integer> attackerCountryAdjacencyList = playerService.getMapService()
-					.getAdjacencyCountries(attackerCountry.getId());
-			Country defenderCountry = null;
+		Collections.sort(attackerCountries, new Comparator<Country>() {
+
+			@Override
+			public int compare(Country c1, Country c2) {
+
+				return c2.getSoldiers().compareTo(c1.getSoldiers());
+			}
+
+		});
+		
+		//Print to check if it's sorted. This will be deleted
+		for(Country c : attackerCountries) {
+			System.out.println(c.getId()+" "+c.getCountryName()+" "+c.getSoldiers());
+		}
+
+		//Iterate through the attacker countries and check for adjacency towards enemy country
+		Country defenderCountry = null;
+		
+		Set<Integer> attackerCountryAdjacencyList = null;
+		
+		for(Country c : attackerCountries) {
+			attackerCountryAdjacencyList = playerService.getMapService()
+			.getAdjacencyCountries(c.getId());
+			
 			while (defenderCountry == null) {
 				for (Integer i : attackerCountryAdjacencyList) {
 					if (!playerService.getMapService().getCountryById(i).get().getPlayer().getName()
 							.equals(player.getName())) {
+						
+						attackerCountry = c;
+						
+						playerService.notifyPlayerServiceObservers(
+								"attacker country is " + attackerCountry.getCountryName()+
+								" with num of armies is " +attackerCountry.getSoldiers());
+						
 						defenderCountry = playerService.getMapService().getCountryById(i).get();
+						
 						playerService.notifyPlayerServiceObservers(
 								"defender country is " + defenderCountry.getCountryName());
 						break;
 					}
 				}
 				if (defenderCountry == null) {
+					
+					playerService.notifyPlayerServiceObservers("No defender country found");
+					
 					break;
 				}
 			}
+		}
+		
+		// check if no attackerCountry with max num of soldiers and enemy country in the
+		// adjacency list found
+		// if it's null, end attack phase and switch to next player
+		if (defenderCountry == null)
+			player.endAttackPhase(playerService);
+
+		else {
 
 			// Attack the defender country
 			// Attack wrapper
@@ -116,14 +152,13 @@ public class AggressiveStrategy implements StrategyPlayer {
 
 		// Get largest number of armies owned by the player
 		// get country with maximum number of armies
-		Country maxCountry = findMaxCountryForFortification();
+		Country maxCountry = findMaxCountry();
 
 		if (maxCountry == null) {
 			playerFortificationWrapper = new PlayerFortificationWrapper();
 			player.fortify(playerService, playerFortificationWrapper);
 		}
-			
-		
+
 		else {
 			// Get adjacency list of the country with max num of soldiers
 			Set<Integer> maxCountryAdjacencyList = playerService.getMapService()
@@ -131,30 +166,28 @@ public class AggressiveStrategy implements StrategyPlayer {
 
 			// Get adjacent country that is owned by the player
 			// if no adjacent country found, invoke fortifynone
-			
+
 			boolean neighborCountryFound = false;
-			
+
 			Country neighborMaxCountry = null;
 
-				for (Integer i : maxCountryAdjacencyList) {
-					if (playerService.getMapService().getCountryById(i).get().getPlayer().getName()
-							.equals(player.getName())) {
-						playerService.notifyPlayerServiceObservers("From Country "+maxCountry.getCountryName());
-						neighborMaxCountry = playerService.getMapService().getCountryById(i).get();
-						playerService.notifyPlayerServiceObservers(
-								"To neighbor country is " + neighborMaxCountry.getCountryName());
-						neighborCountryFound = true;
-						break;
-					}
+			for (Integer i : maxCountryAdjacencyList) {
+				if (playerService.getMapService().getCountryById(i).get().getPlayer().getName()
+						.equals(player.getName())) {
+					playerService.notifyPlayerServiceObservers("From Country " + maxCountry.getCountryName());
+					neighborMaxCountry = playerService.getMapService().getCountryById(i).get();
+					playerService.notifyPlayerServiceObservers(
+							"To neighbor country is " + neighborMaxCountry.getCountryName());
+					neighborCountryFound = true;
+					break;
 				}
-				
-				if (!neighborCountryFound) {
-					playerFortificationWrapper = new PlayerFortificationWrapper();
-					player.fortify(playerService, playerFortificationWrapper);
-					return;
-				}
+			}
 
-			
+			if (!neighborCountryFound) {
+				playerFortificationWrapper = new PlayerFortificationWrapper();
+				player.fortify(playerService, playerFortificationWrapper);
+				return;
+			}
 
 			// determines whether or not to fortify
 			if (neighborMaxCountry != null && maxCountry.getSoldiers() > 1) {
@@ -167,53 +200,8 @@ public class AggressiveStrategy implements StrategyPlayer {
 		}
 	}
 
+
 	public Country findMaxCountry() {
-		int maxArmy = 0; // Init local variable for maximum number of army
-		int maxCountryIndex = 0; // init local variable for the index of the country with the largest num of army
-
-		// initialize attacker's country
-
-		// Get country with max num of soldiers using maxCountryIndex
-		Country maxCountry = null;
-
-		// initialize defenders' country
-		Country defenderCountry = null;
-
-		// initialize adjacency list for attacker's country
-		Set<Integer> maxCountryAdjacencyList;
-
-		// Get largest number of armies owned by the player
-		for (int i = 0; i < player.getCountryList().size(); i++) {
-			if (player.getCountryList().get(i).getSoldiers() > maxArmy) {
-				maxArmy = player.getCountryList().get(i).getSoldiers();
-				// get countries adjacent to maxCountry to be attacked
-				// if no adjacent country found, invoke attack noattack
-				maxCountryAdjacencyList = playerService.getMapService()
-						.getAdjacencyCountries(player.getCountryList().get(i).getId());
-				while (defenderCountry == null) {
-					for (Integer index : maxCountryAdjacencyList) {
-						if (!playerService.getMapService().getCountryById(index).get().getPlayer().getName()
-								.equals(player.getName())) {
-							// set attacker's country
-							maxCountry = player.getCountryList().get(i);
-							playerService.notifyPlayerServiceObservers("Attacker country is " + maxCountry);
-							defenderCountry = playerService.getMapService().getCountryById(index).get();
-							playerService.notifyPlayerServiceObservers(
-									"Defender country is " + defenderCountry.getCountryName());
-							break;
-						}
-					}
-					if (defenderCountry == null) {
-						break;
-					}
-				}
-			}
-		}
-
-		return maxCountry;
-	}
-
-	public Country findMaxCountryForFortification() {
 		int maxArmy = 0; // Init local variable for maximum number of army
 		int maxCountryIndex = 0; // init local variable for the index of the country with the largest num of army
 
