@@ -1,7 +1,9 @@
 package com6441.team7.risc.api.model;
 
+import java.util.Random;
 import java.util.Set;
 
+import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 public class RandomStrategy implements StrategyPlayer{
@@ -16,22 +18,61 @@ public class RandomStrategy implements StrategyPlayer{
 	
 	@Override
 	public void reinforce() {
-		
-		//It makes no sense to call player's calculate reinf armies method and then pass it as param.
-		//Just follow the format we did for attack and fortify and expose the player for reinforcement
+
 		int numArmies = player.calculateReinforcedArmies(player);
 		
-		Country randomCountry = player.getCountryList().get(0);
+		Random rn=new Random();
 		
-		player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService());
+		Country randomCountry = player.getCountryList().get(rn.nextInt(player.getCountryList().size()));
 		
+		//player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService());
+		playerService.reinforceArmy(player, randomCountry.getCountryName(), numArmies);
 		
 	}
 	
 	@Override
-	public void attack() {
-		System.out.println("Attack");
+	public void attack() {		
 		
+		Country randomFromAttackCountry=null;
+		Country randomToAttackCountry=null;
+		
+		for(Country c:player.getCountryList()) {
+			
+			boolean boolTargetFound=false;
+			
+			Set<Integer> toCountryAdjacencyList = playerService.getMapService()
+					.getAdjacencyCountries(c.getId());
+			
+			for (Integer j : toCountryAdjacencyList) {
+				if (!playerService.getMapService().getCountryById(j).get().getPlayer().getName().equals(player.getName())) {
+					
+					randomToAttackCountry = playerService.getMapService().getCountryById(j).get();
+					boolTargetFound=true;
+					randomFromAttackCountry=c;
+					
+					break;
+				}
+			}		
+			
+			if(boolTargetFound) {
+				
+				PlayerAttackWrapper playerAttackWrapper=new PlayerAttackWrapper(randomFromAttackCountry,randomToAttackCountry);
+				playerAttackWrapper.setNumDiceAttacker(1);
+				playerAttackWrapper.setNumDiceDefender(1);
+				
+				player.attack(playerService,playerAttackWrapper);
+				
+				if(player.getBoolAttackMoveRequired()) player.attackMove(1);
+				
+				player.endAttackPhase(playerService);
+				
+				return;				
+			}
+			
+		}	
+		
+		//Attack Not Possible since no targets found
+		player.endAttackPhase(playerService);
 		
 	}
 	
@@ -57,14 +98,19 @@ public class RandomStrategy implements StrategyPlayer{
 			}		
 		}
 		
-		fromCountry.setSoldiers(2);
+		//Actual Fortification
+		PlayerFortificationWrapper playerFortificationWrapper;
+		if(fromCountry.getSoldiers()>1) {			
+			playerFortificationWrapper = new PlayerFortificationWrapper(fromCountry,
+					toCountry, 1);			
+		}
+		else {			
+			//By default boolFortifyNone is set to true
+			playerFortificationWrapper=new PlayerFortificationWrapper();			
+		}
 		
-		PlayerFortificationWrapper playerFortificationWrapper = new PlayerFortificationWrapper(fromCountry,
-				toCountry, 1);
 		
 		player.fortify(playerService, playerFortificationWrapper);
-
-
 		
 	}
 }

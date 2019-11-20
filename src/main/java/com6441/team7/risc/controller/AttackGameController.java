@@ -257,7 +257,7 @@ public class AttackGameController implements Controller {
     	if(arrCommand.length==2 && arrCommand[1].equalsIgnoreCase("-noattack")) {
     		
     		playerService.getCurrentPlayer().endAttackPhase(playerService);
-    		switchToFortification();
+    		//switchToFortification();
     		
     		return;
     	}

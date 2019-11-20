@@ -80,21 +80,6 @@ public class Player{
     	this.playerCategory = category;
 	}
 
-    //add by jenny
-    public void reinforce(){
-        //TODO
-    }
-
-    //add by jenny
-    public void attack(){
-        //TODO
-    }
-
-    //add by jenny
-    public void fortify(){
-        //TODO
-    }
-
     /**
      * Method to get type of player 
      * @return Enum of Player category
@@ -454,7 +439,7 @@ public class Player{
     
     //by Keshav
     //for build 3 -- Copied jenny's code and pasted it here
-    private int reinforcedArmies;    
+    private int reinforcedArmies=0;    
     
     public int calculateReinforcedArmies(Player player){
 
@@ -1423,6 +1408,9 @@ public class Player{
 
 
         resetBooleanValues();
+        
+        //Set gamestate to fortify
+        playerService.getMapService().setState(GameState.FORTIFY);
 
     }
 
@@ -1515,7 +1503,7 @@ public class Player{
         //Notifying Observers of PlayerService
         this.playerFortificationWrapper=new PlayerFortificationWrapper(fromCountryFortify, toCountryFortify,
                 numSoldiersToFortify);
-        this.playerFortificationWrapper.setFortificationDisplayMessage("success");
+        this.playerFortificationWrapper.setFortificationDisplayMessage("Fortification Success");
 
         playerService.notifyPlayerServiceObservers(this.playerFortificationWrapper);
 
