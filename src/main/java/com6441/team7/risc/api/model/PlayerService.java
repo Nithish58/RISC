@@ -348,18 +348,16 @@ public class PlayerService extends Observable {
 	
 	public void automateGame() {
 		
-		System.out.println("Entered");
-		System.out.println(currentPlayer.getName());
-		System.out.println("Category "+currentPlayer.getPlayerCategory().getName());
-		
 		if(currentPlayer.getPlayerCategory()==PlayerCategory.HUMAN) {
 			System.out.println("Human");
 			return;
 		}
 		else {
-			System.out.println("Random");
+			
 			currentPlayer.setStrategy(new RandomStrategy(this));
+			
 			//currentPlayer.getStrategy().reinforce();
+			this.mapService.setState(GameState.ATTACK);
 			currentPlayer.getStrategy().attack();
 			currentPlayer.getStrategy().fortify();
 		}
