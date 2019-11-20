@@ -1,6 +1,7 @@
-package com6441.team7.risc.controller;
+package com6441.team7.risc.utils.parser;
 
 import com6441.team7.risc.api.model.MapService;
+import com6441.team7.risc.utils.parser.ConquestParser;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.view.PhaseView;
 import org.apache.commons.io.FileUtils;
@@ -10,19 +11,21 @@ import org.junit.Test;
 import java.io.File;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
 
 public class ConquestReaderWriterTest {
-    private ConquestReaderWriter conquestReaderWriter;
-
+    private ConquestParser conquestReaderWriter;
+    private MapService mapService;
+    private GameView view;
 
     @Before
     public void setUp() throws Exception {
-        MapService mapService = new MapService();
-        GameView view = new PhaseView();
-         conquestReaderWriter = new ConquestReaderWriter(mapService, view, new AtomicInteger(0), new AtomicInteger(0));
+        mapService = new MapService();
+        view = new PhaseView();
+         conquestReaderWriter = new ConquestParser(new AtomicInteger(0), new AtomicInteger(0));
     }
 
 
@@ -35,26 +38,25 @@ public class ConquestReaderWriterTest {
     public void readValidFile() throws Exception{
         URI uri = getClass().getClassLoader().getResource("conquest_test.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        conquestReaderWriter.parseFile(file);
-        conquestReaderWriter.showConquestMap();
-        assertTrue(conquestReaderWriter.getMapService().isMapValid());
+        assertTrue(conquestReaderWriter.parseFile(file,view, mapService));
+        conquestReaderWriter.showConquestMap(view, mapService);
     }
 
     @Test
     public void readValidFile2() throws Exception{
         URI uri = getClass().getClassLoader().getResource("aden.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        conquestReaderWriter.parseFile(file);
-        conquestReaderWriter.showConquestMap();
-        assertTrue(conquestReaderWriter.getMapService().isMapValid());
+        assertTrue(conquestReaderWriter.parseFile(file, view, mapService));
+        conquestReaderWriter.showConquestMap(view, mapService);
     }
 
     @Test
     public void readValidFile3() throws Exception{
         URI uri = getClass().getClassLoader().getResource("Africa.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        conquestReaderWriter.parseFile(file);
-        conquestReaderWriter.showConquestMap();
-        assertTrue(conquestReaderWriter.getMapService().isMapValid());
+        assertTrue(conquestReaderWriter.parseFile(file, view, mapService));
+        conquestReaderWriter.showConquestMap(view, mapService);
     }
+
+
 }

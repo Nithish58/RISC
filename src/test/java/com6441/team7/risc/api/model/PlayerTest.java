@@ -13,7 +13,7 @@
 //import org.junit.runners.MethodSorters;
 //
 //import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
-//import com6441.team7.risc.controller.MapLoaderAdapter;
+//import com6441.team7.risc.controller.MapLoaderController;
 //import com6441.team7.risc.view.PhaseViewTest;
 //
 ///**
@@ -41,7 +41,7 @@
 //	/**
 //	 * Controller to load map
 //	 */
-//	MapLoaderAdapter mapLoaderAdapter;
+//	MapLoaderController mapLoaderAdapter;
 //	/**
 //	 * Controller for startup phase
 //	 */
@@ -874,7 +874,7 @@
 //		phaseViewTest = new PhaseViewTest();
 //		controllerList = new ArrayList<>();
 //
-//		mapLoaderAdapter = new MapLoaderAdapter(mapService);
+//		mapLoaderAdapter = new MapLoaderController(mapService);
 //		startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
 //		reinforceGameController = new ReinforceGameController(playerService);
 //		fortifyGameController = new FortifyGameController(playerService);

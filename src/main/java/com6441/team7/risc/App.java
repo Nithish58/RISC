@@ -29,7 +29,7 @@
 //
 //        List<Controller> controllerList = new ArrayList<>();
 //
-//        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
+//        MapLoaderController mapLoaderAdapter = new MapLoaderController(mapService);
 //        StartupGameController startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
 //        ReinforceGameController reinforceGameController = new ReinforceGameController(playerService);
 //        FortifyGameController fortifyGameController = new FortifyGameController(playerService);

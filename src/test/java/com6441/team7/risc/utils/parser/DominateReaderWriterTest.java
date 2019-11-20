@@ -1,15 +1,11 @@
-package com6441.team7.risc.controller;
+package com6441.team7.risc.utils.parser;
 
-import com6441.team7.risc.api.exception.ContinentParsingException;
-import com6441.team7.risc.api.exception.CountryParsingException;
-import com6441.team7.risc.api.exception.NeighborParsingException;
-import com6441.team7.risc.api.model.Continent;
-import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.MapService;
+import com6441.team7.risc.controller.MapLoaderController;
+import com6441.team7.risc.utils.parser.DominateParser;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.view.PhaseView;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,9 +18,9 @@ import static org.junit.Assert.*;
 
 public class DominateReaderWriterTest {
 
-    private DominateReaderWriter dominateReaderWriter;
-    private MapLoaderAdapter mapLoaderAdapter;
-
+    private DominateParser dominateReaderWriter;
+    private GameView view;
+    private MapService mapService;
 
     /**
      * generates id for countries
@@ -34,12 +30,11 @@ public class DominateReaderWriterTest {
 
     @Before
     public void setUp() throws Exception {
-        MapService mapService = new MapService();
-        GameView view = new PhaseView();
-        mapLoaderAdapter = new MapLoaderAdapter(mapService);
+        mapService = new MapService();
+        view = new PhaseView();
         AtomicInteger continentIdGenerator = new AtomicInteger(0);
         AtomicInteger countryIdGenerator = new AtomicInteger(0);
-        dominateReaderWriter = new DominateReaderWriter(mapService, view, continentIdGenerator, countryIdGenerator);
+        dominateReaderWriter = new DominateParser(continentIdGenerator, countryIdGenerator);
     }
 
 
@@ -52,8 +47,7 @@ public class DominateReaderWriterTest {
     public void readValidFile() throws Exception{
         URI uri = getClass().getClassLoader().getResource("ameroki.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        dominateReaderWriter.parseFile(file);
-        assertTrue(dominateReaderWriter.getMapService().isMapValid());
+        assertTrue(dominateReaderWriter.parseFile(file, view, mapService));
     }
 
     /**
@@ -66,8 +60,7 @@ public class DominateReaderWriterTest {
         URI uri = getClass().getClassLoader().getResource("test.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 
-        dominateReaderWriter.parseFile(file);
-        assertTrue(dominateReaderWriter.getMapService().isMapValid());
+        assertTrue(dominateReaderWriter.parseFile(file, view, mapService));
     }
 
 
@@ -77,8 +70,7 @@ public class DominateReaderWriterTest {
     public void readInvalidFileWithInvalidContinentId() throws Exception{
         URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        dominateReaderWriter.parseFile(file);
-        assertFalse(dominateReaderWriter.getMapService().isMapValid());
+        assertFalse(dominateReaderWriter.parseFile(file, view, mapService));
     }
 
 }

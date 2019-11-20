@@ -8,7 +8,7 @@
 // * a test suite to test run all test cases of controller package
 // */
 //@RunWith(Suite.class)
-//@SuiteClasses({//MapLoaderAdapterTest.class,
+//@SuiteClasses({//MapLoaderControllerTest.class,
 //				StartupGameControllerTest.class,
 //				ReinforceGameControllerTest.class,
 //				AttackGameControllerTest.class,

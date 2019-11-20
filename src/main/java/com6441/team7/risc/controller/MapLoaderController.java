@@ -2,6 +2,7 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.exception.*;
 import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.utils.parser.*;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.view.PhaseView;
 import org.apache.commons.lang3.StringUtils;
@@ -17,10 +18,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * It calls the methods in mapService.
  */
 
-public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDominationReaderWriter{
-
-    private DominateReaderWriter dominateReaderWriter;
-    private ConquestReaderWriter conquestReaderWriter;
+public class MapLoaderController implements Controller {
     private MapCategory mapCategory;
 
     /**
@@ -44,6 +42,7 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
      */
     private AtomicInteger countryIdGenerator;
 
+    private MapParserAdapter mapParserAdapter;
 
     //add by jenny
     private IBuilder builder;
@@ -52,13 +51,13 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
     }
 
 
-    public MapLoaderAdapter(MapService mapService) {
+    public MapLoaderController(MapService mapService) {
         this.mapService = mapService;
         this.view = new PhaseView();
         this.mapCategory = MapCategory.UNKNOWN;
         this.continentIdGenerator = new AtomicInteger();
         this.countryIdGenerator = new AtomicInteger();
-
+        this.mapParserAdapter = new MapParserAdapter(continentIdGenerator, countryIdGenerator);
     }
 
     @Override
@@ -87,7 +86,7 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
                 editNeighbors(commands);
                 break;
             case SHOW_MAP:
-                showMap();
+                mapParserAdapter.showMap(mapCategory, view, mapService);
                 break;
             case SAVE_MAP:
                 saveMap(command);
@@ -105,40 +104,6 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
             default:
                 throw new IllegalArgumentException("cannot recognize this command");
         }
-    }
-
-
-    @Override
-    public void readConquestMapFile(String fileName) {
-        conquestReaderWriter.readConquestMapFile(fileName);
-    }
-
-
-    @Override
-    public void readDominateMapFile(String fileName) {
-        dominateReaderWriter.readDominateMapFile(fileName);
-    }
-
-
-    @Override
-    public void saveDominateMap(String fileName) throws IOException {
-        dominateReaderWriter.saveDominateMap(fileName);
-    }
-
-    @Override
-    public void saveConquestMap(String fileName) throws IOException {
-        conquestReaderWriter.saveConquestMap(fileName);
-    }
-
-    @Override
-    public void showDominateMap() {
-        dominateReaderWriter.showDominateMap();
-    }
-
-
-    @Override
-    public void showConquestMap() {
-        conquestReaderWriter.showConquestMap();
     }
 
 
@@ -199,15 +164,13 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
 
         if(commands.length == 3 && convertFormat(commands[0]).equals(RiscCommand.EDIT_MAP.getName()) &&
                 convertFormat(commands[2]).equals(MapCategory.CONQUEST.getName())){
-            conquestReaderWriter = new ConquestReaderWriter(mapService, view, countryIdGenerator, continentIdGenerator);
-            readConquestMapFile(commands[1]);
+            mapParserAdapter.readConquestMapFile(commands[1], view, mapService);
             validateMap();
             return;
         }
 
         if(commands.length == 2 && convertFormat(commands[0]).equals(RiscCommand.EDIT_MAP.getName())){
-            dominateReaderWriter = new DominateReaderWriter(mapService, view, countryIdGenerator, continentIdGenerator);
-            readDominateMapFile(commands[1]);
+            mapParserAdapter.readDominateMapFile(commands[1], view, mapService);
             validateMap();
             return;
         }
@@ -239,34 +202,17 @@ public class MapLoaderAdapter implements Controller, IConquestReaderWriter, IDom
         String filename = command.split(" ")[1];
 
         if(mapCategory.equals(MapCategory.DOMINATION)){
-            saveDominateMap(filename);
+            mapParserAdapter.saveDominateMap(filename, mapService);
             return;
         }
 
         if(mapCategory.equals(MapCategory.CONQUEST)){
-            saveConquestMap(filename);
+            mapParserAdapter.saveConquestMap(filename, mapService);
             return;
         }
 
         view.displayMessage("cannot recognize the map category");
     }
-
-
-    private void showMap(){
-        if(mapCategory.equals(MapCategory.CONQUEST)){
-            showConquestMap();
-            return;
-        }
-
-        if(mapCategory.equals(MapCategory.DOMINATION)){
-            showDominateMap();
-            return;
-        }
-
-        view.displayMessage("cannot recognize the map category");
-
-    }
-
 
 
     private void editContinents(String[] s) {

@@ -5,7 +5,7 @@ import java.util.Observable;
 
 import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.controller.*;
-import com6441.team7.risc.controller.MapLoaderAdapter;
+import com6441.team7.risc.controller.MapLoaderController;
 
 /**
  * The test class for phase view
@@ -123,7 +123,7 @@ public class PhaseViewTest implements GameView{
      */
     public void addController(List<Controller> list){
         list.forEach(controller -> {
-            if(controller instanceof MapLoaderAdapter){
+            if(controller instanceof MapLoaderController){
                 this.mapLoaderController = controller;
             }
             else if(controller instanceof StartupGameController){

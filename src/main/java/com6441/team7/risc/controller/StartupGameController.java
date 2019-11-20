@@ -84,7 +84,7 @@ public class StartupGameController implements Controller{
 //	/**
 //	 * private Controller mapLoaderAdapter;
 //	 */
-//	private MapLoaderAdapter mapLoaderAdapter; //Casted it here instead of casting everytime
+//	private MapLoaderController mapLoaderAdapter; //Casted it here instead of casting everytime
 //
 //	/**
 //	 * a reference of mapService
@@ -108,7 +108,7 @@ public class StartupGameController implements Controller{
 //	 * @param playerService PlayerService
 //	 */
 //	public StartupGameController(Controller mapController, PlayerService playerService) {
-//		this.mapLoaderAdapter = (MapLoaderAdapter) mapController;
+//		this.mapLoaderAdapter = (MapLoaderController) mapController;
 //
 //		this.playerService = playerService;
 //		this.mapService = playerService.getMapService();

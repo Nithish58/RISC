@@ -165,7 +165,7 @@
 //     * @throws URISyntaxException on invalid URI
 //     */
 //    private void mockPlayerCountryInformationOne() throws IOException, URISyntaxException {
-//        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
+//        MapLoaderController mapLoaderAdapter = new MapLoaderController(mapService);
 //        URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
 //        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 //        mapLoaderAdapter.parseFile(file);
@@ -182,7 +182,7 @@
 //     * @throws URISyntaxException on invalid URI
 //     */
 //    private void mockPlayerCountryInformationTwo() throws IOException, URISyntaxException{
-//        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
+//        MapLoaderController mapLoaderAdapter = new MapLoaderController(mapService);
 //        URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
 //        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 //        mapLoaderAdapter.parseFile(file);

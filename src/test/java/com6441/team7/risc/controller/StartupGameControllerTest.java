@@ -44,7 +44,7 @@
 //	 /**
 //	  * Controller to load map
 //	  */
-//	 MapLoaderAdapter mapLoaderAdapter;
+//	 MapLoaderController mapLoaderAdapter;
 //	 /**
 //	  * Controller for startup phase
 //	  */
@@ -461,7 +461,7 @@
 //		phaseViewTest = new PhaseViewTest();
 //		controllerList = new ArrayList<>();
 //
-//		mapLoaderAdapter = new MapLoaderAdapter(mapService);
+//		mapLoaderAdapter = new MapLoaderController(mapService);
 //		startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
 //
 //
