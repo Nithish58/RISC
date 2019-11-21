@@ -338,8 +338,6 @@ public class PlayerService extends Observable {
 		}
 
 		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
-		
-		//automateGame();
 
 	}
 	
@@ -349,6 +347,19 @@ public class PlayerService extends Observable {
 	private int counterGame=0;
 	
 	public void automateGame() {
+		
+		counterGame++;
+		double turnNum=counterGame/3.0;
+		notifyPlayerServiceObservers("Turn: "+Math.ceil(turnNum));
+		
+		//3 Random: 1268/3 turns until stack overflow when stack is 256Kb
+					
+		if(counterGame>3000) {
+			notifyPlayerServiceObservers("Exited automated game");
+			System.exit(0);			
+			
+		}
+		
 		
 		if(currentPlayer.getPlayerCategory()==PlayerCategory.HUMAN) {
 			return;
@@ -373,25 +384,10 @@ public class PlayerService extends Observable {
 			
 			}
 			
-			counterGame++;			
-			System.out.println(counterGame);
-			
-			//3 Random: 1268 turns
-						
-			if(counterGame>5000) {
-				System.out.println("Exited automated game");
-				System.exit(0);			
-				
-			}
-			
 			//currentPlayer.getStrategy().reinforce();
 			this.mapService.setState(GameState.ATTACK);
 			currentPlayer.getStrategy().attack();
 			currentPlayer.getStrategy().fortify();
-
-		//	counterGame++;
-			
-		//	System.out.println(counterGame);
 			
 		}
 		
