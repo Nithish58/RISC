@@ -62,13 +62,26 @@ public class RandomStrategy implements StrategyPlayer{
 			
 			if(boolTargetFound) {
 				
-				PlayerAttackWrapper playerAttackWrapper=new PlayerAttackWrapper(randomFromAttackCountry,randomToAttackCountry);
-				playerAttackWrapper.setNumDiceAttacker(1);
-				playerAttackWrapper.setNumDiceDefender(1);
+				//Decide Random num times attack (1-5)
+				int numTimesAttack=new Random().nextInt(5)+1;
 				
-				player.attack(playerService,playerAttackWrapper);
 				
-				if(player.getBoolAttackMoveRequired()) player.attackMove(1);
+				for(int i=0;i<numTimesAttack;i++) {
+				
+					PlayerAttackWrapper playerAttackWrapper=new PlayerAttackWrapper(randomFromAttackCountry,randomToAttackCountry);
+					playerAttackWrapper.setNumDiceAttacker(1);
+					playerAttackWrapper.setNumDiceDefender(1);
+					
+					player.attack(playerService,playerAttackWrapper);
+					
+					//If country counquered after attack: Move soldier to conquered country
+					//Then stop attack as future attacks wont be possible on same owner country
+					if(player.getBoolAttackMoveRequired()) {
+						player.attackMove(1);
+						break;
+					}
+					
+				}				
 				
 				player.endAttackPhase(playerService);
 				
@@ -78,6 +91,7 @@ public class RandomStrategy implements StrategyPlayer{
 		}	
 		
 		//Attack Not Possible since no targets found
+		playerService.notifyPlayerServiceObservers("No Attack Targets Found.");
 		player.endAttackPhase(playerService);
 		
 	}
@@ -91,6 +105,8 @@ public class RandomStrategy implements StrategyPlayer{
 		
 		boolean boolFortificationConditionMet=false;
 		
+		//Loop through player list
+		//Choose adjacent country which is eligible to be reinforced
 		for ( int i = 0; i < player.getCountryList().size(); i++ ) {
 			
 			fromCountry=player.getCountryList().get(i);
@@ -112,11 +128,7 @@ public class RandomStrategy implements StrategyPlayer{
 		//Actual Fortification	
 		PlayerFortificationWrapper playerFortificationWrapper;
 		
-		//System.out.println(fromCountry.getCountryName());
-		//System.out.println(toCountry.getCountryName());
-		
 		if(fromCountry.getSoldiers()>1 && boolFortificationConditionMet) {
-			playerService.notifyPlayerServiceObservers("Actual Fortification");
 			playerFortificationWrapper = new PlayerFortificationWrapper(fromCountry,
 					toCountry, 1);			
 		}
