@@ -1022,7 +1022,9 @@ public class Player{
     public void attackMove(int numSoldiersTransfer) {
 
         if(numSoldiersTransfer<fromCountryAttack.getSoldiers() && numSoldiersTransfer>0) {
-
+        	
+        	playerService.notifyPlayerServiceObservers("Attack Move Being Done:");
+        	
             fromCountryAttack.removeSoldiers(numSoldiersTransfer);
             toCountryAttack.addSoldiers(numSoldiersTransfer);
 
@@ -1040,7 +1042,7 @@ public class Player{
             return;
         }
 
-        playerService.notifyPlayerServiceObservers("Invalid number of soldiers. Try again.");
+        playerService.notifyPlayerServiceObservers("Invalid number of soldiers for AttackMove. Try again.");
     }
 
     /**
