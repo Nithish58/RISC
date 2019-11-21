@@ -31,15 +31,17 @@ public class App {
 
         MapLoaderController mapLoaderAdapter = new MapLoaderController(mapService);
         StartupGameController startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
-        ReinforceGameController reinforceGameController = new ReinforceGameController(playerService);
+        ReinforceGameController reinforceGameController = new ReinforceGameController(mapService, playerService);
         FortifyGameController fortifyGameController = new FortifyGameController(playerService);
         AttackGameController attackController = new AttackGameController(playerService);
+        LoadGameController loadGameController = new LoadGameController(mapService, playerService);
 
         controllerList.add(mapLoaderAdapter);
         controllerList.add(startupGameController);
         controllerList.add(reinforceGameController);
         controllerList.add(fortifyGameController);
         controllerList.add(attackController);
+        controllerList.add(loadGameController);
 
         phaseView.addController(controllerList);
 

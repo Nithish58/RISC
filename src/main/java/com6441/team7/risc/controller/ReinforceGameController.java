@@ -4,7 +4,7 @@ import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
-import com6441.team7.risc.utils.builder.IBuilder;
+import com6441.team7.risc.utils.SaveGameUtils;
 import com6441.team7.risc.view.*;
 import org.apache.commons.lang3.StringUtils;
 import java.util.*;
@@ -53,11 +53,14 @@ public class ReinforceGameController implements Controller{
      */
     private boolean isExchangeCardOver;
 
+
+    private MapService mapService;
     /**
      * constructor
      * @param playerService reference PlayerService
      */
-    public ReinforceGameController(PlayerService playerService) {
+    public ReinforceGameController(MapService mapService, PlayerService playerService) {
+        this.mapService = mapService;
         this.playerService = playerService;
         isExchangeCardOver = false;
 
@@ -71,11 +74,6 @@ public class ReinforceGameController implements Controller{
         this.phaseView = view;
     }
 
-    //add by jenny
-    private IBuilder builder;
-    public void setGameBuilder(IBuilder builder){
-        this.builder = builder;
-    }
 
     /**
      * receive commands from phase view
@@ -126,6 +124,9 @@ public class ReinforceGameController implements Controller{
 
             case EXIT:
                 CommonUtils.endGame(phaseView);
+                break;
+            case SAVEGAME:
+                SaveGameUtils.saveGame(mapService, playerService, phaseView);
                 break;
 
             default:
@@ -330,7 +331,7 @@ public class ReinforceGameController implements Controller{
 
     /**
      * display cards owned by the player
-     * @param player
+     * @param list card
      * @param view
      */
     private void  showCardsInfo(List<Card> list, GameView view){

@@ -13,6 +13,80 @@ import java.util.*;
  */
 public class PlayerService extends Observable {
 
+
+	private PlayerStatusEntity.PlayerStatusEntityBuilder builder = PlayerStatusEntity.PlayerStatusEntityBuilder.newInstance();
+
+	private List<String> mapFiles = new ArrayList<>();
+
+	private int maximumDices = 30;
+
+	private int numberOfGame = 4;
+
+	private int currentGameNumber = 1;
+
+	private List<Player> result = new ArrayList<>();
+
+	public List<String> getMapFiles() {
+		return mapFiles;
+	}
+
+	public int getMaximumDices() {
+		return maximumDices;
+	}
+
+	public int getNumberOfGame() {
+		return numberOfGame;
+	}
+
+	public int getCurrentGameNumber() {
+		return currentGameNumber;
+	}
+
+	public List<Player> getResult() {
+		return result;
+	}
+
+	public ArrayList<Player> getListPlayers() {
+		return listPlayers;
+	}
+
+	public Stack<Card> getDeckCards() {
+		return deckCards;
+	}
+
+	public boolean isCountryConqueredDuringAttackPhase() {
+		return countryConqueredDuringAttackPhase;
+	}
+
+	public int getCounterGame() {
+		return counterGame;
+	}
+
+	public void setMapFiles(List<String> mapFiles) {
+		this.mapFiles = mapFiles;
+	}
+
+	public void setMaximumDices(int maximumDices) {
+		this.maximumDices = maximumDices;
+	}
+
+	public void setNumberOfGame(int numberOfGame) {
+		this.numberOfGame = numberOfGame;
+	}
+
+	public void setCurrentGameNumber(int currentGameNumber) {
+		this.currentGameNumber = currentGameNumber;
+	}
+
+	public void setResult(List<Player> result) {
+		this.result = result;
+	}
+
+	public void setListPlayers(ArrayList<Player> listPlayers) {
+		this.listPlayers = listPlayers;
+	}
+
+
 	/**
 	 * a reference to mapService
 	 */
@@ -60,7 +134,9 @@ public class PlayerService extends Observable {
 		//Because no players added when PlayerService object is being instantiated in App.class
 		this.currentPlayerIndex=-1;
 
-	}	
+	}
+
+	public PlayerService(){}
 	
 	/**
 	 * return the list of players
@@ -663,6 +739,17 @@ public class PlayerService extends Observable {
 		setChanged();
 		notifyObservers(listPlayerDomination);
 
+	}
+
+	public PlayerStatusEntity getPlayerStatusEntitiy(){
+		return builder.playerList(listPlayers)
+				.currentPlayer(currentPlayer)
+				.mapFiles(mapFiles)
+				.maximumDices(maximumDices)
+				.numberOfGame(numberOfGame)
+				.currentGameNumber(currentGameNumber)
+				.result(result)
+				.build();
 	}
 
 	

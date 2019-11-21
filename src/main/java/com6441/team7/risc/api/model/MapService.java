@@ -1,5 +1,6 @@
 package com6441.team7.risc.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
@@ -14,7 +15,7 @@ import static java.util.Objects.isNull;
  *
  */
 public class MapService extends Observable {
-
+    private MapStatusEntity.MapStatusEntityBuilder builder = MapStatusEntity.MapStatusEntityBuilder.newInstance();
     /**
      * a set of countries
      */
@@ -38,6 +39,7 @@ public class MapService extends Observable {
     /**
      * store countries as a connected graph
      */
+
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
     /**
@@ -989,5 +991,39 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
+    public MapStatusEntity getMapStatusEntity() {
+        return builder
+                .countries(countries)
+                .continents(continents)
+                .adjacencyCountriesMap(adjacencyCountriesMap)
+                .continentCountriesMap(continentCountriesMap)
+                .directedGraph(directedGraph)
+                .gameState(gameState)
+                .build();
+    }
 
+
+    public void setCountries(Set<Country> countries) {
+        this.countries = countries;
+    }
+
+    public void setContinents(Set<Continent> continents) {
+        this.continents = continents;
+    }
+
+    public void setAdjacencyCountriesMap(Map<Integer, Set<Integer>> adjacencyCountriesMap) {
+        this.adjacencyCountriesMap = adjacencyCountriesMap;
+    }
+
+    public void setContinentCountriesMap(Map<Integer, Set<Integer>> continentCountriesMap) {
+        this.continentCountriesMap = continentCountriesMap;
+    }
+
+    public void setDirectedGraph(Graph<Integer, DefaultEdge> directedGraph) {
+        this.directedGraph = directedGraph;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
 }

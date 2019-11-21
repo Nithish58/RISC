@@ -8,10 +8,12 @@ import java.util.stream.Stream;
 
 import java.security.SecureRandom;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.view.GameView;
+import org.apache.commons.collections4.CollectionUtils;
 
 import static com6441.team7.risc.api.RiscConstants.MAX_ATTACKER_DICE_NUM;
 import static com6441.team7.risc.api.RiscConstants.MAX_DEFENDER_DICE_NUM;
@@ -21,6 +23,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 /**
  * store player information
  */
+
 public class Player{
 
     /**
@@ -37,6 +40,7 @@ public class Player{
      * list of cards a player has
      */
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Card> cardList;
 
     /**
@@ -52,12 +56,14 @@ public class Player{
 	/**
 	 * category of the player
 	 */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
 	private PlayerCategory playerCategory;
 
 
 	/**
      *  a list of country a player has
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public ArrayList<Country> countryPlayerList;
 
     /**
@@ -72,6 +78,8 @@ public class Player{
         this.tradeInTimes=0;
         this.countryPlayerList=new ArrayList<>();
     }
+
+    public Player(){}
 
 
     //add by jenny
@@ -469,11 +477,13 @@ public class Player{
     /**
      * a reference of attack country
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Country fromCountryAttack;
 
     /**
      * a reference of defender country
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Country toCountryAttack;
 
     /**
@@ -541,16 +551,19 @@ public class Player{
     /**
      * a reference of attack player
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Player attacker;
 
     /**
      * a reference of defend player
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Player defender;
 
     /**
      * a reference of player service
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private PlayerService playerService;
 
     /**
@@ -566,6 +579,7 @@ public class Player{
     /**
      *  a reference of PlayerAttackWrapper
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private PlayerAttackWrapper playerAttackWrapper;
 
     /**
@@ -978,8 +992,9 @@ public class Player{
      * validate if the defender occupy 0 country
      * @return true if defender occupy 0 country, false if not
      */
+    //TODO: MODIFY by jenny as it cannot save when it is null, if the player is null, return false
     public boolean isDefenderEliminatedFromGame() {
-        if(defender.getCountryList().size()==0)
+        if(Optional.ofNullable(defender).map(Player::getCountryList).filter(CollectionUtils::isEmpty).isPresent())
             return true;
         return false;
     }
@@ -991,8 +1006,10 @@ public class Player{
      * Stopping condition 1 for -allout attack
      * @return true if only 1 soldier left in attacking country
      */
+
+    //Modify by jenny
     public boolean isAttackerLastManStanding() {
-        if (fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS)
+        if (Optional.ofNullable(fromCountryAttack).map(Country::getSoldiers).filter(soldier -> soldier < MIN_ATTACKING_SOLDIERS).isPresent())
             return true;
         return false;
     }

@@ -42,7 +42,8 @@ public enum RiscCommand {
 	SHOW_FILE("showfile"),
 	EXIT("exit"),
     LOADGAME("loadgame"),
-    SAVEGAME("savegame")
+    SAVEGAME("savegame"),
+    EXITLOADGAME("exitloadgame");
 	;
 
     /**

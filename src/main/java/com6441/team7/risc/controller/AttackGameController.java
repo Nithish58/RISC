@@ -2,16 +2,17 @@ package com6441.team7.risc.controller;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com6441.team7.risc.utils.builder.IBuilder;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.utils.SaveGameUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com6441.team7.risc.api.model.Country;
-import com6441.team7.risc.api.model.GameState;
-import com6441.team7.risc.api.model.MapService;
-import com6441.team7.risc.api.model.PlayerService;
-import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
@@ -61,11 +62,6 @@ public class AttackGameController implements Controller {
         
     }
 
-    //add by jenny
-	private IBuilder builder;
-	public void setGameBuilder(IBuilder builder){
-		this.builder = builder;
-	}
 
 	/**
 	 * set the view in the attack controller
@@ -140,6 +136,9 @@ public class AttackGameController implements Controller {
         case EXIT:
         	CommonUtils.endGame(phaseView);
         	break;
+        case SAVEGAME:
+			SaveGameUtils.saveGame(mapService, playerService, phaseView);
+			break;
         	
     	
     	default:
@@ -337,4 +336,7 @@ public class AttackGameController implements Controller {
 	public void switchToFortification() {
 		mapService.setState(GameState.FORTIFY);
 	}
+
+
+
 }

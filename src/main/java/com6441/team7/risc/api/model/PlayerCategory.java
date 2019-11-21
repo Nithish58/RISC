@@ -13,6 +13,8 @@ public enum PlayerCategory {
         this.name = name;
     }
 
+    PlayerCategory(){}
+
     public String getName(){
         return name;
     }

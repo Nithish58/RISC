@@ -13,6 +13,7 @@ public enum Card {
      */
     private String name;
 
+    Card(){}
     /**
      * constructor
      * @param name of card type

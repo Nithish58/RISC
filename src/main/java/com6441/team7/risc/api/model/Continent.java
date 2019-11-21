@@ -11,12 +11,12 @@ public class Continent {
     /**
      * It reflects the ID of continents in a given map
      */
-    private final int id;
+    private  int id;
 
     /**
      * The name of Continent
      */
-    private final String name;
+    private  String name;
 
     /**
      * The continent value in the map
@@ -28,6 +28,7 @@ public class Continent {
      */
     private String color;
 
+    public Continent(){}
     /**
      *Constructor to initialize continent with id and name as parameter.
      * @param id The id given to new continent

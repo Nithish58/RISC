@@ -5,6 +5,7 @@ package com6441.team7.risc.api.model;
  */
 public class MapIntro {
 
+    public MapIntro(){}
     /**
      * Set mapIntro to empty string.
      */

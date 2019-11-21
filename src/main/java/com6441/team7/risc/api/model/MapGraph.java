@@ -5,6 +5,7 @@ package com6441.team7.risc.api.model;
  */
 public class MapGraph {
 
+    public MapGraph(){}
     /**
      * Set mapGraph to empty string.
      */

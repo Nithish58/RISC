@@ -1,5 +1,6 @@
 package com6441.team7.risc.view;
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import com6441.team7.risc.api.model.*;
 
 import static com6441.team7.risc.api.RiscConstants.PHASE_VIEW_STRING;
@@ -56,6 +57,8 @@ public class PhaseView implements GameView {
      */
     private Controller attackController;
 
+    private Controller loadGameController;
+
     /**
      * a reference of gameState
      */
@@ -90,6 +93,9 @@ public class PhaseView implements GameView {
             else if(controller instanceof AttackGameController){
                 this.attackController = controller;
             }
+            else if(controller instanceof LoadGameController){
+                this.loadGameController = controller;
+            }
         });
     }
 
@@ -117,6 +123,9 @@ public class PhaseView implements GameView {
                         break;
                     case FORTIFY:
                         fortifyGameController.readCommand(command);
+                        break;
+                    case LOAD_GAME:
+                        loadGameController.readCommand(command);
                         break;
                 }
 
@@ -222,9 +231,30 @@ public class PhaseView implements GameView {
             return;
         }
 
+        if(arg instanceof PlayerStatusEntity){
+            displayPlayerStatusEntity(arg);
+            return;
+        }
+
+        if(arg instanceof MapStatusEntity){
+            displayMapStatusEntity(arg);
+        }
+
         
     }  //End of Update Method
 
+
+    private void displayMapStatusEntity(Object arg){
+        MapStatusEntity mapStatusEntity = (MapStatusEntity) arg;
+        displayMessage("successfully load mapEntityStatus ");
+        displayMessage("current game state: " + mapStatusEntity.getGameState().getName());
+    }
+
+    private void displayPlayerStatusEntity(Object arg){
+        PlayerStatusEntity playerStatusEntity = (PlayerStatusEntity) arg;
+        displayMessage("successfully load the playerEntityStatus");
+        displayMessage("current player: " + playerStatusEntity.getCurrentPlayer().getName());
+    }
 
     /**
      * display the message of reinforced countries with number of reinforced armies and player name

@@ -2,7 +2,6 @@ package com6441.team7.risc.controller;
 
 import com6441.team7.risc.api.exception.*;
 import com6441.team7.risc.api.model.*;
-import com6441.team7.risc.utils.builder.IBuilder;
 import com6441.team7.risc.utils.parser.*;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.view.PhaseView;
@@ -45,12 +44,6 @@ public class MapLoaderController implements Controller {
 
     private MapParserAdapter mapParserAdapter;
 
-    //add by jenny
-    private IBuilder builder;
-
-    public void setGameBuilder(IBuilder builder) {
-        this.builder = builder;
-    }
 
 
     public MapLoaderController(MapService mapService) {
@@ -116,7 +109,7 @@ public class MapLoaderController implements Controller {
         if (mapService.isMapNotValid()) {
             view.displayMessage("Map Not Valid");
         }
-        this.mapService.setState(GameState.START_UP);
+        this.mapService.setState(GameState.LOAD_GAME);
     }
 
 

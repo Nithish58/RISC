@@ -11,6 +11,8 @@ public enum  MapCategory {
         this.name = name;
     }
 
+    MapCategory(){}
+
     public String getName(){
         return name;
     }

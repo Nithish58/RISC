@@ -1,9 +1,9 @@
 package com6441.team7.risc.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Observable;
-import java.util.Observer;
 
 import static com6441.team7.risc.api.RiscConstants.EOL;
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
@@ -16,12 +16,12 @@ public class Country{
     /**
      * The id of country in the map
      */
-    private final Integer id;
+    private  Integer id;
 
     /**
-     * The name of the country
+     * The countryName of the country
      */
-    private final String name;
+    private  String countryName;
 
     /**
      * The Id of continent in which this country is located
@@ -29,7 +29,7 @@ public class Country{
     private Integer continentIdentifier;
 
     /**
-     * The name of continent where this country is located
+     * The countryName of continent where this country is located
      */
     private String continentName;
 
@@ -46,6 +46,7 @@ public class Country{
     /**
      * The Player which owns this country
      */
+    @JsonIgnore
     private Player player;
 
     /**
@@ -53,6 +54,8 @@ public class Country{
      */
     private int soldiers = 0;
 
+
+    public Country(){}
     /**
      * The constructor to initialize country with parameter id and countryName
      * @param id The id of country which is being initialized
@@ -60,18 +63,18 @@ public class Country{
      */
     public Country(Integer id, String countryName) {
         this.id = id;
-        this.name = countryName.toLowerCase(Locale.CANADA);
+        this.countryName = countryName.toLowerCase(Locale.CANADA);
     }
 
     /**
      * The constructor to initialize the country with parameter id, countryName and continentName
      * @param id The id of country which is being initialized
      * @param countryName The countryName of country which is being initialized
-     * @param continentName The name of continent where the country is loacated
+     * @param continentName The countryName of continent where the country is loacated
      */
     public Country(Integer id, String countryName, String continentName){
         this.id = id;
-        this.name  = countryName.toLowerCase(Locale.CANADA);
+        this.countryName = countryName.toLowerCase(Locale.CANADA);
         this.continentName = continentName;
     }
 
@@ -83,7 +86,7 @@ public class Country{
      */
     public Country(Integer id, String countryName, Integer continentId){
         this.id = id;
-        this.name = countryName.toLowerCase(Locale.CANADA);
+        this.countryName = countryName.toLowerCase(Locale.CANADA);
         this.continentIdentifier = continentId;
     }
 
@@ -100,7 +103,7 @@ public class Country{
      * @return Name of country.
      */
     public String getCountryName() {
-        return name;
+        return countryName;
     }
 
     /**
@@ -122,8 +125,8 @@ public class Country{
     }
 
     /**
-     * To set continent name
-     * @param continentName continent name
+     * To set continent countryName
+     * @param continentName continent countryName
      * @return country
      */
     public Country setContinentName(String continentName){
@@ -132,8 +135,8 @@ public class Country{
     }
 
     /**
-     *To get continent name of country
-     * @return continent name
+     *To get continent countryName of country
+     * @return continent countryName
      */
     public String getContinentName() {
         return continentName;
@@ -175,10 +178,12 @@ public class Country{
         return this;
     }
 
+
     /**
      * To get player who occupies the country
      * @return Player whoc occupies the country
      */
+    @JsonIgnore
     public Player getPlayer() {
         return player;
     }
@@ -187,6 +192,7 @@ public class Country{
      *To set the ownership of the country to player
      * @param player transfering ownership to the player
      */
+    @JsonIgnore
     public void setPlayer(Player player) {
         this.player = player;
     }
@@ -243,7 +249,7 @@ public class Country{
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
         return Objects.equals(id, country.id)
-                && Objects.equals(name, country.name);
+                && Objects.equals(countryName, country.countryName);
     }
 
     /**
@@ -258,12 +264,12 @@ public class Country{
 
     /**
      *Used to print country information
-     * @return id name continentIdentifier coordinateX CoordinateY.
+     * @return id countryName continentIdentifier coordinateX CoordinateY.
      */
     @Override
     public String toString() {
         return id + WHITESPACE +
-                name + WHITESPACE +
+                countryName + WHITESPACE +
                 continentIdentifier + WHITESPACE +
                 coordinateX + WHITESPACE +
                 coordinateY + EOL;

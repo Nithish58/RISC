@@ -12,7 +12,7 @@ import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
-import com6441.team7.risc.utils.builder.IBuilder;
+import com6441.team7.risc.utils.SaveGameUtils;
 import com6441.team7.risc.view.GameView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -97,12 +97,6 @@ public class  FortifyGameController implements Controller {
 	}
 
 
-	//add by jenny
-	private IBuilder builder;
-	public void setGameBuilder(IBuilder builder){
-		this.builder = builder;
-	}
-
 
 	/**
 	 * extends from method in IController
@@ -150,6 +144,9 @@ public class  FortifyGameController implements Controller {
 
 		case EXIT:
 			CommonUtils.endGame(phaseView);
+			break;
+		case SAVEGAME:
+			SaveGameUtils.saveGame(mapService, playerService, phaseView);
 			break;
 
 		default:
