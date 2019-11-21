@@ -60,7 +60,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 
 	@Override
 	public void attack() {
-		playerService.notifyPlayerServiceObservers("Benevolent skips attack phase");
+		playerService.notifyPlayerServiceObservers("Benevolent ends attack phase");
 
 		player.endAttackPhase(playerService);
 	}
@@ -86,9 +86,10 @@ public class BenevolentStrategy implements StrategyPlayer {
 		});
 
 		// Get smallest number of armies owned by the player
-		// Print to check if it's sorted. This will be deleted
+		// Print to check if it's sorted.
+		playerService.notifyPlayerServiceObservers("Countries with numSoldiers sorted in ascending order:");
 		for (Country c : weakCountries) {
-			System.out.println(c.getId() + " " + c.getCountryName() + " " + c.getSoldiers());
+			playerService.notifyPlayerServiceObservers(c.getCountryName() + " " + c.getSoldiers()+" soldiers");
 		}
 
 		// Iterate through the attacker countries and check for adjacency towards enemy
@@ -120,7 +121,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 				}
 				if (benefactorCountry == null) {
 
-					playerService.notifyPlayerServiceObservers("No benefactor country found");
+					playerService.notifyPlayerServiceObservers("No benefactor country found for "+c.getCountryName());
 
 					break;
 				}
