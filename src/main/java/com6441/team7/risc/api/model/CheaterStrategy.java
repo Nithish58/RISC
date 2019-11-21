@@ -82,6 +82,8 @@ public class CheaterStrategy implements StrategyPlayer{
 			CommonUtils.endGame(playerService);
 		}
 		
+		playerService.notifyPlayerServiceObservers("Attack Phase Over");
+		
 		//Set GameState to Fortify after Attack
 		this.playerService.getMapService().setState(GameState.FORTIFY);
 		
@@ -101,12 +103,16 @@ public class CheaterStrategy implements StrategyPlayer{
 					
 					c.setSoldiers(2*c.getSoldiers());
 					
-					break;
+					playerService.notifyPlayerServiceObservers(c.getCountryName()+"has opponent neighbours,"
+							+ " doubled to: "+c.getSoldiers());
+					
+					break; //Already doubled country with foreign neighbours, move to other countries now
 				}
 			}				
 		}
 		
-
+		playerService.evaluateWorldDomination();
+		playerService.notifyPlayerServiceObservers("End of cheater fortification");
 		
 		//Switch to next player, set gamestate to reinforce, automate game again
 		playerService.switchNextPlayer();
@@ -118,6 +124,7 @@ public class CheaterStrategy implements StrategyPlayer{
 	
     public void transferCountryOwnership(Country toCountryAttack) {
 
+    	//If country already belongs to player, do not transfer again.
     	if(toCountryAttack.getPlayer().getName().
     			equalsIgnoreCase(player.getName())) {
     		return;
@@ -125,11 +132,13 @@ public class CheaterStrategy implements StrategyPlayer{
     	
         player.addCountryToPlayerList(toCountryAttack);
 
+        String previousOwnerName=toCountryAttack.getPlayer().getName();
         toCountryAttack.getPlayer().removeCountryFromPlayerList(toCountryAttack);
 
         toCountryAttack.setPlayer(player);
 
-        playerService.notifyPlayerServiceObservers("Country ownership transferred: "+toCountryAttack.getCountryName());
+        playerService.notifyPlayerServiceObservers("Country transferred: "+toCountryAttack.getCountryName()+
+        		" (PreviousOwner: "+previousOwnerName+")");
         
     }
 	
