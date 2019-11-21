@@ -103,7 +103,7 @@ public class CheaterStrategy implements StrategyPlayer{
 					
 					c.setSoldiers(2*c.getSoldiers());
 					
-					playerService.notifyPlayerServiceObservers(c.getCountryName()+"has opponent neighbours,"
+					playerService.notifyPlayerServiceObservers(c.getCountryName()+" has opponent neighbours,"
 							+ " doubled to: "+c.getSoldiers());
 					
 					break; //Already doubled country with foreign neighbours, move to other countries now
