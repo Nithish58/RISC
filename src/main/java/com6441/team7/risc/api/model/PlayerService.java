@@ -242,7 +242,7 @@ public class PlayerService extends Observable {
 	 */
 	public void setCurrentPlayerIndex(int num) {
 		this.currentPlayerIndex=num;
-
+		
 		currentPlayer=listPlayers.get(currentPlayerIndex);
 		PlayerChangeWrapper playerChangeWrapper=new PlayerChangeWrapper(currentPlayer);
 
@@ -331,10 +331,9 @@ public class PlayerService extends Observable {
 	 * turn is over.
 	 *Uses Atomic Boolean boolFortificationPhaseOver to take decisions.
 	 */
-	public void switchNextPlayer() {
-
-
-		if(currentPlayerIndex==listPlayers.size()-1) {
+	public void switchNextPlayer() {	
+		
+		if(currentPlayerIndex>=listPlayers.size()-1) {
 			this.setCurrentPlayerIndex(0);
 		}
 

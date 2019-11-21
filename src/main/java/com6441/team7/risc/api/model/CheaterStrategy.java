@@ -62,6 +62,7 @@ public class CheaterStrategy implements StrategyPlayer{
 			
 		}
 		
+		playerService.evaluateWorldDomination();
 		
 		//Check if any player defeated- remove it
 		
