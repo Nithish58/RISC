@@ -346,6 +346,8 @@ public class PlayerService extends Observable {
 	
 	private int counterGame=0;
 	
+	private int numTurnsCombined=3000;
+	
 	public void automateGame() {
 		
 		counterGame++;
@@ -354,16 +356,18 @@ public class PlayerService extends Observable {
 		
 		//3 Random: 1268/3 turns until stack overflow when stack is 256Kb
 					
-		if(counterGame>3000) {
+		if(counterGame>numTurnsCombined) {
 			notifyPlayerServiceObservers("Exited automated game");
 			System.exit(0);			
 			
 		}
 		
 		
+		//Does not affect tournament as no humans in tournament
 		if(currentPlayer.getPlayerCategory()==PlayerCategory.HUMAN) {
 			return;
 		}
+		
 		else {
 			
 			switch(currentPlayer.getPlayerCategory()) {
@@ -393,8 +397,10 @@ public class PlayerService extends Observable {
 		
 	}
 	
-	
-	
+	public void setNumTurns(int n) {
+		this.numTurnsCombined=3*n;
+	}
+		
 	
 
 	//------------------------------------REINFORCEMENT UTILS -----------------------------------------------

@@ -28,11 +28,11 @@ public enum RiscCommand {
     UNKNOWN("unknown"),
     
     SHOW_CARDS("showcards"),
-    
-    //ATTACK Commands
+   
     DEFEND("defend"),
     ATTACKMOVE("attackmove"),
-
+    
+    TOURNAMENT("tournament"),
 
 	EXIT_MAPEDIT("exitmapedit"),
 	SHOW_PLAYER("showplayer"),

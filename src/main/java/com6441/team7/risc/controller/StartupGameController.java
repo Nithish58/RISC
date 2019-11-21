@@ -189,6 +189,7 @@ public class StartupGameController implements Controller{
         	
         case GAME_PLAYER:
         	
+        	
         	if(boolMapLoaded && (!boolAllGamePlayersAdded)) {
         		editPlayer(commands);
         	}
@@ -256,6 +257,10 @@ public class StartupGameController implements Controller{
         	}
         	
         	placeAll();
+        	break;
+        	
+        case TOURNAMENT:
+        	new TournamentController(command,this);
         	break;
         	
         case SHOW_PLAYER:
@@ -777,5 +782,13 @@ public class StartupGameController implements Controller{
 	private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
+	
+	/**
+	 * Getter method for PlayerService
+	 * @return PlayerService reference
+	 */
+	public PlayerService getPlayerService() {
+		return playerService;
+	}
 	
 }   //END OF CLASS
