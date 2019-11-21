@@ -127,15 +127,17 @@ public class BenevolentStrategy implements StrategyPlayer {
 			}
 		}
 
-		playerService.notifyObservers("Weakest country to be fortified is " + weakestCountry.getCountryName());
-
 
 		// determines whether or not to fortify
 		if (benefactorCountry != null) {
+			playerService.notifyObservers("Weakest country to be fortified is " + weakestCountry.getCountryName());
+			
 			playerFortificationWrapper = new PlayerFortificationWrapper(benefactorCountry, weakestCountry, 1);
+			
 			player.fortify(playerService, playerFortificationWrapper);
 		} else {
 			playerFortificationWrapper = new PlayerFortificationWrapper();
+			
 			player.fortify(playerService, playerFortificationWrapper);
 		}
 
