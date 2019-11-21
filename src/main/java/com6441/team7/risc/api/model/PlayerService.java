@@ -350,17 +350,18 @@ public class PlayerService extends Observable {
 	
 	public void automateGame() {
 		
+		while(counterGame<numTurnsCombined) {
 		counterGame++;
 		double turnNum=counterGame/3.0;
 		notifyPlayerServiceObservers("Turn: "+Math.ceil(turnNum));
 		
 		//3 Random: 1268/3 turns until stack overflow when stack is 256Kb
 					
-		if(counterGame>numTurnsCombined) {
-			notifyPlayerServiceObservers("Exited automated game");
-			System.exit(0);			
+		//if(counterGame>numTurnsCombined) {
+			//notifyPlayerServiceObservers("Exited automated game");
+			//System.exit(0);			
 			
-		}
+		//}
 		
 		
 		//Does not affect tournament as no humans in tournament
@@ -394,11 +395,18 @@ public class PlayerService extends Observable {
 			currentPlayer.getStrategy().fortify();
 			
 		}
-		
+		}
+		if (counterGame>numTurnsCombined) {
+		notifyPlayerServiceObservers("Exited automated game");
+		}
 	}
 	
 	public void setNumTurns(int n) {
 		this.numTurnsCombined=3*n;
+	}
+	
+	public void setMoveCounter(int n) {
+		this.counterGame=0;
 	}
 		
 	

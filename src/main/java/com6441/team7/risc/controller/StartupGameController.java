@@ -791,4 +791,22 @@ public class StartupGameController implements Controller{
 		return playerService;
 	}
 	
+
+	/**
+	 * Create setter for boolMapLoadeded
+	 * @param b boolean
+	 */
+	public void setBoolMapLoaded(boolean b) {
+		this.boolMapLoaded = b;
+	}
+	
+	
+	/**
+	 * Create setter for boolCountriesPopulated
+	 * @param b
+	 */
+	public void setBoolCountriesPopulated(boolean b) {
+		this.boolCountriesPopulated = b;
+	}
+	
 }   //END OF CLASS

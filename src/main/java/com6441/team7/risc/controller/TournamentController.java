@@ -40,6 +40,10 @@ public class TournamentController {
 		
 		this.mapService=this.playerService.getMapService();
 		
+		if (this.mapList == null) {
+		this.mapList=new ArrayList<>();
+		}
+		
 		//Hardcoded:
 		mapList.add("ameroki.map");
 		mapList.add("luca.map");
@@ -47,29 +51,63 @@ public class TournamentController {
 		mapList.add("eurasien.map");
 		mapList.add("RiskEurope.map");
 		
-		playerService.addPlayer("a", "aggressive");
-		playerService.addPlayer("b", "benevolent");
-		playerService.addPlayer("c", "random");
-		playerService.addPlayer("d", "cheater");
-		
 		launchTournament();
 		
 	}
 	
 	public void launchTournament() {
 		
+		//hardcoded for test purpose
+		numTurns = 3;
+		//hardcoded for test purpose 
+		numGames = 4;
+		
 		arrResults=new String[mapList.size()][numGames];
 		
 		for(int i=0;i<mapList.size();i++) {
 			
+			MapLoaderAdapter tournamentMapAdapter = new MapLoaderAdapter(playerService.getMapService());
+			
+			playerService.notifyPlayerServiceObservers("Begin match on map: "+mapList.get(i));
+			
 			for(int j=0;j<numGames;j++) {
 				
+				playerService.setMoveCounter(0);
+				
+				playerService.addPlayer("a", "aggressive");
+				
+				playerService.addPlayer("b", "benevolent");
+				
+				playerService.addPlayer("c", "random");
+				
+//				playerService.addPlayer("d", "cheater");
+				
+				playerService.notifyPlayerServiceObservers("Round: "+j);
+				
 				playerService.setNumTurns(numTurns);
-				playerService.automateGame();
+				
+				startupGameController.setBoolMapLoaded(false);
+				
+				startupGameController.setBoolCountriesPopulated(false);
+				
+				startupGameController.loadMap("loadmap "+mapList.get(i));
+				
+				startupGameController.populateCountries();
+				
+				startupGameController.placeAll();
+				
+				//playerService.automateGame();
+				
+				playerService.removePlayer("a");
+				playerService.removePlayer("b");
+				playerService.removePlayer("c");
+				//playerService.removePlayer("d");
 				
 			}
 			
 		}		
+		
+		playerService.notifyPlayerServiceObservers("TOURNAMENT ENDS");
 		
 	}
 	
