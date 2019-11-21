@@ -216,8 +216,7 @@ public class PhaseView implements GameView {
         
         
         //When GameState is changed
-        if (arg instanceof GameState) {            
-            displayMessage("clear screen!");           
+        if (arg instanceof GameState) {                    
             gamestateAndPlayerStatus(arg);
             return;
         }
