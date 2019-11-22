@@ -24,9 +24,9 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     private IDominationParser dominationParser;
 
     /**
-     * Constructor for this class
-     * @param continentIdGenerator
-     * @param countryIdGenerator
+     * Constructor for this class, creates new conquest and domination parsers.
+     * @param countryIdGenerator generates id for countries incrementally
+     * @param continentIdGenerator generates id for continent incrementally
      */
     public MapParserAdapter(AtomicInteger continentIdGenerator, AtomicInteger countryIdGenerator) {
         this.conquestParser = new ConquestParser(countryIdGenerator, continentIdGenerator);
@@ -35,7 +35,7 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
 
     /**
      * shows conquest map file on view
-     * @param view GameView where map is displayed
+     * @param gameView where map is displayed
      * @param mapService Map details are pulled from
      */
     @Override
@@ -57,7 +57,7 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     /**
      * Method for trying to read and parse conquest map file
      * @param filename name of conquest map file. Must include its extension.
-     * @param view to display the result of what happened when trying to read and parse.
+     * @param gameView to display the result of what happened when trying to read and parse.
      * @param mapService provides map details for use in method
      * @return returns boolean value true if map can be successfully used in game
      */
@@ -67,7 +67,10 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     }
 
     /**
-     * 
+     * Method to save domination map file from mapService and with given file name
+     * @param fileName Name of file to be saved in.
+     * @param mapService details of map to get from
+     * @return returns true if successfully saved domination map file.
      */
     @Override
     public boolean saveDominateMap(String fileName, MapService mapService) throws IOException {
@@ -75,7 +78,8 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     }
 
     /**
-     * 
+     * shows domination map file on view
+     * @param mapService Map details are pulled from
      */
     @Override
     public void showDominateMap(MapService mapService) {
@@ -83,7 +87,11 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     }
 
     /**
-     * 
+     * Method for trying to read and parse domination map file
+     * @param fileName name of domination map file. Must include its extension.
+     * @param view to display the result of what happened when trying to read and parse.
+     * @param mapService provides map details for use in method
+     * @return returns boolean value true if map can be successfully used in game
      */
     @Override
     public boolean readDominateMapFile(String fileName, GameView view, MapService mapService) {
@@ -91,10 +99,10 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
     }
 
     /**
-     * returns map category 
-     * @param mapCategory
-     * @param view
-     * @param mapService
+     * Displays map on view regardless of domination or conquest. If map is not one of them, displays message.
+     * @param mapCategory enum CONQUEST, DOMINATION or UNKNOWN categories of map.
+     * @param view display map to view
+     * @param mapService details of map to be displayed are goten from mapService
      */
     public void showMap(MapCategory mapCategory, GameView view, MapService mapService){
         if(mapCategory.equals(MapCategory.CONQUEST)){
@@ -106,7 +114,7 @@ public class MapParserAdapter implements IConquestParser, IDominationParser{
             showDominateMap(mapService);
             return;
         }
-        view.displayMessage("cannot recognize the map category");
+        view.displayMessage("Unrecognizable the map category");
 
     }
 }

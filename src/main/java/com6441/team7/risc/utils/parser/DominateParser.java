@@ -168,9 +168,9 @@ public class DominateParser implements IDominationParser {
 
     /**
      * Method for trying to read and parse domination map file
-     * @param fileName name of conquest map file. Must include its extension.
+     * @param fileName name of domination map file. Must include its extension.
      * @param view to display the result of what happened when trying to read and parse.
-     * @param mapService provides map details for use in method
+     * @param mapService provides map details for use in method.
      * @return returns boolean value true if map can be successfully used in game
      */
     @Override
