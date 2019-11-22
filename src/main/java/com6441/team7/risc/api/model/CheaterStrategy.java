@@ -75,10 +75,21 @@ public class CheaterStrategy implements StrategyPlayer{
 		}
 		
 		for(int i=0;i<playerToBeRemovedList.size();i++) {
+			
+			//TransferCards as well        	
+			
 			playerService.removePlayer(playerToBeRemovedList.get(i));
 		}
 		
+		//Check if cheater is winner
 		if(player.getCountryList().size()==playerService.getMapService().getCountries().size()) {
+        	if(playerService.getBoolTournamentMode()) {
+        		playerService.setBoolPlayerWinner(true);
+        		playerService.setPlayerWinner(player);
+        		//this.boolAttackMoveRequired=false;
+        		return;
+        	}
+        	
 			CommonUtils.endGame(playerService);
 		}
 		

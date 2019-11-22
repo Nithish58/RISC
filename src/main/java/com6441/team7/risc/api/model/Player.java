@@ -660,6 +660,8 @@ public class Player{
 
         this.numDiceAttacker = MAX_ATTACKER_DICE_NUM;
         this.numDiceDefender = MAX_DEFENDER_DICE_NUM;
+        
+        
 
         //while (!checkDefenderPushedOut() || !isAttackerLastManStanding()) {
         while (!defenderPushedOut() || !isAttackerLastManStanding()) {
@@ -689,7 +691,7 @@ public class Player{
             attackerDice = rollAttackerDice(numDiceAttacker);
             defenderDice = rollDefenderDice(numDiceDefender);
 
-            this.boolCountryConquered=false;
+            //this.boolCountryConquered=false;
 
             //Decide the winner
             decideBattleResult(attackerDice, defenderDice);
@@ -831,9 +833,18 @@ public class Player{
                 //Display Domination View by notifying obervers
                 playerService.evaluateWorldDomination();
                 
-                if (checkPlayerWin())
-                    CommonUtils.endGame(playerService);
-
+                if (checkPlayerWin()) {
+                	
+                	if(playerService.getBoolTournamentMode()) {
+                		playerService.setBoolPlayerWinner(true);
+                		playerService.setPlayerWinner(attacker);
+                		this.boolAttackMoveRequired=false;
+                	}
+                	
+                	else
+                		CommonUtils.endGame(playerService);                	
+                }
+                    
 
             }
         }

@@ -208,7 +208,10 @@ public class PhaseView implements GameView {
             if(arg instanceof ReinforcedCardWrapper){
                 displayReinforcedCard(arg);
                 return;
-
+            }
+            
+            if(arg instanceof TournamentWrapper) {
+            	displayTournamentResults(arg);
             }
 
         	return;
@@ -225,17 +228,43 @@ public class PhaseView implements GameView {
     }  //End of Update Method
 
 
+    
+    private void displayTournamentResults(Object arg) {
+    	
+    	TournamentWrapper tournamentWrapper= ((TournamentWrapper)arg);
+    	
+    	String[][] arrResults=tournamentWrapper.getTournamentResult();
+    	
+    	for(int i=0;i<arrResults.length;i++) {
+    		
+    		String strResult="\n\n"+tournamentWrapper.getMapList().get(i)+"\t\t";
+    		
+    		for(int j=0;j<arrResults[i].length;j++) {
+    			
+    			strResult+=arrResults[i][j]+"\t";    			
+    		}
+    		
+    		displayMessage(strResult);
+    	}
+    	
+    	displayMessage("Tournament Ends.");
+    }    
+    
     /**
      * display the message of reinforced countries with number of reinforced armies and player name
-     * @param arg
+     * @param arg Wrapper object returned when countries are reinforced
      */
     private void displayReinforcedArmy(Object arg){
         displayMessage("player: " + ((ReinforcedArmyWrapper)arg).getPlayer().getName());
         displayMessage("reinforced country: " + ((ReinforcedArmyWrapper)arg).getCountryName());
         displayMessage("reinforced army number: " + ((ReinforcedArmyWrapper)arg).getNum());
     }
-
-
+    
+    
+    /**
+     * Display every card exchanged during reinforcement
+     * @param arg Card object
+     */
     private void displayReinforcedCard(Object arg){
         List<Card> list =  ((ReinforcedCardWrapper)arg).getCards();
         Player player = ((ReinforcedCardWrapper)arg).getPlayer();
@@ -252,6 +281,7 @@ public class PhaseView implements GameView {
             count ++;
         }
     }
+
 
 	/**
      * Extracts information about a newly added player or a removed player and displays it
