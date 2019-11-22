@@ -473,6 +473,12 @@ public class MapLoaderController implements Controller {
             String countryName = convertFormat(s[1]);
             String neighborCountry = convertFormat(s[2]);
 
+
+            if(convertFormat(countryName).equals(convertFormat(neighborCountry))){
+                view.displayMessage("cannot add itself to its neighboring country");
+                return;
+            }
+
             if (mapService.countryNameExist(countryName) && mapService.countryNameExist(neighborCountry)) {
                 mapService.addNeighboringCountries(countryName, neighborCountry);
                 view.displayMessage("neighbor country been successfully added");
