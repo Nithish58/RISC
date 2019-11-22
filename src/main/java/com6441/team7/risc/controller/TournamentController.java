@@ -58,9 +58,9 @@ public class TournamentController {
 	public void launchTournament() {
 		
 		//hardcoded for test purpose
-		numTurns = 3;
+		numTurns = 50;
 		//hardcoded for test purpose 
-		numGames = 4;
+		numGames = 5;
 		
 		arrResults=new String[mapList.size()][numGames];
 		
