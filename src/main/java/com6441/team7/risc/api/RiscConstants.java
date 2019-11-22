@@ -63,4 +63,10 @@ public final class RiscConstants {
      * a static final reference for maximum allowed number of dice(s) for defender to roll
      */
     public static final int MAX_DEFENDER_DICE_NUM=2;
+
+    public static final String ASSIGNMENT = "=";
+
+    public static final String COMMA = ",";
+
+    public static final String NON_EXIST = "non_exist";
 }

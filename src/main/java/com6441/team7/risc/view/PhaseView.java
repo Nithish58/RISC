@@ -74,7 +74,7 @@ public class PhaseView implements GameView {
      */
     public void addController(List<Controller> list){
         list.forEach(controller -> {
-            if(controller instanceof MapLoaderAdapter){
+            if(controller instanceof MapLoaderController){
                 this.mapLoaderController = controller;
             }
             else if(controller instanceof StartupGameController){
@@ -380,7 +380,7 @@ public class PhaseView implements GameView {
     /**
      * Displays various information when an attack is launched
      * ALso displays end result of an attack
-     * @param PlayerAttackWrapper as object
+     * @param arg PlayerAttackWrapper as object
      */    
     private void playerAttackStatus(Object arg) {
     	
