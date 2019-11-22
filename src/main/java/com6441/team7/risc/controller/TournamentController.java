@@ -54,10 +54,10 @@ public class TournamentController {
 		
 		//Hardcoded:
 		mapList.add("ameroki.map");
-		mapList.add("luca.map");
+		mapList.add("Aden.map");
 		mapList.add("roman_empire.map");
-		mapList.add("eurasien.map");
-		mapList.add("RiskEurope.map");
+		mapList.add("Africa.map");
+		mapList.add("luca.map");
 		
 		playerService.setBoolTournamentMode(true);		
 		
@@ -70,7 +70,7 @@ public class TournamentController {
 	public void launchTournament() {
 		
 		//hardcoded for test purpose
-		numTurns = 5;
+		numTurns = 3;
 		//hardcoded for test purpose 
 		numGames = 5;
 		

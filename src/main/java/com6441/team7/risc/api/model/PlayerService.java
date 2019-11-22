@@ -379,9 +379,12 @@ public class PlayerService extends Observable {
 			// 3 Random: 1268/3 turns until stack overflow when stack is 256Kb
 			
 			if(boolPlayerWinner) {
+				
 				//send winner
+				//turnNum - 1 for result because winner checked at the start of next turn
+				
 				tournamentController.setResult(winner.getPlayerCategory().getName()+
-						"("+winner.getName()+", numTurns: "+turnNum+")");
+						"("+winner.getName()+", numTurns: "+(turnNum-1)+")");
 				return;
 			}
 			
