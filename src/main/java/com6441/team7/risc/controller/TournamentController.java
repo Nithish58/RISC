@@ -92,6 +92,8 @@ public class TournamentController {
 				
 				startupGameController.loadMap("loadmap "+mapList.get(i));
 				
+				playerService.initialiseDeckCards();
+				
 				startupGameController.populateCountries();
 				
 				startupGameController.placeAll();
