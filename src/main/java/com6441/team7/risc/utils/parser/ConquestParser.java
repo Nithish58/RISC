@@ -41,7 +41,7 @@ public class ConquestParser implements IConquestParser {
     private AtomicInteger countryIdGenerator;
 
     /**
-     * Constructor for class
+     * Constructor for class, creates new mapgraph
      * @param countryIdGenerator integer to keep track of country
      * @param continentIdGenerator integer to keep track of continent
      */
@@ -100,7 +100,7 @@ public class ConquestParser implements IConquestParser {
 
 
     /**
-     * get continents string
+     * Returns continents in string format from mapservice
      * @param mapService provides map details for use in method
      * @return returns continents in string format
      */
@@ -121,9 +121,9 @@ public class ConquestParser implements IConquestParser {
     }
 
     /**
-     * get string of countries
+     * Returns territories in string format from mapservice
      * @param mapService provides map details for use in method
-     * @return arrays of string
+     * @return returns territories in string format
      */
     private String getTerritoryString(MapService mapService) {
 
@@ -199,8 +199,8 @@ public class ConquestParser implements IConquestParser {
     }
 
    /**
-    * read existing map and create continent, country and its neighbors.
-    * @param rawFileContent sting that is to be split and divided up
+    * Parse existing map file and create continent, country and its neighbors.
+    * @param rawFileContent string that is to be split and divided up
     * @param view result to be displayed when parsing
     * @param mapService provides map details for use in method
     * @return returns true is map is successfully parsed
@@ -231,8 +231,7 @@ public class ConquestParser implements IConquestParser {
 
     /**
      * add map graph information
-     *
-     * @param part intro part of map file
+     * @param part intro part of conquest map file
      */
     void parseMapGraphInfo(String part) {
 
@@ -242,7 +241,7 @@ public class ConquestParser implements IConquestParser {
 
     /**
      * read continent string from existing map and split it with new line,
-     * for each line, call createContinentFromRaw to create new continent.
+     * for each line, call {@link #createCountryFromRaw(String, MapService)} to create new continent.
      * @param mapService continent's details are saved in mapService
      * @param part continent names in string format
      * @return returns set of continents that have been successfully parsed
@@ -292,7 +291,7 @@ public class ConquestParser implements IConquestParser {
 
     /**
      * read country string from existing map and split it with new line,
-     * for each line, call createCountryFromRaw to create new country.
+     * for each line, call {@link #createCountryFromRaw(String, MapService)} to create new country.
      * @param mapService saves countries details to mapService
      * @param part countries names list in string format
      * @return set of countries object that are parsed successfully
@@ -402,7 +401,7 @@ public class ConquestParser implements IConquestParser {
     }
 
     /**
-     * check condition for valid country ID and throws NeighborParsingException when invalid
+     * throw an exception when neighboring countries id is not valid or is not an integer
      * @param s name of country whose ID need to be validated
      * @param adjacency list of countries names in string format
      * @param mapService provides map details for use in method
@@ -417,7 +416,7 @@ public class ConquestParser implements IConquestParser {
     }
 
     /**
-     * Check country entry in conquest map file and see if there are neighbor countries
+     * throw an exception if the country been read does not have neighboring country
      * @param s Name of country whose neighbors need to be validated
      * @param adjacency entry of country in map file
      * @throws NeighborParsingException When country has no neighbors
