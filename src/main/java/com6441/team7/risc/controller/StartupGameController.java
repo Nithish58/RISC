@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 import static com6441.team7.risc.api.RiscConstants.MAX_NUM_PLAYERS;
 
+import com6441.team7.risc.utils.builder.IBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import com6441.team7.risc.api.model.PlayerService;
@@ -84,7 +85,7 @@ public class StartupGameController implements Controller{
 	/**
 	 * private Controller mapLoaderAdapter;
 	 */
-	private MapLoaderAdapter mapLoaderAdapter; //Casted it here instead of casting everytime
+	private MapLoaderController mapLoaderController; //Casted it here instead of casting everytime
 
 	/**
 	 * a reference of mapService
@@ -108,7 +109,7 @@ public class StartupGameController implements Controller{
 	 * @param playerService PlayerService
 	 */
 	public StartupGameController(Controller mapController, PlayerService playerService) {
-		this.mapLoaderAdapter = (MapLoaderAdapter) mapController;
+		this.mapLoaderController = (MapLoaderController) mapController;
 
 		this.playerService = playerService;
 		this.mapService = playerService.getMapService();
@@ -320,10 +321,10 @@ public class StartupGameController implements Controller{
 
 	        if (command.toLowerCase(Locale.CANADA).equals("loadmap")) {
 
-	        	this.mapLoaderAdapter.setContinentIdGenerator(0);
-	            this.mapLoaderAdapter.setCountryIdGenerator(0);
+	        	this.mapLoaderController.setContinentIdGenerator(0);
+	            this.mapLoaderController.setCountryIdGenerator(0);
 	        	mapService.emptyMap();
-	        	mapLoaderAdapter.readFile(path);
+				mapLoaderController.readFile(path);
 	        	
 	        	//If Map not valid, boolMapLoaded will be false.
 	        	//Consequently, user will not be able to proceed without loading a valid map.
@@ -373,7 +374,7 @@ public class StartupGameController implements Controller{
 	 * if the command is add, call addPlayer()
 	 * if the command is remove, call removePlayer()
 	 * else throw exception
-	 * @param command string
+	 * @param s command string
 	 */
     private void editPlayerFromUserInput(String s) {
         String[] commands = StringUtils.split(s, " ");
@@ -393,7 +394,7 @@ public class StartupGameController implements Controller{
 	/**
 	 * validate each player info, if player info is valid, add it to the list of players
 	 * if not valid, throw an exception
-	 * @param array of string commands
+	 * @param s array of string commands
 	 */
 	private void addPlayer(String[] s) {
     	
@@ -441,7 +442,7 @@ public class StartupGameController implements Controller{
 	/**
 	 * validate player info, if player info is valid, remove it to the list of players
 	 * if not valid, throw an exception
-	 * @param array of string commands
+	 * @param s array of string commands
 	 */
 	private void removePlayer(String[] s) {
     	

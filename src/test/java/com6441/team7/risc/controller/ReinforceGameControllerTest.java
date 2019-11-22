@@ -165,10 +165,10 @@ public class ReinforceGameControllerTest {
      * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationOne() throws IOException, URISyntaxException {
-        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
+        MapLoaderController mapLoaderController = new MapLoaderController(mapService);
         URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        mapLoaderAdapter.parseFile(file);
+        mapLoaderController.readFile(file);
 
         Player player2 = new Player("jake");
         occupyCountry(player, "siberia", 10);
@@ -182,10 +182,10 @@ public class ReinforceGameControllerTest {
      * @throws URISyntaxException on invalid URI
      */
     private void mockPlayerCountryInformationTwo() throws IOException, URISyntaxException{
-        MapLoaderAdapter mapLoaderAdapter = new MapLoaderAdapter(mapService);
+        MapLoaderController mapLoaderController = new MapLoaderController(mapService);
         URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
         String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        mapLoaderAdapter.parseFile(file);
+        mapLoaderController.readFile(file);
 
         occupyCountry(player, "siberia", 10);
         occupyCountry(player, "yazteck", 20);

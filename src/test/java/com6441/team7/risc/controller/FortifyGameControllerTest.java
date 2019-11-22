@@ -43,7 +43,7 @@ public class FortifyGameControllerTest {
 	 /**
 	  * Controller to load map
 	  */
-	 MapLoaderAdapter mapLoaderAdapter;
+	 MapLoaderController mapLoaderController;
 	 /**
 	  * Controller for startup phase
 	  */
@@ -502,13 +502,13 @@ public class FortifyGameControllerTest {
 		phaseViewTest = new PhaseViewTest();
 		controllerList = new ArrayList<>();
 
-		mapLoaderAdapter = new MapLoaderAdapter(mapService);
-		startupGameController = new StartupGameController(mapLoaderAdapter, playerService);
+		mapLoaderController = new MapLoaderController(mapService);
+		startupGameController = new StartupGameController(mapLoaderController, playerService);
         reinforceGameController = new ReinforceGameController(playerService);
         fortifyGameController = new FortifyGameController(playerService);
         attackController = new AttackGameController(playerService);
 
-		controllerList.add(mapLoaderAdapter);
+		controllerList.add(mapLoaderController);
 		controllerList.add(startupGameController);
         controllerList.add(reinforceGameController);
         controllerList.add(fortifyGameController);
@@ -516,7 +516,7 @@ public class FortifyGameControllerTest {
 		
 		phaseViewTest.addController(controllerList);
 
-		mapLoaderAdapter.setView(phaseViewTest);
+		mapLoaderController.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
         reinforceGameController.setView(phaseViewTest);
         fortifyGameController.setView(phaseViewTest);

@@ -1,0 +1,185 @@
+[Map]
+image=Asia 1800 - R.bmp
+wrap=no
+scroll=horizontal
+author=Don Morris
+warn=yes
+
+[Continents]
+Afghanistan=9
+Borneo=8
+Burma=6
+China=23
+Indochina=9
+Indonesia=5
+Japan=5
+Korea=3
+Malaysia=6
+Mongolia=6
+Northern India=16
+Philippines=5
+Southern India=10
+Sumatra=9
+Tibet=8
+Turkestan=15
+
+[Territories]
+Bokhara,43,137,Afghanistan,Kashgar,Hindu Kush,Thian Shan mountains,Vernyy,Kabul
+Hindu Kush,120,162,Afghanistan,Bokhara,Kashgar,Kashmir,Punjab,Karakorum,Kabul,Yarkand
+Kabul,45,199,Afghanistan,Bokhara,Hindu Kush,Punjab,Sulaiman mountains
+Karakorum,217,182,Afghanistan,Hindu Kush,Kashmir,Khotan,Pamirs,Yarkand,Chang Tung
+Kashmir,173,204,Afghanistan,Hindu Kush,Karakorum,Lahore,Punjab,Pamirs
+Lahore,160,249,Afghanistan,Kashmir,Jaipur,Thar desert,Delhi,Punjab,Pamirs
+Pamirs,235,219,Afghanistan,Karakorum,Kashmir,Himalaya mountains,Delhi,Tibet,Chang Tung,Lahore
+Punjab,110,229,Afghanistan,Hindu Kush,Kabul,Kashmir,Lahore,Thar desert,Sulaiman mountains
+Sulaiman mountains,39,256,Afghanistan,Kabul,Punjab,Sind,Thar desert
+
+Banjarmasin,868,846,Borneo,Kalimantan,Macassar,Java
+Borneo,880,764,Borneo,Sabah,Kalimantan,Brunei,Sarawak,Pontianak,Manado
+Brunei,878,719,Borneo,Borneo,Sabah,Sarawak
+Kalimantan,865,812,Borneo,Borneo,Pontianak,Banjarmasin
+Natuna Isle,756,726,Borneo,Luzon,Cochin China,Johore,Pontianak
+Pontianak,788,790,Borneo,Borneo,Kalimantan,Natuna Isle,Sarawak,Bangka
+Sabah,914,700,Borneo,Borneo,Brunei,Palawan,Mindanao
+Sarawak,833,756,Borneo,Borneo,Brunei,Pontianak
+
+Arakan,486,435,Burma,Assam,Upper Burma,Bengal,Pegu,Burma,Calcutta
+Assam,513,371,Burma,Arakan,Upper Burma,Lhasa,Bengal,Bhutan,Kham
+Burma,540,447,Burma,Arakan,Upper Burma,Pegu,Shan States,Upper Siam
+Pegu,528,499,Burma,Arakan,Burma,Tenasserim,Upper Siam,Andaman islands
+Shan States,590,437,Burma,Burma,Yunnan,Upper Burma,Laos States,Upper Siam
+Upper Burma,561,386,Burma,Arakan,Assam,Burma,Shan States,Yunnan,Kham
+
+Ahn-wei,917,249,China,Kiangsi,Chi-Kiang,Honan,Kiang-Su,Hu-peh
+Chi-Kiang,966,281,China,Ahn-wei,Kiangsi,Fu-Kien,Kiang-Su
+Chih-li,911,73,China,Peking,Inner Mongolia,Shansi,Manchuria
+Eastern Szechwan,716,257,China,Yunnan,Kwei-Chow,Western Szechwan,Hu-Nan,Shensi,Kansu,Hu-peh
+Formosa,973,392,China,South Korea,Rui-kui islands,Fu-Kien,Hai-Nan,Luzon
+Fu-Kien,942,332,China,Chi-Kiang,Formosa,Kiangsi,Kwang Tung
+Hai-Nan,776,464,China,Formosa,Kwang Tung,Tonking,Luzon,Annam
+Honan,871,211,China,Ahn-wei,Peking,Kiang-Su,Shansi,Shan-Tung,Shensi,Hu-peh
+Hu-Nan,833,308,China,Eastern Szechwan,Kiangsi,Kwang-si,Kwei-Chow,Kwang Tung,Hu-peh
+Hu-peh,850,259,China,Ahn-wei,Eastern Szechwan,Honan,Hu-Nan,Kiangsi,Shensi
+Kansu,680,168,China,Eastern Szechwan,Nan Shan,Tsing-Hai,Western Szechwan,Inner Mongolia,Kukenor,Little Gobi desert,Shensi
+Kiang-Su,952,233,China,Ahn-wei,Chi-Kiang,Honan,Shan-Tung
+Kiangsi,900,313,China,Ahn-wei,Chi-Kiang,Fu-Kien,Hu-Nan,Hu-peh,Kwang Tung
+Kwang Tung,871,386,China,Fu-Kien,Hai-Nan,Hu-Nan,Kiangsi,Kwang-si,Tonking
+Kwang-si,777,383,China,Hu-Nan,Kwang Tung,Yunnan,Kwei-Chow,Tonking
+Kwei-Chow,747,333,China,Eastern Szechwan,Hu-Nan,Kwang-si,Yunnan
+Nan Shan,581,122,China,Kansu,Barkul,Sinkiang,Gobi desert,Kukenor,Tsaidam swamp,Little Gobi desert
+Peking,893,148,China,Chih-li,Honan,Shansi,Shan-Tung
+Shan-Tung,935,176,China,Honan,Kiang-Su,Peking,North Korea
+Shansi,838,128,China,Chih-li,Honan,Peking,Inner Mongolia,Shensi
+Shensi,776,192,China,Eastern Szechwan,Honan,Hu-peh,Kansu,Shansi,Inner Mongolia
+Western Szechwan,631,278,China,Eastern Szechwan,Kansu,Yunnan,Tsing-Hai,Kham
+Yunnan,648,373,China,Shan States,Upper Burma,Eastern Szechwan,Kwang-si,Kwei-Chow,Western Szechwan,Laos States,Kham,Tonking
+
+Annam,751,544,Indochina,Hai-Nan,Laos States,Cambodia,Tonking,Cochin China,Laos
+Bangkok,618,539,Indochina,Siam,Cambodia,Tenasserim,Upper Siam,Malaya
+Cambodia,692,580,Indochina,Annam,Bangkok,Siam,Cochin China,Laos
+Cochin China,716,612,Indochina,Natuna Isle,Annam,Cambodia,Pahang
+Laos,711,536,Indochina,Annam,Cambodia,Siam,Laos States
+Laos States,646,459,Indochina,Shan States,Yunnan,Annam,Laos,Siam,Tonking,Upper Siam
+Siam,663,524,Indochina,Bangkok,Cambodia,Laos,Laos States,Upper Siam
+Tonking,698,441,Indochina,Hai-Nan,Kwang-si,Yunnan,Annam,Laos States,Kwang Tung
+Upper Siam,605,485,Indochina,Burma,Pegu,Shan States,Bangkok,Laos States,Siam,Tenasserim
+
+Amboina,1121,844,Indonesia,Moluccas,Celebes,New Guinea,Timor
+Celebes,986,839,Indonesia,Amboina,Macassar,Timor,Manado
+Macassar,955,846,Indonesia,Celebes,Flores,Banjarmasin
+Manado,1005,779,Indonesia,Borneo,Moluccas,Celebes
+Moluccas,1095,792,Indonesia,Amboina,Manado,Mindanao,New Guinea
+New Guinea,1193,818,Indonesia,Amboina,Moluccas
+
+Honshu,1210,216,Japan,Kyoto,Shikoku
+Kiushiu,1124,257,Japan,Shikoku,South Korea,Rui-kui islands
+Kyoto,1245,192,Japan,Honshu
+Rui-kui islands,1096,339,Japan,Formosa,Kiushiu,Visayas
+Shikoku,1157,224,Japan,Honshu,Kiushiu
+
+Manchuria,1025,45,Korea,Chih-li,North Korea
+North Korea,1075,131,Korea,Shan-Tung,Manchuria,South Korea
+South Korea,1093,178,Korea,Formosa,Kiushiu,North Korea
+
+Andaman islands,484,585,Malaysia,Pegu,Tenasserim,Calcutta,Madras Presidency,Tapanuli,Ceylon
+Johore,662,751,Malaysia,Natuna Isle,Pahang,Tapanuli,Malacca
+Malacca,630,717,Malaysia,Johore,Pahang,Tapanuli,Malaya
+Malaya,597,648,Malaysia,Pahang,Tenasserim,Bangkok,Malacca
+Pahang,652,706,Malaysia,Cochin China,Johore,Malacca,Malaya
+Tenasserim,582,552,Malaysia,Pegu,Bangkok,Upper Siam,Andaman islands,Malaya
+
+Altai mountains,582,24,Mongolia,Outer Mongolia,Barkul,Gobi desert,Kucheng
+Gobi desert,623,73,Mongolia,Nan Shan,Altai mountains,Outer Mongolia,Barkul,Shamo desert,Inner Mongolia,Little Gobi desert
+Inner Mongolia,751,81,Mongolia,Chih-li,Kansu,Shansi,Shensi,Gobi desert,Shamo desert,Little Gobi desert
+Little Gobi desert,657,117,Mongolia,Kansu,Nan Shan,Gobi desert,Inner Mongolia
+Outer Mongolia,640,18,Mongolia,Altai mountains,Gobi desert,Shamo desert
+Shamo desert,739,28,Mongolia,Gobi desert,Inner Mongolia,Outer Mongolia
+
+Bengal,417,381,Northern India,Arakan,Assam,Orissa,Nepal,Calcutta,Bhutan,Bihar
+Berar,241,435,Northern India,Bhonsla,Holker,Sindha,Hyderabad,Khandesh,Chota Nagpur
+Bihar,347,361,Northern India,Bengal,Orissa,Nepal,Oudh,Chota Nagpur,Doab
+Bombay Presidency,96,420,Northern India,Sind,Gujerat
+Calcutta,419,417,Northern India,Arakan,Andaman islands,Bengal,Circars,Orissa
+Chota Nagpur,271,402,Northern India,Berar,Bihar,Orissa,Bhonsla,Sindha,Doab
+Delhi,207,266,Northern India,Lahore,Pamirs,Himalaya mountains,Jaipur,Nepal,Oudh,Doab
+Doab,225,354,Northern India,Bihar,Chota Nagpur,Delhi,Jaipur,Sindha,Oudh
+Gujerat,136,392,Northern India,Bombay Presidency,Jaipur,Sind,Holker,Khandesh
+Holker,177,402,Northern India,Berar,Gujerat,Jaipur,Sindha,Khandesh
+Jaipur,142,311,Northern India,Lahore,Delhi,Doab,Gujerat,Holker,Thar desert,Sindha
+Orissa,339,417,Northern India,Bengal,Bihar,Chota Nagpur,Bhonsla,Circars,Calcutta
+Oudh,261,329,Northern India,Bihar,Delhi,Doab,Nepal
+Sind,54,339,Northern India,Sulaiman mountains,Bombay Presidency,Gujerat,Thar desert
+Sindha,199,380,Northern India,Berar,Chota Nagpur,Doab,Holker,Jaipur
+Thar desert,105,290,Northern India,Lahore,Punjab,Sulaiman mountains,Jaipur,Sind
+
+Luzon,980,514,Philippines,Natuna Isle,Formosa,Hai-Nan,Manila
+Manila,997,558,Philippines,Luzon,Palawan,Visayas
+Mindanao,1054,660,Philippines,Sabah,Moluccas,Visayas
+Palawan,950,611,Philippines,Sabah,Manila
+Visayas,1046,603,Philippines,Rui-kui islands,Manila,Mindanao
+
+Bhonsla,292,454,Southern India,Berar,Chota Nagpur,Orissa,Madras Presidency,Circars,Hyderabad
+Carnatic,230,611,Southern India,Madras Presidency,Travancore,Mysore,Ceylon
+Ceylon,276,669,Southern India,Carnatic,Travancore,Andaman islands
+Circars,337,463,Southern India,Calcutta,Orissa,Bhonsla,Madras Presidency
+Hyderabad,228,504,Southern India,Berar,Bhonsla,Madras Presidency,Peshwa,Khandesh,Mysore
+Khandesh,176,466,Southern India,Berar,Gujerat,Holker,Hyderabad,Peshwa
+Madras Presidency,251,555,Southern India,Andaman islands,Bhonsla,Carnatic,Circars,Hyderabad,Mysore
+Mysore,204,564,Southern India,Carnatic,Hyderabad,Madras Presidency,Travancore,Peshwa
+Peshwa,160,516,Southern India,Hyderabad,Khandesh,Mysore,Travancore
+Travancore,208,640,Southern India,Carnatic,Ceylon,Mysore,Peshwa
+
+Bangka,697,844,Sumatra,Lampong,Jambi,Batavia,Pontianak
+Batavia,741,911,Sumatra,Bangka,Java,Lampong
+Flores,932,940,Sumatra,Macassar,Java,Timor
+Jambi,652,807,Sumatra,Bangka,Lampong,Padang,Tapanuli
+Java,808,923,Sumatra,Batavia,Flores,Banjarmasin
+Lampong,685,866,Sumatra,Bangka,Batavia,Jambi
+Padang,615,794,Sumatra,Jambi,Tapanuli
+Tapanuli,580,740,Sumatra,Johore,Malacca,Jambi,Padang,Andaman islands
+Timor,1057,948,Sumatra,Amboina,Celebes,Flores
+
+Bhutan,487,338,Tibet,Assam,Bengal,Himalaya mountains,Lhasa,Nepal
+Chang Tung,448,209,Tibet,Pamirs,Tsing-Hai,Kham,Tibet,Khotan,Kukenor,Tsaidam swamp,Kun Lun mountains,Karakorum
+Himalaya mountains,367,283,Tibet,Pamirs,Delhi,Bhutan,Lhasa,Nepal,Tibet
+Kham,551,265,Tibet,Upper Burma,Western Szechwan,Yunnan,Chang Tung,Tsing-Hai,Lhasa,Tibet,Assam
+Kun Lun mountains,400,169,Tibet,Chang Tung,Cherchen,Khotan,Tsaidam swamp
+Lhasa,515,293,Tibet,Assam,Bhutan,Himalaya mountains,Kham,Tibet
+Nepal,349,317,Tibet,Bengal,Bihar,Delhi,Oudh,Bhutan,Himalaya mountains
+Tibet,408,247,Tibet,Pamirs,Chang Tung,Himalaya mountains,Kham,Lhasa
+
+Barkul,549,63,Turkestan,Nan Shan,Altai mountains,Gobi desert,Sinkiang,Kucheng
+Cherchen,388,132,Turkestan,Kun Lun mountains,Sinkiang,Taklamakan desert,Khotan,Tsaidam swamp
+Kashgar,168,110,Turkestan,Bokhara,Hindu Kush,Sinkiang,Taklamakan desert,Thian Shan mountains,Yarkand
+Khotan,271,156,Turkestan,Karakorum,Chang Tung,Kun Lun mountains,Cherchen,Taklamakan desert,Yarkand
+Kirghiz,228,23,Turkestan,Urumchi,Thian Shan mountains,Vernyy
+Kucheng,483,42,Turkestan,Altai mountains,Barkul,Sinkiang,Urumchi
+Kukenor,576,171,Turkestan,Kansu,Nan Shan,Chang Tung,Tsing-Hai,Tsaidam swamp
+Sinkiang,442,99,Turkestan,Nan Shan,Barkul,Cherchen,Kashgar,Kucheng,Taklamakan desert,Urumchi,Thian Shan mountains,Tsaidam swamp
+Taklamakan desert,293,119,Turkestan,Cherchen,Kashgar,Khotan,Sinkiang,Yarkand
+Thian Shan mountains,214,78,Turkestan,Bokhara,Kashgar,Kirghiz,Sinkiang,Urumchi,Vernyy
+Tsaidam swamp,497,142,Turkestan,Nan Shan,Chang Tung,Kun Lun mountains,Cherchen,Kukenor,Sinkiang
+Tsing-Hai,605,210,Turkestan,Kansu,Western Szechwan,Chang Tung,Kham,Kukenor
+Urumchi,384,44,Turkestan,Kirghiz,Kucheng,Sinkiang,Thian Shan mountains
+Vernyy,66,37,Turkestan,Bokhara,Kirghiz,Thian Shan mountains
+Yarkand,194,143,Turkestan,Hindu Kush,Karakorum,Kashgar,Khotan,Taklamakan desert
