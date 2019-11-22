@@ -7,6 +7,13 @@ import com6441.team7.risc.view.GameView;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+
+/**
+ * MapParserAdapter class is part of two-way adapter pattern that enables to work 
+ * with both conquest and domination map files.
+ * 
+ *
+ */
 public class MapParserAdapter implements IConquestParser, IDominationParser{
     private IConquestParser conquestParser;
     private IDominationParser dominationParser;

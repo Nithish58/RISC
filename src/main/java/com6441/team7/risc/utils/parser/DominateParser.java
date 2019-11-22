@@ -23,6 +23,12 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 import static java.util.Objects.compare;
 import static java.util.Objects.isNull;
 
+/**
+ * This class parses Domination map files. This is built on adapter pattern to work with
+ * conquest and domination map files.
+ * 
+ *
+ */
 public class DominateParser implements IDominationParser {
     /**
      * a reference of mapGraph
@@ -463,8 +469,4 @@ public class DominateParser implements IDominationParser {
     private String getMapGraphString(){
         return mapGraph.getMapGraph();
     }
-
-
-
-
 }

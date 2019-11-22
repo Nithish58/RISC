@@ -23,6 +23,11 @@ import static com6441.team7.risc.api.RiscConstants.EOL;
 import static com6441.team7.risc.api.RiscConstants.NON_EXIST;
 import static java.util.Objects.isNull;
 
+/**
+ * ConquestParser class for parsing conquest map files. 
+ * It implements Adapter pattern with an adapter to both read and write conquest map files.
+ *
+ */
 public class ConquestParser implements IConquestParser {
     private MapGraph mapGraph;
     /**
@@ -35,14 +40,22 @@ public class ConquestParser implements IConquestParser {
      */
     private AtomicInteger countryIdGenerator;
 
-
+    /**
+     * Constructor for class
+     * @param countryIdGenerator integer to keep track of country
+     * @param continentIdGenerator integer to keep track of continent
+     */
     public ConquestParser(AtomicInteger countryIdGenerator, AtomicInteger continentIdGenerator) {
         this.continentIdGenerator = continentIdGenerator;
         this.countryIdGenerator = countryIdGenerator;
         this.mapGraph = new MapGraph();
     }
 
-
+    /**
+     * shows conquest map file on view
+     * @param view GameView where map is displayed
+     * @param mapService Map details are pulled from
+     */
     @Override
     public void showConquestMap(GameView view, MapService mapService) {
         view.displayMessage(getMapGraphString());
@@ -50,6 +63,12 @@ public class ConquestParser implements IConquestParser {
         view.displayMessage(getTerritoryString(mapService));
     }
 
+    /**
+     * Method to save conquest map file from mapservice and with given file name
+     * @param fileName Name of file to be saved in.
+     * @param mapService details of map to get from
+     * @return returns true if successfully saved conquest map file.
+     */
     @Override
     public boolean saveConquestMap(String fileName, MapService mapService) {
         StringBuilder stringBuilder =
@@ -72,7 +91,7 @@ public class ConquestParser implements IConquestParser {
     /**
      * get maptGraph in strings
      *
-     * @return
+     * @return returns map graph in string format
      */
     private String getMapGraphString() {
 
@@ -82,8 +101,8 @@ public class ConquestParser implements IConquestParser {
 
     /**
      * get continents string
-     *
-     * @return
+     * @param mapService provides map details for use in method
+     * @return returns continents in string format
      */
     private String getContinentString(MapService mapService) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -101,11 +120,12 @@ public class ConquestParser implements IConquestParser {
         return stringBuilder.toString();
     }
 
+    /**
+     * get string of countries
+     * @param mapService provides map details for use in method
+     * @return arrays of string
+     */
     private String getTerritoryString(MapService mapService) {
-        /**
-         * get string of countries
-         * @return arrays of string
-         */
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -134,21 +154,24 @@ public class ConquestParser implements IConquestParser {
                             stringBuilder.append(COMMA);
                         }
                     }
-
                     stringBuilder.append("\n");
                 }
-
-
+                
             }
-
+            
         });
-
-
+        
         return stringBuilder.toString();
     }
 
 
-
+    /**
+     * Method for trying to read and parse conquest map file
+     * @param filename name of conquest map file. Must include its extension.
+     * @param view to display the result of what happened when trying to read and parse.
+     * @param mapService provides map details for use in method
+     * @return returns boolean value true if map can be successfully used in game
+     */
     @Override
     public boolean readConquestMapFile(String filename, GameView view, MapService mapService) {
         String rawFileContent = CommonUtils.readFile(filename);
@@ -160,6 +183,11 @@ public class ConquestParser implements IConquestParser {
         return parseFile(rawFileContent, view, mapService);
     }
 
+    /**
+     * if there is no existing map file, new map file with given name is created.
+     * @param fileName name of map file to be created 
+     * @param view result to be displayed when creating file
+     */
     private void createFile(String fileName, GameView view) {
         File file = new File(fileName);
         try {
@@ -170,12 +198,13 @@ public class ConquestParser implements IConquestParser {
         }
     }
 
-    /**
-     * read existing map and create continent, country and its neighbors.
-     *
-     * @param rawFileContent exsting map as a string
-     * @return
-     */
+   /**
+    * read existing map and create continent, country and its neighbors.
+    * @param rawFileContent sting that is to be split and divided up
+    * @param view result to be displayed when parsing
+    * @param mapService provides map details for use in method
+    * @return returns true is map is successfully parsed
+    */
     boolean parseFile(String rawFileContent, GameView view, MapService mapService) {
 
         String[] parts = StringUtils.split(rawFileContent.replaceAll("\r",StringUtils.EMPTY), "[");
@@ -203,7 +232,7 @@ public class ConquestParser implements IConquestParser {
     /**
      * add map graph information
      *
-     * @param part
+     * @param part intro part of map file
      */
     void parseMapGraphInfo(String part) {
 
@@ -214,9 +243,9 @@ public class ConquestParser implements IConquestParser {
     /**
      * read continent string from existing map and split it with new line,
      * for each line, call createContinentFromRaw to create new continent.
-     *
-     * @param part continent string
-     * @return
+     * @param mapService continent's details are saved in mapService
+     * @param part continent names in string format
+     * @return returns set of continents that have been successfully parsed
      */
     Set<Continent> parseRawContinents(String part, MapService mapService) {
         String continentInfo = StringUtils.substringAfter(part, "]\n");
@@ -236,18 +265,18 @@ public class ConquestParser implements IConquestParser {
     /**
      * read continent string from the existing map file and save each valid continent to the mapService
      * if the continent is not valid, will throw an exception
-     *
-     * @param s continent string
-     * @return
+     * @throws ContinentParsingException invalid continent format
+     * @param continentString name of continent in string format
+     * @return returns continent object created from string
      */
-    private Continent createContinentFromRaw(String s) {
+    private Continent createContinentFromRaw(String continentString) {
 
         try {
 
-            String[] continentInfo = StringUtils.split(s, RiscConstants.ASSIGNMENT);
+            String[] continentInfo = StringUtils.split(continentString, RiscConstants.ASSIGNMENT);
 
             if (isNull(continentInfo) || continentInfo.length != 2) {
-                throw new ContinentParsingException("continent: " + s + " is not valid ");
+                throw new ContinentParsingException("continent: " + continentString + " is not valid ");
             }
 
             String name = convertFormat(continentInfo[0]);
@@ -264,9 +293,9 @@ public class ConquestParser implements IConquestParser {
     /**
      * read country string from existing map and split it with new line,
      * for each line, call createCountryFromRaw to create new country.
-     *
-     * @param
-     * @return
+     * @param mapService saves countries details to mapService
+     * @param part countries names list in string format
+     * @return set of countries object that are parsed successfully
      */
     Set<Country> parseRawCountries(String part, MapService mapService) {
         String countryInfo = StringUtils.substringAfter(part, "\n");
@@ -283,16 +312,17 @@ public class ConquestParser implements IConquestParser {
     /**
      * read country string from the existing map file and save each valid country to the mapService
      * if the country is not valid, will throw an exception
-     *
-     * @param s
-     * @return
+     * @param mapService provides map details for use in method
+     * @param countryString countries name list in string format 
+     * @throws CountryParsingException when country cannot be parsed.
+     * @return returns country thats been parsed successfully
      */
-    private Country createCountryFromRaw(String s, MapService mapService) {
+    private Country createCountryFromRaw(String countryString, MapService mapService) {
         try {
-            String[] countryInfo = StringUtils.split(s, RiscConstants.COMMA);
+            String[] countryInfo = StringUtils.split(countryString, RiscConstants.COMMA);
 
             if (countryInfo.length < 4) {
-                throw new CountryParsingException("territories: " + s + " is not valid.");
+                throw new CountryParsingException("territories: " + countryString + " is not valid.");
             }
 
             int countryId = countryIdGenerator.incrementAndGet();
@@ -303,7 +333,7 @@ public class ConquestParser implements IConquestParser {
 
 
             if (mapService.continentNameNotExist(continentName)) {
-                throw new CountryParsingException("territory: " + s + " contains invalid continent information");
+                throw new CountryParsingException("territory: " + countryString + " contains invalid continent information");
             }
 
             int continentId = mapService.findCorrespondingIdByContinentName(continentName).get();
@@ -321,10 +351,10 @@ public class ConquestParser implements IConquestParser {
     }
 
     /**
-     * read strings from the existing file, save neighboring countries info in the mapServer
-     *
+     * read strings from the existing file, save neighboring countries info in the mapService
+     * @param mapService neighboring countries' map details are saved.
      * @param part string for borders(neighboring countries)
-     * @return
+     * @return returns a pair of keys - country and values - its neighbors, where neighbors are a set.
      */
     Map<Integer, Set<Integer>> parseRawNeighboringCountries(String part, MapService mapService) {
 
@@ -347,10 +377,10 @@ public class ConquestParser implements IConquestParser {
 
 
     /**
-     * read neighboring countries id
-     *
+     * read neighboring countries id from file and returns them as List of integers
+     * @param mapService provides map details for use in method
      * @param s a line for neighboring countries
-     * @return
+     * @return List of integers of neighboring countries
      */
     private List<Integer> createAdjacencyCountriesFromRaw(String s, MapService mapService) {
 
@@ -371,6 +401,13 @@ public class ConquestParser implements IConquestParser {
 
     }
 
+    /**
+     * check condition for valid country ID and throws NeighborParsingException when invalid
+     * @param s name of country whose ID need to be validated
+     * @param adjacency list of countries names in string format
+     * @param mapService provides map details for use in method
+     * @throws NeighborParsingException throws this exception when country has invalid country ID
+     */
     private void throwWhenNeighbouringCountriesIdInvalid(String s, List<String> adjacency, MapService mapService) {
         for (String country : adjacency) {
             if (!mapService.findCorrespondingIdByCountryName(country).isPresent()) {
@@ -379,6 +416,12 @@ public class ConquestParser implements IConquestParser {
         }
     }
 
+    /**
+     * Check country entry in conquest map file and see if there are neighbor countries
+     * @param s Name of country whose neighbors need to be validated
+     * @param adjacency entry of country in map file
+     * @throws NeighborParsingException When country has no neighbors
+     */
     private void throwWhenNoNeighboringCountry(String s, List<String> adjacency) {
         if (adjacency.size() < 4) {
             throw new NeighborParsingException(s + " is not valid");
@@ -389,8 +432,8 @@ public class ConquestParser implements IConquestParser {
     /**
      * delete whitespace and lower cases the string
      *
-     * @param name
-     * @return
+     * @param name string which need to be formatted
+     * @return returns coverted string
      */
     private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
