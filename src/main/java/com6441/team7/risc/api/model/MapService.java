@@ -1,5 +1,6 @@
 package com6441.team7.risc.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
@@ -39,7 +40,7 @@ public class MapService extends Observable {
     /**
      * store countries as a connected graph
      */
-
+    @JsonIgnore
     private Graph<Integer, DefaultEdge> directedGraph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
     /**
@@ -997,7 +998,6 @@ public class MapService extends Observable {
                 .continents(continents)
                 .adjacencyCountriesMap(adjacencyCountriesMap)
                 .continentCountriesMap(continentCountriesMap)
-                .directedGraph(directedGraph)
                 .gameState(gameState)
                 .build();
     }
@@ -1025,5 +1025,10 @@ public class MapService extends Observable {
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public void notifyMapServiceObservers(Object object){
+        setChanged();
+        notifyObservers(object);
     }
 }

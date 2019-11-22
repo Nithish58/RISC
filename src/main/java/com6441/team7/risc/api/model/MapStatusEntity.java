@@ -13,12 +13,11 @@ public class MapStatusEntity {
     private MapStatusEntity(Set<Country> countries, Set<Continent> continents,
                             Map<Integer, Set<Integer>> adjacencyCountriesMap,
                             Map<Integer, Set<Integer>> continentCountriesMap,
-                            Graph<Integer, DefaultEdge> directedGraph, GameState gameState) {
+                            GameState gameState) {
         this.countries = countries;
         this.continents = continents;
         this.adjacencyCountriesMap = adjacencyCountriesMap;
         this.continentCountriesMap = continentCountriesMap;
-        this.directedGraph = directedGraph;
         this.gameState = gameState;
     }
 
@@ -37,11 +36,6 @@ public class MapStatusEntity {
      * store each continent ID, and its belonging countries ID
      */
     private Map<Integer, Set<Integer>> continentCountriesMap;
-
-    /**
-     * store countries as a connected graph
-     */
-    private Graph<Integer, DefaultEdge> directedGraph;
 
     /**
      * the state of the game
@@ -65,11 +59,6 @@ public class MapStatusEntity {
          * store each continent ID, and its belonging countries ID
          */
         private Map<Integer, Set<Integer>> continentCountriesMap;
-
-        /**
-         * store countries as a connected graph
-         */
-        private Graph<Integer, DefaultEdge> directedGraph;
 
         /**
          * the state of the game
@@ -100,11 +89,6 @@ public class MapStatusEntity {
             return this;
         }
 
-        public MapStatusEntityBuilder directedGraph(Graph<Integer, DefaultEdge> directedGraph) {
-            this.directedGraph = directedGraph;
-            return this;
-        }
-
         public MapStatusEntityBuilder gameState(GameState gameState) {
             this.gameState = gameState;
             return this;
@@ -112,7 +96,7 @@ public class MapStatusEntity {
 
         public MapStatusEntity build() {
             return new MapStatusEntity(countries, continents, adjacencyCountriesMap,
-                    continentCountriesMap, directedGraph, gameState);
+                    continentCountriesMap, gameState);
         }
 
 
@@ -131,10 +115,6 @@ public class MapStatusEntity {
 
     public Map<Integer, Set<Integer>> getContinentCountriesMap() {
         return continentCountriesMap;
-    }
-
-    public Graph<Integer, DefaultEdge> getDirectedGraph() {
-        return directedGraph;
     }
 
     public GameState getGameState() {

@@ -50,15 +50,14 @@ public class App {
         reinforceGameController.setView(phaseView);
         fortifyGameController.setView(phaseView);
         attackController.setView(phaseView);
+        loadGameController.setView(phaseView);
 
         mapService.addObserver(phaseView);
         mapService.addObserver(dominationView);
         playerService.addObserver(phaseView);
         playerService.addObserver(dominationView);
+        playerService.addObserver(startupGameController);
         
         phaseView.receiveCommand();
-
-      
-        
     }
 }

@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 
 import java.security.SecureRandom;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
@@ -23,7 +25,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 /**
  * store player information
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Player{
 
     /**
@@ -74,7 +76,6 @@ public class Player{
         this.armies = 0;
         this.name = name;
         this.cardList = new ArrayList<>();
-
         this.tradeInTimes=0;
         this.countryPlayerList=new ArrayList<>();
     }
@@ -993,6 +994,7 @@ public class Player{
      * @return true if defender occupy 0 country, false if not
      */
     //TODO: MODIFY by jenny as it cannot save when it is null, if the player is null, return false
+    @JsonIgnore
     public boolean isDefenderEliminatedFromGame() {
         if(Optional.ofNullable(defender).map(Player::getCountryList).filter(CollectionUtils::isEmpty).isPresent())
             return true;
@@ -1008,6 +1010,7 @@ public class Player{
      */
 
     //Modify by jenny
+    @JsonIgnore
     public boolean isAttackerLastManStanding() {
         if (Optional.ofNullable(fromCountryAttack).map(Country::getSoldiers).filter(soldier -> soldier < MIN_ATTACKING_SOLDIERS).isPresent())
             return true;

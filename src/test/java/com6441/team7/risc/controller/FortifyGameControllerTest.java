@@ -504,7 +504,7 @@ public class FortifyGameControllerTest {
 
 		mapLoaderController = new MapLoaderController(mapService);
 		startupGameController = new StartupGameController(mapLoaderController, playerService);
-        reinforceGameController = new ReinforceGameController(playerService);
+        reinforceGameController = new ReinforceGameController(mapService, playerService);
         fortifyGameController = new FortifyGameController(playerService);
         attackController = new AttackGameController(playerService);
 

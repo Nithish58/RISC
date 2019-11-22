@@ -126,7 +126,7 @@ public class ReinforceGameController implements Controller{
                 CommonUtils.endGame(phaseView);
                 break;
             case SAVEGAME:
-                SaveGameUtils.saveGame(mapService, playerService, phaseView);
+                saveGame();
                 break;
 
             default:
@@ -415,4 +415,8 @@ public class ReinforceGameController implements Controller{
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
+
+    public void saveGame(){
+        SaveGameUtils.saveGame(mapService, playerService, phaseView);
+    }
 }

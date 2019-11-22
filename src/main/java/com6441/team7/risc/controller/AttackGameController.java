@@ -137,7 +137,7 @@ public class AttackGameController implements Controller {
         	CommonUtils.endGame(phaseView);
         	break;
         case SAVEGAME:
-			SaveGameUtils.saveGame(mapService, playerService, phaseView);
+			saveGame();
 			break;
         	
     	
@@ -338,5 +338,22 @@ public class AttackGameController implements Controller {
 	}
 
 
+	public void saveGame(){
+		//TODO: need to add some methods or boolean values to check which command should enter
+		// TODO: when user quit game in the attack phase and loads game again. For example:
+		/**
+		 * if(isAttackPhase){
+		 *     setCommand("attack countrynamefrom countryanme to numdice -allout -noattack"
+		 * }
+		 * if(defendPhase){
+		 *     setCommand("defend numdice"
+		 * }
+		 * if(attackMovePhase){
+		 *     setCommand("attackmove num")
+		 * }
+		 */
+		SaveGameUtils.saveGame(mapService, playerService, phaseView);
+
+	}
 
 }

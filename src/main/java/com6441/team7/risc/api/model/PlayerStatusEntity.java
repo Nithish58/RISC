@@ -1,7 +1,6 @@
 package com6441.team7.risc.api.model;
 
-import com6441.team7.risc.utils.builder.PlayerStatusBuilder;
-import com6441.team7.risc.utils.builder.PlayerStatusBuilderImp;
+import com6441.team7.risc.api.wrapperview.StartupStateWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,8 @@ public class PlayerStatusEntity {
      */
     private Player currentPlayer;
 
+    private int currentPlayerIndex;
+
     private List<String> mapFiles;
 
     private int numberOfGame;
@@ -29,18 +30,26 @@ public class PlayerStatusEntity {
 
     private int maximumDices;
 
+    private String command;
 
-    private PlayerStatusEntity(ArrayList<Player> listPlayers, Player currentPlayer,
+    private StartupStateWrapper startupStateWrapper;
+
+
+    private PlayerStatusEntity(ArrayList<Player> listPlayers, Player currentPlayer,int currentPlayerIndex,
                               List<String> mapFiles, int numberOfGame,
                               int currentGameNumber, List<Player> results,
-                              int maximumDices) {
+                              int maximumDices, String command,
+                               StartupStateWrapper startupStateWrapper) {
         this.listPlayers = listPlayers;
         this.currentPlayer = currentPlayer;
+        this.currentPlayerIndex = currentPlayerIndex;
         this.mapFiles = mapFiles;
         this.numberOfGame = numberOfGame;
         this.currentGameNumber = currentGameNumber;
         this.results = results;
         this.maximumDices = maximumDices;
+        this.command = command;
+        this.startupStateWrapper = startupStateWrapper;
     }
 
 
@@ -51,6 +60,10 @@ public class PlayerStatusEntity {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public int getCurrentPlayerIndex(){
+        return currentPlayerIndex;
     }
 
 
@@ -75,6 +88,13 @@ public class PlayerStatusEntity {
         return maximumDices;
     }
 
+    public String getCommand() {
+        return command;
+    }
+
+    public StartupStateWrapper getStartupStateWrapper() {
+        return startupStateWrapper;
+    }
 
     public static class PlayerStatusEntityBuilder{
         /**
@@ -87,6 +107,8 @@ public class PlayerStatusEntity {
          */
         private Player currentPlayer;
 
+        private int currentPlayerIndex;
+
         private List<String> mapFiles;
 
         private int numberOfGame;
@@ -96,6 +118,10 @@ public class PlayerStatusEntity {
         private List<Player> results;
 
         private int maximumDices;
+
+        private String command;
+
+        private StartupStateWrapper startupStateWrapper;
 
         public static PlayerStatusEntityBuilder newInstance(){
             return new PlayerStatusEntityBuilder();
@@ -110,6 +136,12 @@ public class PlayerStatusEntity {
             this.currentPlayer = currentPlayer;
             return this;
         }
+
+        public PlayerStatusEntityBuilder currentPlayerIndex(int currentPlayerIndex){
+            this.currentPlayerIndex = currentPlayerIndex;
+            return this;
+        }
+
 
         public PlayerStatusEntityBuilder mapFiles(List<String> mapFiles){
             this.mapFiles = mapFiles;
@@ -136,12 +168,22 @@ public class PlayerStatusEntity {
             return this;
         }
 
-
-        public PlayerStatusEntity build(){
-            return new PlayerStatusEntity(listPlayers, currentPlayer,
-                    mapFiles, numberOfGame, currentGameNumber,
-                    results, maximumDices);
+        public PlayerStatusEntityBuilder command(String command){
+            this.command = command;
+            return this;
         }
 
+        public PlayerStatusEntityBuilder startUpStateWrapper(StartupStateWrapper startupStateWrapper){
+            this.startupStateWrapper = startupStateWrapper;
+            return this;
+        }
+
+
+
+        public PlayerStatusEntity build(){
+            return new PlayerStatusEntity(listPlayers, currentPlayer,currentPlayerIndex,
+                    mapFiles, numberOfGame, currentGameNumber,
+                    results, maximumDices, command,startupStateWrapper);
+        }
     }
 }

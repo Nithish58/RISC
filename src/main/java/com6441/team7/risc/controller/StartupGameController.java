@@ -2,19 +2,16 @@ package com6441.team7.risc.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 import static com6441.team7.risc.api.RiscConstants.MAX_NUM_PLAYERS;
+import static com6441.team7.risc.api.model.RiscCommand.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.api.wrapperview.StartupStateWrapper;
 import com6441.team7.risc.utils.SaveGameUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,7 +43,7 @@ import com6441.team7.risc.api.exception.PlayerEditException;
  *
  * @author Keshav
  */
-public class StartupGameController implements Controller {
+public class StartupGameController implements Controller, Observer {
 
     /**
      * Boolean that checks if map is loaded.
@@ -79,6 +76,8 @@ public class StartupGameController implements Controller {
      */
     private boolean[] boolArrayCountriesPlaced;
 
+    boolean boolAllCountriesPlaced;
+
     /**
      * private Controller mapLoaderAdapter;
      */
@@ -98,6 +97,56 @@ public class StartupGameController implements Controller {
      * a reference of phaseView
      */
     private GameView phaseView;
+
+
+    public void saveGame(){
+        StartupStateWrapper wrapper = new StartupStateWrapper();
+
+        if(!boolMapLoaded){
+            playerService.setCommand(LOAD_MAP.getName());
+            save(mapService, playerService, phaseView, wrapper);
+            return;
+        }
+
+        wrapper.setBoolMapLoaded(true);
+
+        if(!boolGamePlayerAdded){
+            playerService.setCommand(GAME_PLAYER.getName());
+            save(mapService, playerService, phaseView, wrapper);
+            return;
+        }
+
+        wrapper.setBoolGamePlayerAdded(true);
+
+        if(!boolAllGamePlayersAdded){
+            playerService.setCommand(GAME_PLAYER.getName());
+            return;
+        }
+
+        wrapper.setBoolAllGamePlayersAdded(true);
+
+        if(!boolCountriesPopulated){
+            playerService.setCommand(POPULATE_COUNTRY.getName());
+            save(mapService, playerService, phaseView, wrapper);
+            return;
+        }
+
+        wrapper.setBoolCountriesPopulated(true);
+
+        if(!boolAllCountriesPlaced){
+            playerService.setCommand(PLACE_ARMY.getName() + PLACE_ALL.getName());
+            save(mapService, playerService, phaseView, wrapper);
+            return;
+        }
+
+        wrapper.setBoolAllCountriesPlaced(true);
+        save(mapService, playerService, phaseView, wrapper);
+    }
+
+    private void save(MapService mapService, PlayerService playerService, GameView view, StartupStateWrapper startupStateWrapper){
+        playerService.setStartupStateWrapper(startupStateWrapper);
+        SaveGameUtils.saveGame(mapService, playerService, view);
+    }
 
 
     /**
@@ -280,7 +329,7 @@ public class StartupGameController implements Controller {
                 break;
 
             case SAVEGAME:
-                SaveGameUtils.saveGame(mapService, playerService, phaseView);
+                saveGame();
                 break;
 
             default:
@@ -667,7 +716,7 @@ public class StartupGameController implements Controller {
                 }
 
                 //IF ALL Players have numArmies 0: Startup Phase Over, Switch To Next Phase
-                boolean boolAllCountriesPlaced = true;
+                 boolAllCountriesPlaced = true;
 
                 for (boolean b : boolArrayCountriesPlaced) {
 
@@ -757,4 +806,15 @@ public class StartupGameController implements Controller {
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+        if(arg instanceof PlayerStatusEntity){
+            StartupStateWrapper startupStateWrapper = ((PlayerStatusEntity) arg).getStartupStateWrapper();
+            boolGamePlayerAdded = startupStateWrapper.isBoolGamePlayerAdded();
+            boolMapLoaded = startupStateWrapper.isBoolMapLoaded();
+            boolAllCountriesPlaced = startupStateWrapper.isBoolAllCountriesPlaced();
+            boolCountriesPopulated = startupStateWrapper.isBoolCountriesPopulated();
+        }
+
+    }
 }   //END OF CLASS

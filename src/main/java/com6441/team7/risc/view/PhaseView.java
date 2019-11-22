@@ -219,8 +219,6 @@ public class PhaseView implements GameView {
                 return;
 
             }
-
-        	return;
         }  //End of PlayerService.class observable 
         
         
@@ -254,6 +252,8 @@ public class PhaseView implements GameView {
         PlayerStatusEntity playerStatusEntity = (PlayerStatusEntity) arg;
         displayMessage("successfully load the playerEntityStatus");
         displayMessage("current player: " + playerStatusEntity.getCurrentPlayer().getName());
+        displayMessage("current command to type: " + playerStatusEntity.getCommand());
+        displayMessage("current game number: " + playerStatusEntity.getCurrentGameNumber());
     }
 
     /**

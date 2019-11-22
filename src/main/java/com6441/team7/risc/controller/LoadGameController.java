@@ -1,7 +1,9 @@
 package com6441.team7.risc.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.api.wrapperview.PlayerDominationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.GameView;
@@ -9,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
@@ -49,10 +52,11 @@ public class LoadGameController implements Controller {
     @Override
     public void readCommand(String command) throws Exception {
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
-        String fileName = StringUtils.split(command, WHITESPACE)[1];
-        File file = new File(fileName);
+
         switch (commandType) {
             case LOADGAME:
+                String fileName = StringUtils.split(command, WHITESPACE)[1];
+                File file = new File(fileName);
                 loadGame(file);
                 break;
             case EXITLOADGAME:
@@ -65,6 +69,7 @@ public class LoadGameController implements Controller {
 
     public void loadGame(File saveGameFile) throws IOException {
         ObjectMapper objectMapper =new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         GameStatusEntity entity = objectMapper.readValue(saveGameFile, GameStatusEntity.class);
         MapStatusEntity mapStatusEntity = entity.getMapStatusEntity();
         PlayerStatusEntity playerStatusEntity = entity.getPlayerStatusEntity();
@@ -74,7 +79,7 @@ public class LoadGameController implements Controller {
         mapService.setCountries(mapStatusEntity.getCountries());
         mapService.setContinentCountriesMap(mapStatusEntity.getContinentCountriesMap());
         mapService.setAdjacencyCountriesMap(mapStatusEntity.getAdjacencyCountriesMap());
-        mapService.notifyObservers(mapStatusEntity);
+        mapService.notifyMapServiceObservers(mapStatusEntity);
 
         playerService.setCurrentPlayer(playerStatusEntity.getCurrentPlayer());
         playerService.setListPlayers(playerStatusEntity.getListPlayers());
@@ -82,8 +87,20 @@ public class LoadGameController implements Controller {
         playerService.setCurrentGameNumber(playerStatusEntity.getCurrentGameNumber());
         playerService.setMaximumDices(playerStatusEntity.getMaximumDices());
         playerService.setResult(playerStatusEntity.getResults());
-        playerService.notifyObservers(playerStatusEntity);
+        playerService.setStartupStateWrapper(playerStatusEntity.getStartupStateWrapper());
+        playerService.setCurrentPlayerIndex(playerStatusEntity.getCurrentPlayerIndex());
+        playerService.setNumberOfGame(playerStatusEntity.getNumberOfGame());
+        playerService.notifyPlayerServiceObservers(playerStatusEntity);
 
+    }
+
+
+    private void setPlayerToCountry(MapStatusEntity mapStatusEntity, PlayerStatusEntity playerStatusEntity){
+//        playerStatusEntity.getListPlayers().stream()
+//                .forEach(player -> {
+//                    player.getCountryList().forEach(country -> country.setPlayer(player));
+//                });
+//        mapStatusEntity.getCountries().stream().map(country -> country.setPlayer())
     }
 
     public void exitLoadGame(){

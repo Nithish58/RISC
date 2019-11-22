@@ -51,7 +51,7 @@ public class ReinforceGameControllerTest {
         playerService = new PlayerService(mapService);
         player = new Player("jenny");
         PhaseView phaseView = new PhaseView();
-        reinforceGameController = new ReinforceGameController(playerService);
+        reinforceGameController = new ReinforceGameController(mapService, playerService);
         reinforceGameController.setView(phaseView);
     }
 

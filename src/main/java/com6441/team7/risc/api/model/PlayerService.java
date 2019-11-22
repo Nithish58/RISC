@@ -26,6 +26,10 @@ public class PlayerService extends Observable {
 
 	private List<Player> result = new ArrayList<>();
 
+	private String command;
+
+	private StartupStateWrapper startupStateWrapper;
+
 	public List<String> getMapFiles() {
 		return mapFiles;
 	}
@@ -85,6 +89,27 @@ public class PlayerService extends Observable {
 	public void setListPlayers(ArrayList<Player> listPlayers) {
 		this.listPlayers = listPlayers;
 	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
+	}
+
+
+
+
+	public StartupStateWrapper getStartupStateWrapper() {
+		return startupStateWrapper;
+	}
+
+	public void setStartupStateWrapper(StartupStateWrapper startupStateWrapper) {
+		this.startupStateWrapper = startupStateWrapper;
+	}
+
+
 
 
 	/**
@@ -748,10 +773,14 @@ public class PlayerService extends Observable {
 				.maximumDices(maximumDices)
 				.numberOfGame(numberOfGame)
 				.currentGameNumber(currentGameNumber)
+				.command(command)
+				.currentPlayerIndex(currentPlayerIndex)
 				.result(result)
+				.startUpStateWrapper(startupStateWrapper)
 				.build();
 	}
 
-	
+
+
 }
 

@@ -4,6 +4,7 @@ import com6441.team7.risc.api.model.Country;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.api.wrapperview.PlayerDominationWrapper;
+import com6441.team7.risc.api.wrapperview.StartupStateWrapper;
 
 import static com6441.team7.risc.api.RiscConstants.DOMINATION_VIEW_STRING;
 
@@ -59,10 +60,7 @@ public class DominationView implements GameView {
         	}
         	
         }
-        
-        
-        
-        
+
     } //end of update method
     
 } //end of class

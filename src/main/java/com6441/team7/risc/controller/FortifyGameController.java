@@ -146,7 +146,8 @@ public class  FortifyGameController implements Controller {
 			CommonUtils.endGame(phaseView);
 			break;
 		case SAVEGAME:
-			SaveGameUtils.saveGame(mapService, playerService, phaseView);
+			saveGame();
+
 			break;
 
 		default:
@@ -220,5 +221,9 @@ public class  FortifyGameController implements Controller {
 
 	} // End of method
 
+	public void saveGame(){
+		playerService.setCommand("fortify from couuntry to country num -none");
+		SaveGameUtils.saveGame(mapService, playerService, phaseView);
+	}
 	
 } // End of class
