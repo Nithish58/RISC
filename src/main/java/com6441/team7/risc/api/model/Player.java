@@ -1409,9 +1409,15 @@ public class Player{
         //Check if card needs to be drawn-set to true when country conquered
         if(boolDrawCard) {
             Card c=playerService.drawFromDeck();
-            addCard(c);
+            String strMessage = "";
+            if (c == null) {
+            	strMessage="No card is drawn as the deck is empty.";
+            }
+            else {
+            	addCard(c);
+            	strMessage="Card drawn: "+c.getName();
+            }
             this.boolDrawCard=false;
-            String strMessage="Card drawn: "+c.getName();
             playerService.notifyPlayerServiceObservers(strMessage);
         }
 

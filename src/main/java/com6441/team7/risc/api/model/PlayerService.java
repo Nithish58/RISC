@@ -204,6 +204,10 @@ public class PlayerService extends Observable {
 	 * @return drawn card
 	 */
 	public Card drawFromDeck() {
+		if(deckCards.isEmpty()) {
+			notifyPlayerServiceObservers("No cards available on the deck right now.");
+			return null;
+		}
 		return deckCards.pop();
 	}
 
