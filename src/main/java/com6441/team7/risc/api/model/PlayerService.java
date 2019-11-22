@@ -1,6 +1,7 @@
 package com6441.team7.risc.api.model;
 
 import com6441.team7.risc.api.wrapperview.*;
+import com6441.team7.risc.controller.TournamentController;
 import com6441.team7.risc.utils.CommonUtils;
 
 import java.util.*;
@@ -59,6 +60,8 @@ public class PlayerService extends Observable {
 
 		//Because no players added when PlayerService object is being instantiated in App.class
 		this.currentPlayerIndex=-1;
+		
+		this.boolTournamentMode=false;
 
 	}	
 	
@@ -315,14 +318,18 @@ public class PlayerService extends Observable {
 
 				Player removedPlayer=listPlayers.remove(i);
 
+				if(currentPlayerIndex>i) {
+					setCurrentPlayerIndex((currentPlayerIndex-1));
+				}
+				
 				//Add Player to Wrapper function and send wrapper function to observers
 				PlayerEditWrapper playerEditWrapper=new PlayerEditWrapper();
 				playerEditWrapper.setRemovedPlayer(removedPlayer);
-
+				
 				setChanged();
 				//NOTIFY BEFORE RETURN
 				notifyObservers(playerEditWrapper);
-
+				
 				return true;
 			}
 		}
@@ -339,6 +346,7 @@ public class PlayerService extends Observable {
 		
 		if(currentPlayerIndex>=listPlayers.size()-1) {
 			this.setCurrentPlayerIndex(0);
+			turnNum++;
 		}
 
 		else setCurrentPlayerIndex(this.currentPlayerIndex+1);
@@ -348,71 +356,128 @@ public class PlayerService extends Observable {
 	
 	//---------------------------------Utils for autoplaying game------------------------------------------
 	
+	private boolean boolTournamentMode;
+	
+	private boolean boolPlayerWinner;
+	
+	private Player winner;
+	
 	private int counterGame=0;
 	
 	private int numTurnsCombined=3000;
 	
+	private TournamentController tournamentController;
+	
+	private double turnNum=1;
+	
 	public void automateGame() {
 		
-		while(counterGame<numTurnsCombined) {
-		counterGame++;
-		double turnNum=counterGame/3.0;
-		notifyPlayerServiceObservers("Turn: "+Math.ceil(turnNum));
-		
-		//3 Random: 1268/3 turns until stack overflow when stack is 256Kb
-					
-		//if(counterGame>numTurnsCombined) {
-			//notifyPlayerServiceObservers("Exited automated game");
-			//System.exit(0);			
+		//while(counterGame<numTurnsCombined) {
+			//counterGame++;
+			//System.out.println(counterGame);
+
+			// 3 Random: 1268/3 turns until stack overflow when stack is 256Kb
 			
-		//}
-		
-		
-		//Does not affect tournament as no humans in tournament
-		if(currentPlayer.getPlayerCategory()==PlayerCategory.HUMAN) {
-			return;
-		}
-		
-		else {
-			
-			switch(currentPlayer.getPlayerCategory()) {
-			
-			case RANDOM:
-				currentPlayer.setStrategy(new RandomStrategy(this));
-				break;
-			case AGGRESSIVE:
-				currentPlayer.setStrategy(new AggressiveStrategy(this));
-				break;
-			case BENEVOLENT:
-				currentPlayer.setStrategy(new BenevolentStrategy(this));
-				break;
-			case CHEATER:
-				currentPlayer.setStrategy(new CheaterStrategy(this));
-				break;
-			default:				
-			
+			if(boolPlayerWinner) {
+				//send winner
+				tournamentController.setResult(winner.getPlayerCategory().getName()+
+						"("+winner.getName()+", numTurns: "+turnNum+")");
+				return;
 			}
 			
-			//currentPlayer.getStrategy().reinforce();
-			this.mapService.setState(GameState.ATTACK);
-			currentPlayer.getStrategy().attack();
-			currentPlayer.getStrategy().fortify();
-			
-		}
-		}
-		if (counterGame>numTurnsCombined) {
-		notifyPlayerServiceObservers("Exited automated game");
-		}
+			notifyPlayerServiceObservers("Turn: " + Math.ceil(turnNum));
+
+			 //if(counterGame>numTurnsCombined) {
+				
+				if(turnNum>numTurnsCombined) {
+				 if(boolTournamentMode) {
+					 //draw
+					 tournamentController.setResult("DRAW");
+					 return;
+				 }				 
+	
+				 
+			 notifyPlayerServiceObservers("Exited automated game as turn limit reached.");
+			 System.exit(0);
+			 }		
+
+			// Does not affect tournament as no humans in tournament
+			if (currentPlayer.getPlayerCategory() == PlayerCategory.HUMAN) {
+				return;
+			}
+
+			else {
+
+				switch (currentPlayer.getPlayerCategory()) {
+
+				case RANDOM:
+					currentPlayer.setStrategy(new RandomStrategy(this));
+					break;
+				case AGGRESSIVE:
+					currentPlayer.setStrategy(new AggressiveStrategy(this));
+					break;
+				case BENEVOLENT:
+					currentPlayer.setStrategy(new BenevolentStrategy(this));
+					break;
+				case CHEATER:
+					currentPlayer.setStrategy(new CheaterStrategy(this));
+					break;
+				default:
+
+				}
+
+				// currentPlayer.getStrategy().reinforce();
+				this.mapService.setState(GameState.ATTACK);
+				currentPlayer.getStrategy().attack();
+				currentPlayer.getStrategy().fortify();
+
+			}
+		
+		//} //End of while for numTurns
+		
+		//if (counterGame>numTurnsCombined) {
+		//	notifyPlayerServiceObservers("Exited automated game");
+		//}
 	}
 	
 	public void setNumTurns(int n) {
-		this.numTurnsCombined=3*n;
+		//this.numTurnsCombined=3*n;
+		this.numTurnsCombined=n;
+		//reset numturns
+		this.turnNum=1;
 	}
 	
 	public void setMoveCounter(int n) {
 		this.counterGame=0;
 	}
-		
+	
+	public void setBoolTournamentMode(boolean b) {
+		this.boolTournamentMode=true;
+	}
+	
+	public boolean getBoolTournamentMode() {
+		return boolTournamentMode;
+	}
+	
+	public void setTournamentController(TournamentController tc) {
+		this.tournamentController=tc;
+	}
+	
+	public void setBoolPlayerWinner(boolean b) {
+		this.boolPlayerWinner=b;
+	}
+	
+	public boolean getBoolPlayerWinner() {
+		return boolPlayerWinner;
+	}
+	
+	public void setPlayerWinner(Player p) {
+		this.winner=p;
+	}
+	
+	public Player getPlayerWinner() {
+		return winner;
+	}
 	
 
 	//------------------------------------REINFORCEMENT UTILS -----------------------------------------------
