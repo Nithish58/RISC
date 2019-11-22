@@ -10,6 +10,8 @@ import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.PlayerCategory;
 import com6441.team7.risc.api.model.PlayerService;
 import com6441.team7.risc.api.model.RandomStrategy;
+import com6441.team7.risc.api.wrapperview.TournamentWrapper;
+import com6441.team7.risc.utils.CommonUtils;
 
 public class TournamentController {
 
@@ -29,6 +31,9 @@ public class TournamentController {
 	private int numTurns;
 	
 	private String[][] arrResults;
+	
+	private int mapIndex;
+	private int gameIndex;
 	 
 	
 	
@@ -39,6 +44,9 @@ public class TournamentController {
 		this.playerService=sgc.getPlayerService();
 		
 		this.mapService=this.playerService.getMapService();
+		
+		this.mapIndex=0;
+		this.gameIndex=0;
 		
 		if (this.mapList == null) {
 		this.mapList=new ArrayList<>();
@@ -51,6 +59,10 @@ public class TournamentController {
 		mapList.add("eurasien.map");
 		mapList.add("RiskEurope.map");
 		
+		playerService.setBoolTournamentMode(true);		
+		
+		this.playerService.setTournamentController(this);
+		
 		launchTournament();
 		
 	}
@@ -58,63 +70,98 @@ public class TournamentController {
 	public void launchTournament() {
 		
 		//hardcoded for test purpose
-		numTurns = 50;
+		numTurns = 5;
 		//hardcoded for test purpose 
 		numGames = 5;
 		
 		arrResults=new String[mapList.size()][numGames];
 		
-		for(int i=0;i<mapList.size();i++) {
+		for(mapIndex=0;mapIndex<mapList.size();mapIndex++) {
 			
-			MapLoaderAdapter tournamentMapAdapter = new MapLoaderAdapter(playerService.getMapService());
+			//MapLoaderAdapter tournamentMapAdapter = new MapLoaderAdapter(playerService.getMapService());
 			
-			playerService.notifyPlayerServiceObservers("Begin match on map: "+mapList.get(i));
 			
-			for(int j=0;j<numGames;j++) {
+			for(gameIndex=0;gameIndex<numGames;gameIndex++) {				
 				
-				playerService.setMoveCounter(0);
+				playerService.notifyPlayerServiceObservers("\n\n"+mapList.get(mapIndex)
+				+" Match "+(gameIndex+1));
 				
-				playerService.addPlayer("a", "aggressive");
+				checkAndResetGameStates();
 				
-				playerService.addPlayer("b", "benevolent");
-				
-				playerService.addPlayer("c", "random");
-				
-//				playerService.addPlayer("d", "cheater");
-				
-				playerService.notifyPlayerServiceObservers("Round: "+j);
-				
-				playerService.setNumTurns(numTurns);
-				
-				startupGameController.setBoolMapLoaded(false);
-				
-				startupGameController.setBoolCountriesPopulated(false);
-				
-				startupGameController.loadMap("loadmap "+mapList.get(i));
-				
-				playerService.initialiseDeckCards();
+				//Reset and Load Map Again
+				startupGameController.loadMap("loadmap "+mapList.get(mapIndex));
 				
 				startupGameController.populateCountries();
 				
-				startupGameController.placeAll();
+				startupGameController.placeAll(); //Starts automation	
 				
-				//playerService.automateGame();
+				playerService.removePlayer("a");								
+				playerService.removePlayer("b");				
+				playerService.removePlayer("c");				
+				playerService.removePlayer("d");				
+				playerService.removePlayer("e");
 				
-				playerService.removePlayer("a");
-				playerService.removePlayer("b");
-				playerService.removePlayer("c");
-				//playerService.removePlayer("d");
-				
-			}
+			} //End of Game Iteration
 			
-		}		
+		}	//End of Map Iteration	
 		
-		playerService.notifyPlayerServiceObservers("TOURNAMENT ENDS");
+		
+		playerService.notifyPlayerServiceObservers(new TournamentWrapper(arrResults,mapList));
+		
+		//End Game
+		System.exit(0);
+		
+	}
+	
+	private void checkAndResetGameStates() {
+		
+		playerService.notifyPlayerServiceObservers("Resetting Game States");
+		
+		//Reset numTurns to 0
+		playerService.setMoveCounter(0);
+		
+		//Reset Winner and boolWinner
+		playerService.setBoolPlayerWinner(false);
+		playerService.setPlayerWinner(null);
+		
+		//ResetPlayers
+		//checkAndRemoveExistingPlayers();
+		
+		playerService.addPlayer("a", "aggressive");								
+		playerService.addPlayer("b", "aggressive");				
+		playerService.addPlayer("c", "aggressive");				
+		playerService.addPlayer("d", "cheater");				
+		playerService.addPlayer("e", "aggressive");		
+		
+		playerService.setNumTurns(numTurns);
+		
+		startupGameController.setBoolMapLoaded(false);
+		
+		startupGameController.setBoolCountriesPopulated(false);
+		
+		playerService.initialiseDeckCards();		
 		
 	}
 	
 	
-	
+	private void checkAndRemoveExistingPlayers() {
+		
+		
+		
+		/*
+		 * if(!playerService.getPlayerList().isEmpty()) {
+		 * playerService.notifyPlayerServiceObservers("Resetting Players");
+		 * 
+		 * for(int i=0;i<playerService.getPlayerList().size();i++) {
+		 * playerService.removePlayer(playerService.getPlayerList().get(i).getName()); }
+		 * }
+		 */
+		
+	}
+
+	public void setResult(String strResult) {
+		arrResults[mapIndex][gameIndex]=strResult;
+	}
 	
 	
 	
