@@ -438,19 +438,139 @@ public class Player{
     
     
     //by Keshav
-    //for build 3 -- Copied jenny's code and pasted it here
-    private int reinforcedArmies=0;    
+    //Exchange cards for automated strategies
     
-    public int calculateReinforcedArmies(Player player){
+    public void checkAndExchangeCardsForStrategy(PlayerService playerService) {
+    	this.playerService=playerService;
+    	
+    	if(cardList.size()<3) return; //Cannot exchange  	
+    	
+    	//Create Array containing numOfDifferent Card Types
+    	//Count num of cards of each type and place it in array
+    	
+    	int[] arrCardTypeCount=new int[3];
+   
+    	Card[] arrCardType=new Card[3];
+    	
+    	arrCardType[0]=Card.INFANTRY;
+    	arrCardType[1]=Card.CAVALRY;
+    	arrCardType[2]=Card.ARTILLERY;
+    	
+    	
+    	for(Card c:cardList) {
+    		
+    		if(c==Card.INFANTRY) arrCardTypeCount[0]++;
+    		
+    		else if(c==Card.CAVALRY) arrCardTypeCount[1]++;
+    		
+    		else arrCardTypeCount[2]++;
+    	
+    	}
+    	
+    	//Display total cards info:
+    	
+		String strCardInfo="";
+		strCardInfo+=Card.INFANTRY+": "+arrCardTypeCount[0]+"  ";
+		strCardInfo+=Card.CAVALRY+": "+arrCardTypeCount[1]+" ";
+		strCardInfo+=Card.ARTILLERY+": "+arrCardTypeCount[2]+"\n";
+		
+		playerService.notifyPlayerServiceObservers(strCardInfo);
+    	
+    	//Check similar types of cards first...if possible, exchange
+    	
+    	//Check remainder that will remaining after sets of 3 cards will be exchanged
+    	//Find the number of sets of 3 cards that can be exchanged
+    	//increase tradeInTimes based on num of exchangeable sets
+    	//set new num of cards to remainder
+    	
+    	int numTradeSetsPossible=0;
+    	
+    	for(int i=0;i<arrCardTypeCount.length;i++) {
+    		
+    		int remainderCardsAfterExchange=0;
 
-        reinforcedArmies += playerService.getConqueredCountriesNumber(player)/3;
+    		remainderCardsAfterExchange= (arrCardTypeCount[i] % 3);
+    		
+    		numTradeSetsPossible=(arrCardTypeCount[i]-remainderCardsAfterExchange) / 3;
+    		
+    		if(numTradeSetsPossible<=0) {
+    			playerService.notifyPlayerServiceObservers
+    			("No Similar Card Exchange Possible for "+arrCardType[i]);
+    			
+    			continue; //Go directly to next card type
+    		}
+    		
+    		playerService.notifyPlayerServiceObservers(numTradeSetsPossible
+    				+" Similar Card Exchange Sets Possible for "+arrCardType[i]);
+    		
+    		this.tradeInTimes+=numTradeSetsPossible;
+    		
+    		//Need to actually trade the cards now
+    		//By Removing the cards and returning them to deck
+    		
+    		//Find index at which card occurs for all n cards to be exchanged
+    		//Remove the cards from the player list
+    		//Return the removed cards to the deck again
+    		
+    		for(int j=0;j<(numTradeSetsPossible*3);j++){
+    			
+    			int indexCard=cardList.indexOf(arrCardType[i]);
+    			
+    			playerService.returnToDeck(cardList.remove(indexCard));   			
+    			
+    		}   // End of card exchange for numTradeSets Possible   		
+    		
+    		arrCardTypeCount[i]=remainderCardsAfterExchange; //Set remainder cards remaining
+    		
+    	}  //End of card exchange for for similar card types
+    	
+    	
+    	
+    	//After checking if similar exchanges possible, now check if different set types possible
+    	
+    	//Keep on Exchanging 3 different cards at a time until no more possible
+    	while(arrCardTypeCount[0]>0 && arrCardTypeCount[1]>0 && arrCardTypeCount[2]>0) {
+    		
+    		playerService.notifyPlayerServiceObservers("Exchanged 3 different cards.");
+    		this.tradeInTimes++;
+    		
+    		for(int k=0;k<3;k++) {
+    			
+    			int indexCard=cardList.indexOf(arrCardType[k]);
+    			
+    			playerService.returnToDeck(cardList.remove(indexCard));   
+    			
+    			arrCardTypeCount[k]--;
+    			
+    		}
+    		
+    	} //End of Card Exchanged for different types as well
+    	playerService.notifyPlayerServiceObservers("End Of Card Exchange");
+    	
+    } //End of card exchanges
+    
+    
+    
+    public int calculateReinforcedArmiesBasedOnCardsContinentsCountries(PlayerService playerService){
+    	this.playerService=playerService;
+    	
+    	int reinforcedArmiesForStrategy=0;
 
-        reinforcedArmies += playerService.getReinforcedArmyByConqueredContinents(player);
+    	//For Cards
+    	reinforcedArmiesForStrategy=playerService.calculateReinforcedArmyByTradingCards(this);
+    	
+    	//For Countries
+    	reinforcedArmiesForStrategy += playerService.getConqueredCountriesNumber(this)/3;
 
-        if(reinforcedArmies < 3){ reinforcedArmies = 3; }
+    	//For Continents
+    	reinforcedArmiesForStrategy += playerService.getReinforcedArmyByConqueredContinents(this);
 
-        return reinforcedArmies;
+        if(reinforcedArmiesForStrategy < 3){ reinforcedArmiesForStrategy = 3; }
+
+        return reinforcedArmiesForStrategy;
     }
+    
+    
     
     //We need to move getConqueredCountriesNumber method and getReinforcedArmyByConqueredContinents here in the player itself.
     //You used mapservice for the above 2 methods
@@ -458,6 +578,10 @@ public class Player{
     //Then from playerService just get mapService 
     // Check out fortification controller for example
 
+    
+    //By Keshav
+    
+    
 
 
 
