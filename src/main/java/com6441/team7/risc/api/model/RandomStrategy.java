@@ -1,5 +1,6 @@
 package com6441.team7.risc.api.model;
 
+import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
@@ -20,15 +21,24 @@ public class RandomStrategy implements StrategyPlayer{
 	
 	@Override
 	public void reinforce() {
-
-		int numArmies = player.calculateReinforcedArmies(player);
+		
+		//Check And Exchange Cards
+		player.checkAndExchangeCardsForStrategy(playerService);
+		
+		//Then Calculate Total Num Armies
+		int numReinforcementArmies=player.calculateReinforcedArmiesBasedOnCardsContinentsCountries(playerService);
+		
+		//Then Reinforce Random Country
 		
 		Random rn=new Random();
 		
 		Country randomCountry = player.getCountryList().get(rn.nextInt(player.getCountryList().size()));
 		
 		//player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService());
-		playerService.reinforceArmy(player, randomCountry.getCountryName(), numArmies);
+		playerService.reinforceArmy(player, randomCountry.getCountryName(), numReinforcementArmies);
+		
+		//End Fortification and Move to Attack Phase
+		playerService.getMapService().setState(GameState.ATTACK);
 		
 	}
 	
@@ -42,6 +52,9 @@ public class RandomStrategy implements StrategyPlayer{
 		//Find adjacency country list
 		//Find adjacent country that does not belong to player
 		//Attack that adjacent country
+		
+		Collections.shuffle(player.getCountryList());
+		
 		for(Country c:player.getCountryList()) {
 			
 			boolean boolTargetFound=false;
