@@ -371,23 +371,20 @@ public class PlayerService extends Observable {
 	private double turnNum=1;
 	
 	public void automateGame() {
-		
-		//while(counterGame<numTurnsCombined) {
-			//counterGame++;
-			//System.out.println(counterGame);
 
 			// 3 Random: 1268/3 turns until stack overflow when stack is 256Kb
 			
 			if(boolPlayerWinner) {
+				
 				//send winner
+				//turnNum - 1 for result because winner checked at the start of next turn
+				
 				tournamentController.setResult(winner.getPlayerCategory().getName()+
-						"("+winner.getName()+", numTurns: "+turnNum+")");
+						"("+winner.getName()+", numTurns: "+(turnNum-1)+")");
 				return;
 			}
 			
 			notifyPlayerServiceObservers("Turn: " + Math.ceil(turnNum));
-
-			 //if(counterGame>numTurnsCombined) {
 				
 				if(turnNum>numTurnsCombined) {
 				 if(boolTournamentMode) {
@@ -432,17 +429,12 @@ public class PlayerService extends Observable {
 				currentPlayer.getStrategy().fortify();
 
 			}
-		
-		//} //End of while for numTurns
-		
-		//if (counterGame>numTurnsCombined) {
-		//	notifyPlayerServiceObservers("Exited automated game");
-		//}
 	}
 	
 	public void setNumTurns(int n) {
-		//this.numTurnsCombined=3*n;
+
 		this.numTurnsCombined=n;
+		
 		//reset numturns
 		this.turnNum=1;
 	}

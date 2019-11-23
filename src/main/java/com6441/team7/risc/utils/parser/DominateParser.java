@@ -26,8 +26,6 @@ import static java.util.Objects.isNull;
 /**
  * This class parses Domination map files. This is built on adapter pattern to work with
  * conquest and domination map files.
- * 
- *
  */
 public class DominateParser implements IDominationParser {
     /**
@@ -50,7 +48,11 @@ public class DominateParser implements IDominationParser {
      */
     private AtomicInteger countryIdGenerator;
 
-
+    /**
+     * Constructor for this class, creates new map graph and map intro.
+     * @param countryIdGenerator generates id for countries incrementally
+     * @param continentIdGenerator generates id for continent incrementally
+     */
     public DominateParser(AtomicInteger countryIdGenerator, AtomicInteger continentIdGenerator){
         this.continentIdGenerator = continentIdGenerator;
         this.countryIdGenerator = countryIdGenerator;
@@ -58,6 +60,12 @@ public class DominateParser implements IDominationParser {
         this.mapIntro = new MapIntro();
     }
 
+    /**
+     * Method to save domination map file from mapService and with given file name
+     * @param fileName Name of file to be saved in.
+     * @param mapService details of map to get from
+     * @return returns true if successfully saved domination map file.
+     */
     @Override
     public boolean saveDominateMap(String fileName, MapService mapService) {
         String mapIntro = getMapIntroString();
@@ -94,9 +102,9 @@ public class DominateParser implements IDominationParser {
     }
 
     /**
-     * get continents string
-     * @return
-     * @param mapService
+     * Returns continents in string format from mapservice
+     * @param mapService provides map details for use in method
+     * @return returns continents in string format
      */
     private String getContinentString(MapService mapService) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -107,14 +115,13 @@ public class DominateParser implements IDominationParser {
 
         });
 
-
         return stringBuilder.toString();
     }
 
     /**
-     * get string of countries
-     * @return arrays of string
-     * @param mapService
+     * Returns countries in string format from mapservice
+     * @param mapService provides map details for use in method
+     * @return returns territories in string format
      */
     private String getCountryString(MapService mapService) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -131,9 +138,9 @@ public class DominateParser implements IDominationParser {
     }
 
     /**
-     * get border
-     * @return
-     * @param mapService
+     * Returns borders between countries similar to in map file in string format from mapservice
+     * @param mapService provides map details for use in method
+     * @return returns borders between countries for all countries in string format
      */
     private String getBorderString(MapService mapService) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -148,7 +155,10 @@ public class DominateParser implements IDominationParser {
         return stringBuilder.toString();
     }
 
-
+    /**
+     * shows domination map file on view
+     * @param mapService Map details are pulled from
+     */
     @Override
     public void showDominateMap(MapService mapService) {
         mapService.printCountryInfo();
@@ -156,6 +166,13 @@ public class DominateParser implements IDominationParser {
         mapService.printNeighboringCountryInfo();
     }
 
+    /**
+     * Method for trying to read and parse domination map file
+     * @param fileName name of domination map file. Must include its extension.
+     * @param view to display the result of what happened when trying to read and parse.
+     * @param mapService provides map details for use in method.
+     * @return returns boolean value true if map can be successfully used in game
+     */
     @Override
     public boolean readDominateMapFile(String fileName, GameView view, MapService mapService) {
         String file = CommonUtils.readFile(fileName);
@@ -170,8 +187,9 @@ public class DominateParser implements IDominationParser {
 
 
     /**
-     * create a new map if the map file name does not exist
-     * @param name
+     * if there is no existing map file, new map file with given name is created.
+     * @param name name of map file to be created 
+     * @param view result to be displayed when creating file
      */
     private void createFile(String name, GameView view) {
 
@@ -185,11 +203,11 @@ public class DominateParser implements IDominationParser {
     }
 
     /**
-     * read existing map and create continent, country and its neighbors.
-     * @param s exsting map as a string
-     * @param view
-     * @param mapService
-     * @return
+     * Parse existing map file and create continent, country and its neighbors.
+     * @param s string that is to be split and divided up
+     * @param view result to be displayed when parsing
+     * @param mapService provides map details for use in method
+     * @return returns true is map is successfully parsed
      */
     boolean parseFile(String s, GameView view, MapService mapService) {
         String[] parts = StringUtils.split(s, "[");
@@ -200,7 +218,7 @@ public class DominateParser implements IDominationParser {
             }
 
             parseMapIntro(parts[0]);
-            parseMapGraphInfo(parts[1], mapService);
+            parseMapGraphInfo(parts[1]);
             parseRawContinents(parts[2], mapService);
             parseRawCountries(parts[3], mapService);
             parseRawNeighboringCountries(parts[4], mapService);
@@ -216,29 +234,27 @@ public class DominateParser implements IDominationParser {
 
 
     /**
-     * add map introduction information
-     * @param part
+     * store map introduction information in mapIntro
+     * @param part intro part of domination map file in string format
      */
     void parseMapIntro(String part){
         mapIntro.setMapIntro(part);
     }
 
     /**
-     * add map graph information
-     * @param part
-     * @param mapService
+     * add map graph visual information to mapGraph
+     * @param part Graph information for map file in string format
      */
-    void parseMapGraphInfo(String part, MapService mapService){
-
+    void parseMapGraphInfo(String part){
         mapGraph.setMapGraph(StringUtils.substringAfter(part, "]\r\n"));
     }
 
     /**
      * read continent string from existing map and split it with new line,
-     * for each line, call createContinentFromRaw to create new continent.
-     * @param part continent string
-     * @param mapService
-     * @return
+     * for each line, call {@link #createCountryFromRaw(String, MapService)} to create new continent.
+     * @param mapService continent's details are saved in mapService
+     * @param part continent names in string format
+     * @return returns set of continents that have been successfully parsed
      */
     Set<Continent> parseRawContinents(String part, MapService mapService) {
         String continentInfo = StringUtils.substringAfter(part, "]\r\n");
@@ -258,17 +274,18 @@ public class DominateParser implements IDominationParser {
     /**
      * read continent string from the existing map file and save each valid continent to the mapService
      * if the continent is not valid, will throw an exception
-     * @param s continent string
-     * @return
+     * @throws ContinentParsingException invalid continent format
+     * @param continentString name of continent in string format
+     * @return returns continent object created from string
      */
-    private Continent createContinentFromRaw(String s) {
+    private Continent createContinentFromRaw(String continentString) {
 
         try {
 
-            String[] continentInfo = StringUtils.split(s, RiscConstants.WHITESPACE);
+            String[] continentInfo = StringUtils.split(continentString, RiscConstants.WHITESPACE);
 
             if (isNull(continentInfo) || continentInfo.length != 3) {
-                throw new ContinentParsingException("continent: " + s + " is not valid ");
+                throw new ContinentParsingException("continent: " + continentString + " is not valid ");
             }
 
             String name = convertFormat(continentInfo[0]);
@@ -288,10 +305,10 @@ public class DominateParser implements IDominationParser {
 
     /**
      * read country string from existing map and split it with new line,
-     * for each line, call createCountryFromRaw to create new country.
-     * @param
-     * @param mapService
-     * @return
+     * for each line, call {@link #createCountryFromRaw(String, MapService)} to create new country.
+     * @param mapService saves countries details to mapService
+     * @param part countries names list in string format
+     * @return set of countries object that are parsed successfully
      */
     Set<Country> parseRawCountries(String part, MapService mapService) {
         String countryInfo = StringUtils.substringAfter(part, "]\r\n");
@@ -308,16 +325,17 @@ public class DominateParser implements IDominationParser {
     /**
      * read country string from the existing map file and save each valid country to the mapService
      * if the country is not valid, will throw an exception
-     * @param s
-     * @param mapService
-     * @return
+     * @param mapService provides map details for use in method
+     * @param countryString countries name list in string format 
+     * @throws CountryParsingException when country cannot be parsed.
+     * @return returns country thats been parsed successfully
      */
-    private Country createCountryFromRaw(String s, MapService mapService) {
+    private Country createCountryFromRaw(String countryString, MapService mapService) {
         try {
-            String[] countryInfo = StringUtils.split(s, " ");
+            String[] countryInfo = StringUtils.split(countryString, " ");
 
             if (countryInfo.length != 5) {
-                throw new CountryParsingException("country: " + s + " is not valid.");
+                throw new CountryParsingException("country: " + countryString + " is not valid.");
             }
 
             int countryId = Integer.parseInt(countryInfo[0]);
@@ -327,7 +345,7 @@ public class DominateParser implements IDominationParser {
             int coordinateY = Integer.parseInt(countryInfo[4]);
 
             if (mapService.continentIdNotExist(continentId)) {
-                throw new CountryParsingException("country: " + s + " contains invalid continent information");
+                throw new CountryParsingException("country: " + countryString + " contains invalid continent information");
             }
 
             String continentName = mapService.findCorrespondingNameByContidentId(continentId).get();
@@ -344,10 +362,10 @@ public class DominateParser implements IDominationParser {
     }
 
     /**
-     * read strings from the existing file, save neighboring countries info in the mapServer
+     * read strings from the existing file, save neighboring countries info in the mapService
+     * @param mapService neighboring countries' map details are saved.
      * @param part string for borders(neighboring countries)
-     * @param mapService
-     * @return
+     * @return returns a pair of keys - country and values - its neighbors, where neighbors are a set.
      */
     Map<Integer, Set<Integer>> parseRawNeighboringCountries(String part, MapService mapService) {
 
@@ -371,10 +389,10 @@ public class DominateParser implements IDominationParser {
 
 
     /**
-     * read neighboring countries id
+     * read neighboring countries id from file and returns them as List of integers
+     * @param mapService provides map details for use in method
      * @param s a line for neighboring countries
-     * @param mapService
-     * @return
+     * @return List of integers of neighboring countries
      */
     private List<Integer> createAdjacencyCountriesFromRaw(String s, MapService mapService) {
         List<String> adjacency = Arrays.asList(StringUtils.split(s, WHITESPACE));
@@ -389,9 +407,10 @@ public class DominateParser implements IDominationParser {
 
     /**
      * throw an exception when neighboring countries id is not valid or is not an integer
-     * @param s
-     * @param adjacency
-     * @param mapService
+     * @param s name of country whose ID need to be validated
+     * @param adjacency list of countries names in string format
+     * @param mapService provides map details for use in method
+     * @throws NeighborParsingException throws this exception when country has invalid country ID
      */
     private void throwWhenNeighbouringCountriesIdInvalid(String s, List<String> adjacency, MapService mapService) {
         adjacency.stream()
@@ -410,8 +429,9 @@ public class DominateParser implements IDominationParser {
 
     /**
      * throw an exception if the country been read does not have neighboring country
-     * @param s
-     * @param adjacency
+     * @param s Name of country whose neighbors need to be validated
+     * @param adjacency entry of country in map file
+     * @throws NeighborParsingException When country has no neighbors
      */
     private void throwWhenNoNeighboringCountry(String s, List<String> adjacency) {
         if (adjacency.size() <= 1) {
@@ -422,7 +442,7 @@ public class DominateParser implements IDominationParser {
     /**
      * check country id is not valid
      * @param id id to be checked
-     * @param mapService
+     * @param mapService map details to be pulled from.
      * @return true if country id is not valid
      */
     private boolean isCountryIdNotValid(int id, MapService mapService) {
@@ -431,8 +451,9 @@ public class DominateParser implements IDominationParser {
 
     /**
      * delete whitespace and lower cases the string
-     * @param name
-     * @return
+     *
+     * @param name string which need to be formatted
+     * @return returns coverted string
      */
     private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
@@ -456,15 +477,15 @@ public class DominateParser implements IDominationParser {
 
     /**
      * get mapIntro in string
-     * @return
+     * @return returns mapIntro in string format
      */
     private String getMapIntroString(){
         return mapIntro.getMapIntro();
     }
 
     /**
-     * get maptGraph in strings
-     * @return
+     * get mapGraph in strings
+     * @return returns mapGraph in string format
      */
     private String getMapGraphString(){
         return mapGraph.getMapGraph();
