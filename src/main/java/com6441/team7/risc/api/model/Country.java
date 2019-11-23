@@ -205,13 +205,16 @@ public class Country{
      */
     public void setSoldiers(Integer soldiers) {
     	
-    	//soldiers are reset to 100 when int limit exceeded
-    	if(this.soldiers > 200000) {
+    	//soldiers are reset to 100 when int limit exceeded (especially for cheater)
+    	if(this.soldiers > 1000000) {
     		this.soldiers = 100;
     		return;
     	} 
     	
-        this.soldiers = soldiers;       
+        this.soldiers = soldiers; 
+        
+        //For showing Observer Pattern during demo, commented code below not removed.
+        
         //setChanged();
         //notifyObservers(this);
         
