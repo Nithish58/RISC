@@ -204,6 +204,13 @@ public class Country{
      * @param soldiers Soldiers
      */
     public void setSoldiers(Integer soldiers) {
+    	
+    	//soldiers are reset to 100 when int limit exceeded
+    	if(this.soldiers > 200000) {
+    		this.soldiers = 100;
+    		return;
+    	} 
+    	
         this.soldiers = soldiers;       
         //setChanged();
         //notifyObservers(this);
