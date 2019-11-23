@@ -319,7 +319,13 @@ public class PlayerService extends Observable {
 				Player removedPlayer=listPlayers.remove(i);
 
 				if(currentPlayerIndex>i) {
-					setCurrentPlayerIndex((currentPlayerIndex-1));
+					
+					//setCurrentPlayerIndex((currentPlayerIndex-1));
+					this.currentPlayerIndex=(currentPlayerIndex-1);
+					
+					currentPlayer=listPlayers.get(currentPlayerIndex);
+					
+					
 				}
 				
 				//Add Player to Wrapper function and send wrapper function to observers
@@ -733,7 +739,6 @@ public class PlayerService extends Observable {
 		notifyObservers(listPlayerDomination);
 
 	}
-
 	
 }
 

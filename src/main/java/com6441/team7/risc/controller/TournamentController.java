@@ -50,7 +50,7 @@ public class TournamentController {
 		
 		if (this.mapList == null) {
 		this.mapList=new ArrayList<>();
-		}
+		}		
 		
 		//Hardcoded:
 		mapList.add("ameroki.map");
