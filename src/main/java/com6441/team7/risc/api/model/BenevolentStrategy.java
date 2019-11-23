@@ -27,13 +27,11 @@ public class BenevolentStrategy implements StrategyPlayer {
 	@Override
 	public void reinforce() {
 
-		// It makes no sense to call player's calculate reinf armies method and then
-		// pass it as param.
-		// Just follow the format we did for attack and fortify and expose the player
-		// for reinforcement
+		//Check And Exchange Cards
+		player.checkAndExchangeCardsForStrategy(playerService);
 		
-		//Calculate reinforcement
-		int numArmies = calculateReinforcedBenevolentArmies(player);
+		//Then Calculate Total Num Armies
+		int numReinforcementArmies=player.calculateReinforcedArmiesBasedOnCardsContinentsCountries(playerService);
 
 		// get list of player's countries and sort it
 		ArrayList<Country> weakCountries = player.getCountryList();
@@ -51,10 +49,13 @@ public class BenevolentStrategy implements StrategyPlayer {
 		Country weakestCountry = weakCountries.get(0);
 		
 		playerService.notifyPlayerServiceObservers(weakestCountry.getCountryName()+" has "+weakestCountry.getSoldiers()+ " soldier(s)"
-				+ " and will be receive "+numArmies+" reinforcement(s)");
+				+ " and will receive "+numReinforcementArmies+" reinforcement(s)");
 
-		// Reinforce the country with the smallest number of soldiers
-		player.reinforceArmy(weakestCountry.getCountryName(), numArmies, playerService.getMapService());
+		//Reinforce country with smallest num soldiers
+		playerService.reinforceArmy(player, weakestCountry.getCountryName(), numReinforcementArmies);
+		
+		//End Fortification and Move to Attack Phase
+		playerService.getMapService().setState(GameState.ATTACK);
 
 	}
 
