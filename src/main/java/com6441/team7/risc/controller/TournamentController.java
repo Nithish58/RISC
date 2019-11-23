@@ -78,9 +78,6 @@ public class TournamentController {
 		
 		for(mapIndex=0;mapIndex<mapList.size();mapIndex++) {
 			
-			//MapLoaderAdapter tournamentMapAdapter = new MapLoaderAdapter(playerService.getMapService());
-			
-			
 			for(gameIndex=0;gameIndex<numGames;gameIndex++) {				
 				
 				playerService.notifyPlayerServiceObservers("\n\n"+mapList.get(mapIndex)
@@ -127,10 +124,10 @@ public class TournamentController {
 		//ResetPlayers
 		//checkAndRemoveExistingPlayers();
 		
-		playerService.addPlayer("a", "aggressive");								
-		playerService.addPlayer("b", "aggressive");				
-		playerService.addPlayer("c", "aggressive");				
-		playerService.addPlayer("d", "cheater");				
+		playerService.addPlayer("a", "benevolent");								
+		playerService.addPlayer("b", "cheater");				
+		playerService.addPlayer("c", "benevolent");				
+		playerService.addPlayer("d", "benevolent");				
 		playerService.addPlayer("e", "aggressive");		
 		
 		playerService.setNumTurns(numTurns);
