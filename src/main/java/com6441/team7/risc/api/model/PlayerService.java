@@ -370,7 +370,7 @@ public class PlayerService extends Observable {
 	
 	private int counterGame=0;
 	
-	private int numTurnsCombined=3000;
+	private int numTurnsCombined=1000;
 	
 	private TournamentController tournamentController;
 	
@@ -429,8 +429,8 @@ public class PlayerService extends Observable {
 
 				}
 
-				// currentPlayer.getStrategy().reinforce();
-				this.mapService.setState(GameState.ATTACK);
+				currentPlayer.getStrategy().reinforce();
+				//this.mapService.setState(GameState.ATTACK);
 				currentPlayer.getStrategy().attack();
 				currentPlayer.getStrategy().fortify();
 
