@@ -3,7 +3,7 @@
 ; Risk board Game Map with the roman empire provinces
 ; Dimensions: 677 x 425 Pixels
 
-name Roman Empire Map
+countryName Roman Empire Map
 
 [files]
 pic roman_empire_pic.png

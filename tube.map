@@ -4,7 +4,7 @@
 ; London Zone 1 Tube Map
 ; Dimensions: 677 x 425 Pixels
 
-name Tube Map
+countryName Tube Map
 
 [files]
 pic tube_pic.png

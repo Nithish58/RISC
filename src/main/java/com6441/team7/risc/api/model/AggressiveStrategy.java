@@ -56,7 +56,7 @@ public class AggressiveStrategy implements StrategyPlayer {
 		Country defenderCountry=null;
 
 		// get list of player's countries
-		ArrayList<Country> attackerCountries = player.getCountryList();
+		ArrayList<Country> attackerCountries = player.getCountryPlayerList();
 
 		Collections.sort(attackerCountries, new Comparator<Country>() {
 
@@ -247,14 +247,14 @@ public class AggressiveStrategy implements StrategyPlayer {
 		Country maxCountry = null;
 
 		// Get largest number of armies owned by the player
-		for (int i = 0; i < player.getCountryList().size(); i++) {
-			if (player.getCountryList().get(i).getSoldiers() > maxArmy) {
+		for (int i = 0; i < player.getCountryPlayerList().size(); i++) {
+			if (player.getCountryPlayerList().get(i).getSoldiers() > maxArmy) {
 				
 				//Get number of soldiers owned by the country
-				maxArmy = player.getCountryList().get(i).getSoldiers();
+				maxArmy = player.getCountryPlayerList().get(i).getSoldiers();
 				
 				// Get country with max num of soldiers using maxCountryIndex
-				maxCountry = player.getCountryList().get(i);
+				maxCountry = player.getCountryPlayerList().get(i);
 			}
 		}
 
@@ -349,7 +349,7 @@ public void attackBinsar() {
 	Country attackerCountry = null;
 
 	// get list of player's countries
-	ArrayList<Country> attackerCountries = player.getCountryList();
+	ArrayList<Country> attackerCountries = player.getCountryPlayerList();
 
 	Collections.sort(attackerCountries, new Comparator<Country>() {
 
@@ -378,8 +378,8 @@ public void attackBinsar() {
 		
 		while (defenderCountry == null) {
 			for (Integer i : attackerCountryAdjacencyList) {
-				if (!playerService.getMapService().getCountryById(i).get().getPlayer().getName()
-						.equals(player.getName())) {
+				if (!playerService.getMapService().getCountryById(i).get().getPlayer().getCountryName()
+						.equals(player.getCountryName())) {
 					
 					attackerCountry = c;
 					

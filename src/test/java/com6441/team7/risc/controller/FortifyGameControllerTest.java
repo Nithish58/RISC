@@ -123,7 +123,7 @@ public class FortifyGameControllerTest {
 		Player currentPlayer=playerService.getCurrentPlayer();
 		
 		//Get first country in player list
-		Country fromCountry=currentPlayer.getCountryList().get(0);
+		Country fromCountry=currentPlayer.getCountryPlayerList().get(0);
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromCountry.getId());
 		
 		//Get first adjacent country in country's list
@@ -194,7 +194,7 @@ public class FortifyGameControllerTest {
 		Player currentPlayer=playerService.getCurrentPlayer();
 		
 		//Get first country in player list
-		Country fromCountry=currentPlayer.getCountryList().get(0);
+		Country fromCountry=currentPlayer.getCountryPlayerList().get(0);
 		
 		String strInvalidCountryName="wafafdfadadfsfdsasafdfsrfafbgskfsbikbfkibaisfkbasikfvbsfvziks";
 		
@@ -225,11 +225,11 @@ public class FortifyGameControllerTest {
 		
 		//Get first country in current player list
 		Player currentPlayer=playerService.getCurrentPlayer();
-		Country fromCountry=currentPlayer.getCountryList().get(0);
+		Country fromCountry=currentPlayer.getCountryPlayerList().get(0);
 		
 		//Get first country in next player list
 		Player nextPlayer=playerService.getNextPlayer();
-		Country toCountry=nextPlayer.getCountryList().get(0);
+		Country toCountry=nextPlayer.getCountryPlayerList().get(0);
 		
 		//Set valid numbers for numSoldiers
 		fromCountry.setSoldiers(5);
@@ -267,8 +267,8 @@ public class FortifyGameControllerTest {
 		
 		//Get first country in current player list
 		Player currentPlayer=playerService.getCurrentPlayer();
-		Country fromCountry=currentPlayer.getCountryList().get(0);
-		Country toCountry=currentPlayer.getCountryList().get(0);
+		Country fromCountry=currentPlayer.getCountryPlayerList().get(0);
+		Country toCountry=currentPlayer.getCountryPlayerList().get(0);
 		
 		String strFortificationCommand="fortify "+fromCountry.getCountryName()+" "+
 		toCountry.getCountryName()+" "+1;
@@ -306,7 +306,7 @@ public class FortifyGameControllerTest {
 		
 		//Get first country in current player list
 		Player currentPlayer=playerService.getCurrentPlayer();
-		Country fromCountry=currentPlayer.getCountryList().get(0);
+		Country fromCountry=currentPlayer.getCountryPlayerList().get(0);
 		
 		//Get adjacent country in chosen country and set owner to current player
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromCountry.getId());
@@ -360,7 +360,7 @@ public class FortifyGameControllerTest {
 		
 		//Get first country in current player list
 		Player currentPlayer=playerService.getCurrentPlayer();
-		Country fromCountry=currentPlayer.getCountryList().get(0);
+		Country fromCountry=currentPlayer.getCountryPlayerList().get(0);
 		
 		//Get adjacent country in chosen country and set owner to current player
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromCountry.getId());
@@ -415,7 +415,7 @@ public class FortifyGameControllerTest {
 				Player nextPlayer=playerService.getNextPlayer();
 				
 				//Get first country in player list
-				Country fromCountry=nextPlayer.getCountryList().get(0);
+				Country fromCountry=nextPlayer.getCountryPlayerList().get(0);
 				Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromCountry.getId());
 				
 				//Get first adjacent country in country's list

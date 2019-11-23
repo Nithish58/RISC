@@ -11,4 +11,5 @@ public interface Controller {
      * @throws Exception on invalid value
      */
     void readCommand(String command) throws Exception;
+
 }

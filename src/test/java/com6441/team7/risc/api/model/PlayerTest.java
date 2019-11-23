@@ -105,7 +105,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
 		// number of
@@ -183,7 +183,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCountry is set to 100 to ensure that a valid
 		// number of
@@ -271,11 +271,11 @@ public class PlayerTest {
 	public void test005_checkPlayerWinTheGame() throws Exception{
 		System.out.println("Check if the attacker owns all countries and wins the entire game");
 		Player currentPlayer = playerService.getCurrentPlayer();
-		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
+		System.out.println("Attacker country list size: " + currentPlayer.getCountryPlayerList().size());
 		System.out.println("Total country list  size: " + mapService.getCountries().size());
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 		
 		Set<Integer> fromCountryAdjacencyList = mapService.getAdjacencyCountries(fromAttackCountry.getId());
 
@@ -305,13 +305,13 @@ public class PlayerTest {
 		for (Player p : playerService.getPlayerList()) {
 
 			if (!p.getName().equals(fromAttackCountry.getPlayer().getName()))
-				for (Country c : p.getCountryList()) {
+				for (Country c : p.getCountryPlayerList()) {
 					if (!c.getCountryName().equals(toAttackCountry.getCountryName())) {
-					toAttackCountry.getPlayer().getCountryList().remove(c.getId());
-					currentPlayer.getCountryList().add(c);
+					toAttackCountry.getPlayer().getCountryPlayerList().remove(c.getId());
+					currentPlayer.getCountryPlayerList().add(c);
 					System.out.println("Transfer "+c.getCountryName()+ " from "+p.getName());
 					System.out.println();
-					System.out.println(currentPlayer.getName()+" has "+currentPlayer.getCountryList().size()+" num of countries");
+					System.out.println(currentPlayer.getName()+" has "+currentPlayer.getCountryPlayerList().size()+" num of countries");
 					}
 					else
 						System.out.println("Same country. It's "+c.getCountryName());
@@ -331,23 +331,23 @@ public class PlayerTest {
 		playerAttackWrapper = new PlayerAttackWrapper(fromAttackCountry, toAttackCountry);
 
 		// Call the attack function
-		System.out.println(currentPlayer.getCountryList().size());
+		System.out.println(currentPlayer.getCountryPlayerList().size());
 		System.out.println(playerService.getMapService().getCountries().size());
 		currentPlayer.attack(playerService, playerAttackWrapper);
 
 		
 		//Regardless of the attack result, the ownership of the defender's last remaining country
 		//will be transfered to the attacker
-		toAttackCountry.getPlayer().getCountryList().remove(toAttackCountry.getCountryName());
-		currentPlayer.getCountryList().add(toAttackCountry);
+		toAttackCountry.getPlayer().getCountryPlayerList().remove(toAttackCountry.getCountryName());
+		currentPlayer.getCountryPlayerList().add(toAttackCountry);
 		
-		System.out.println("Attacker country list size after transfer: " + currentPlayer.getCountryList().size());
+		System.out.println("Attacker country list size after transfer: " + currentPlayer.getCountryPlayerList().size());
 		System.out.println("Total country list  size after: " + mapService.getCountries().size());
 
 		// This is for checking the condition after attack
 		boolean isTrue = false;
 
-		System.out.println("Attacker country list size: " + currentPlayer.getCountryList().size());
+		System.out.println("Attacker country list size: " + currentPlayer.getCountryPlayerList().size());
 		System.out.println("Total country list  size: " + mapService.getCountries().size());
 		// If either one of the countries' loses a soldier, isTrue is set to true
 		if (currentPlayer.checkPlayerWin())
@@ -367,7 +367,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
 		// number of
@@ -424,7 +424,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 1
 		fromAttackCountry.setSoldiers(1);
@@ -490,7 +490,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 100 to ensure that a valid
 		// number of
@@ -558,7 +558,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
 		// number of
@@ -616,7 +616,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
 		// number of
@@ -673,7 +673,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCountry is set to 3 to ensure that a valid
 		// number of
@@ -716,7 +716,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 4 to ensure that a valid
 		// number of
@@ -777,7 +777,7 @@ public class PlayerTest {
 		Player currentPlayer = playerService.getCurrentPlayer();
 
 		// Get first country in player list
-		Country fromAttackCountry = currentPlayer.getCountryList().get(0);
+		Country fromAttackCountry = currentPlayer.getCountryPlayerList().get(0);
 
 		// numbers of soldiers on fromAttackCouuntry is set to 1000 to ensure that a valid
 		// number of

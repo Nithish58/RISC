@@ -10,11 +10,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 import static com6441.team7.risc.api.RiscConstants.MAX_NUM_PLAYERS;
 
+import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.api.model.StartupStateEntity;
+import com6441.team7.risc.utils.SaveGameUtils;
 import com6441.team7.risc.utils.builder.IBuilder;
 import org.apache.commons.lang3.StringUtils;
 
-import com6441.team7.risc.api.model.PlayerService;
-import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.api.wrapperview.PlayerInitialArmyWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerInitialCountryAssignmentWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerPlaceArmyWrapper;
@@ -22,10 +23,6 @@ import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.api.exception.PlayerEditException;
-import com6441.team7.risc.api.model.Country;
-import com6441.team7.risc.api.model.GameState;
-import com6441.team7.risc.api.model.MapService;
-import com6441.team7.risc.api.model.Player;
 
 /**
  * 
@@ -82,6 +79,9 @@ public class StartupGameController implements Controller{
 	 */
 	private boolean[] boolArrayCountriesPlaced;
 
+
+	private boolean boolAllCountriesPlaced;
+
 	/**
 	 * private Controller mapLoaderAdapter;
 	 */
@@ -103,6 +103,7 @@ public class StartupGameController implements Controller{
 	private GameView phaseView;
 
 
+
 	/**
 	 * constructor to set mapController and playerService
 	 * @param mapController MapController
@@ -120,6 +121,7 @@ public class StartupGameController implements Controller{
 		this.boolCountriesPopulated=false;		
 
 	}
+
 
 	/**
 	 * set the view
@@ -296,7 +298,11 @@ public class StartupGameController implements Controller{
         case EXIT:
         	CommonUtils.endGame(phaseView);
         	break;
-        	
+
+		case SAVEGAME:
+			saveGame();
+			break;
+
         default:
             throw new IllegalArgumentException("cannot recognize this command");
 
@@ -308,7 +314,7 @@ public class StartupGameController implements Controller{
     
     /**
 	 * load map from the map file
-	 * @param mapname
+	 * @param s mapname
 	 * @return a string instead of null if map not loaded successfully, that is why optional is used/
 	 */
 	Optional<String> loadMap(String s) {
@@ -655,7 +661,7 @@ public class StartupGameController implements Controller{
     	//if yes: switch to next player, else place army
     	if(!boolArrayCountriesPlaced[currentPlayerIndex]) {
     		
-    		for(Country c:currentPlayer.getCountryList()) {
+    		for(Country c:currentPlayer.getCountryPlayerList()) {
     		    
         		if(countryName.equalsIgnoreCase(c.getCountryName())) {
         			countryFound=true;
@@ -691,7 +697,7 @@ public class StartupGameController implements Controller{
         		}
         		
         		//IF ALL Players have numArmies 0: Startup Phase Over, Switch To Next Phase 
-        		boolean boolAllCountriesPlaced=true;
+        		 boolAllCountriesPlaced=true;
         		
         		for(boolean b: boolArrayCountriesPlaced) {
         			
@@ -702,7 +708,6 @@ public class StartupGameController implements Controller{
         		}
         		
         		if(boolAllCountriesPlaced) {
-        			
         			phaseView.displayMessage("All Armies Placed for all players.\n.");
         			
         			playerService.setCurrentPlayerIndex(0);
@@ -741,14 +746,14 @@ public class StartupGameController implements Controller{
     		while(p.getArmies()>0) {
     			
     			//random placement + decrement random range size TO AVOID COLLISIONS
-    			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.getCountryList().size());
+    			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.getCountryPlayerList().size());
     			
-    			p.countryPlayerList.get(randomIndex).addSoldiers(1);
+    			p.getCountryPlayerList().get(randomIndex).addSoldiers(1);
     			p.reduceArmy(1);
     			
     			//Notify Observers - Same as placeArmy
     			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
-    			=new PlayerPlaceArmyWrapper(p,p.countryPlayerList.get(randomIndex));
+    			=new PlayerPlaceArmyWrapper(p,p.getCountryPlayerList().get(randomIndex));
     			
     			playerService.notifyPlayerServiceObservers(playerPlaceArmyWrapper);
     			
@@ -809,5 +814,58 @@ public class StartupGameController implements Controller{
 	public void setBoolCountriesPopulated(boolean b) {
 		this.boolCountriesPopulated = b;
 	}
-	
+
+
+	public void setStatus(StartupStateEntity startupStateEntity){
+		this.boolCountriesPopulated = startupStateEntity.isBoolCountriesPopulated();
+		this.boolMapLoaded = startupStateEntity.isBoolMapLoaded();
+		this.boolAllGamePlayersAdded = startupStateEntity.isBoolAllGamePlayersAdded();
+		this.boolGamePlayerAdded = startupStateEntity.isBoolGamePlayerAdded();
+		this.boolAllCountriesPlaced = startupStateEntity.isBoolAllCountriesPlaced();
+	}
+
+	public void saveGame(){
+
+
+		if(!boolCountriesPopulated){
+			phaseView.displayMessage("sorry we only accept save map after populating countries");
+			return;
+		}
+
+
+		if(!boolAllCountriesPlaced){
+			playerService.setCommand("placeall");
+		}
+
+		save(mapService, playerService);
+		phaseView.displayMessage("game has successfully saved!");
+	}
+
+	private void save(MapService mapService, PlayerService playerService){
+
+		GameStatusEntity gameStatusEntity = new GameStatusEntity();
+		 MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
+		 PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();
+		 StartupStateEntity startupStateEntity =  StartupStateEntity.StartupStateEntityBuilder.newInstance().boolMapLoaded(boolMapLoaded)
+				.boolGamePlayerAdded(boolGamePlayerAdded)
+				.boolAllGamePlayersAdded(boolAllGamePlayersAdded)
+				.boolCountriesPopulated(boolCountriesPopulated)
+				.boolAllCountriesPlaced(boolAllCountriesPlaced)
+				.build();
+
+		 gameStatusEntity.setPlayerStatusEntity(playerStatusEntity);
+		 gameStatusEntity.setMapStatusEntity(mapStatusEntity);
+		 gameStatusEntity.setStartupStateEntity(startupStateEntity);
+		 SaveGameUtils.saveGame(gameStatusEntity);
+
+	}
+
+
+	public boolean isBoolAllCountriesPlaced() {
+		return boolAllCountriesPlaced;
+	}
+
+	public void setBoolAllCountriesPlaced(boolean boolAllCountriesPlaced) {
+		this.boolAllCountriesPlaced = boolAllCountriesPlaced;
+	}
 }   //END OF CLASS

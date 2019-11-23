@@ -148,7 +148,7 @@ public class MapService extends Observable {
             continentCountriesMap.put(continent.getId(), new HashSet<>());
         }
 
-        // view.displayMessage("continent " + continent.getName() + " is successfully added.");
+        // view.displayMessage("continent " + continent.getCountryName() + " is successfully added.");
 
     }
 
@@ -989,5 +989,43 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
+    public MapStatusEntity getMapStatusEntity(){
+        return MapStatusEntity.MapStatusEntityBuilder.newInstance()
+                .continents(continents)
+                .countries(countries)
+                .continentCountriesMap(continentCountriesMap)
+                .adjacencyCountriesMap(adjacencyCountriesMap)
+                .gameState(gameState)
+                .build();
+    }
 
+
+    public void setContinents(Set<Continent> continents) {
+        this.continents = continents;
+    }
+
+    public void setCountries(Set<Country> countries) {
+        this.countries = countries;
+    }
+
+    public void setAdjacencyCountriesMap(Map<Integer, Set<Integer>> adjacencyCountriesMap) {
+        this.adjacencyCountriesMap = adjacencyCountriesMap;
+    }
+
+    public void setContinentCountriesMap(Map<Integer, Set<Integer>> continentCountriesMap) {
+        this.continentCountriesMap = continentCountriesMap;
+    }
+
+    public void setDirectedGraph(Graph<Integer, DefaultEdge> directedGraph) {
+        this.directedGraph = directedGraph;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public void notifyMapServiceObservers(MapStatusEntity mapStatusEntity) {
+        setChanged();
+        notifyObservers(mapStatusEntity);
+    }
 }

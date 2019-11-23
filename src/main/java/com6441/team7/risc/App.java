@@ -34,20 +34,24 @@ public class App {
         ReinforceGameController reinforceGameController = new ReinforceGameController(playerService);
         FortifyGameController fortifyGameController = new FortifyGameController(playerService);
         AttackGameController attackController = new AttackGameController(playerService);
+        LoadGameController loadGameController = new LoadGameController(mapService, playerService);
 
         controllerList.add(mapLoaderAdapter);
         controllerList.add(startupGameController);
         controllerList.add(reinforceGameController);
         controllerList.add(fortifyGameController);
         controllerList.add(attackController);
+        controllerList.add(loadGameController);
 
         phaseView.addController(controllerList);
+        loadGameController.setControllers(controllerList);
 
         mapLoaderAdapter.setView(phaseView);
         startupGameController.setView(phaseView);
         reinforceGameController.setView(phaseView);
         fortifyGameController.setView(phaseView);
         attackController.setView(phaseView);
+        loadGameController.setView(phaseView);
 
         mapService.addObserver(phaseView);
         mapService.addObserver(dominationView);

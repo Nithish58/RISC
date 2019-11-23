@@ -153,7 +153,7 @@ public class TournamentController {
 		 * playerService.notifyPlayerServiceObservers("Resetting Players");
 		 * 
 		 * for(int i=0;i<playerService.getPlayerList().size();i++) {
-		 * playerService.removePlayer(playerService.getPlayerList().get(i).getName()); }
+		 * playerService.removePlayer(playerService.getPlayerList().get(i).getCountryName()); }
 		 * }
 		 */
 		

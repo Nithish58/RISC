@@ -17,7 +17,7 @@
 ; Merioneth (43) and Cardiganshire (45) assume yes
 ; Monmouth-shire (50) Somerset (54) assume yes
 
-name UK Map
+countryName UK Map
 
 [files]
 pic uk_pic.png
