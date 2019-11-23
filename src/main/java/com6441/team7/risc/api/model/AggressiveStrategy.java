@@ -32,20 +32,23 @@ public class AggressiveStrategy implements StrategyPlayer {
 	@Override
 	public void reinforce() {
 
-		// It makes no sense to call player's calculate reinf armies method and then
-		// pass it as param.
-		// Just follow the format we did for attack and fortify and expose the player
-		// for reinforcement
-		int numArmies = calculateReinforcedAggressiveArmies(player); // Calculate reinforcements
-
+		//Check And Exchange Cards
+		player.checkAndExchangeCardsForStrategy(playerService);
+				
+		//Then Calculate Total Num Armies
+		int numReinforcementArmies=player.calculateReinforcedArmiesBasedOnCardsContinentsCountries(playerService);
+				
 		// get country with maximum number of armies
 		Country maxCountry = findMaxCountry();
 		
 		playerService.notifyPlayerServiceObservers(maxCountry.getCountryName()+" has "+maxCountry.getSoldiers()+ " soldier(s)"
-				+ " and will be receive "+numArmies+" reinforcement(s)");
+				+ " and will receive "+numReinforcementArmies+" reinforcement(s)");
 
-		// Reinforce the country with the largest number of soldiers
-		player.reinforceArmy(maxCountry.getCountryName(), numArmies, playerService.getMapService());
+		//player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService());
+		playerService.reinforceArmy(player, maxCountry.getCountryName(), numReinforcementArmies);
+		
+		//End Fortification and Move to Attack Phase
+		playerService.getMapService().setState(GameState.ATTACK);
 	}
 	
 	@Override
@@ -151,7 +154,10 @@ public class AggressiveStrategy implements StrategyPlayer {
 				
 				//If country conquered...attackmove
 				if(player.getBoolAttackMoveRequired()) {
-					player.attackMove(1);
+					
+					//Move max num of soldiers to conquered country
+					
+					player.attackMove(Math.max(1, (attackerCountry.getSoldiers()-1)));
 				}			
 			}  //End of If -- Go To next target country 
 			
