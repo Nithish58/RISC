@@ -2,6 +2,7 @@ package com6441.team7.risc.api.wrapperview;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com6441.team7.risc.api.model.Country;
 
 /**
@@ -27,23 +28,27 @@ public class PlayerAttackWrapper {
 	/**
 	 * the number of dice from defender
 	 */
+	@JsonIgnore
 	int numDiceDefender;
 
 	/**
 	 * boolean value to validate if allout
 	 */
+	@JsonIgnore
 	boolean boolAllOut;
 
 	/**
 	 * boolean value to validate if attack is over
 	 * Used for display purposes
 	 */
+	@JsonIgnore
 	boolean boolAttackOver;
 	
 	/**
 	 * boolean value to validate if attackmove is over
 	 * Used for display purposes
 	 */
+
 	boolean boolAttackMoveOver;
 
 

@@ -140,6 +140,8 @@ public class AttackGameController implements Controller {
         case EXIT:
         	CommonUtils.endGame(phaseView);
         	break;
+
+
         	
     	
     	default:
