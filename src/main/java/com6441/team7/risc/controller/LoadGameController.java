@@ -1,6 +1,8 @@
 package com6441.team7.risc.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.api.model.StartupStateEntity;
@@ -10,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
@@ -86,17 +89,28 @@ public class LoadGameController implements Controller{
     public void loadGame(File saveGameFile) throws IOException {
         ObjectMapper objectMapper =new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        GameStatusEntity entity = objectMapper.readValue(saveGameFile, GameStatusEntity.class);
+        JsonNode entity = objectMapper.readValue(saveGameFile, JsonNode.class);
 
         loadMapStatusEntity(entity);
         loadPlayerStatusEntity(entity);
         loadStartUpState(entity);
+        loadReinforceState(entity);
+
+        displayLoadMessage();
 
 
     }
 
-    private void loadMapStatusEntity(GameStatusEntity entity){
-        MapStatusEntity mapStatusEntity = entity.getMapStatusEntity();
+
+    private void displayLoadMessage() {
+        phaseView.displayMessage("game has been successfully loaded");
+        phaseView.displayMessage("players' data is successfully loaded.");
+        phaseView.displayMessage("next command is: " + playerService.getCommand());
+    }
+
+    private void loadMapStatusEntity(JsonNode entity) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        MapStatusEntity mapStatusEntity = objectMapper.treeToValue(entity.get(MapStatusEntity.class.getSimpleName()), MapStatusEntity.class);
         mapService.setState(mapStatusEntity.getGameState());
         mapService.setContinents(mapStatusEntity.getContinents());
         mapService.setCountries(mapStatusEntity.getCountries());
@@ -105,21 +119,28 @@ public class LoadGameController implements Controller{
         mapService.notifyMapServiceObservers(mapStatusEntity);
     }
 
-    private void loadPlayerStatusEntity(GameStatusEntity entity){
-        PlayerStatusEntity playerStatusEntity = entity.getPlayerStatusEntity();
+    private void loadPlayerStatusEntity(JsonNode entity) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        PlayerStatusEntity playerStatusEntity = objectMapper.treeToValue(entity.get(PlayerStatusEntity.class.getSimpleName()), PlayerStatusEntity.class);
         playerService.setCurrentPlayer(playerStatusEntity.getCurrentPlayer());
         playerService.setListPlayers(playerStatusEntity.getListPlayers());
         playerService.setCurrentPlayerIndex(playerStatusEntity.getCurrentPlayerIndex());
         playerService.getPlayerList().forEach(player -> player.updateCountryPlayerList(mapService));
         playerService.setCommand(playerStatusEntity.getCommand());
         playerService.notifyPlayerServiceObservers(playerStatusEntity);
-
-        phaseView.displayMessage(playerService.getCommand());
     }
 
-    private void loadStartUpState(GameStatusEntity entity){
-        StartupStateEntity startupStateEntity = entity.getStartupStateEntity();
-        startupGameController.setStatus(startupStateEntity);
+    private void loadStartUpState(JsonNode entity) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        StartupStateEntity startupStateEntity = objectMapper.treeToValue(entity.get(StartupStateEntity.class.getSimpleName()), StartupStateEntity.class);
+        Optional.ofNullable(startupStateEntity).ifPresent(status -> startupGameController.setStatus(status));
+    }
+
+
+    private void loadReinforceState(JsonNode entity) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ReinforceStateEntity reinforceStateEntity = objectMapper.treeToValue(entity.get(ReinforceStateEntity.class.getSimpleName()), ReinforceStateEntity.class);
+        Optional.ofNullable(reinforceStateEntity).ifPresent(reinforceGameController::setStatus);
     }
 
 

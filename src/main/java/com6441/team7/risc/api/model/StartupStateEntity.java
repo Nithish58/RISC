@@ -13,15 +13,17 @@ public class StartupStateEntity {
     private boolean boolAllGamePlayersAdded;
     private boolean boolGamePlayerAdded;
     private boolean boolAllCountriesPlaced;
+    private boolean[] boolArrayCountriesPlaced;
 
     private StartupStateEntity(boolean boolCountriesPopulated, boolean boolMapLoaded,
                                boolean boolAllGamePlayersAdded, boolean boolGamePlayerAdded,
-                               boolean boolAllCountriesPlaced) {
+                               boolean boolAllCountriesPlaced, boolean[] boolArrayCountriesPlaced) {
         this.boolCountriesPopulated = boolCountriesPopulated;
         this.boolMapLoaded = boolMapLoaded;
         this.boolAllGamePlayersAdded = boolAllGamePlayersAdded;
         this.boolGamePlayerAdded = boolGamePlayerAdded;
         this.boolAllCountriesPlaced = boolAllCountriesPlaced;
+        this.boolArrayCountriesPlaced = boolArrayCountriesPlaced;
     }
 
     public StartupStateEntity(){}
@@ -46,12 +48,17 @@ public class StartupStateEntity {
         return boolAllCountriesPlaced;
     }
 
+    public boolean[] boolArrayCountriesPlaced() {
+        return boolArrayCountriesPlaced;
+    }
+
     public static class StartupStateEntityBuilder{
         private boolean boolCountriesPopulated;
         private boolean boolMapLoaded;
         private boolean boolAllGamePlayersAdded;
         private boolean boolGamePlayerAdded;
         private boolean boolAllCountriesPlaced;
+        private boolean[] boolArrayCountriesPlaced;
 
         public static StartupStateEntityBuilder newInstance(){
             return new StartupStateEntityBuilder();
@@ -82,10 +89,15 @@ public class StartupStateEntity {
             return this;
         }
 
+        public StartupStateEntityBuilder boolArrayCountriesPlaced(boolean[] boolArrayCountriesPlaced){
+            this.boolArrayCountriesPlaced = boolArrayCountriesPlaced;
+            return this;
+        }
+
         public StartupStateEntity build(){
             return new StartupStateEntity(boolCountriesPopulated, boolMapLoaded,
                     boolAllGamePlayersAdded, boolGamePlayerAdded,
-                    boolAllCountriesPlaced);
+                    boolAllCountriesPlaced, boolArrayCountriesPlaced);
         }
 
     }

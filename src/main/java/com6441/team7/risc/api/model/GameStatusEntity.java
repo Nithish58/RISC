@@ -1,34 +1,15 @@
 package com6441.team7.risc.api.model;
 
+import java.util.List;
+
 public class GameStatusEntity {
-    private MapStatusEntity mapStatusEntity;
-    private PlayerStatusEntity playerStatusEntity;
-    private StartupStateEntity startupStateEntity;
-
-    public GameStatusEntity(){}
-
-    public MapStatusEntity getMapStatusEntity() {
-        return mapStatusEntity;
+    public List<Object> getEntities() {
+        return entities;
     }
 
-    public void setMapStatusEntity(MapStatusEntity mapStatusEntity) {
-        this.mapStatusEntity = mapStatusEntity;
+    public void setEntities(List<Object> entities) {
+        this.entities = entities;
     }
 
-    public PlayerStatusEntity getPlayerStatusEntity() {
-        return playerStatusEntity;
-    }
-
-    public void setPlayerStatusEntity(PlayerStatusEntity playerStatusEntity) {
-        this.playerStatusEntity = playerStatusEntity;
-    }
-
-
-    public StartupStateEntity getStartupStateEntity() {
-        return startupStateEntity;
-    }
-
-    public void setStartupStateEntity(StartupStateEntity startupStateEntity) {
-        this.startupStateEntity = startupStateEntity;
-    }
+    private List<Object> entities;
 }

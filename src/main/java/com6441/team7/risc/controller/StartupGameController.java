@@ -1,10 +1,5 @@
 package com6441.team7.risc.controller;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
@@ -822,6 +817,7 @@ public class StartupGameController implements Controller{
 		this.boolAllGamePlayersAdded = startupStateEntity.isBoolAllGamePlayersAdded();
 		this.boolGamePlayerAdded = startupStateEntity.isBoolGamePlayerAdded();
 		this.boolAllCountriesPlaced = startupStateEntity.isBoolAllCountriesPlaced();
+		this.boolArrayCountriesPlaced = startupStateEntity.boolArrayCountriesPlaced();
 	}
 
 	public void saveGame(){
@@ -834,7 +830,7 @@ public class StartupGameController implements Controller{
 
 
 		if(!boolAllCountriesPlaced){
-			playerService.setCommand("placeall");
+			playerService.setCommand(RiscCommand.PLACE_ALL.getName() + RiscCommand.PLACE_ARMY.getName());
 		}
 
 		save(mapService, playerService);
@@ -843,20 +839,24 @@ public class StartupGameController implements Controller{
 
 	private void save(MapService mapService, PlayerService playerService){
 
-		GameStatusEntity gameStatusEntity = new GameStatusEntity();
 		 MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
 		 PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();
-		 StartupStateEntity startupStateEntity =  StartupStateEntity.StartupStateEntityBuilder.newInstance().boolMapLoaded(boolMapLoaded)
+
+		 StartupStateEntity startupStateEntity =  StartupStateEntity.StartupStateEntityBuilder.newInstance()
+				 .boolMapLoaded(boolMapLoaded)
 				.boolGamePlayerAdded(boolGamePlayerAdded)
 				.boolAllGamePlayersAdded(boolAllGamePlayersAdded)
 				.boolCountriesPopulated(boolCountriesPopulated)
 				.boolAllCountriesPlaced(boolAllCountriesPlaced)
+				.boolArrayCountriesPlaced(boolArrayCountriesPlaced)
 				.build();
 
-		 gameStatusEntity.setPlayerStatusEntity(playerStatusEntity);
-		 gameStatusEntity.setMapStatusEntity(mapStatusEntity);
-		 gameStatusEntity.setStartupStateEntity(startupStateEntity);
-		 SaveGameUtils.saveGame(gameStatusEntity);
+
+		 Map<String, Object> entities = new HashMap<>();
+		 entities.put(MapStatusEntity.class.getSimpleName(), mapStatusEntity);
+		 entities.put(PlayerStatusEntity.class.getSimpleName(), playerStatusEntity);
+		 entities.put(StartupStateEntity.class.getSimpleName(), startupStateEntity);
+		 SaveGameUtils.saveGame(entities);
 
 	}
 

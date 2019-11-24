@@ -1004,6 +1004,7 @@ public class Player{
      * validate if the defender occupy 0 country
      * @return true if defender occupy 0 country, false if not
      */
+    @JsonIgnore
     public boolean isDefenderEliminatedFromGame() {
         if(Optional.ofNullable(defender).map(Player::getCountryPlayerList).filter(CollectionUtils::isEmpty).isPresent())
             return true;
@@ -1017,6 +1018,7 @@ public class Player{
      * Stopping condition 1 for -allout attack
      * @return true if only 1 soldier left in attacking country
      */
+    @JsonIgnore
     public boolean isAttackerLastManStanding() {
         if (Optional.ofNullable(fromCountryAttack).map(Country::getSoldiers).filter(soldier -> soldier < MIN_ATTACKING_SOLDIERS).isPresent())
             return true;
