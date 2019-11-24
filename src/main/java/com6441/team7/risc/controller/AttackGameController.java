@@ -2,16 +2,15 @@ package com6441.team7.risc.controller;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com6441.team7.risc.api.model.*;
+import com6441.team7.risc.utils.SaveGameUtils;
 import com6441.team7.risc.utils.builder.IBuilder;
 import org.apache.commons.lang3.StringUtils;
 
-import com6441.team7.risc.api.model.Country;
-import com6441.team7.risc.api.model.GameState;
-import com6441.team7.risc.api.model.MapService;
-import com6441.team7.risc.api.model.PlayerService;
-import com6441.team7.risc.api.model.RiscCommand;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
@@ -141,9 +140,9 @@ public class AttackGameController implements Controller {
         	CommonUtils.endGame(phaseView);
         	break;
 
-
-        	
-    	
+		case SAVEGAME:
+			saveGame();
+			break;
     	default:
             throw new IllegalArgumentException("cannot recognize this command");
     	
@@ -157,11 +156,7 @@ public class AttackGameController implements Controller {
 	 * @param commands is an array of string commands
 	 */
 	public void validateAttackMoveCommand(String[] commands) {
-		
-    	if(!playerService.getCurrentPlayer().getBoolAttackMoveRequired()) {
-    		phaseView.displayMessage("attackmove not required right now");
-    		return;
-    	}
+
 		
     	if(commands.length!=2) {
     		phaseView.displayMessage("Invalid attackmove command.");
@@ -338,5 +333,32 @@ public class AttackGameController implements Controller {
 	 */
 	public void switchToFortification() {
 		mapService.setState(GameState.FORTIFY);
+	}
+
+	private void saveGame() {
+
+		if(boolDefenderDiceRequired.get()){
+			phaseView.displayMessage("the game can not be saved now");
+			return;
+		}
+		if(playerService.getCurrentPlayer().getBoolAttackMoveRequired()) {
+			phaseView.displayMessage("the game can not be saved now");
+			return;
+		}
+		playerService.setCommand(RiscCommand.ATTACK.getName() + " -noattack or attack other country");
+		save(playerService.getMapService(), playerService);
+		phaseView.displayMessage("game has successfully saved!");
+	}
+
+	private void save(MapService mapService, PlayerService playerService){
+
+
+		MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
+		PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();
+		Map<String, Object> entity = new HashMap<>();
+		entity.put(MapStatusEntity.class.getSimpleName(), mapStatusEntity);
+		entity.put(PlayerStatusEntity.class.getSimpleName(), playerStatusEntity);
+		SaveGameUtils.saveGame(entity);
+
 	}
 }
