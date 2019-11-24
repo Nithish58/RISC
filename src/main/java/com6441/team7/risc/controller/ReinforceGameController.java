@@ -153,6 +153,7 @@ public class ReinforceGameController implements Controller{
 
         ReinforceStateEntity reinforceStateEntity =  ReinforceStateEntity.ReinforceStateEntityBuilder.newInstance()
                 .isExchangeCardOver(exchangeCardOver)
+                .reinforcedArmies(reinforcedArmies)
                 .build();
 
         MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
@@ -461,7 +462,8 @@ public class ReinforceGameController implements Controller{
 
         }
         else{
-            phaseView.displayMessage("the number of reinforced armies are ");
+            reinforcedArmies =reinforceStateEntity.getReinforcedArmies();
+            phaseView.displayMessage("the number of reinforced armies are " + reinforcedArmies);
         }
     }
 }
