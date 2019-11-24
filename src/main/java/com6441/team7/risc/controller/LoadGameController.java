@@ -95,11 +95,13 @@ public class LoadGameController implements Controller{
         loadPlayerStatusEntity(entity);
         loadStartUpState(entity);
         loadReinforceState(entity);
+       //loadFortifyState(entity);
 
         displayLoadMessage();
 
 
     }
+
 
 
     private void displayLoadMessage() {

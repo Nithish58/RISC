@@ -19,4 +19,8 @@ public class SaveGameUtils {
             e.printStackTrace();
         }
     }
+
+    public static void putIntoMap(Map<String, Object> entities, Class clazz, Object entity) {
+        entities.put(clazz.getSimpleName(), entity);
+    }
 }
