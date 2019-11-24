@@ -141,6 +141,8 @@ public class ReinforceGameController implements Controller{
     private void saveGame() {
         if(!exchangeCardOver){
             playerService.setCommand(RiscCommand.EXCHANGE_CARD.getName());
+        }else{
+            playerService.setCommand(RiscCommand.REINFORCE.getName());
         }
 
         save(playerService.getMapService(), playerService);
@@ -360,7 +362,7 @@ public class ReinforceGameController implements Controller{
 
     /**
      * display cards owned by the player
-     * @param player
+     * @param list player
      * @param view
      */
     private void  showCardsInfo(List<Card> list, GameView view){
@@ -447,5 +449,19 @@ public class ReinforceGameController implements Controller{
 
     public void setStatus(ReinforceStateEntity reinforceStateEntity){
         this.exchangeCardOver = reinforceStateEntity.isExchangeCardOver();
+
+        if(!exchangeCardOver){
+            if(playerService.getCurrentPlayer().getCardList().isEmpty()){
+                phaseView.displayMessage("the card list is empty");
+            }
+            else{
+                playerService.getCurrentPlayer().getCardList()
+                        .forEach(card -> phaseView.displayMessage(card.getName()));
+            }
+
+        }
+        else{
+            phaseView.displayMessage("the number of reinforced armies are ");
+        }
     }
 }
