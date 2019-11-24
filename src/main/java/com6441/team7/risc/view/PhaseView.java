@@ -56,6 +56,8 @@ public class PhaseView implements GameView {
      */
     private Controller attackController;
 
+    private Controller loadController;
+
     /**
      * a reference of gameState
      */
@@ -90,6 +92,9 @@ public class PhaseView implements GameView {
             else if(controller instanceof AttackGameController){
                 this.attackController = controller;
             }
+            else if(controller instanceof LoadGameController){
+                this.loadController =controller;
+            }
         });
     }
 
@@ -117,6 +122,9 @@ public class PhaseView implements GameView {
                         break;
                     case FORTIFY:
                         fortifyGameController.readCommand(command);
+                        break;
+                    case LOAD_GAME:
+                        loadController.readCommand(command);
                         break;
                 }
 

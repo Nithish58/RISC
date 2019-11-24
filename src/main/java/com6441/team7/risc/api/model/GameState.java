@@ -21,6 +21,8 @@ public enum GameState {
     GameState(String name){
         this.name = name;
     }
+
+    GameState(){}
 /**
  * Getter method for Gamestate value
  * @return state value

@@ -2,7 +2,7 @@
 ; map made with the map maker
 ; yura.net Risk 1.0.9.2
 
-name Europe Map
+countryName Europe Map
 
 [files]
 pic RiskEurope_pic.jpg

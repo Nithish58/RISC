@@ -1,22 +1,18 @@
 package com6441.team7.risc.api.model;
 
-import java.lang.reflect.Array;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
+import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
+import com6441.team7.risc.utils.CommonUtils;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import java.security.SecureRandom;
-
-import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
-import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
-import com6441.team7.risc.utils.CommonUtils;
-import com6441.team7.risc.view.GameView;
-
-import static com6441.team7.risc.api.RiscConstants.MAX_ATTACKER_DICE_NUM;
-import static com6441.team7.risc.api.RiscConstants.MAX_DEFENDER_DICE_NUM;
-import static com6441.team7.risc.api.RiscConstants.MIN_ATTACKING_SOLDIERS;
-import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
+import static com6441.team7.risc.api.RiscConstants.*;
 
 /**
  * store player information
@@ -58,8 +54,17 @@ public class Player{
 	/**
      *  a list of country a player has
      */
-    public ArrayList<Country> countryPlayerList;
+	@JsonIgnore
+    private ArrayList<Country> countryPlayerList;
 
+
+	public void updateCountryPlayerList(MapService mapService){
+	    List<Country> countries = mapService.getCountries().stream()
+                .filter(country -> country.getPlayer().getName().equalsIgnoreCase(name))
+                .collect(Collectors.toList());
+
+	    countryPlayerList.addAll(countries);
+    }
     /**
      * constructor
      * @param name Name
@@ -73,6 +78,10 @@ public class Player{
         this.countryPlayerList=new ArrayList<>();
     }
 
+    public Player(){
+        this.cardList = new ArrayList<>();
+        this.countryPlayerList=new ArrayList<>();
+    }
 
     //add by jenny
 	public Player(String name, PlayerCategory category){
@@ -174,7 +183,8 @@ public class Player{
      * get country list occupied of the player
      * @return list of country
      */
-    public ArrayList<Country> getCountryList() {
+    @JsonIgnore
+    public ArrayList<Country> getCountryPlayerList() {
         return countryPlayerList;
     }
 
@@ -1040,7 +1050,7 @@ public class Player{
      */
     public boolean checkDefenderPushedOut() {
         strSendAttackInfoToObservers="";
-        //if (!(fromCountryAttack.getPlayer().getName().equals(toCountryAttack.getPlayer().getName())) && toCountryAttack.getSoldiers()==0)
+        //if (!(fromCountryAttack.getPlayer().getCountryName().equals(toCountryAttack.getPlayer().getCountryName())) && toCountryAttack.getSoldiers()==0)
         //if ((toCountryAttack.getSoldiers().equals(0))) {
 
         if(defenderPushedOut()) {
@@ -1079,7 +1089,7 @@ public class Player{
      */
     public boolean checkPlayerWin() {
 
-        if(attacker.getCountryList().size()==playerService.getMapService()
+        if(attacker.getCountryPlayerList().size()==playerService.getMapService()
                 .getCountries().size()) {
 
             strSendAttackInfoToObservers="\n"+attacker.getName()+" Wins";
@@ -1118,8 +1128,9 @@ public class Player{
      * validate if the defender occupy 0 country
      * @return true if defender occupy 0 country, false if not
      */
+    @JsonIgnore
     public boolean isDefenderEliminatedFromGame() {
-        if(defender.getCountryList().size()==0)
+        if(Optional.ofNullable(defender).map(Player::getCountryPlayerList).filter(CollectionUtils::isEmpty).isPresent())
             return true;
         return false;
     }
@@ -1131,8 +1142,9 @@ public class Player{
      * Stopping condition 1 for -allout attack
      * @return true if only 1 soldier left in attacking country
      */
+    @JsonIgnore
     public boolean isAttackerLastManStanding() {
-        if (fromCountryAttack.getSoldiers()<MIN_ATTACKING_SOLDIERS)
+        if (Optional.ofNullable(fromCountryAttack).map(Country::getSoldiers).filter(soldier -> soldier < MIN_ATTACKING_SOLDIERS).isPresent())
             return true;
         return false;
     }

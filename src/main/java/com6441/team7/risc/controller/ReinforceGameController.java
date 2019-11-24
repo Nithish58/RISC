@@ -4,6 +4,7 @@ import com6441.team7.risc.api.exception.ReinforceParsingException;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
+import com6441.team7.risc.utils.SaveGameUtils;
 import com6441.team7.risc.utils.builder.IBuilder;
 import com6441.team7.risc.view.*;
 import org.apache.commons.lang3.StringUtils;
@@ -51,7 +52,7 @@ public class ReinforceGameController implements Controller{
     /**
      * the value whether the exchange card stage terminates
      */
-    private boolean isExchangeCardOver;
+    private boolean exchangeCardOver;
 
     /**
      * constructor
@@ -59,7 +60,7 @@ public class ReinforceGameController implements Controller{
      */
     public ReinforceGameController(PlayerService playerService) {
         this.playerService = playerService;
-        isExchangeCardOver = false;
+        exchangeCardOver = false;
 
     }
 
@@ -128,9 +129,40 @@ public class ReinforceGameController implements Controller{
                 CommonUtils.endGame(phaseView);
                 break;
 
+            case SAVEGAME:
+                saveGame();
+                break;
+
             default:
                 throw new IllegalArgumentException("cannot recognize this command");
         }
+    }
+
+    private void saveGame() {
+        if(!exchangeCardOver){
+            playerService.setCommand(RiscCommand.EXCHANGE_CARD.getName());
+        }else{
+            playerService.setCommand(RiscCommand.REINFORCE.getName());
+        }
+
+        save(playerService.getMapService(), playerService);
+        phaseView.displayMessage("game has successfully saved!");
+    }
+
+    private void save(MapService mapService, PlayerService playerService){
+
+        ReinforceStateEntity reinforceStateEntity =  ReinforceStateEntity.ReinforceStateEntityBuilder.newInstance()
+                .isExchangeCardOver(exchangeCardOver)
+                .build();
+
+        MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
+        PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();
+        Map<String, Object> entity = new HashMap<>();
+        entity.put(ReinforceStateEntity.class.getSimpleName(), reinforceStateEntity);
+        entity.put(MapStatusEntity.class.getSimpleName(), mapStatusEntity);
+        entity.put(PlayerStatusEntity.class.getSimpleName(), playerStatusEntity);
+        SaveGameUtils.saveGame(entity);
+
     }
 
 
@@ -151,7 +183,7 @@ public class ReinforceGameController implements Controller{
     public void reinforce(Player player, String command){
         try{
 
-            if(!isExchangeCardOver){
+            if(!exchangeCardOver){
                 phaseView.displayMessage("exchange cards first before reinforcement");
                 return;
             }
@@ -200,7 +232,7 @@ public class ReinforceGameController implements Controller{
 
         if(isReinforceOver()){
             playerService.getMapService().setState(GameState.ATTACK);
-            isExchangeCardOver = false;
+            exchangeCardOver = false;
             return;
         }
 
@@ -258,7 +290,7 @@ public class ReinforceGameController implements Controller{
 
             createCardExchangeView();
 
-            if(isExchangeCardOver){
+            if(exchangeCardOver){
                 cardExchangeView.displayMessage("the exchange cards stage terminates. enter reinforce command");
                 return;
             }
@@ -323,14 +355,14 @@ public class ReinforceGameController implements Controller{
             cardExchangeView.displayMessage("the exchange card phase terminates");
             calculateReinforcedArmies(player);
             phaseView.displayMessage(player.getName() + " get " + reinforcedArmies + " reinforced armies.");
-            isExchangeCardOver = true;
+            exchangeCardOver = true;
         }
 
     }
 
     /**
      * display cards owned by the player
-     * @param player
+     * @param list player
      * @param view
      */
     private void  showCardsInfo(List<Card> list, GameView view){
@@ -402,7 +434,7 @@ public class ReinforceGameController implements Controller{
      * @return if exchange cards state if over
      */
     public boolean isExchangeCardOver() {
-        return isExchangeCardOver;
+        return exchangeCardOver;
     }
 
     /**
@@ -414,4 +446,22 @@ public class ReinforceGameController implements Controller{
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
     }
 
+
+    public void setStatus(ReinforceStateEntity reinforceStateEntity){
+        this.exchangeCardOver = reinforceStateEntity.isExchangeCardOver();
+
+        if(!exchangeCardOver){
+            if(playerService.getCurrentPlayer().getCardList().isEmpty()){
+                phaseView.displayMessage("the card list is empty");
+            }
+            else{
+                playerService.getCurrentPlayer().getCardList()
+                        .forEach(card -> phaseView.displayMessage(card.getName()));
+            }
+
+        }
+        else{
+            phaseView.displayMessage("the number of reinforced armies are ");
+        }
+    }
 }

@@ -2,16 +2,15 @@ package com6441.team7.risc.controller;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-import com6441.team7.risc.api.model.Country;
-import com6441.team7.risc.api.model.MapService;
-import com6441.team7.risc.api.model.Player;
-import com6441.team7.risc.api.model.PlayerService;
-import com6441.team7.risc.api.model.RiscCommand;
+import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
+import com6441.team7.risc.utils.SaveGameUtils;
 import com6441.team7.risc.utils.builder.IBuilder;
 import com6441.team7.risc.view.GameView;
 
@@ -152,12 +151,30 @@ public class  FortifyGameController implements Controller {
 			CommonUtils.endGame(phaseView);
 			break;
 
+		case SAVEGAME:
+			saveGame();
+			break;
+
 		default:
 			throw new IllegalArgumentException("Cannot recognize this command in Fortification Phase. Try Again");
 
 		} // End of switch
 
 	} // End of readCommand method
+
+
+	private void saveGame() {
+
+		playerService.setCommand(RiscCommand.FORTIFY.getName());
+		MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
+		PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();
+		Map<String, Object> entity = new HashMap<>();
+		SaveGameUtils.putIntoMap(entity, MapStatusEntity.class, mapStatusEntity);
+		SaveGameUtils.putIntoMap(entity, PlayerStatusEntity.class, playerStatusEntity);
+
+
+		SaveGameUtils.saveGame(entity);
+	}
 
 	/**
 	 * This method determines type of fortification:

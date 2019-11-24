@@ -116,7 +116,7 @@ public class MapLoaderController implements Controller {
         if (mapService.isMapNotValid()) {
             view.displayMessage("Map Not Valid");
         }
-        this.mapService.setState(GameState.START_UP);
+        this.mapService.setState(GameState.LOAD_GAME);
     }
 
 

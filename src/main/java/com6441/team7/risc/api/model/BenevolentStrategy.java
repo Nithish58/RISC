@@ -34,7 +34,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 		int numReinforcementArmies=player.calculateReinforcedArmiesBasedOnCardsContinentsCountries(playerService);
 
 		// get list of player's countries and sort it
-		ArrayList<Country> weakCountries = player.getCountryList();
+		ArrayList<Country> weakCountries = player.getCountryPlayerList();
 
 		Collections.sort(weakCountries, new Comparator<Country>() {
 
@@ -74,7 +74,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 		Country weakestCountry = null;
 
 		// get list of player's countries
-		ArrayList<Country> weakCountries = player.getCountryList();
+		ArrayList<Country> weakCountries = player.getCountryPlayerList();
 
 		Collections.sort(weakCountries, new Comparator<Country>() {
 

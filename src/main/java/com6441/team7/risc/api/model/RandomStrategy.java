@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
-import com6441.team7.risc.utils.MapDisplayUtils;
 
 public class RandomStrategy implements StrategyPlayer{
 	
@@ -32,7 +31,7 @@ public class RandomStrategy implements StrategyPlayer{
 		
 		Random rn=new Random();
 		
-		Country randomCountry = player.getCountryList().get(rn.nextInt(player.getCountryList().size()));
+		Country randomCountry = player.getCountryPlayerList().get(rn.nextInt(player.getCountryPlayerList().size()));
 		
 		//player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService());
 		playerService.reinforceArmy(player, randomCountry.getCountryName(), numReinforcementArmies);
@@ -53,9 +52,10 @@ public class RandomStrategy implements StrategyPlayer{
 		//Find adjacent country that does not belong to player
 		//Attack that adjacent country
 		
-		Collections.shuffle(player.getCountryList());
+		Collections.shuffle(player.getCountryPlayerList());
 		
-		for(Country c:player.getCountryList()) {
+
+		for(Country c:player.getCountryPlayerList()) {
 			
 			boolean boolTargetFound=false;
 			
@@ -120,9 +120,9 @@ public class RandomStrategy implements StrategyPlayer{
 		
 		//Loop through player list
 		//Choose adjacent country which is eligible to be reinforced
-		for ( int i = 0; i < player.getCountryList().size(); i++ ) {
+		for (int i = 0; i < player.getCountryPlayerList().size(); i++ ) {
 			
-			fromCountry=player.getCountryList().get(i);
+			fromCountry=player.getCountryPlayerList().get(i);
 			
 			Set<Integer> fromCountryAdjacencyList = playerService.getMapService()
 					.getAdjacencyCountries(fromCountry.getId());

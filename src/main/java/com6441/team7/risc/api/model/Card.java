@@ -21,6 +21,8 @@ public enum Card {
         this.name = name;
     }
 
+    Card(){}
+
     /**
      * get name of the card
      * @return name of card type

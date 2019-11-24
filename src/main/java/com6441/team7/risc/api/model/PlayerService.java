@@ -2,7 +2,6 @@ package com6441.team7.risc.api.model;
 
 import com6441.team7.risc.api.wrapperview.*;
 import com6441.team7.risc.controller.TournamentController;
-import com6441.team7.risc.utils.CommonUtils;
 
 import java.util.*;
 
@@ -44,6 +43,16 @@ public class PlayerService extends Observable {
 
 	private boolean countryConqueredDuringAttackPhase;
 
+	private String command;
+
+
+	public void setCommand(String command){
+		this.command = command;
+	}
+
+	public String getCommand() {
+		return command;
+	}
 
 
 	/**
@@ -534,7 +543,7 @@ public class PlayerService extends Observable {
 	 */
 	public int calculateTotalPlayerArmies(Player player) {
 		int counter=0;
-		for(Country c:player.getCountryList()) counter+=c.getSoldiers().intValue();
+		for(Country c:player.getCountryPlayerList()) counter+=c.getSoldiers().intValue();
 
 		return counter;
 	}
@@ -708,7 +717,7 @@ public class PlayerService extends Observable {
 
 			String playerName=p.getName();
 
-			int numPlayerCountries=p.getCountryList().size();
+			int numPlayerCountries=p.getCountryPlayerList().size();
 
 			float percentageMap= (numPlayerCountries*100.0f) / numCountries;
 
@@ -739,6 +748,20 @@ public class PlayerService extends Observable {
 		notifyObservers(listPlayerDomination);
 
 	}
-	
+
+	public PlayerStatusEntity getPlayerStatusEntity(){
+		return PlayerStatusEntity.PlayerStatusEntityBuilder.newInstance()
+				.playerList(listPlayers)
+				.currentPlayer(currentPlayer)
+				.currentPlayerIndex(currentPlayerIndex)
+				.command(command)
+				.build();
+	}
+
+	public void setListPlayers(ArrayList<Player> listPlayers) {
+		this.listPlayers = listPlayers;
+	}
+
+
 }
 

@@ -300,7 +300,7 @@ public class StartupGameControllerTest {
 		  
 		  int initialNumPlayerArmiesRemaining=currentPlayer.getArmies();
 		  
-		  Country randomPlayerCountry=currentPlayer.getCountryList().get(0);
+		  Country randomPlayerCountry=currentPlayer.getCountryPlayerList().get(0);
 		  int initialNumCountrySoldiers=randomPlayerCountry.getSoldiers();
 		  String countryName=randomPlayerCountry.getCountryName().toString();
 		 
@@ -311,7 +311,7 @@ public class StartupGameControllerTest {
 		assertEquals((initialNumCountrySoldiers+1),randomPlayerCountry.getSoldiers().intValue());
 		  
 		  //assertTrue(previousPlayer.getArmies()+1==initialNumPlayerArmiesRemaining);
-		  //assertTrue(initialNumCountrySoldiers+1==previousPlayer.getCountryList().get(0).getSoldiers());
+		  //assertTrue(initialNumCountrySoldiers+1==previousPlayer.getCountryPlayerList().get(0).getSoldiers());
 		  
 		  
 	  }
@@ -358,7 +358,7 @@ public class StartupGameControllerTest {
 		  phaseViewTest.receiveCommand("populatecountries");
 		  
 		  Player currentPlayer=playerService.getCurrentPlayer();
-		  Country randomPlayerCountry=currentPlayer.getCountryList().get(0);
+		  Country randomPlayerCountry=currentPlayer.getCountryPlayerList().get(0);
 		  String countryName=randomPlayerCountry.getCountryName().toString();
 		  currentPlayer.setArmies(1);
 		  
@@ -411,7 +411,7 @@ public class StartupGameControllerTest {
 			  int totalNumArmies=0;
 			  assertTrue(p.getArmies()==0);
 			  
-			  for(Country c:p.getCountryList()) totalNumArmies+=c.getSoldiers();
+			  for(Country c:p.getCountryPlayerList()) totalNumArmies+=c.getSoldiers();
 			  
 			  assertTrue(totalNumArmies==expectedTotalNumArmies);
 			  

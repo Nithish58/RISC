@@ -1,11 +1,8 @@
 package com6441.team7.risc.api.model;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 import java.util.Set;
 
-import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
-import com6441.team7.risc.api.wrapperview.ReinforcedArmyWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 
 /**
@@ -28,7 +25,7 @@ public class CheaterStrategy implements StrategyPlayer{
 	@Override
 	public void reinforce() {
 		
-		for(Country c: player.getCountryList()) {
+		for(Country c: player.getCountryPlayerList()) {
 			c.setSoldiers(2*c.getSoldiers());			
 		}
 		
@@ -42,7 +39,7 @@ public class CheaterStrategy implements StrategyPlayer{
 		
 		ArrayList<Integer> countriesToBeTransferredList=new ArrayList<Integer>();
 		
-		for(Country c: player.getCountryList()) {
+		for(Country c: player.getCountryPlayerList()) {
 			
 			Set<Integer> fromCountryAdjacencyList = playerService.getMapService()
 					.getAdjacencyCountries(c.getId());
@@ -70,7 +67,7 @@ public class CheaterStrategy implements StrategyPlayer{
 		ArrayList<String> playerToBeRemovedList=new ArrayList<String>();
 		
 		for(int i=0;i<playerService.getPlayerList().size();i++) {
-			if(playerService.getPlayerList().get(i).getCountryList().size()==0) {
+			if(playerService.getPlayerList().get(i).getCountryPlayerList().size()==0) {
 				playerToBeRemovedList.add(playerService.getPlayerList().get(i).getName());
 			}
 		}
@@ -83,7 +80,7 @@ public class CheaterStrategy implements StrategyPlayer{
 		}
 		
 		//Check if cheater is winner
-		if(player.getCountryList().size()==playerService.getMapService().getCountries().size()) {
+		if(player.getCountryPlayerList().size()==playerService.getMapService().getCountries().size()) {
         	if(playerService.getBoolTournamentMode()) {
         		playerService.setBoolPlayerWinner(true);
         		playerService.setPlayerWinner(player);
@@ -104,7 +101,7 @@ public class CheaterStrategy implements StrategyPlayer{
 	@Override
 	public void fortify() {
 		
-		for(Country c:player.getCountryList()) {			
+		for(Country c:player.getCountryPlayerList()) {
 			
 			Set<Integer> fromCountryAdjacencyList = playerService.getMapService()
 					.getAdjacencyCountries(c.getId());

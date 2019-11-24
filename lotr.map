@@ -2,7 +2,7 @@
 ; map made with the map maker
 ; yura.net Risk 1.0.9.2
 
-name LOTR Map
+countryName LOTR Map
 
 [files]
 pic lotr_pic.jpg
