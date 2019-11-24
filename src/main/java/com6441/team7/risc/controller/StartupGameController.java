@@ -833,8 +833,9 @@ public class StartupGameController implements Controller{
 			playerService.setCommand(RiscCommand.PLACE_ALL.getName() + RiscCommand.PLACE_ARMY.getName());
 		}
 
-		save(mapService, playerService);
 		phaseView.displayMessage("game has successfully saved!");
+		save(mapService, playerService);
+
 	}
 
 	private void save(MapService mapService, PlayerService playerService){

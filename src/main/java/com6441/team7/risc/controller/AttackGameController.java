@@ -346,8 +346,9 @@ public class AttackGameController implements Controller {
 			return;
 		}
 		playerService.setCommand(RiscCommand.ATTACK.getName() + " -noattack or attack other country");
-		save(playerService.getMapService(), playerService);
 		phaseView.displayMessage("game has successfully saved!");
+		save(playerService.getMapService(), playerService);
+
 	}
 
 	private void save(MapService mapService, PlayerService playerService){

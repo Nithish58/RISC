@@ -145,8 +145,9 @@ public class ReinforceGameController implements Controller{
             playerService.setCommand(RiscCommand.REINFORCE.getName());
         }
 
-        save(playerService.getMapService(), playerService);
         phaseView.displayMessage("game has successfully saved!");
+        save(playerService.getMapService(), playerService);
+
     }
 
     private void save(MapService mapService, PlayerService playerService){
