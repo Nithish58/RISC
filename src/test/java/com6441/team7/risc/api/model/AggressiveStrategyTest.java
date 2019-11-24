@@ -137,7 +137,7 @@ public class AggressiveStrategyTest {
 
 		// Get the attacker's country list
 		// get list of player's countries
-		ArrayList<Country> attackerCountries = currentPlayer.getCountryList();
+		ArrayList<Country> attackerCountries = currentPlayer.getCountryPlayerList();
 
 		Set<Integer> attackCountryAdjacencyList;
 

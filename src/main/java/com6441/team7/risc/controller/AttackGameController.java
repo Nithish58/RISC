@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.SaveGameUtils;
-import com6441.team7.risc.utils.builder.IBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
@@ -60,11 +59,6 @@ public class AttackGameController implements Controller {
         
     }
 
-    //add by jenny
-	private IBuilder builder;
-	public void setGameBuilder(IBuilder builder){
-		this.builder = builder;
-	}
 
 	/**
 	 * set the view in the attack controller

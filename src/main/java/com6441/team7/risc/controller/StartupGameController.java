@@ -8,7 +8,6 @@ import static com6441.team7.risc.api.RiscConstants.MAX_NUM_PLAYERS;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.api.model.StartupStateEntity;
 import com6441.team7.risc.utils.SaveGameUtils;
-import com6441.team7.risc.utils.builder.IBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import com6441.team7.risc.api.wrapperview.PlayerInitialArmyWrapper;
@@ -127,11 +126,6 @@ public class StartupGameController implements Controller{
     }
 
 
-	//add by jenny
-	private IBuilder builder;
-	public void setGameBuilder(IBuilder builder){
-		this.builder = builder;
-	}
 
 
 	/**

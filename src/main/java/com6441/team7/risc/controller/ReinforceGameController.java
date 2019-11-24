@@ -5,7 +5,6 @@ import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.utils.SaveGameUtils;
-import com6441.team7.risc.utils.builder.IBuilder;
 import com6441.team7.risc.view.*;
 import org.apache.commons.lang3.StringUtils;
 import java.util.*;
@@ -72,11 +71,6 @@ public class ReinforceGameController implements Controller{
         this.phaseView = view;
     }
 
-    //add by jenny
-    private IBuilder builder;
-    public void setGameBuilder(IBuilder builder){
-        this.builder = builder;
-    }
 
     /**
      * receive commands from phase view

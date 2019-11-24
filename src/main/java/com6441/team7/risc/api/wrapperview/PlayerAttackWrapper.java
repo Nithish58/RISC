@@ -28,20 +28,20 @@ public class PlayerAttackWrapper {
 	/**
 	 * the number of dice from defender
 	 */
-	@JsonIgnore
+
 	int numDiceDefender;
 
 	/**
 	 * boolean value to validate if allout
 	 */
-	@JsonIgnore
+
 	boolean boolAllOut;
 
 	/**
 	 * boolean value to validate if attack is over
 	 * Used for display purposes
 	 */
-	@JsonIgnore
+
 	boolean boolAttackOver;
 	
 	/**

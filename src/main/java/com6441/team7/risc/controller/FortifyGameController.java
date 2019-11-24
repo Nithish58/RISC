@@ -11,7 +11,6 @@ import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.utils.SaveGameUtils;
-import com6441.team7.risc.utils.builder.IBuilder;
 import com6441.team7.risc.view.GameView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -95,12 +94,6 @@ public class  FortifyGameController implements Controller {
 		this.phaseView = view;
 	}
 
-
-	//add by jenny
-	private IBuilder builder;
-	public void setGameBuilder(IBuilder builder){
-		this.builder = builder;
-	}
 
 
 	/**
