@@ -1,0 +1,16 @@
+[Map]
+image=Asia 1800 - R.bmp
+wrap=no
+scroll=horizontal
+author=Don Morris
+warn=yes
+
+[continents]
+con1=9
+con2=8
+[Territories]
+a1,43,137,con1,b1,b2
+b1,120,162,con1,a1,b2
+b2,45,199,con1,a1,b1,b3
+b3,0,0,con2,b2
+

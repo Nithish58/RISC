@@ -90,10 +90,10 @@ public class ReinforceGameControllerTest {
 
         reinforceGameController.calculateReinforcedArmies(player);
 
-        reinforceGameController.reinforceArmy(player, "siberia", 1);
+        reinforceGameController.reinforceArmy(player, "a1", 1);
 
         int armyNum = mapService.getCountries().stream()
-                .filter(country -> country.getCountryName().equalsIgnoreCase("siberia"))
+                .filter(country -> country.getCountryName().equalsIgnoreCase("a1"))
                 .findFirst()
                 .get()
                 .getSoldiers();
@@ -166,14 +166,15 @@ public class ReinforceGameControllerTest {
      */
     private void mockPlayerCountryInformationOne() throws IOException, URISyntaxException {
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
-        URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
-        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        mapLoaderController.readFile(file);
+//        URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
+//        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
+        mapLoaderController.readFile("conquest_test.map");
 
         Player player2 = new Player("jake");
-        occupyCountry(player, "siberia", 10);
-        occupyCountry(player, "yazteck", 20);
-        occupyCountry(player2, "worrick", 10);
+        occupyCountry(player, "a1", 10);
+        occupyCountry(player, "b1", 20);
+        occupyCountry(player2, "b2", 10);
+        occupyCountry(player2, "b3", 10);
     }
 
     /**
@@ -183,13 +184,14 @@ public class ReinforceGameControllerTest {
      */
     private void mockPlayerCountryInformationTwo() throws IOException, URISyntaxException{
         MapLoaderController mapLoaderController = new MapLoaderController(mapService);
-        URI uri = getClass().getClassLoader().getResource("jenny.map").toURI();
-        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
-        mapLoaderController.readFile(file);
+//        URI uri = getClass().getClassLoader().getResource("conquest_test.map").toURI();
+//        String file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
+        mapLoaderController.readFile("conquest_test.map");
 
-        occupyCountry(player, "siberia", 10);
-        occupyCountry(player, "yazteck", 20);
-        occupyCountry(player, "worrick", 10);
+        occupyCountry(player, "a1", 10);
+        occupyCountry(player, "b1", 20);
+        occupyCountry(player, "b2", 10);
+        occupyCountry(player, "b3", 10);
     }
 
     /**
@@ -303,7 +305,7 @@ public class ReinforceGameControllerTest {
     public void calculateReinforceArmiesWithWholeContinentOccupied() throws IOException, URISyntaxException {
         mockPlayerCountryInformationTwo();
         reinforceGameController.calculateReinforcedArmies(player);
-        assertEquals(6, reinforceGameController.getReinforcedArmies());
+        assertEquals(18, reinforceGameController.getReinforcedArmies());
     }
 
     
