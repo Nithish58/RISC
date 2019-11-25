@@ -71,7 +71,7 @@ public class MapLoaderAdapterTest {
         //Binsar variables
         
 		System.out.printf("==========%nBeginning of method%n==========%n");
-		mapname = "ameroki.map";
+		mapname = "roman_empire.map";
 		System.out.println("Map name is : "+mapname);
 		System.out.println(mapLoaderController.getMapService().getContinentCountriesMap());
 		System.out.println(mapLoaderController.getMapService().getCountries());
@@ -79,10 +79,10 @@ public class MapLoaderAdapterTest {
 		System.out.println("Number of continents before test: "+mapLoaderController.getMapService().getContinents().size());
 		System.out.println("Number of countries before test: "+mapLoaderController.getMapService().getCountries().size());
 		//URI variable uri is assigned URI parameter for reading file and executing editmap command
-		URI uri = getClass().getClassLoader().getResource(mapname).toURI();
+		//URI uri = getClass().getClassLoader().getResource(mapname).toURI();
 		//file reads the file retrieved from the uri as string.
 		//it uses UTF-8 charsets.
-		file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
+		//file = FileUtils.readFileToString(new File(uri), StandardCharsets.UTF_8);
 		//if the testCounter is not less than 3, the editmap command and map parsing must be skipped.
 		//This so that the subsequent tests won't be impacted by it.
 		inputcommand = "editmap "+mapname;
