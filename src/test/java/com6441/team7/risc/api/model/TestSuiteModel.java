@@ -15,7 +15,8 @@ import org.junit.runners.Suite.SuiteClasses;
 				GameStateTest.class,
 				MapServiceTest.class,
 				PlayerServiceTest.class,
-				AggressiveStrategyTest.class
+				AggressiveStrategyTest.class,
+				BenevolentStrategyTest.class
 				})
 public class TestSuiteModel {
 
