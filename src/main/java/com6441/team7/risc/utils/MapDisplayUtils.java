@@ -29,6 +29,7 @@ public final class MapDisplayUtils {
 	 */
     private static final BiPredicate<Country, Player> countryBelongsToPlayer = ((country, player) -> country.getPlayer().equals(player));
 
+   
 	/**
 	 * boolean value anyPlayer set to true
 	 */

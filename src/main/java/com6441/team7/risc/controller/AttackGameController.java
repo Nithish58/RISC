@@ -58,7 +58,7 @@ public class AttackGameController implements Controller {
         this.boolDefenderDiceRequired=new AtomicBoolean(false);
         
     }
-
+	
 
 	/**
 	 * set the view in the attack controller
@@ -339,6 +339,7 @@ public class AttackGameController implements Controller {
 			phaseView.displayMessage("the game can not be saved now");
 			return;
 		}
+		
 		playerService.setCommand(RiscCommand.ATTACK.getName() + " -noattack or attack other country");
 		phaseView.displayMessage("game has successfully saved!");
 		save(playerService.getMapService(), playerService);

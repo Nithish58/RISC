@@ -59,11 +59,26 @@ public class Player{
 
 
 	public void updateCountryPlayerList(MapService mapService){
+		
+		/*
+		 * for(Country c:mapService.getCountries()) {
+		 * if(c.getPlayer().getName().equalsIgnoreCase(name)) {
+		 * System.out.println(name+" "+c.getCountryName() ); countryPlayerList.add(c); }
+		 * }
+		 */
+		
 	    List<Country> countries = mapService.getCountries().stream()
                 .filter(country -> country.getPlayer().getName().equalsIgnoreCase(name))
                 .collect(Collectors.toList());
 
 	    countryPlayerList.addAll(countries);
+	    
+		
+	    for(Country c:countryPlayerList) {
+	    	System.out.println(name+" "+c.getCountryName()+" "+c.getSoldiers() );
+	    }
+		 
+	    
     }
     /**
      * constructor

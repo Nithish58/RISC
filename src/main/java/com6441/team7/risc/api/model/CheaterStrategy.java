@@ -29,7 +29,7 @@ public class CheaterStrategy implements StrategyPlayer{
 			c.setSoldiers(2*c.getSoldiers());			
 		}
 		
-		playerService.notifyPlayerServiceObservers("Cheater Countries Reinforced by doubling.");
+		playerService.notifyPlayerServiceObservers("Cheater's Countries Reinforced by doubling.");
 		playerService.evaluateWorldDomination();
 		
 	}

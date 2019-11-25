@@ -205,6 +205,7 @@ public class  FortifyGameController implements Controller {
 
 			this.toCountry = mapService.getCountryByName(orders[2]).get();
 			
+			
 
 			try {
 				this.numSoldiers = Integer.parseInt(orders[3]);
