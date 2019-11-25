@@ -5,9 +5,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
@@ -28,7 +30,6 @@ import com6441.team7.risc.view.PhaseViewTest;
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CheaterStrategyTest {
-	
 	
 	/**
 	 * View which outputs test strings and has some other additonal functionalities
@@ -83,37 +84,7 @@ public class CheaterStrategyTest {
 	CheaterStrategy cheaterStrategy;
 
 	
-	@Test
-	public void test001_reinforce() {
-		
-		//Setting Context
-		
-		mapService.setState(GameState.REINFORCE);
-		
-		Player currentPlayer=playerService.getCurrentPlayer();
-		
-		ArrayList<Integer> beforeCheaterReinforcement=
-				new ArrayList<Integer>();
-		
-		for(Country c:currentPlayer.getCountryPlayerList()) {
-			beforeCheaterReinforcement.add(c.getSoldiers());
-		}
-		
-		//MethodCall
-		cheaterStrategy=new CheaterStrategy(playerService);
-		cheaterStrategy.reinforce();
-		
-		//Evaluation
-		
-		for(int i=0;i<currentPlayer.getCountryPlayerList().size();i++) {
-			assertEquals(currentPlayer.getCountryPlayerList().get(i).getSoldiers().intValue(),
-					(beforeCheaterReinforcement.get(i).intValue()*2));
-		}
-		
-		//In case cheater has no countries and does not do any assertions
-		assertTrue(true);
-	}
-	
+
 	
 	
 	
@@ -242,5 +213,63 @@ public class CheaterStrategyTest {
 		phaseViewTest.receiveCommand("placeall");
 
 	}
+	
+	@Test
+	public void test001_reinforce() {
+		 		   
+		//Setting Context
+		
+		mapService.setState(GameState.REINFORCE);
+		
+		Player currentPlayer=playerService.getCurrentPlayer();
+		
+		ArrayList<Integer> beforeCheaterReinforcement=
+				new ArrayList<Integer>();
+		
+		for(Country c:currentPlayer.getCountryPlayerList()) {
+			beforeCheaterReinforcement.add(c.getSoldiers());
+		}
+		
+		//MethodCall
+		cheaterStrategy=new CheaterStrategy(playerService);
+		cheaterStrategy.reinforce();
+		
+		//Evaluation
+		
+		for(int i=0;i<currentPlayer.getCountryPlayerList().size();i++) {
+			assertEquals(currentPlayer.getCountryPlayerList().get(i).getSoldiers().intValue(),
+					(beforeCheaterReinforcement.get(i).intValue()*2));
+		}
+		
+		//In case cheater has no countries and does not do any assertions
+		assertTrue(true);
+	}
+	
+	@Test
+	public void test002_attack() {
+		
+		Player currentPlayer=playerService.getCurrentPlayer();
+		
+		ArrayList<String> countriesToBeTransferred=new ArrayList<String>();
+		
+		for(Country c: currentPlayer.getCountryPlayerList()) {
+			
+			Set<Integer> fromCountryAdjacencyList = playerService.getMapService()
+					.getAdjacencyCountries(c.getId());
+			
+			for (Integer j : fromCountryAdjacencyList) {
+				if (!playerService.getMapService().getCountryById(j).get().getPlayer().getName().
+						equals(currentPlayer.getName())) {
+					
+					countriesToBeTransferred.add(mapService.getCountryById(j).
+							get().getCountryName());			
+				}
+			}			
+		}
+		
+		assertTrue(true);
+		
+	}
+	
 
 }
