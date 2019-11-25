@@ -50,6 +50,9 @@ public class StartupGameControllerTest {
 	  */
 	 StartupGameController startupGameController;
 	 
+	 /**
+	  * Controller for loading game
+	  */
 	 LoadGameController loadGameController;
 	 
 	 /**
