@@ -1070,11 +1070,21 @@ public class Player{
             //notify after attack info to observers
             playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
 
-            if (checkPlayerWin())
-                CommonUtils.endGame(playerService);
+            if (checkPlayerWin()) {
+            	
+          	  if(playerService.getBoolTournamentMode()) {
+        		  playerService.setBoolPlayerWinner(true);
+        		  playerService.setPlayerWinner(attacker);
+        		  this.boolAttackMoveRequired=false;
+        		  }
+        		  
+        		  else
+        			  CommonUtils.endGame(playerService);
+            }
             
             return true;
         }
+		 
 
         strSendAttackInfoToObservers+="\nCountry not conquered.";
         //notify after attack info to observers
