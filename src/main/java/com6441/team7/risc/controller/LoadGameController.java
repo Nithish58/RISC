@@ -40,6 +40,7 @@ public class LoadGameController implements Controller{
         this.mapService = mapService;
         this.playerService = playerService;
 
+       
     }
 
     /**
@@ -119,6 +120,7 @@ public class LoadGameController implements Controller{
         mapService.setContinentCountriesMap(mapStatusEntity.getContinentCountriesMap());
         mapService.setAdjacencyCountriesMap(mapStatusEntity.getAdjacencyCountriesMap());
         mapService.notifyMapServiceObservers(mapStatusEntity);
+        
     }
 
     private void loadPlayerStatusEntity(JsonNode entity) throws JsonProcessingException {
@@ -127,9 +129,29 @@ public class LoadGameController implements Controller{
         playerService.setCurrentPlayer(playerStatusEntity.getCurrentPlayer());
         playerService.setListPlayers(playerStatusEntity.getListPlayers());
         playerService.setCurrentPlayerIndex(playerStatusEntity.getCurrentPlayerIndex());
-        playerService.getPlayerList().forEach(player -> player.updateCountryPlayerList(mapService));
+        
+        // playerService.getPlayerList().forEach(player -> player.updateCountryPlayerList(mapService));
+        
+
+        //Added By Keshav
+        
+           for(Player p:playerService.getPlayerList()) {
+        	   
+        	   for(Country c:mapService.getCountries()) {
+        		   if(p.getName().equalsIgnoreCase(c.getPlayer().getName())) {
+        			   
+        			   p.addCountryToPlayerList(c);
+        			   
+        			   c.setPlayer(p);
+        			   
+        		   }
+        	   }
+        	   
+           }        	
+        
         playerService.setCommand(playerStatusEntity.getCommand());
         playerService.notifyPlayerServiceObservers(playerStatusEntity);
+        
     }
 
     private void loadStartUpState(JsonNode entity) throws JsonProcessingException {
