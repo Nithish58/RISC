@@ -40,6 +40,12 @@ public class AttackGameControllerTest {
 	  * Controller to load map
 	  */
 	 MapLoaderController mapLoaderController;
+	 
+	 /**
+	  * Controller for loading game
+	  */
+	 LoadGameController loadGameController;
+	 
 	 /**
 	  * Controller for startup phase
 	  */
@@ -125,20 +131,26 @@ public class AttackGameControllerTest {
 
 		mapLoaderController = new MapLoaderController(mapService);
 		startupGameController = new StartupGameController(mapLoaderController, playerService);
+		loadGameController =new LoadGameController(mapService, playerService);
         reinforceGameController = new ReinforceGameController(playerService);
         fortifyGameController = new FortifyGameController(playerService);
         attackController = new AttackGameController(playerService);
 
 		controllerList.add(mapLoaderController);
 		controllerList.add(startupGameController);
-        controllerList.add(reinforceGameController);
+        controllerList.add(loadGameController);
+		controllerList.add(reinforceGameController);
         controllerList.add(fortifyGameController);
         controllerList.add(attackController);
+        
 		
 		phaseViewTest.addController(controllerList);
 
 		mapLoaderController.setView(phaseViewTest);
+		loadGameController.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
+		
+		
         reinforceGameController.setView(phaseViewTest);
         fortifyGameController.setView(phaseViewTest);
         attackController.setView(phaseViewTest);
@@ -159,6 +171,8 @@ public class AttackGameControllerTest {
 	  	public void loadValidMap(String mapName) {
 	  		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase
 		
+	  		phaseViewTest.receiveCommand("exitloadgame"); //Edit loadgame phase
+	  		
 	  		phaseViewTest.receiveCommand("loadmap " + mapName); // Load ameroki map
 	}
 
