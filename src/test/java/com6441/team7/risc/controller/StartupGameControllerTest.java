@@ -50,6 +50,8 @@ public class StartupGameControllerTest {
 	  */
 	 StartupGameController startupGameController;
 	 
+	 LoadGameController loadGameController;
+	 
 	 /**
 	  * list of different controllers
 	  */
@@ -61,7 +63,7 @@ public class StartupGameControllerTest {
 	  */
 	@Before public void beforeEachTest() {
 		createObjects();
-		loadValidMap("ameroki.map");
+		loadValidMap("luca.map");
 	}
 	
 	/**
@@ -431,7 +433,9 @@ public class StartupGameControllerTest {
 	  	public void loadValidMap(String mapName) {
 	  		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase
 		
-	  		phaseViewTest.receiveCommand("loadmap " + mapName); // Load ameroki map
+	  		phaseViewTest.receiveCommand("exitloadgame"); //Exit Load Game Phase
+	  		
+	  		phaseViewTest.receiveCommand("loadmap " + mapName); // Load  map
 	}
 
 	/**
@@ -463,15 +467,17 @@ public class StartupGameControllerTest {
 
 		mapLoaderController = new MapLoaderController(mapService);
 		startupGameController = new StartupGameController(mapLoaderController, playerService);
-
+		loadGameController=new LoadGameController(mapService,playerService);
 
 		controllerList.add(mapLoaderController);
 		controllerList.add(startupGameController);
+		controllerList.add(loadGameController);
 		
 		phaseViewTest.addController(controllerList);
 
 		mapLoaderController.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
+		loadGameController.setView(phaseViewTest);
 
 		mapService.addObserver(phaseViewTest);
 		playerService.addObserver(phaseViewTest);

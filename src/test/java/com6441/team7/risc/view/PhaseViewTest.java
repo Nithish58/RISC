@@ -21,6 +21,11 @@ public class PhaseViewTest implements GameView{
      * Controller object for startUp controller
      */
     private Controller startUpGameController;
+    
+    /**
+     * Controller object for loadgame controller
+     */
+    private Controller loadGameController;
 
     /**
      * Controller object for reinforce controller
@@ -97,6 +102,9 @@ public class PhaseViewTest implements GameView{
                 case LOAD_MAP:
                     mapLoaderController.readCommand(command);
                     break;
+                case LOAD_GAME:
+                	loadGameController.readCommand(command);
+                	break;
                 case START_UP:
                     startUpGameController.readCommand(command);
                     break;
@@ -137,6 +145,9 @@ public class PhaseViewTest implements GameView{
             }
             else if(controller instanceof AttackGameController){
                 this.attackController = controller;
+            }
+            else if(controller instanceof LoadGameController) {
+            	this.loadGameController=controller;
             }
         });
     }
