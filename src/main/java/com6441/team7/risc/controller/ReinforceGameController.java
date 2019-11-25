@@ -132,6 +132,9 @@ public class ReinforceGameController implements Controller{
         }
     }
 
+    /**
+     * save reinforceController state, set the game command of current game phase
+     */
     private void saveGame() {
         if(!exchangeCardOver){
             playerService.setCommand(RiscCommand.EXCHANGE_CARD.getName());
@@ -143,8 +146,13 @@ public class ReinforceGameController implements Controller{
         save(playerService.getMapService(), playerService);
 
     }
-    
 
+
+    /**
+     * save reinforceControoler state, mapService data, and playerService data
+     * @param mapService  store map information
+     * @param playerService stores players information
+     */
     private void save(MapService mapService, PlayerService playerService){
 
         ReinforceStateEntity reinforceStateEntity =  ReinforceStateEntity.ReinforceStateEntityBuilder.newInstance()
@@ -444,6 +452,10 @@ public class ReinforceGameController implements Controller{
     }
 
 
+    /**
+     * set the status of reinforceController
+     * @param reinforceStateEntity the data to store the state in ReinforceController
+     */
     public void setStatus(ReinforceStateEntity reinforceStateEntity){
         this.exchangeCardOver = reinforceStateEntity.isExchangeCardOver();
 

@@ -17,7 +17,6 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * <p>
  * It calls the methods in mapService.
  */
-
 public class MapLoaderController implements Controller {
     private MapCategory mapCategory;
 
@@ -42,9 +41,16 @@ public class MapLoaderController implements Controller {
      */
     private AtomicInteger countryIdGenerator;
 
+    /**
+     * a reference of mapParserAdapter
+     */
     private MapParserAdapter mapParserAdapter;
 
 
+    /**
+     * constructor
+     * @param mapService store map information
+     */
     public MapLoaderController(MapService mapService) {
         this.mapService = mapService;
         this.view = new PhaseView();
@@ -54,6 +60,13 @@ public class MapLoaderController implements Controller {
         this.mapParserAdapter = new MapParserAdapter(continentIdGenerator, countryIdGenerator);
     }
 
+
+    /**
+     * read commands from user input to call different methods.
+     * If commands are not recognized, throw an exception
+     * @param command Command
+     * @throws Exception if the command is unrecognized
+     */
     @Override
     public void readCommand(String command) throws Exception {
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -151,6 +164,10 @@ public class MapLoaderController implements Controller {
     }
 
 
+    /**
+     * handle editmap command from user
+     * @param s command
+     */
     private void editMap(String s) {
 
         emptyMap();
@@ -189,19 +206,39 @@ public class MapLoaderController implements Controller {
 
     }
 
+    /**
+     * check if the commands contains conquest key word
+     * @param commands array of strings
+     * @return true if contains, false if not
+     */
     private boolean notContainsConquestInCommand(String[] commands) {
         return commands.length == 2;
     }
 
+    /**
+     * check if the commands contains conquest key word
+     * @param commands array of strings
+     * @return true if contains, false if not
+     */
     private boolean containsConquestInCommand(String[] commands) {
         return commands.length == 3 && convertFormat(commands[2]).equals(MapCategory.CONQUEST.getName());
     }
 
+
+    /**
+     * check if it is conquest map file
+     * @param fileName the map file name
+     * @param view the view to display information
+     * @param mapService store map data
+     * @return
+     */
     private boolean isConquestMapReadable(String fileName, GameView view, MapService mapService) {
         return mapParserAdapter.readConquestMapFile(fileName, view, mapService);
     }
 
-
+    /**
+     * empty the data in the mapService
+     */
     private void emptyMap() {
         mapService.emptyMap();
         countryIdGenerator.set(0);
@@ -209,6 +246,10 @@ public class MapLoaderController implements Controller {
     }
 
 
+    /**
+     * validate the map
+     * @return true, if map is valid, false if it is not
+     */
     public boolean validateMap() {
         if (mapService.isMapValid()) {
             view.displayMessage("map is valid");
@@ -220,6 +261,10 @@ public class MapLoaderController implements Controller {
     }
 
 
+    /**
+     * save the map file
+     * @param command the command of saving map file
+     */
     private void saveMap(String command) {
 
         if (mapService.isMapNotValid()) {
@@ -258,6 +303,10 @@ public class MapLoaderController implements Controller {
     }
 
 
+    /**
+     * edit continents
+     * @param s an array of string to create continents
+     */
     private void editContinents(String[] s) {
         Arrays.stream(s).forEach(this::editContinentFromUserInput);
 
@@ -342,6 +391,10 @@ public class MapLoaderController implements Controller {
     }
 
 
+    /**
+     * create countries
+     * @param s an array of string
+     */
     private void editCountries(String[] s) {
         Arrays.stream(s).forEach(this::editCountryFromUserInput);
     }
@@ -428,6 +481,10 @@ public class MapLoaderController implements Controller {
         view.displayMessage("the country is successfully added");
     }
 
+    /**
+     * create neighbors
+     * @param s an array of string
+     */
     void editNeighbors(String[] s) {
         Arrays.stream(s).forEach(this::editNeighborFromUserInput);
     }
@@ -508,22 +565,42 @@ public class MapLoaderController implements Controller {
     }
 
 
+    /**
+     * check if it is a domination map file
+     * @return true if yes, false if no
+     */
     private boolean isDominationMap() {
         return mapCategory.equals(MapCategory.DOMINATION);
     }
 
+    /**
+     * check if it is a conquest map file
+     * @return true if yes, false if no
+     */
     private boolean isConquestMap() {
         return mapCategory.equals(MapCategory.CONQUEST);
     }
 
+    /**
+     * set continentIdGenerator
+     * @param i int
+     */
     public void setContinentIdGenerator(int i) {
         continentIdGenerator.set(i);
     }
 
+    /**
+     * set countryIdGenerator
+     * @param i int
+     */
     public void setCountryIdGenerator(int i) {
         countryIdGenerator.set(i);
     }
 
+    /**
+     * read file
+     * @param path the map name
+     */
     public void readFile(String path) {
         editMap("editmap " + path);
     }

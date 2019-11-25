@@ -38,6 +38,9 @@ public class Continent {
         this.name = name.toLowerCase(Locale.CANADA);
     }
 
+    /**
+     * default constructor for the continents
+     */
     public Continent(){}
 
     /**

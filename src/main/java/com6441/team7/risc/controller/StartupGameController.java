@@ -47,12 +47,14 @@ public class StartupGameController implements Controller{
      * Used to control game flow.
      */
 	private boolean boolMapLoaded;
+
 	/**
 	 * Boolean that checks if atleast 1 player is added.
 	 * If this is false, does not proceed further and asks addition of at least 1 player.
 	 * Used to control game flow.
 	 */
 	private boolean boolGamePlayerAdded;
+
 	/**
 	 * Boolean that checks if all players have been added.
 	 * Set to true when populate countries called
@@ -60,6 +62,7 @@ public class StartupGameController implements Controller{
 	 * Used to control game flow.
 	 */
 	private boolean boolAllGamePlayersAdded;
+
 	/**
 	 * Boolean that checks if a country have been successfully populated.
 	 * If true, allows proceeding to next phase.
@@ -67,6 +70,7 @@ public class StartupGameController implements Controller{
 	 * Used to control game flow.
 	 */
 	private boolean boolCountriesPopulated;
+
 	/**
 	 * Array of boolean that checks if all armies have been placed on all countries.
 	 * If true, allows proceeding to next phase; else program keep looping over players until all armies have been placed.
@@ -74,6 +78,9 @@ public class StartupGameController implements Controller{
 	private boolean[] boolArrayCountriesPlaced;
 
 
+	/**
+	 * check if all countries have been successfully populated
+	 */
 	private boolean boolAllCountriesPlaced;
 
 	/**
@@ -818,6 +825,10 @@ public class StartupGameController implements Controller{
 		this.boolArrayCountriesPlaced = startupStateEntity.boolArrayCountriesPlaced();
 	}
 
+
+	/**
+	 * save game, set the command of current game phase
+	 */
 	public void saveGame(){
 
 
@@ -836,6 +847,11 @@ public class StartupGameController implements Controller{
 
 	}
 
+	/**
+	 * save the game to json file
+	 * @param mapService to store map information
+	 * @param playerService to store player information
+	 */
 	private void save(MapService mapService, PlayerService playerService){
 
 		 MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
@@ -860,15 +876,27 @@ public class StartupGameController implements Controller{
 	}
 
 
+	/**
+	 * get boolean value isBoolAllCountriesPlaced
+	 * @return isBoolAllCountriesPlaced
+	 */
 	public boolean isBoolAllCountriesPlaced() {
 		return boolAllCountriesPlaced;
 	}
 
+	/**
+	 * set boolean value setBoolAllCountriesPlaced
+	 * @param boolAllCountriesPlaced if all countries been placed
+	 */
 	public void setBoolAllCountriesPlaced(boolean boolAllCountriesPlaced) {
 		this.boolAllCountriesPlaced = boolAllCountriesPlaced;
 	}
 	//Keeps track of which players have placed all their armies
-	
+
+	/**
+	 * set array of boolean values of boolArrayCountriesPlaced
+	 * @param arrB the array of boolean values to store if the country has been placed army
+	 */
 	public void setBoolArrayCountriesPlaced(boolean[] arrB) {
 		this.boolArrayCountriesPlaced=arrB;
 	}

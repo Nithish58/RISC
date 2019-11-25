@@ -16,6 +16,9 @@ import java.util.Optional;
 
 import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
+/**
+ * This class handles functionality of loading the game and exiting loading game
+ */
 public class LoadGameController implements Controller{
     /**
      * a reference of mapService
@@ -31,11 +34,28 @@ public class LoadGameController implements Controller{
      * a reference of phaseView
      */
     private GameView phaseView;
+
+    /**
+     * a reference of StartupGameController
+     */
     private StartupGameController startupGameController;
+
+    /**
+     * a reference of ReinforceGameController
+     */
     private ReinforceGameController reinforceGameController;
+
+    /**
+     * a reference of FortifyGameController
+     */
     private FortifyGameController fortifyGameController;
 
 
+    /**
+     * the constructor
+     * @param mapService store all information of map
+     * @param playerService store all inforamtion of players
+     */
     public LoadGameController(MapService mapService, PlayerService playerService){
         this.mapService = mapService;
         this.playerService = playerService;
@@ -52,6 +72,10 @@ public class LoadGameController implements Controller{
         this.phaseView = view;
     }
 
+    /**
+     * set the controllers
+     * @param list a list of controllers
+     */
     public void setControllers(List<Controller> list){
         list.forEach(controller -> {
 
@@ -69,6 +93,15 @@ public class LoadGameController implements Controller{
     }
 
 
+    /**
+     * receive commands from phase view
+     * check the command type,
+     * if it is loadgame, call loadgame()
+     * if it is exit, call exitloadgame()
+     * else the command is not valid, will throw an exception
+     * @param command reference command
+     * @throws Exception on invalid value
+     */
     @Override
     public void readCommand(String command) throws Exception {
         RiscCommand commandType = RiscCommand.parse(StringUtils.split(command, WHITESPACE)[0]);
@@ -87,6 +120,11 @@ public class LoadGameController implements Controller{
         }
     }
 
+    /**
+     * load the game state
+     * @param saveGameFile file that saves games state
+     * @throws IOException if there is JSON parsing exception
+     */
     public void loadGame(File saveGameFile) throws IOException {
         ObjectMapper objectMapper =new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -96,21 +134,26 @@ public class LoadGameController implements Controller{
         loadPlayerStatusEntity(entity);
         loadStartUpState(entity);
         loadReinforceState(entity);
-       //loadFortifyState(entity);
-
         displayLoadMessage();
 
 
     }
 
 
-
+    /**
+     * display the successfully loading inforamtion
+     */
     private void displayLoadMessage() {
         phaseView.displayMessage("game has been successfully loaded");
         phaseView.displayMessage("players' data is successfully loaded.");
         phaseView.displayMessage("next command is: " + playerService.getCommand());
     }
 
+    /**
+     * load the mapStatusEntity and store in the mapService
+     * @param entity json node to store game data
+     * @throws JsonProcessingException if there is JSON parsing exception
+     */
     private void loadMapStatusEntity(JsonNode entity) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         MapStatusEntity mapStatusEntity = objectMapper.treeToValue(entity.get(MapStatusEntity.class.getSimpleName()), MapStatusEntity.class);
@@ -123,6 +166,11 @@ public class LoadGameController implements Controller{
         
     }
 
+    /**
+     * load the playerStatusEntity and store in playerService
+     * @param entity json node to store game data
+     * @throws JsonProcessingException if there is JSON parsing exception
+     */
     private void loadPlayerStatusEntity(JsonNode entity) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         PlayerStatusEntity playerStatusEntity = objectMapper.treeToValue(entity.get(PlayerStatusEntity.class.getSimpleName()), PlayerStatusEntity.class);
@@ -156,6 +204,11 @@ public class LoadGameController implements Controller{
         
     }
 
+    /**
+     * store startUpSate in startUpGameController
+     * @param entity json node to store game data
+     * @throws JsonProcessingException if there is JSON parsing exception
+     */
     private void loadStartUpState(JsonNode entity) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         StartupStateEntity startupStateEntity = objectMapper.treeToValue(entity.get(StartupStateEntity.class.getSimpleName()), StartupStateEntity.class);
@@ -177,6 +230,11 @@ public class LoadGameController implements Controller{
     }
 
 
+    /**
+     * load the reinforceState to reinforceController
+     * @param entity json node to store game data
+     * @throws JsonProcessingException if there is JSON parsing exception
+     */
     private void loadReinforceState(JsonNode entity) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ReinforceStateEntity reinforceStateEntity = objectMapper.treeToValue(entity.get(ReinforceStateEntity.class.getSimpleName()), ReinforceStateEntity.class);
@@ -184,6 +242,9 @@ public class LoadGameController implements Controller{
     }
 
 
+    /**
+     * exit game load phase and goes to the startup phase
+     */
     public void exitLoadGame(){
         phaseView.displayMessage("exit loading the game");
         mapService.setState(GameState.START_UP);

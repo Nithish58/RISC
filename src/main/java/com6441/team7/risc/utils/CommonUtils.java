@@ -45,6 +45,12 @@ public class CommonUtils {
 	    
 	}
 
+
+	/**
+	 * read the file
+	 * @param fileName the map file name
+	 * @return the string of the content. if the map file does not exist, it will return NON_EXIST
+	 */
 	public static String readFile(String fileName){
 		try {
 			URI uri = Paths.get(fileName).toUri();

@@ -64,9 +64,18 @@ public final class RiscConstants {
      */
     public static final int MAX_DEFENDER_DICE_NUM=2;
 
+    /**
+     * a static final reference for ASSIGNMENT
+     */
     public static final String ASSIGNMENT = "=";
 
+    /**
+     * a static final reference for comma
+     */
     public static final String COMMA = ",";
 
+    /**
+     * a static final reference string non-exist
+     */
     public static final String NON_EXIST = "non_exist";
 }

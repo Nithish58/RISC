@@ -982,6 +982,11 @@ public class MapService extends Observable {
                 .ifPresent(country -> country.addSoldiers(armyNum));
     }
 
+    /**
+     * find corresponding country name by country id
+     * @param id countryId
+     * @return if the country exist, it returns the country name, else return empty
+     */
     public Optional<String> findCorrespondingNameByCountryId(Integer id){
         return countries.stream()
                 .filter(country -> country.getId() == id)
@@ -989,6 +994,10 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
+    /**
+     * call MapStatusEntityBuilder to build the attributes and return MapStatusEntity
+     * @return mapSatusEntity
+     */
     public MapStatusEntity getMapStatusEntity(){
         return MapStatusEntity.MapStatusEntityBuilder.newInstance()
                 .continents(continents)
@@ -1000,30 +1009,58 @@ public class MapService extends Observable {
     }
 
 
+    /**
+     * setter of continents
+     * @param continents continents set
+     */
     public void setContinents(Set<Continent> continents) {
         this.continents = continents;
     }
 
+    /**
+     * setter of countries
+     * @param countries continents set
+     */
     public void setCountries(Set<Country> countries) {
         this.countries = countries;
     }
 
+    /**
+     * setter of adjacencyCountries
+     * @param adjacencyCountriesMap the map to store adjacency countries id
+     */
     public void setAdjacencyCountriesMap(Map<Integer, Set<Integer>> adjacencyCountriesMap) {
         this.adjacencyCountriesMap = adjacencyCountriesMap;
     }
 
+    /**
+     * setter of continentCountriesMap
+     * @param continentCountriesMap the map to store continent and corresponding countries id
+     */
     public void setContinentCountriesMap(Map<Integer, Set<Integer>> continentCountriesMap) {
         this.continentCountriesMap = continentCountriesMap;
     }
 
+    /**
+     * setter of directedGraph
+     * @param directedGraph the connected graph including country id
+     */
     public void setDirectedGraph(Graph<Integer, DefaultEdge> directedGraph) {
         this.directedGraph = directedGraph;
     }
 
+    /**
+     * setter of game state
+     * @param gameState the game state
+     */
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
+    /**
+     * notify mapStatusEntity change to the observers
+     * @param mapStatusEntity data stored in the mapService
+     */
     public void notifyMapServiceObservers(MapStatusEntity mapStatusEntity) {
         setChanged();
         notifyObservers(mapStatusEntity);

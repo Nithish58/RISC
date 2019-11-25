@@ -10,6 +10,12 @@ import java.util.stream.Stream;
 public class NotnullUtils {
     private NotnullUtils(){}
 
+    /**
+     * if the collection is empty, return empty, else return the stream of collections
+     * @param nullableCollection the collectors
+     * @param <E> receives any type of data
+     * @return stream of the type of data
+     */
     public static <E> Stream<E> toStream(Collection<E> nullableCollection) {
         return Optional.ofNullable(nullableCollection)
                 .map(Collection::stream)

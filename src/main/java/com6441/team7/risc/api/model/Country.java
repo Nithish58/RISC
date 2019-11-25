@@ -61,6 +61,9 @@ public class Country{
         this.countryName = countryName.toLowerCase(Locale.CANADA);
     }
 
+    /**
+     * default constructor
+     */
     public Country(){}
 
     /**

@@ -95,7 +95,7 @@ public class Player{
         this.countryPlayerList=new ArrayList<>();
     }
 
-    //add by jenny
+
 	public Player(String name, PlayerCategory category){
     	this.name = name;
     	this.playerCategory = category;

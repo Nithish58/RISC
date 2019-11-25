@@ -22,6 +22,9 @@ public enum GameState {
         this.name = name;
     }
 
+    /**
+     * default constructor
+     */
     GameState(){}
 /**
  * Getter method for Gamestate value

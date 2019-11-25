@@ -8,7 +8,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * this class is used to store the game status in the json file
+ */
 public class SaveGameUtils {
+
+    /**
+     * save the game to a json file.
+     * @param entities the objects that to be stored
+     */
     public static void saveGame(Map<String, Object> entities){
         try {
 
@@ -20,6 +28,12 @@ public class SaveGameUtils {
         }
     }
 
+    /**
+     * store different game status in the entities
+     * @param entities
+     * @param clazz
+     * @param entity
+     */
     public static void putIntoMap(Map<String, Object> entities, Class clazz, Object entity) {
         entities.put(clazz.getSimpleName(), entity);
     }

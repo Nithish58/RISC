@@ -21,6 +21,9 @@ public enum Card {
         this.name = name;
     }
 
+    /**
+     * default constructor
+     */
     Card(){}
 
     /**

@@ -15,11 +15,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MapParserAdapter implements IConquestParser, IDominationParser{
 	
 	/**
-	 * 
+	 * a reference of conquestParser
 	 */
     private IConquestParser conquestParser;
+
     /**
-     * 
+     * a reference of dominationParser
      */
     private IDominationParser dominationParser;
 

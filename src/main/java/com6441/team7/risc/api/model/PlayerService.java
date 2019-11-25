@@ -43,13 +43,24 @@ public class PlayerService extends Observable {
 
 	private boolean countryConqueredDuringAttackPhase;
 
+	/**
+	 * the game command for the current game phase
+	 */
 	private String command;
 
 
+	/**
+	 * set the command
+	 * @param command game command
+	 */
 	public void setCommand(String command){
 		this.command = command;
 	}
 
+	/**
+	 * return the command
+	 * @return command name
+	 */
 	public String getCommand() {
 		return command;
 	}
@@ -749,6 +760,10 @@ public class PlayerService extends Observable {
 
 	}
 
+	/**
+	 * get player status entity to build playerStatusEntity
+	 * @return playerStatusEntity
+	 */
 	public PlayerStatusEntity getPlayerStatusEntity(){
 		return PlayerStatusEntity.PlayerStatusEntityBuilder.newInstance()
 				.playerList(listPlayers)
@@ -758,6 +773,10 @@ public class PlayerService extends Observable {
 				.build();
 	}
 
+	/**
+	 * set list of players
+	 * @param listPlayers the list of players
+	 */
 	public void setListPlayers(ArrayList<Player> listPlayers) {
 		this.listPlayers = listPlayers;
 	}
