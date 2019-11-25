@@ -85,12 +85,18 @@ public class CheaterStrategyTest {
 	
 	@Test
 	public void test001_reinforce() {
-		
+		System.out.println("Cheater reinforce");
 		//Setting Context
 		
 		mapService.setState(GameState.REINFORCE);
 		
 		Player currentPlayer=playerService.getCurrentPlayer();
+		
+		currentPlayer.setPlayerCategory("benevolent");
+		
+		Player nextPlayer=playerService.getNextPlayer();
+		
+		currentPlayer.setPlayerCategory("cheater");
 		
 		ArrayList<Integer> beforeCheaterReinforcement=
 				new ArrayList<Integer>();
@@ -160,7 +166,7 @@ public class CheaterStrategyTest {
 	 * @param name of player
 	 */
 	public void addCheaterPlayer(String name) {
-		phaseViewTest.receiveCommand("gameplayer -add " + name + " cheater");
+		phaseViewTest.receiveCommand("gameplayer -add " + name + " human");
 	}
 	
 	/**
@@ -171,7 +177,7 @@ public class CheaterStrategyTest {
 	 * @param name of player
 	 */
 	public void addBenevolentPlayer(String name) {
-		phaseViewTest.receiveCommand("gameplayer -add " + name + " benevolent");
+		phaseViewTest.receiveCommand("gameplayer -add " + name + " human");
 	}
 	
 
