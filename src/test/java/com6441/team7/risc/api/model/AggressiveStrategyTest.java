@@ -257,8 +257,8 @@ public class AggressiveStrategyTest {
 			// if no targets found, set it to true
 		} else {
 			// If either one of the countries' loses a soldier, isTrue is set to true
-			if ( attackCountryAfter < attackCountryBefore
-					|| defenderCountryAfter < defenderCountryBefore) {
+			if ( attackCountryAfter <= attackCountryBefore
+					|| defenderCountryAfter <= defenderCountryBefore) {
 				isTrue = true;
 			}
 		}
