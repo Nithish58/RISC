@@ -169,6 +169,7 @@ public class  FortifyGameController implements Controller {
 		SaveGameUtils.saveGame(entity);
 	}
 
+	
 	/**
 	 * This method determines type of fortification:
 	 * <li>It validates the command: if the command format is valid, it check the
