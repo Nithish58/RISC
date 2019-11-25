@@ -143,6 +143,7 @@ public class ReinforceGameController implements Controller{
         save(playerService.getMapService(), playerService);
 
     }
+    
 
     private void save(MapService mapService, PlayerService playerService){
 
@@ -161,7 +162,7 @@ public class ReinforceGameController implements Controller{
 
     }
 
-
+    
     /**
      * show map information
      */
