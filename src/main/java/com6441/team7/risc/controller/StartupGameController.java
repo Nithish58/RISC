@@ -646,6 +646,8 @@ public class StartupGameController implements Controller{
     	Player currentPlayer=playerService.getCurrentPlayer();
     	int currentPlayerIndex=playerService.getCurrentPlayerIndex();
     	
+    
+    	
     	//Check if all armies of a specific player placed.
     	//if yes: switch to next player, else place army
     	if(!boolArrayCountriesPlaced[currentPlayerIndex]) {
@@ -716,6 +718,8 @@ public class StartupGameController implements Controller{
     		phaseView.displayMessage(currentPlayer.getName()+" has already placed all its armies.");
     		playerService.switchNextPlayer();
     	}
+    	
+    	
 	
     }
 	
@@ -730,7 +734,7 @@ public class StartupGameController implements Controller{
     	
 		//For every player in list
     	for(Player p:playerService.getPlayerList()) {
-    		
+
     		//while armies are still remaining
     		while(p.getArmies()>0) {
     			
@@ -863,4 +867,10 @@ public class StartupGameController implements Controller{
 	public void setBoolAllCountriesPlaced(boolean boolAllCountriesPlaced) {
 		this.boolAllCountriesPlaced = boolAllCountriesPlaced;
 	}
+	//Keeps track of which players have placed all their armies
+	
+	public void setBoolArrayCountriesPlaced(boolean[] arrB) {
+		this.boolArrayCountriesPlaced=arrB;
+	}
+	
 }   //END OF CLASS
