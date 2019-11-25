@@ -306,6 +306,7 @@ public class ReinforceGameControllerTest {
         assertEquals(6, reinforceGameController.getReinforcedArmies());
     }
 
+    
     /**
      * test the reinforcement army calculation based on card exchanges
      * if the players exchange three same cards, army += tradeTime * 5
