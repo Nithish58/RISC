@@ -90,6 +90,7 @@ public class StartupStateEntity {
         }
 
         public StartupStateEntityBuilder boolArrayCountriesPlaced(boolean[] boolArrayCountriesPlaced){
+        	
             this.boolArrayCountriesPlaced = boolArrayCountriesPlaced;
             return this;
         }
