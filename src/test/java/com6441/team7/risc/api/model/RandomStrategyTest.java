@@ -89,8 +89,8 @@ public class RandomStrategyTest {
 
 		loadValidMap("strangereal.map");
 
-		addAggressivePlayer("Keshav");
-		addAggressivePlayer("Binsar");
+		addRandomPlayer("Keshav");
+		addRandomPlayer("Binsar");
 
 		phaseViewTest.receiveCommand("populatecountries");
 		phaseViewTest.receiveCommand("placeall");
@@ -231,7 +231,7 @@ public class RandomStrategyTest {
 	 * 
 	 * @param name of player
 	 */
-	public void addAggressivePlayer(String name) {
+	public void addRandomPlayer(String name) {
 		phaseViewTest.receiveCommand("gameplayer -add " + name + " human");
 	}
 
@@ -295,8 +295,8 @@ public class RandomStrategyTest {
 
 		loadValidMap("ameroki.map");
 
-		addAggressivePlayer("Keshav");
-		addAggressivePlayer("Binsar");
+		addRandomPlayer("Keshav");
+		addRandomPlayer("Binsar");
 
 		phaseViewTest.receiveCommand("populatecountries");
 		phaseViewTest.receiveCommand("placeall");
