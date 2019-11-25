@@ -24,6 +24,11 @@ public class PlayerStatusEntity {
         this.currentPlayer = currentPlayer;
         this.currentPlayerIndex = currentPlayerIndex;
         this.command = command;
+        
+        for(Player p:this.listPlayers) {
+        	p.instantiatePlayerCountryListForLoading();
+        }
+        
     }
 
 
