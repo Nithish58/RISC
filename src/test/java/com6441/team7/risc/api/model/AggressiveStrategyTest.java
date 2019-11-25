@@ -46,6 +46,11 @@ public class AggressiveStrategyTest {
 	 * Controller for startup phase
 	 */
 	StartupGameController startupGameController;
+	
+	/**
+	 * Controller for loading game
+	 */
+	LoadGameController loadGameController;
 	/**
 	 * Controller for Reinforcement phase
 	 */
@@ -306,6 +311,8 @@ public class AggressiveStrategyTest {
 	public void loadValidMap(String mapName) {
 		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase
 
+		phaseViewTest.receiveCommand("exitloadgame");
+		
 		phaseViewTest.receiveCommand("loadmap " + mapName); // Load ameroki map
 	}
 
@@ -342,12 +349,14 @@ public class AggressiveStrategyTest {
 
 		mapLoaderController = new MapLoaderController(mapService);
 		startupGameController = new StartupGameController(mapLoaderController, playerService);
+		loadGameController=new LoadGameController(mapService,playerService);
 		reinforceGameController = new ReinforceGameController(playerService);
 		fortifyGameController = new FortifyGameController(playerService);
 		attackController = new AttackGameController(playerService);
 
 		controllerList.add(mapLoaderController);
 		controllerList.add(startupGameController);
+		controllerList.add(loadGameController);
 		controllerList.add(reinforceGameController);
 		controllerList.add(fortifyGameController);
 		controllerList.add(attackController);
@@ -356,6 +365,7 @@ public class AggressiveStrategyTest {
 
 		mapLoaderController.setView(phaseViewTest);
 		startupGameController.setView(phaseViewTest);
+		loadGameController.setView(phaseViewTest);
 		reinforceGameController.setView(phaseViewTest);
 		fortifyGameController.setView(phaseViewTest);
 		attackController.setView(phaseViewTest);
