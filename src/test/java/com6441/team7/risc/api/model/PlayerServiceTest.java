@@ -58,12 +58,11 @@ public class PlayerServiceTest {
 	PlayerAttackWrapper playerAttackWrapper;
 
 	/**
-	 * Method called before each test method.
-	 * It creates views and controllers, loads a valid map,
-	 * Adds 2 players, and populates all countries.
+	 * Method called before each test method. It creates views and controllers,
+	 * loads a valid map, Adds 2 players, and populates all countries.
 	 */
 	@Before
-	public void setupTest(){
+	public void setupTest() {
 		createObjects();
 
 		loadValidMap("luca.map");
@@ -77,60 +76,25 @@ public class PlayerServiceTest {
 		mapService.setState(GameState.ATTACK);
 	}
 
-
 	/**
-	 * Tests addPlayer() method
-	 * The test passes if the expected name is equals to the name retrieved using the getter
+	 * Tests addPlayer() method The test passes if the expected name is equals to
+	 * the name retrieved using the getter
 	 */
 	@Test
 	public void test001_addPlayer() {
 		String name = "John";
-		playerService.addPlayer(name,"human");
+		playerService.addPlayer(name, "human");
 		String expectedName = name;
 		assertTrue(playerService.getPlayerByName(name).getName().equals(expectedName));
 	}
 
 	/**
-	 * Tests removePlayer() method
-	 * The test passes if the method returns true
+	 * Tests removePlayer() method The test passes if the method returns true
 	 */
 	@Test
 	public void test002_removePlayer() {
 		String name = playerService.getCurrentPlayerName();
 		assertTrue(playerService.removePlayer(name));
-	}
-	
-	/**
-	 * Testing switch player method
-	 * Evaluation: should switch player and then return to first player of list (round-robin) when
-	 * switch player has been called by last player.
-	 */
-	@Test public void test003_switchNextPlayer() {
-		
-		//context
-		Player nextPlayer=playerService.getNextPlayer();
-		String nextPlayerName=nextPlayer.getName();
-		
-		//Method call
-		playerService.switchNextPlayer();
-		
-		//Evaluation
-		String currentPlayerName=playerService.getCurrentPlayerName();
-		
-		assertEquals(currentPlayerName,nextPlayerName);
-		
-		//Context to test round-robin player
-		Player nextNextPlayer=playerService.getNextPlayer();
-		String nextNextPlayerName=nextNextPlayer.getName();
-		
-		//Method call
-		playerService.switchNextPlayer();
-		
-		//Evaluation
-		currentPlayerName=playerService.getCurrentPlayerName();
-		assertEquals(currentPlayerName,nextNextPlayerName);
-		
-		
 	}
 
 	/**
@@ -151,7 +115,7 @@ public class PlayerServiceTest {
 	 * @param name of player
 	 */
 	public void addPlayer(String name) {
-		phaseViewTest.receiveCommand("gameplayer -add " + name+" human");
+		phaseViewTest.receiveCommand("gameplayer -add " + name + " human");
 	}
 
 	/**
@@ -199,3 +163,121 @@ public class PlayerServiceTest {
 
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+ * 
+ * /** Testing switch player method Evaluation: should switch player and then
+ * return to first player of list (round-robin) when switch player has been
+ * called by last player.
+ * 
+ * @Test public void test003_switchNextPlayer() {
+ * 
+ * //context Player nextPlayer=playerService.getNextPlayer(); String
+ * nextPlayerName=nextPlayer.getName();
+ * 
+ * //Method call playerService.switchNextPlayer();
+ * 
+ * //Evaluation String currentPlayerName=playerService.getCurrentPlayerName();
+ * 
+ * assertEquals(currentPlayerName,nextPlayerName);
+ * 
+ * //Context to test round-robin player Player
+ * nextNextPlayer=playerService.getNextPlayer(); String
+ * nextNextPlayerName=nextNextPlayer.getName();
+ * 
+ * //Method call playerService.switchNextPlayer();
+ * 
+ * //Evaluation currentPlayerName=playerService.getCurrentPlayerName();
+ * assertEquals(currentPlayerName,nextNextPlayerName);
+ * 
+ * 
+ * }
+ */
