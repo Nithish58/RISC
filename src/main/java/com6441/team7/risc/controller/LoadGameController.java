@@ -131,11 +131,11 @@ public class LoadGameController implements Controller{
         playerService.setCurrentPlayerIndex(playerStatusEntity.getCurrentPlayerIndex());
         
         // playerService.getPlayerList().forEach(player -> player.updateCountryPlayerList(mapService));
-        
 
         //Added By Keshav
         
            for(Player p:playerService.getPlayerList()) {
+        	   
         	   
         	   for(Country c:mapService.getCountries()) {
         		   if(p.getName().equalsIgnoreCase(c.getPlayer().getName())) {
@@ -152,12 +152,28 @@ public class LoadGameController implements Controller{
         playerService.setCommand(playerStatusEntity.getCommand());
         playerService.notifyPlayerServiceObservers(playerStatusEntity);
         
+        
+        
     }
 
     private void loadStartUpState(JsonNode entity) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         StartupStateEntity startupStateEntity = objectMapper.treeToValue(entity.get(StartupStateEntity.class.getSimpleName()), StartupStateEntity.class);
         Optional.ofNullable(startupStateEntity).ifPresent(status -> startupGameController.setStatus(status));
+   
+        //Added by Keshav
+		//Keeps track of which players have placed all their armies
+		boolean[] boolArrayCountriesPlaced=new boolean[playerService.getPlayerList().size()];
+		
+		for(int i=0;i<playerService.getPlayerList().size();i++) {
+			if(playerService.getPlayerList().get(i).getArmies()<=0) {
+				boolArrayCountriesPlaced[i]=true;
+			}
+			else boolArrayCountriesPlaced[i]=false;
+		}
+		
+		startupGameController.setBoolArrayCountriesPlaced(boolArrayCountriesPlaced);
+    
     }
 
 
