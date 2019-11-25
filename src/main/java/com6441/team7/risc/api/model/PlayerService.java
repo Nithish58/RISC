@@ -131,7 +131,7 @@ public class PlayerService extends Observable {
 	 * @return int
 	 */
 	public int getCurrentPlayerIndex() {
-
+		
 		return currentPlayerIndex;
 	}
 	
