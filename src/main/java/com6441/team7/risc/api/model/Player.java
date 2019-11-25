@@ -60,25 +60,22 @@ public class Player{
 
 	public void updateCountryPlayerList(MapService mapService){
 		
-		/*
-		 * for(Country c:mapService.getCountries()) {
-		 * if(c.getPlayer().getName().equalsIgnoreCase(name)) {
-		 * System.out.println(name+" "+c.getCountryName() ); countryPlayerList.add(c); }
-		 * }
-		 */
 		
-	    List<Country> countries = mapService.getCountries().stream()
-                .filter(country -> country.getPlayer().getName().equalsIgnoreCase(name))
-                .collect(Collectors.toList());
-
-	    countryPlayerList.addAll(countries);
-	    
-		
-	    for(Country c:countryPlayerList) {
-	    	System.out.println(name+" "+c.getCountryName()+" "+c.getSoldiers() );
-	    }
+		  for(Country c:mapService.getCountries()) {
+		  if(c.getPlayer().getName().equalsIgnoreCase(name)) {
+	
+		  countryPlayerList.add(c); }
+		  }
 		 
-	    
+		
+		/*
+		 * List<Country> countries = mapService.getCountries().stream() .filter(country
+		 * -> country.getPlayer().getName().equalsIgnoreCase(name))
+		 * .collect(Collectors.toList());
+		 * 
+		 * countryPlayerList.addAll(countries);
+		 */
+	    	    		 	    
     }
     /**
      * constructor
@@ -138,6 +135,7 @@ public class Player{
     			
     		default:
     			this.playerCategory=PlayerCategory.HUMAN;
+    			
     			break;
     	}
     		
@@ -173,6 +171,7 @@ public class Player{
     public void addCountryToPlayerList(Country c) {
 
         this.countryPlayerList.add(c);
+
     }
 
 
@@ -751,8 +750,8 @@ public class Player{
         this.numDefendingSoldiers = this.toCountryAttack.getSoldiers();
 
         this.playerService=playerService;
-
-
+        
+        
         //If boolAllOut is chosen
         //boolAllOut is set to true in playerAttackWrapper by GameController.We retrieve and
         //check this boolean here.
@@ -1879,7 +1878,9 @@ public class Player{
         return name;
     }
 
-
+    public void instantiatePlayerCountryListForLoading() {
+    	this.countryPlayerList=new ArrayList<Country>();
+    }
 
 }
 
