@@ -254,9 +254,9 @@ public class ReinforceGameController implements Controller{
 
     /**
      * check if the country is occupied by the player
-     * @param player
-     * @param country
-     * @return
+     * @param player to check if player owns given country
+     * @param country whose ownership needed to be checked
+     * @return returns true if country not occupied by player
      */
     private boolean notOccupiedByPlayer(Player player, String country){
         return !playerService.getConqueredContries(player).contains(convertFormat(country));
@@ -367,8 +367,8 @@ public class ReinforceGameController implements Controller{
 
     /**
      * display cards owned by the player
-     * @param list player
-     * @param view
+     * @param list card list owned by player
+     * @param view display card info on view
      */
     private void  showCardsInfo(List<Card> list, GameView view){
         if (list.isEmpty()){
@@ -444,8 +444,8 @@ public class ReinforceGameController implements Controller{
 
     /**
      * make the string lower cases and remove white spaces
-     * @param name
-     * @return
+     * @param name string to be formatted
+     * @return returns formatted string
      */
     private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);

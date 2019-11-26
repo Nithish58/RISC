@@ -141,8 +141,8 @@ public class CheaterStrategy implements StrategyPlayer{
 	}
 	
 	/**
-	 * Change in ownership of country each time its war is won aganst it.
-	 * @param toCountryAttack
+	 * Change in ownership of country each time its war is won against it.
+	 * @param toCountryAttack  Country to be transferred
 	 */
     public void transferCountryOwnership(Country toCountryAttack) {
 

@@ -369,7 +369,7 @@ public class StartupGameController implements Controller{
     
 	/**
 	 * for each string, call editPlayerFromUserInput method
-	 * @param s
+	 * @param s string array of editPlayer command. 
 	 */
 	private void editPlayer(String[] s) {
 		
@@ -784,8 +784,8 @@ public class StartupGameController implements Controller{
 	
 	/**
 	 * delete white spaces and make the string to lower cases
-	 * @param name
-	 * @return
+	 * @param name string to be formatted
+	 * @return returns formatted string
 	 */
 	private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
@@ -811,7 +811,7 @@ public class StartupGameController implements Controller{
 	
 	/**
 	 * Create setter for boolCountriesPopulated
-	 * @param b
+	 * @param b boolean
 	 */
 	public void setBoolCountriesPopulated(boolean b) {
 		this.boolCountriesPopulated = b;

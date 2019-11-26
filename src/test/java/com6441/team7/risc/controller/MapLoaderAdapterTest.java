@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
@@ -983,7 +984,7 @@ public class MapLoaderAdapterTest {
 	 * @param name1 is the name of the continent to be added
 	 * @param power Power
 	 * @param name2 is the name of the continent to be removed
-	 * @throws Exception 
+	 * @throws Exception when failed to parse read command
 	 */
 	public void addAndRemoveContinent(String name1, String power, String name2) throws Exception {
 		testMapLoader.readCommand("editcontinent -add "+name1+" "+power+" -remove "+name2);
@@ -993,7 +994,7 @@ public class MapLoaderAdapterTest {
 	 * This method is executed by {@link #test006_addCountry()}
 	 * @param name is the name of the country to be added
 	 * @param continentName is the continent of the added country
-	 * @throws Exception 
+	 * @throws Exception when unable to read command
 	 */
 	public void addCountry(String name, String continentName) throws Exception {
 		mapLoaderController.readCommand("editcountry -add "+name+" "+continentName);
@@ -1002,7 +1003,7 @@ public class MapLoaderAdapterTest {
 	/**
 	 * This method is executed by {@link #test007_removeCountry()}
 	 * @param name is the name of the country to be removed
-	 * @throws Exception 
+	 * @throws Exception when unable to read command
 	 */
 	public void removeCountry(String name) throws Exception {
 		mapLoaderController.readCommand("editcountry -remove "+name);
@@ -1013,7 +1014,7 @@ public class MapLoaderAdapterTest {
 	 * @param name1 is the country to be added
 	 * @param continentName1 is the continent of the added country
 	 * @param name2 is the country to be removed
-	 * @throws Exception 
+	 * @throws Exception when unable to read command
 	 */
 	public void addAndRemoveCountry(String name1, String continentName1, String name2) throws Exception {
 		mapLoaderController.readCommand("editcountry -add "+name1+" "+continentName1+" "+" -remove "+name2);

@@ -175,7 +175,7 @@ public class AttackGameController implements Controller {
 	 * validate the defend command
 	 * if the command is not valid, it will display error messages to phase view
 	 * if it is valid, it will call relative methods in Player class
-	 * @param arrCommand
+	 * @param arrCommand defend command in string array
 	 */
 	private void validateDefendCommand(String[] arrCommand) {
     	
@@ -222,7 +222,7 @@ public class AttackGameController implements Controller {
 	 * check the validity of the attack command
 	 * if the command is not valid, it will display error messages to phase view
 	 * if the command is valid, it will call relative methods in Player class
-	 * @param arrCommand
+	 * @param arrCommand attack command in string array
 	 */
 	private void validateAttackCommand(String[] arrCommand) {
     	

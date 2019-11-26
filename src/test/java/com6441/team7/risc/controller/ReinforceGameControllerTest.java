@@ -58,7 +58,7 @@ public class ReinforceGameControllerTest {
 
     /**
      * read a valid domination map
-     * @return
+     * @return returns string format of file name
      * @throws Exception on invalid
      */
     private String getFile() throws Exception{
@@ -143,9 +143,9 @@ public class ReinforceGameControllerTest {
 
     /**
      * occupy a country with certain number of soldiers number by the player
-     * @param player
-     * @param name
-     * @param number
+     * @param player whose armies are used to occupy
+     * @param name name of country to be occupies
+     * @param number number of armies
      */
     private void occupyCountry(Player player, String name, int number){
         mapService.getCountries().stream()

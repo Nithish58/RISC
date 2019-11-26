@@ -156,8 +156,8 @@ public class MapLoaderController implements Controller {
     /**
      * delete whitespace and lower cases the string
      *
-     * @param name
-     * @return
+     * @param name string to be formatted.
+     * @return returns formatted string
      */
     private String convertFormat(String name) {
         return StringUtils.deleteWhitespace(name).toLowerCase(Locale.CANADA);
@@ -230,7 +230,7 @@ public class MapLoaderController implements Controller {
      * @param fileName the map file name
      * @param view the view to display information
      * @param mapService store map data
-     * @return
+     * @return returns true if map can be successfully read and parsed
      */
     private boolean isConquestMapReadable(String fileName, GameView view, MapService mapService) {
         return mapParserAdapter.readConquestMapFile(fileName, view, mapService);

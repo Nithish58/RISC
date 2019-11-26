@@ -30,9 +30,9 @@ public class SaveGameUtils {
 
     /**
      * store different game status in the entities
-     * @param entities
-     * @param clazz
-     * @param entity
+     * @param entities Map entity where details are put in.
+     * @param clazz 
+     * @param entity 
      */
     public static void putIntoMap(Map<String, Object> entities, Class clazz, Object entity) {
         entities.put(clazz.getSimpleName(), entity);

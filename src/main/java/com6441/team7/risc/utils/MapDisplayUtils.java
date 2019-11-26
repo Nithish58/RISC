@@ -76,9 +76,9 @@ public final class MapDisplayUtils {
 
 	/**
 	 * display continent information
-	 * @param gameView
-	 * @param mapService
-	 * @param continentId
+	 * @param gameView display information on view.
+	 * @param mapService map details are taken from here
+	 * @param continentId required continent Id for its details
 	 */
 	private static void displayContinentInfo(GameView gameView, MapService mapService, Integer continentId) {
         mapService.getContinentById(continentId)

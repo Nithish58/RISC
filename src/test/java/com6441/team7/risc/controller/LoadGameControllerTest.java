@@ -98,7 +98,7 @@ public class LoadGameControllerTest {
      * expect the gameState equal to startup
      * expect the player number is 2
      * expect the command stored is placeall or placearmy
-     * @throws IOException
+     * @throws IOException when failed to read file
      */
     @Test
     public void loadGame() throws Exception {

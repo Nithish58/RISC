@@ -129,7 +129,7 @@ public class MapService extends Observable {
     /**
      * add countryId to corresponding countinentId Set
      *
-     * @param country
+     * @param country to be put into continent
      */
     private void putCountryIntoContinentCountriesMap(Country country) {
         Integer continentId = country.getContinentIdentifier();
@@ -956,7 +956,7 @@ public class MapService extends Observable {
 
     /**
      * get countryId occupied by the player
-     * @param player
+     * @param player whose countries' IDs needed.
      * @return list of country id
      */
     private List<Integer> getCountryIdOccupiedByPlayer(Player player){
