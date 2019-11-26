@@ -83,7 +83,10 @@ public class CheaterStrategyTest {
 	 */
 	CheaterStrategy cheaterStrategy;
 
-	
+	/**
+	 * Testing reinforcement method for cheater player. Test passes 
+	 * if armies of player doubles on all its countries. or if cheater has no countries
+	 */
 	@Test
 	public void test001_reinforce() {
 		System.out.println("Cheater reinforce");
@@ -121,7 +124,11 @@ public class CheaterStrategyTest {
 		assertTrue(true);
 	}
 	
-	
+	/**
+	 * Testing attack method for cheater player. Test passes if
+	 * all the neighbors of player's countries are conquered or in rare cases,
+	 *  no countries adjacent to cheater player countries.
+	 */
 	@Test
 	public void test002_attack() {
 		
@@ -171,6 +178,10 @@ public class CheaterStrategyTest {
 				
 	}
 	
+	/**
+	 * Testing fortify method of cheater player. Test passes if number of armies on countries 
+	 * who have neighbors, which belong to different player, have doubled.
+	 */
 	@Test
 	public void test003_fortify() {
 		

@@ -74,7 +74,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 	}
 
 	/**
-	 * In fortification phase, benevolent player fortifies its current weakest country and moves to next phase.
+	 * In fortification phase, benevolent player fortifies its current weakest that can be fortified country and moves to next phase.
 	 */
 	@Override
 	public void fortify() {

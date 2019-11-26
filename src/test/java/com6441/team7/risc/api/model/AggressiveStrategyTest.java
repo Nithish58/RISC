@@ -98,9 +98,9 @@ public class AggressiveStrategyTest {
 	}
 
 	/**
-	 * Testing the attack method for aggressive player. The test passes if the
-	 * either sides lose soldier or no targets found in the adjacency list of the
-	 * attacker's adjacency list
+	 * Testing the reinforce method for aggressive player. The test passes if the
+	 * aggressive player can successfully reinforce strongest country and move 
+	 * to next phase.
 	 */
 	@Test
 	public void test001_reinforce() {
@@ -120,8 +120,7 @@ public class AggressiveStrategyTest {
 	}
 
 	/**
-	 * Testing the aggressive attack method. 
-	 * The expected result is the total number of soldiers of either side's
+	 * Testing the aggressive attack method. The test passes if the number of soldiers of either side's
 	 * soldiers decrease or there are no adjacent target countries found
 	 * 
 	 * @throws Exception on invalid
@@ -205,7 +204,7 @@ public class AggressiveStrategyTest {
 		// The total num of attacker's army after the attack
 		int attackCountryAfter = 0;
 		
-		// Choose highest country to be attacker country which has atleast 1 target
+		// Choose highest country to be attacker country which has at least 1 target
 		for (Country c : attackerCountries) {
 
 			// Get adjacency list of highest country
