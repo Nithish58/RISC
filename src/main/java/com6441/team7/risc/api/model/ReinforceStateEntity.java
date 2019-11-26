@@ -47,55 +47,11 @@ public class ReinforceStateEntity {
         return reinforcedArmies;
     }
 
-
-    /**
-     * the class is used to build an instance of ReinforceStateEntityBuilder
-     */
-    public static class ReinforceStateEntityBuilder{
-        /**
-         * the boolean value to check if exchangecard phase is over
-         */
-        private boolean exchangeCardOver;
-
-        /**
-         * the number of reinforced armies
-         */
-        private int reinforcedArmies;
-
-        /**
-         * create a new ReinforceStateEntityBuilder
-         * @return a new object of ReinforceStateEntityBuilder
-         */
-        public static ReinforceStateEntityBuilder newInstance(){
-            return new ReinforceStateEntityBuilder();
-        }
-
-        /**
-         * build boolean value isExchangeCardOver
-         * @param exchangeCardOver the boolean value to check if exchangecard phase is over
-         * @return ReinforceStateEntityBuilder
-         */
-        public ReinforceStateEntityBuilder isExchangeCardOver(boolean exchangeCardOver){
-            this.exchangeCardOver = exchangeCardOver;
-            return this;
-        }
-
-        /**
-         * build int value reinforcedArmies
-         * @param reinforcedArmies the number of reinforced armies
-         * @return ReinforceStateEntityBuilder
-         */
-        public ReinforceStateEntityBuilder reinforcedArmies(int reinforcedArmies){
-            this.reinforcedArmies = reinforcedArmies;
-            return this;
-        }
-
-        /**
-         * build an object of ReinforceStateEntity
-         * @return new object of ReinforceStateEntity
-         */
-        public ReinforceStateEntity build(){
-            return new ReinforceStateEntity(exchangeCardOver, reinforcedArmies);
-        }
+    public void setExchangeCardOver(boolean exchangeCardOver) {
+        this.exchangeCardOver = exchangeCardOver;
+    }
+    
+    public void setReinforcedArmies(int reinforcedArmies) {
+        this.reinforcedArmies = reinforcedArmies;
     }
 }

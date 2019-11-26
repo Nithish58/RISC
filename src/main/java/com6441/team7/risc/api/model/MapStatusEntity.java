@@ -98,101 +98,25 @@ public class MapStatusEntity {
         return gameState;
     }
 
-    /**
-     * the inner class to build the MapStatusEntity
-     */
-    public static class MapStatusEntityBuilder {
 
-        /**
-         * a set of countries
-         */
-        private Set<Country> countries;
+    public void setCountries(Set<Country> countries){
+        this.countries = countries;
+    }
 
-        /**
-         * a set of continents
-         */
-        private Set<Continent> continents;
-        /**
-         * store each country ID, and its neighbor countries ID
-         */
-        private Map<Integer, Set<Integer>> adjacencyCountriesMap;
+    public void setContinents(Set<Continent> continents) {
+        this.continents = continents;
+    }
 
-        /**
-         * store each continent ID, and its belonging countries ID
-         */
-        private Map<Integer, Set<Integer>> continentCountriesMap;
+    public void setAdjacencyCountriesMap(Map<Integer, Set<Integer>> adjacencyCountriesMap) {
+        this.adjacencyCountriesMap = adjacencyCountriesMap;
+    }
 
-        /**
-         * the state of the game
-         */
-        private GameState gameState;
+    public void setContinentCountriesMap(Map<Integer, Set<Integer>> continentCountriesMap) {
+        this.continentCountriesMap = continentCountriesMap;
+    }
 
-        /**
-         * create new instance of MapStatusEntityBuilder
-         * @return an object of MapStatusEntityBuilder
-         */
-        public static MapStatusEntityBuilder newInstance() {
-            return new MapStatusEntityBuilder();
-        }
-
-        /**
-         * build country set
-         * @param countries the set of countries
-         * @return MapStatusEntityBuilder
-         */
-        public MapStatusEntityBuilder countries(Set<Country> countries) {
-            this.countries = countries;
-            return this;
-        }
-
-        /**
-         * build continents set
-         * @param continents the set of continents
-         * @return MapStatusEntityBuilder
-         */
-        public MapStatusEntityBuilder continents(Set<Continent> continents) {
-            this.continents = continents;
-            return this;
-        }
-
-        /**
-         * build adjacencyCountriesMap
-         * @param adjacencyCountriesMap the map contains neighboring countries information
-         * @return MapStatusEntityBuilder
-         */
-        public MapStatusEntityBuilder adjacencyCountriesMap(Map<Integer, Set<Integer>> adjacencyCountriesMap) {
-            this.adjacencyCountriesMap = adjacencyCountriesMap;
-            return this;
-        }
-
-        /**
-         * build continentCountriesMap
-         * @param continentCountriesMap the map contains continent Id and corresponding countries
-         * @return MapStatusEntityBuilder
-         */
-        public MapStatusEntityBuilder continentCountriesMap(Map<Integer, Set<Integer>> continentCountriesMap) {
-            this.continentCountriesMap = continentCountriesMap;
-            return this;
-        }
-
-        /**
-         * build gameState
-         * @param gameState the game state
-         * @return MapStatusEntityBuilder
-         */
-        public MapStatusEntityBuilder gameState(GameState gameState) {
-            this.gameState = gameState;
-            return this;
-        }
-
-        /**
-         * create the MapStatusEntity object
-         * @return new object of MapStatusEntity
-         */
-        public MapStatusEntity build() {
-            return new MapStatusEntity(countries, continents, adjacencyCountriesMap,
-                    continentCountriesMap, gameState);
-        }
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 
 }

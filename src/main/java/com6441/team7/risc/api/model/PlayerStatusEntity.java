@@ -84,89 +84,21 @@ public class PlayerStatusEntity {
     public String getCommand() {
         return command;
     }
-
-
-    /**
-     * the class is used to build an instance of PlayerStatusEntity
-     */
-    public static class PlayerStatusEntityBuilder{
-        /**
-         * List of players playing the game
-         */
-        private ArrayList<Player> listPlayers;
-
-        /**
-         * the reference of current player
-         */
-        private Player currentPlayer;
-
-        /**
-         * the index of current player
-         */
-        private int currentPlayerIndex;
-
-        /**
-         * the game command of current game phase
-         */
-        private String command;
-
-        /**
-         * create a new PlayerStatusEntityBuilder
-         * @return a new object of PlayerStatusEntityBuilder
-         */
-        public static PlayerStatusEntityBuilder newInstance(){
-            return new PlayerStatusEntityBuilder();
-        }
-
-        /**
-         * build the playerList
-         * @param listPlayers list of players
-         * @return new object of PlayerStatusEntityBuilder
-         */
-        public PlayerStatusEntityBuilder playerList(ArrayList<Player> listPlayers){
-            this.listPlayers = listPlayers;
-            return this;
-        }
-
-
-        /**
-         * build the currentPlayer
-         * @param currentPlayer current player
-         * @return new object of PlayerStatusEntityBuilder
-         */
-        public PlayerStatusEntityBuilder currentPlayer(Player currentPlayer){
-            this.currentPlayer = currentPlayer;
-            return this;
-        }
-
-        /**
-         * build the currentPlayerIndex
-         * @param currentPlayerIndex the index of current player
-         * @return new object of PlayerStatusEntityBuilder
-         */
-        public PlayerStatusEntityBuilder currentPlayerIndex(int currentPlayerIndex){
-            this.currentPlayerIndex = currentPlayerIndex;
-            return this;
-        }
-
-
-        /**
-         * build the command
-         * @param command the game command of current game phase
-         * @return new object of PlayerStatusEntityBuilder
-         */
-        public PlayerStatusEntityBuilder command(String command){
-            this.command = command;
-            return this;
-        }
-
-
-        /**
-         * build an object of PlayerStatusEntity
-         * @return new object of PlayerStatusEntity
-         */
-        public PlayerStatusEntity build(){
-            return new PlayerStatusEntity(listPlayers, currentPlayer,currentPlayerIndex, command);
-        }
+    
+    public void setListPlayers(ArrayList<Player> listPlayers) {
+        this.listPlayers = listPlayers;
     }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public void setCurrentPlayerIndex(int currentPlayerIndex) {
+        this.currentPlayerIndex = currentPlayerIndex;
+    }
+    
+    public void setCommand(String command) {
+        this.command = command;
+    }
+    
 }
