@@ -473,16 +473,5 @@ public class PhaseView implements GameView {
     	
     	displayMessage(strMsg);
     }
-    
-    
-    //TRIAL METHOD...NOT YET USED...FOUND ON NET
-    /**
-     * method to clear screen
-     */
-    public  void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-    
 
 }
