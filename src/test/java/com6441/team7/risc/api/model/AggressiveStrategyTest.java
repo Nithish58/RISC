@@ -25,7 +25,7 @@ import com6441.team7.risc.view.PhaseViewTest;
 public class AggressiveStrategyTest {
 
 	/**
-	 * View which outputs test strings and has some other additonal functionalities
+	 * View which outputs test strings and has some other additional functionalities
 	 * than the normal phaseView
 	 */
 	PhaseViewTest phaseViewTest;

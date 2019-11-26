@@ -11,7 +11,7 @@ import org.junit.runners.MethodSorters;
 
 /**
  * Method that tests different methods of Country class
- * @author MSI
+ * 
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -32,7 +32,7 @@ public class CountryTest {
     }
 
     /**
-     * Context: Initialising the country.
+     * Context: Initializing the country.
      * Method call: setting soldiers to 10.
      * Evaluation: check if number of soldiers in country =10
      */
@@ -47,7 +47,7 @@ public class CountryTest {
     }
 
     /**
-     * Context: Initialising the country, set the soldiers 10 and create number of solders to add
+     * Context: Initializing the country, set the soldiers 10 and create number of solders to add
      * Method call: adding 5 new soldiers to country
      * Evaluation: check if the number of solders becomes 15
      */

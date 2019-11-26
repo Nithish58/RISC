@@ -12,10 +12,14 @@ import org.junit.Test;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.view.PhaseViewTest;
 
+/**
+ * Tests for PlayerService class. 
+ *
+ */
 public class PlayerServiceTest {
 
 	/**
-	 * View which outputs test strings and has some other additonal functionalities
+	 * View which outputs test strings and has some other additional functionalities
 	 * than the normal phaseView
 	 */
 	PhaseViewTest phaseViewTest;
@@ -140,8 +144,8 @@ public class PlayerServiceTest {
 	 
 
 	/**
-	 * Method to load a map. Method first exits from editmapphase by sending command
-	 * exitmapedit. Then command to loadmap is sent.
+	 * Method to load a map. Method first exits from editMapPhase by sending command
+	 * exitMapEdit. Then command to loadMap is sent.
 	 *
 	 * @param mapName receives value from map name
 	 */

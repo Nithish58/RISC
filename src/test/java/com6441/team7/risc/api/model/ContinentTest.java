@@ -83,7 +83,7 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Context: Initialising the continent with name, value, id
+	 * Context: Initializing the continent with name, value, id
 	 * Method call: get name
 	 * Evaluation: check id, name
 	 */
@@ -99,7 +99,7 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Context: Initialising the continent with name, value, id
+	 * Context: Initializing the continent with name, value, id
 	 * Method call: get name
 	 * Evaluation: check id, name. and value is correctly for new continent
 	 */
@@ -122,7 +122,7 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Context: Initialising the continent with name, value, id
+	 * Context: Initializing the continent with name, value, id
 	 * Method call: set continent value
 	 * Evaluation: check value is correct for new continent
 	 */
@@ -138,7 +138,7 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Context: Initialising the continent with name, value, id and color
+	 * Context: Initializing the continent with name, value, id and color
 	 * Method call: set color
 	 * Evaluation: check color is correct for new continent
 	 */
@@ -154,7 +154,7 @@ public class ContinentTest {
 	}
 
 	/**
-	 * Context: Initialising the continent with name, value, id
+	 * Context: Initializing the continent with name, value, id
 	 * Method call: getid and Object's hash method
 	 * Evaluation: check id is correct for new continent
 	 */
