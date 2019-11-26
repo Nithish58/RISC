@@ -13,9 +13,20 @@ import com6441.team7.risc.utils.CommonUtils;
  */
 public class CheaterStrategy implements StrategyPlayer{
 
+	/**
+	 * player service for specific player functions
+	 */
 	private PlayerService playerService;
+	
+	/**
+	 * Player object for player list and details.
+	 */
 	private Player player;
 	
+	/**
+	 * {@link CheaterStrategy} class constructor 
+	 * @param playerService PlayerService to be passed for details.
+	 */
 	public CheaterStrategy(PlayerService playerService) {
 		this.playerService = playerService;
 		this.player = playerService.getCurrentPlayer();
