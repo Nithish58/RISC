@@ -124,7 +124,6 @@ public class TournamentController {
 		playerService.setPlayerWinner(null);
 		
 		//ResetPlayers
-		//checkAndRemoveExistingPlayers();
 		
 		for(int i=0;i<listPlayerStrategy.size();i++) {
 			
@@ -254,7 +253,7 @@ public class TournamentController {
 		for(int i=0;i<arrStrStrategy.length;i++) {
 			String s=arrStrStrategy[i];
 			
-			if(s.equalsIgnoreCase("random")||s.equalsIgnoreCase("aggressive")||s.equalsIgnoreCase("human")||
+			if(s.equalsIgnoreCase("random")||s.equalsIgnoreCase("aggressive")||
 				s.equalsIgnoreCase("cheater")||s.equalsIgnoreCase("benevolent")){
 					
 					//String strName="Player "+ arrStrStrategy[i]+" "+(i+1);
