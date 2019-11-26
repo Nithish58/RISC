@@ -30,7 +30,4 @@ public enum PlayerCategory {
     public String getName(){
         return name;
     }
-
-
-
 }
