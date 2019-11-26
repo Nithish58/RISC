@@ -127,7 +127,7 @@ public class PlayerService extends Observable {
 	 * get current player.
 	 * if the playerIndex is less than 0, return null
 	 * else return the player by index
-	 * @return player
+	 * @return returns current player
 	 */
 	public Player getCurrentPlayer() {
 
@@ -139,7 +139,7 @@ public class PlayerService extends Observable {
 
 	/**
 	 * get current player index
-	 * @return int
+	 * @return returns current index of player
 	 */
 	public int getCurrentPlayerIndex() {
 		
@@ -159,7 +159,7 @@ public class PlayerService extends Observable {
 	 * get the next player index.
 	 * if next index points to the last element in list, return 0
 	 * else return currentIndex + 1
-	 * @return int
+	 * @return next player index
 	 */
 	public int getNextPlayerIndex() {
 
@@ -170,7 +170,7 @@ public class PlayerService extends Observable {
 
 	/**
 	 * get next Player
-	 * @return player
+	 * @return next player
 	 */
 	public Player getNextPlayer() {
 		return listPlayers.get(getNextPlayerIndex());
@@ -325,11 +325,10 @@ public class PlayerService extends Observable {
 	}
 
 	/**
-	 * remove the player by player name
+	 * remove the player by player name. Notifies observers when player removed
 	 * @param playerName reference player name
-	 * @return true if player been removed successfully and notify the observers
-	 * false if player has not been removed successfully
-	 * Notifies observers when player removed
+	 * @return true if player been removed successfully and notify the observers, false if player has not been removed successfully
+	 * 
 	 */
 	public boolean removePlayer(String playerName){
 
@@ -367,7 +366,7 @@ public class PlayerService extends Observable {
 	/**
 	 * This method keeps track of the currentPlayerIndex and switches to the next player as soon as a player's
 	 * turn is over.
-	 *Uses Atomic Boolean boolFortificationPhaseOver to take decisions.
+	 * Uses Atomic Boolean boolFortificationPhaseOver to take decisions.
 	 */
 	public void switchNextPlayer() {	
 		
@@ -383,20 +382,44 @@ public class PlayerService extends Observable {
 	
 	//---------------------------------Utils for autoplaying game------------------------------------------
 	
+	/**
+	 * boolean for tournament mode
+	 */
 	private boolean boolTournamentMode;
 	
+	/**
+	 * boolean for player if they are winner
+	 */
 	private boolean boolPlayerWinner;
 	
+	/**
+	 * Player object 
+	 */
 	private Player winner;
 	
+	/**
+	 * counter to keep track of games
+	 */
 	private int counterGame=0;
 	
+	/**
+	 * counter to keep track of total turns
+	 */
 	private int numTurnsCombined=1000;
 	
+	/**
+	 * tournament controller 
+	 */
 	private TournamentController tournamentController;
 	
+	/**
+	 * turn at start. 
+	 */
 	private double turnNum=1;
 	
+	/**
+	 * method to automate the game. 
+	 */
 	public void automateGame() {
 
 			// 3 Random: 1268/3 turns until stack overflow when stack is 256Kb
@@ -458,42 +481,78 @@ public class PlayerService extends Observable {
 			}
 	}
 	
-	public void setNumTurns(int n) {
+	/**
+	 * setter for numTurnsCombined
+	 * @param turns total turns
+	 */
+	public void setNumTurns(int turns) {
 
-		this.numTurnsCombined=n;
+		this.numTurnsCombined=turns;
 		
 		//reset numturns
 		this.turnNum=1;
 	}
 	
-	public void setMoveCounter(int n) {
+	/**
+	 * setter for counterGame
+	 * @param counter move counter
+	 */
+	public void setMoveCounter(int counter) {
 		this.counterGame=0;
 	}
 	
-	public void setBoolTournamentMode(boolean b) {
+	/**
+	 * setter for boolTournamentMode
+	 * @param bool boolean value
+	 */
+	public void setBoolTournamentMode(boolean bool) {
 		this.boolTournamentMode=true;
 	}
 	
+	/**
+	 * getter for boolTournamentMode
+	 * @return returns boolean of boolTournamentMode
+	 */
 	public boolean getBoolTournamentMode() {
 		return boolTournamentMode;
 	}
 	
-	public void setTournamentController(TournamentController tc) {
-		this.tournamentController=tc;
+	/**
+	 * setter for tournamentController
+	 * @param tournamentController to be set
+	 */
+	public void setTournamentController(TournamentController tournamentController) {
+		this.tournamentController=tournamentController;
 	}
 	
-	public void setBoolPlayerWinner(boolean b) {
-		this.boolPlayerWinner=b;
+	/**
+	 * setter for boolPlayerWinner
+	 * @param bool boolean value
+	 */
+	public void setBoolPlayerWinner(boolean bool) {
+		this.boolPlayerWinner=bool;
 	}
 	
+	/**
+	 * getter for boolPlayerWinner
+	 * @return returns boolean value
+	 */
 	public boolean getBoolPlayerWinner() {
 		return boolPlayerWinner;
 	}
 	
-	public void setPlayerWinner(Player p) {
-		this.winner=p;
+	/**
+	 * setter for winner
+	 * @param player player as winner
+	 */
+	public void setPlayerWinner(Player player) {
+		this.winner=player;
 	}
 	
+	/**
+	 * getter for winner
+	 * @return returns winner player
+	 */
 	public Player getPlayerWinner() {
 		return winner;
 	}

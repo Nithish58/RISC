@@ -621,7 +621,7 @@ public class MapService extends Observable {
      * build the graph based on the list of countries id
      *
      * @param src  source value
-     * @param dest set of destinatiton value
+     * @param dest set of destination value
      */
     public void addEdge(int src, Set<Integer> dest) {
         if (!directedGraph.containsVertex(src)) {

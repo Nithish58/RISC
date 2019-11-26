@@ -78,7 +78,7 @@ public class Player{
 	    	    		 	    
     }
     /**
-     * constructor
+     * Constructor for this class
      * @param name Name
      */
     public Player(String name) {
@@ -90,12 +90,19 @@ public class Player{
         this.countryPlayerList=new ArrayList<>();
     }
 
+    /**
+     * Constructor for this class
+     */
     public Player(){
         this.cardList = new ArrayList<>();
         this.countryPlayerList=new ArrayList<>();
     }
 
-
+    /**
+     * Constructor for this class
+     * @param name name of player
+     * @param category Player category
+     */
 	public Player(String name, PlayerCategory category){
     	this.name = name;
     	this.playerCategory = category;
@@ -206,16 +213,25 @@ public class Player{
     
     //---------------------------------STRATEGY UTILS------------------------------------------
     
-    
+    /**
+     * strategy player
+     */
     private StrategyPlayer strategy;
     
+    /**
+     * sets strategy
+     * @param strategy strategy to be set
+     */
     public void setStrategy(StrategyPlayer strategy) {
     	
     	this.strategy = strategy;
     	
     }
     
-
+    /**
+     * gets strategy
+     * @return returns strategy
+     */
     public StrategyPlayer getStrategy() {
     	return strategy;
     }
@@ -463,7 +479,10 @@ public class Player{
     
     //by Keshav
     //Exchange cards for automated strategies
-    
+    /**
+     * Exchange cards for automated strategies
+     * @param playerService exchange card on player service
+     */
     public void checkAndExchangeCardsForStrategy(PlayerService playerService) {
     	this.playerService=playerService;
     	
@@ -574,7 +593,11 @@ public class Player{
     } //End of card exchanges
     
     
-    
+    /**
+     * Calculates reinforcement armies based on cards for continents and countries
+     * @param playerService gets details from player service
+     * @return returns calculated armies
+     */
     public int calculateReinforcedArmiesBasedOnCardsContinentsCountries(PlayerService playerService){
     	this.playerService=playerService;
     	
@@ -799,9 +822,10 @@ public class Player{
     /**
      * attack until soldiers from either attacker or defender is out
      * validate the validity of attack, if yes, roll the dice and compare attacking results
-     * if not, just return
-     * @param playerService a reference of PlayerService
+     * if not, just return. 
      * Notifies playerservice observers when validation conditions not met
+     * @param playerService a reference of PlayerService
+     *
      */
     public void attackAllOut(PlayerService playerService) {
 
@@ -853,10 +877,11 @@ public class Player{
      * throw their dices.
      * Each side is assigned second dice value to be compared with each other
      * if both sides throw at least two dices.
-     * @param attackerDice attacker's dice
-     * @param defenderDice defender's dice
      * Calls constructAndSendInitialInfo method to trigger notif to playerservice observers.
      * Triggers notif to domination view
+     * @param attackerDice attacker's dice
+     * @param defenderDice defender's dice
+     * 
      */
     public void decideBattleResult(int[] attackerDice, int[] defenderDice) {
 
@@ -1878,6 +1903,9 @@ public class Player{
         return name;
     }
 
+    /**
+     * method to create countryPlayerList
+     */
     public void instantiatePlayerCountryListForLoading() {
     	this.countryPlayerList=new ArrayList<Country>();
     }
