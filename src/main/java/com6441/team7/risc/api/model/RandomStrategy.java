@@ -7,17 +7,36 @@ import java.util.Set;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
+/**
+ * Class for Random strategy player 
+ * @author Nithish
+ *
+ */
 public class RandomStrategy implements StrategyPlayer{
 	
+	/**
+	 * player service for specific player functions
+	 */
 	private PlayerService playerService;
+	
+	/**
+	 * Player object for player list and details.
+	 */
 	private Player player;
 	
+	/**
+	 * RandomStrategy class constructor 
+	 * @param playerService PlayerService to be passed for details.
+	 */
 	public RandomStrategy(PlayerService playerService) {
 		this.playerService = playerService;
 		this.player = playerService.getCurrentPlayer();
 		this.playerService.notifyPlayerServiceObservers("Random Strategy");
 	}
 	
+	/**
+	 * A random strategy player reinforces random country.
+	 */
 	@Override
 	public void reinforce() {
 		
@@ -41,6 +60,10 @@ public class RandomStrategy implements StrategyPlayer{
 		
 	}
 	
+	/**
+	 * A random strategy player attacks a random country that is attackable, 
+	 * random number of times from how many time it can attackable
+	 */
 	@Override
 	public void attack() {		
 		
@@ -109,6 +132,9 @@ public class RandomStrategy implements StrategyPlayer{
 		
 	}
 	
+	/**
+	 * A random strategy player fortifies a random country that can be fortified
+	 */
 	@Override
 	public void fortify() {
 		

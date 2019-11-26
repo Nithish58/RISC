@@ -20,7 +20,7 @@ import com6441.team7.risc.view.PhaseView;
 /**
  * 
  * This class validates tournament command entered by user and launches the tournament
- * It initialised tournament parameters as well
+ * It initialized tournament parameters as well
  * However all the tournament logic is in PlayerService.class and Player.class
  * @author Keshav
  *
@@ -500,7 +500,7 @@ public class TournamentController {
 	
 	/**
 	 * Resets Game states in Hardcoded Tournament mode
-	 * THis includes adding more players/
+	 * This includes adding more players/
 	 */
 	private void checkAndResetGameStatesHardcoded() {
 		

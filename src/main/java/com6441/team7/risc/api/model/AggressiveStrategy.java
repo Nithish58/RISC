@@ -17,9 +17,20 @@ import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
  */
 public class AggressiveStrategy implements StrategyPlayer {
 
+	/**
+	 * player service for specific player functions
+	 */
 	private PlayerService playerService;
+	
+	/**
+	 * Player object for player list and details.
+	 */
 	private Player player;
 
+	/**
+	 * {@link AggressiveStrategy} class constructor 
+	 * @param playerService PlayerService to be passed for details.
+	 */
 	public AggressiveStrategy(PlayerService playerService) {
 		this.playerService = playerService;
 		this.player = playerService.getCurrentPlayer();

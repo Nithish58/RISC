@@ -263,7 +263,7 @@ public class ReinforceGameController implements Controller{
     }
 
     /**
-     * caculate the number of reinforced armies
+     * Calculate the number of reinforced armies
      * rule 1: all conquered countries divided by 3
      * rule 2: get the power of the continent if it is occupied by the player
      * rule 3: if the total number of reinforced armies is less than 3, make it three

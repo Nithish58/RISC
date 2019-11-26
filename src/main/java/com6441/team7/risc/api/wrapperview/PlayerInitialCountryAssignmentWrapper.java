@@ -20,12 +20,12 @@ public class PlayerInitialCountryAssignmentWrapper {
 
 	/**
 	 * constructor
-	 * @param p player
-	 * @param c country
+	 * @param player player
+	 * @param country country
 	 */
-	public PlayerInitialCountryAssignmentWrapper(Player p, Country c){
-		this.player=p;
-		this.country=c;
+	public PlayerInitialCountryAssignmentWrapper(Player player, Country country){
+		this.player=player;
+		this.country=country;
 	}
 
 	/**
