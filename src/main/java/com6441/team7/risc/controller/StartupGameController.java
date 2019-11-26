@@ -903,4 +903,13 @@ public class StartupGameController implements Controller{
 		this.boolArrayCountriesPlaced=arrB;
 	}
 	
+	/**
+	 * Getter method for phaseview
+	 * Used by Tournament Controller only when it is instantiated
+	 * @return phaseview of startup controller
+	 */
+	public GameView getPhaseViewSGC() {
+		return phaseView;
+	}
+	
 }   //END OF CLASS
