@@ -70,7 +70,7 @@ public class TournamentController {
 	public void launchTournament() {
 		
 		//hardcoded for test purpose
-		numTurns = 3;
+		numTurns = 100;
 		//hardcoded for test purpose 
 		numGames = 5;
 		
@@ -97,6 +97,7 @@ public class TournamentController {
 				playerService.removePlayer("c");				
 				playerService.removePlayer("d");				
 				playerService.removePlayer("e");
+				//playerService.getPlayerList().clear();
 				
 			} //End of Game Iteration
 			
@@ -127,7 +128,7 @@ public class TournamentController {
 		playerService.addPlayer("a", "benevolent");								
 		playerService.addPlayer("b", "cheater");				
 		playerService.addPlayer("c", "benevolent");				
-		playerService.addPlayer("d", "benevolent");				
+		playerService.addPlayer("d", "cheater");				
 		playerService.addPlayer("e", "aggressive");		
 		
 		playerService.setNumTurns(numTurns);
