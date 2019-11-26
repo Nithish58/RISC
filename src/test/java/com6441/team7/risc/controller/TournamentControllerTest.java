@@ -61,7 +61,9 @@ public class TournamentControllerTest {
 	  * list of different controllers
 	  */
 	 List<Controller> controllerList;
-	 
+	 /**
+	  * current player
+	  */
 	 Player currentPlayer;
 	 
 	 /**
