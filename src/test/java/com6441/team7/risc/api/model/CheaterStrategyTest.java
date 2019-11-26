@@ -228,9 +228,7 @@ public class CheaterStrategyTest {
 		//Method Call
 		CheaterStrategy cheaterStrategy=new CheaterStrategy(playerService);
 		cheaterStrategy.fortify();
-		
-		//Evaluation
-	//	for(Country c:)
+
 		
 	}
 	
