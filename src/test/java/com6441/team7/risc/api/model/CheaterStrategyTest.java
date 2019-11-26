@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -96,7 +97,7 @@ public class CheaterStrategyTest {
 		
 		Player nextPlayer=playerService.getNextPlayer();
 		
-		currentPlayer.setPlayerCategory("cheater");
+		nextPlayer.setPlayerCategory("cheater");
 		
 		ArrayList<Integer> beforeCheaterReinforcement=
 				new ArrayList<Integer>();
@@ -121,6 +122,107 @@ public class CheaterStrategyTest {
 	}
 	
 	
+	@Test
+	public void test002_attack() {
+		
+		mapService.setState(GameState.ATTACK);
+		
+		//Player Keshav
+		Player currentPlayer=playerService.getCurrentPlayer();
+		
+		currentPlayer.setPlayerCategory("cheater");
+		
+		//Player Binsar
+		Player nextPlayer=playerService.getNextPlayer();
+		
+		nextPlayer.setPlayerCategory("benevolent");
+		
+		//Player Bikas
+		nextPlayer=playerService.getNextPlayer();
+		
+		nextPlayer.setPlayerCategory("benevolent");
+		
+		ArrayList<Country> countriesToBeTransferredList=new ArrayList<Country>();
+		
+		for(Country c: currentPlayer.getCountryPlayerList()) {
+			
+			Set<Integer> fromCountryAdjacencyList = playerService.getMapService()
+					.getAdjacencyCountries(c.getId());
+			
+			for (Integer j : fromCountryAdjacencyList) {
+				if (!playerService.getMapService().getCountryById(j).get().getPlayer().getName().
+						equals(currentPlayer.getName())) {
+					
+					countriesToBeTransferredList.add(playerService.getMapService().getCountryById(j).get());			
+				}
+			}			
+		}
+		
+		CheaterStrategy cheaterStrategy=new CheaterStrategy(playerService);
+		
+		cheaterStrategy.attack();
+		
+		for(Country c:countriesToBeTransferredList) {
+			assertEquals(currentPlayer.getName(),c.getPlayer().getName());
+		}
+		
+		//In case no countries adjacent to cheater countries for transfer (Very Rare)
+		assertTrue(true);
+				
+	}
+	
+	@Test
+	public void test003_fortify() {
+		
+		mapService.setState(GameState.FORTIFY);
+		
+		//Player Keshav
+		Player currentPlayer=playerService.getCurrentPlayer();
+		
+		currentPlayer.setPlayerCategory("cheater");
+		
+		//Player Binsar
+		Player nextPlayer=playerService.getNextPlayer();
+		
+		nextPlayer.setPlayerCategory("benevolent");
+		
+		//Player Bikas
+		nextPlayer=playerService.getNextPlayer();
+		
+		nextPlayer.setPlayerCategory("benevolent");
+		
+		ArrayList<Country> countriesToBeFortified =new ArrayList<Country>();
+		ArrayList<Integer> countrySoldiersBeforeFortification=new ArrayList<Integer>();
+		
+		for(Country c:currentPlayer.getCountryPlayerList()) {
+			
+			Set<Integer> fromCountryAdjacencyList = playerService.getMapService()
+					.getAdjacencyCountries(c.getId());
+			
+			for (Integer j : fromCountryAdjacencyList) {
+				if (!playerService.getMapService().getCountryById(j).get().getPlayer().getName().
+						equals(currentPlayer.getName())) {
+					
+					countriesToBeFortified.add(c);
+					countrySoldiersBeforeFortification.add(c.getSoldiers());
+					
+					playerService.notifyPlayerServiceObservers(c.getCountryName()+" has opponent neighbours,"
+							+ " doubled to: "+c.getSoldiers());
+					
+					break; //Already doubled country with foreign neighbours, move to other countries now
+				}
+			}				
+		}
+		
+		//Method Call
+		CheaterStrategy cheaterStrategy=new CheaterStrategy(playerService);
+		cheaterStrategy.fortify();
+		
+		//Evaluation
+	//	for(Country c:)
+		
+	}
+	
 	
 	
 	/**
@@ -138,6 +240,7 @@ public class CheaterStrategyTest {
 
 		addCheaterPlayer("Keshav");
 		addBenevolentPlayer("Binsar");
+		addBenevolentPlayer("Bikas");
 
 		phaseViewTest.receiveCommand("populatecountries");
 		phaseViewTest.receiveCommand("placeall");
