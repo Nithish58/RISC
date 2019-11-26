@@ -20,12 +20,12 @@ public class PlayerPlaceArmyWrapper {
 
 	/**
 	 * constructor of PlayerPlaceArmyWrapper
-	 * @param p Player
-	 * @param c Country
+	 * @param player Player
+	 * @param country Country
 	 */
-	public PlayerPlaceArmyWrapper(Player p, Country c){
-		this.player=p;
-		this.country=c;
+	public PlayerPlaceArmyWrapper(Player player, Country country){
+		this.player=player;
+		this.country=country;
 	}
 
 	/**

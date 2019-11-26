@@ -48,7 +48,10 @@ public class CardExchangeView implements GameView{
         }
     }
 
-
+    /**
+     * 
+     * @param arg
+     */
     private void displayReinforcedCard(Object arg){
 
         int number = ((ReinforcedArmyAfterTradingCardWrapper)arg).getSoldier();
