@@ -549,7 +549,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test004_removeContinent()}
+	 * This method is executed by {@link #test003_removeContinent()}
 	 * @param name is the name of the continent to be removed
 	 * @throws Exception  on invalid values
 	 */
@@ -558,7 +558,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test005_addAndRemoveContinent()}
+	 * This method is executed by {@link #test004_addAndRemoveContinent()}
 	 * @param name1 is the name of the continent to be added
 	 * @param power Power
 	 * @param name2 is the name of the continent to be removed
@@ -569,7 +569,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test006_addCountry()}
+	 * This method is executed by {@link #test005_addCountry()}
 	 * @param name is the name of the country to be added
 	 * @param continentName is the continent of the added country
 	 * @throws Exception when unable to read command
@@ -579,7 +579,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test007_removeCountry()}
+	 * This method is executed by {@link #test006_removeCountry()}
 	 * @param name is the name of the country to be removed
 	 * @throws Exception when unable to read command
 	 */
@@ -588,7 +588,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test008_addAndRemoveCountry()}
+	 * This method is executed by {@link #test007_addAndRemoveCountry()}
 	 * @param name1 is the country to be added
 	 * @param continentName1 is the continent of the added country
 	 * @param name2 is the country to be removed
@@ -599,7 +599,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test009_addNeighbor()}.
+	 * This method is executed by {@link #test008_addNeighbor()}.
 	 * country1 is the origin country.
 	 * neighbor1 is the neighboring country.
 	 * borders1 is the map that stores countries and their adjacent neighbors.
@@ -623,7 +623,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test010_removeNeighbor()}.
+	 * This method is executed by {@link #test009_removeNeighbor()}.
 	 * <i>country1</i> is the origin country.
 	 * <i>neighbor1</i> is the neighboring country.
 	 * <i>borders1</i> is the map that stores countries and their adjacent neighbors.
@@ -646,7 +646,7 @@ public class MapLoaderAdapterTest {
 	}
 	
 	/**
-	 * This method is executed by {@link #test011_addAndRemoveNeighbor()}. 
+	 * This method is executed by {@link #test010_addAndRemoveNeighbor()}. 
 	 * <i>country1</i> is the first origin country.
 	 * <i>neighbor1</i> is the to-be-added neighboring country.
 	 * <i>borders1</i> is the map that stores countries and their adjacent neighbors.
