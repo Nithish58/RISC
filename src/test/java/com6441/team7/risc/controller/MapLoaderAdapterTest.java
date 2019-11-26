@@ -123,11 +123,18 @@ public class MapLoaderAdapterTest {
 	static int  testCounter;
 	
 	/**
-	 * country1, neighbor1, country2, neighbor2, borders1, borders2, pair1, and pair2 
+	 * country1, neighbor1, country2, neighbor2, 
 	 * are used for testing adding and deleting neighboring countries
 	 */
 	Optional<Integer> country1, neighbor1, country2, neighbor2;
+	/**
+	 * borders1, borders2 are used for testing adding and deleting neighboring countries
+	 */
 	Map<Integer, Set<Integer>> borders1, borders2;
+	/**
+	 * pair1, and pair2 
+	 * are used for testing adding and deleting neighboring countries
+	 */
 	Set<Integer> pair1, pair2;
 
 	/**

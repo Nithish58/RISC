@@ -68,6 +68,9 @@ public class AttackGameControllerTest {
 	  */
 	 List<Controller> controllerList;
 	 
+	 /**
+	  * current player
+	  */
 	 Player currentPlayer;
 	 
 	 /**
