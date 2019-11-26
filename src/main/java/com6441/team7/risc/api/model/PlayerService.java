@@ -2,6 +2,8 @@ package com6441.team7.risc.api.model;
 
 import com6441.team7.risc.api.wrapperview.*;
 import com6441.team7.risc.controller.TournamentController;
+import com6441.team7.risc.utils.builder.AbstractPlayerServiceBuilder;
+import com6441.team7.risc.utils.builder.ConcretePlayerServiceBuilder;
 
 import java.util.*;
 
@@ -13,6 +15,8 @@ import java.util.*;
  */
 public class PlayerService extends Observable {
 
+
+	private final AbstractPlayerServiceBuilder builder;
 	/**
 	 * a reference to mapService
 	 */
@@ -82,6 +86,8 @@ public class PlayerService extends Observable {
 		this.currentPlayerIndex=-1;
 		
 		this.boolTournamentMode=false;
+
+		builder = new ConcretePlayerServiceBuilder();
 
 	}	
 	
@@ -760,18 +766,6 @@ public class PlayerService extends Observable {
 
 	}
 
-	/**
-	 * get player status entity to build playerStatusEntity
-	 * @return playerStatusEntity
-	 */
-	public PlayerStatusEntity getPlayerStatusEntity(){
-		return PlayerStatusEntity.PlayerStatusEntityBuilder.newInstance()
-				.playerList(listPlayers)
-				.currentPlayer(currentPlayer)
-				.currentPlayerIndex(currentPlayerIndex)
-				.command(command)
-				.build();
-	}
 
 	/**
 	 * set list of players
@@ -780,6 +774,26 @@ public class PlayerService extends Observable {
 	public void setListPlayers(ArrayList<Player> listPlayers) {
 		this.listPlayers = listPlayers;
 	}
+
+
+	public void constructPlayerServiceEntity(){
+		builder.createNewPlayerServiceEntity();
+		builder.buildListPlayers(listPlayers);
+		builder.buildCommand(command);
+		builder.buildCurrentPlayer(currentPlayer);
+		builder.buildCurrentPlayerIndex(currentPlayerIndex);
+	}
+
+
+	/**
+	 * get player status entity to build playerStatusEntity
+	 * @return playerStatusEntity
+	 */
+	public PlayerStatusEntity getPlayerStatusEntity(){
+		constructPlayerServiceEntity();
+		return builder.getPlayerStatusEntity();
+	}
+
 
 
 }

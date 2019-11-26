@@ -8,6 +8,8 @@ import static com6441.team7.risc.api.RiscConstants.MAX_NUM_PLAYERS;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.api.model.StartupStateEntity;
 import com6441.team7.risc.utils.SaveGameUtils;
+import com6441.team7.risc.utils.builder.AbstractStartUpStateBuilder;
+import com6441.team7.risc.utils.builder.ConcreteStartUpStateBuilder;
 import org.apache.commons.lang3.StringUtils;
 
 import com6441.team7.risc.api.wrapperview.PlayerInitialArmyWrapper;
@@ -41,7 +43,9 @@ import com6441.team7.risc.api.exception.PlayerEditException;
  *
  */
 public class StartupGameController implements Controller{
-	
+
+
+	private final AbstractStartUpStateBuilder builder;
     /**
      * Boolean that checks if map is loaded.
      * Used to control game flow.
@@ -119,7 +123,8 @@ public class StartupGameController implements Controller{
 		this.boolMapLoaded=false;	
 		this.boolAllGamePlayersAdded=false;
 		this.boolGamePlayerAdded=false;
-		this.boolCountriesPopulated=false;		
+		this.boolCountriesPopulated=false;
+		this.builder = new ConcreteStartUpStateBuilder();
 
 	}
 
@@ -856,16 +861,7 @@ public class StartupGameController implements Controller{
 
 		 MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
 		 PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();
-
-		 StartupStateEntity startupStateEntity =  StartupStateEntity.StartupStateEntityBuilder.newInstance()
-				 .boolMapLoaded(boolMapLoaded)
-				.boolGamePlayerAdded(boolGamePlayerAdded)
-				.boolAllGamePlayersAdded(boolAllGamePlayersAdded)
-				.boolCountriesPopulated(boolCountriesPopulated)
-				.boolAllCountriesPlaced(boolAllCountriesPlaced)
-				.boolArrayCountriesPlaced(boolArrayCountriesPlaced)
-				.build();
-
+		 StartupStateEntity startupStateEntity =  getStartUpStateEntity();
 
 		 Map<String, Object> entities = new HashMap<>();
 		 entities.put(MapStatusEntity.class.getSimpleName(), mapStatusEntity);
@@ -900,5 +896,23 @@ public class StartupGameController implements Controller{
 	public void setBoolArrayCountriesPlaced(boolean[] arrB) {
 		this.boolArrayCountriesPlaced=arrB;
 	}
-	
+
+	public void constructStartUpStateEntity(){
+		builder.createNewStartUpStateEntity();
+		builder.buildBoolMapLoaded(boolMapLoaded);
+		builder.buildBoolGamePlayerAdded(boolGamePlayerAdded);
+		builder.buildBoolAllGamePlayersAdded(boolAllGamePlayersAdded);
+		builder.buildBoolCountriesPopulated(boolCountriesPopulated);
+		builder.buildBoolArrayCountriesPlaced(boolArrayCountriesPlaced);
+		builder.buildBoolAllCountriesPlaced(boolAllCountriesPlaced);
+	}
+
+	public StartupStateEntity getStartUpStateEntity(){
+		constructStartUpStateEntity();
+		return builder.getStartupStateEntity();
+	}
+
+	public AbstractStartUpStateBuilder getBuilder() {
+		return builder;
+	}
 }   //END OF CLASS

@@ -171,18 +171,16 @@ public class LoadGameControllerTest {
 
         mapStatusEntity = mapService.getMapStatusEntity();
         playerStatusEntity = playerService.getPlayerStatusEntity();
-
-
         boolean[] boolArrayCountriesPlaced = {false, false, false, false};
-        startupStateEntity = StartupStateEntity.StartupStateEntityBuilder.newInstance()
-                .boolMapLoaded(true)
-                .boolGamePlayerAdded(true)
-                .boolAllGamePlayersAdded(true)
-                .boolAllCountriesPlaced(true)
-                .boolArrayCountriesPlaced(boolArrayCountriesPlaced)
-                .boolAllCountriesPlaced(false)
-                .boolCountriesPopulated(true)
-                .build();
+
+        StartupStateEntity startupStateEntity = new StartupStateEntity();
+        startupStateEntity.setBoolMapLoaded(true);
+        startupStateEntity.setBoolGamePlayerAdded(true);
+        startupStateEntity.setBoolAllGamePlayersAdded(true);
+        startupStateEntity.setBoolCountriesPopulated(true);
+        startupStateEntity.setBoolArrayCountriesPlaced(boolArrayCountriesPlaced);
+        startupStateEntity.setBoolAllCountriesPlaced(false);
+
 
         startupGameController.setStatus(startupStateEntity);
         save();

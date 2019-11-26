@@ -5,6 +5,8 @@ import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.utils.MapDisplayUtils;
 import com6441.team7.risc.utils.SaveGameUtils;
+import com6441.team7.risc.utils.builder.AbstractReinforceStateBuilder;
+import com6441.team7.risc.utils.builder.ConcreteReinforceStateBuilder;
 import com6441.team7.risc.view.*;
 import org.apache.commons.lang3.StringUtils;
 import java.util.*;
@@ -28,6 +30,8 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * 
  */
 public class ReinforceGameController implements Controller{
+
+    private final AbstractReinforceStateBuilder builder;
     /**
      * the reference of playerService
      */
@@ -60,6 +64,7 @@ public class ReinforceGameController implements Controller{
     public ReinforceGameController(PlayerService playerService) {
         this.playerService = playerService;
         exchangeCardOver = false;
+        builder = new ConcreteReinforceStateBuilder();
 
     }
 
@@ -155,10 +160,7 @@ public class ReinforceGameController implements Controller{
      */
     private void save(MapService mapService, PlayerService playerService){
 
-        ReinforceStateEntity reinforceStateEntity =  ReinforceStateEntity.ReinforceStateEntityBuilder.newInstance()
-                .isExchangeCardOver(exchangeCardOver)
-                .reinforcedArmies(reinforcedArmies)
-                .build();
+        ReinforceStateEntity reinforceStateEntity = getReinforcedStateEntity();
 
         MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
         PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();
@@ -473,5 +475,16 @@ public class ReinforceGameController implements Controller{
             reinforcedArmies =reinforceStateEntity.getReinforcedArmies();
             phaseView.displayMessage("the number of reinforced armies are " + reinforcedArmies);
         }
+    }
+
+    public void constructReinforceStateEntity(){
+        builder.createNewReinforceStateEntity();
+        builder.buildBooleanExchangeCardOver(exchangeCardOver);
+        builder.buildReinforceArmyNumber(reinforcedArmies);
+    }
+
+    public ReinforceStateEntity getReinforcedStateEntity(){
+        constructReinforceStateEntity();
+        return builder.getReinforceStateEntity();
     }
 }

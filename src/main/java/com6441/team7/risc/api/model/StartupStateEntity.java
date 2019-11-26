@@ -122,130 +122,28 @@ public class StartupStateEntity {
         return boolArrayCountriesPlaced;
     }
 
-    /**
-     * the inner class to build the StartupStateEntityBuilder
-     */
-    public static class StartupStateEntityBuilder{
+    public void setBoolCountriesPopulated(boolean boolCountriesPopulated) {
+        this.boolCountriesPopulated = boolCountriesPopulated;
+    }
 
-        /**
-         * Boolean that checks if a country have been successfully populated.
-         * If true, allows proceeding to next phase.
-         * Else need to populate countries first
-         * Used to control game flow.
-         */
-        private boolean boolCountriesPopulated;
+    public void setBoolMapLoaded(boolean boolMapLoaded) {
+        this.boolMapLoaded = boolMapLoaded;
+    }
 
-        /**
-         * Boolean that checks if map is loaded.
-         * Used to control game flow.
-         */
-        private boolean boolMapLoaded;
+    public void setBoolAllGamePlayersAdded(boolean boolAllGamePlayersAdded) {
+        this.boolAllGamePlayersAdded = boolAllGamePlayersAdded;
+    }
 
-        /**
-         * Boolean that checks if all players have been added.
-         * Set to true when populate countries called
-         * Can no longer add more players after this point.
-         * Used to control game flow.
-         */
-        private boolean boolAllGamePlayersAdded;
+    public void setBoolGamePlayerAdded(boolean boolGamePlayerAdded) {
+        this.boolGamePlayerAdded = boolGamePlayerAdded;
+    }
 
-        /**
-         * Boolean that checks if atleast 1 player is added.
-         * If this is false, does not proceed further and asks addition of at least 1 player.
-         * Used to control game flow.
-         */
-        private boolean boolGamePlayerAdded;
+    public void setBoolAllCountriesPlaced(boolean boolAllCountriesPlaced) {
+        this.boolAllCountriesPlaced = boolAllCountriesPlaced;
+    }
 
-        /**
-         * check if all countries have been successfully populated
-         */
-        private boolean boolAllCountriesPlaced;
-
-        /**
-         * Array of boolean that checks if all armies have been placed on all countries.
-         * If true, allows proceeding to next phase; else program keep looping over players until all armies have been placed.
-         */
-        private boolean[] boolArrayCountriesPlaced;
-
-        /**
-         * create new instance of StartupStateEntityBuilder
-         * @return an object of StartupStateEntityBuilder
-         */
-        public static StartupStateEntityBuilder newInstance(){
-            return new StartupStateEntityBuilder();
-        }
-
-        /**
-         * build boolean value boolCountriesPopulated
-         * @param boolCountriesPopulated Boolean that checks if a country have been successfully populated.
-         * @return StartupStateEntityBuilder
-         */
-        public StartupStateEntityBuilder boolCountriesPopulated(boolean boolCountriesPopulated){
-            this.boolCountriesPopulated = boolCountriesPopulated;
-            return this;
-        }
-
-        /**
-         * build boolean value boolMapLoaded
-         * @param boolMapLoaded Boolean that checks if map is loaded.
-         * @return StartupStateEntityBuilder
-         */
-        public StartupStateEntityBuilder boolMapLoaded(boolean boolMapLoaded){
-            this.boolMapLoaded = boolMapLoaded;
-            return this;
-        }
-
-        /**
-         * build boolean value boolAllGamePlayersAdded
-         * @param boolAllGamePlayersAdded Boolean that checks if all players have been added.
-         * @return StartupStateEntityBuilder
-         */
-        public StartupStateEntityBuilder boolAllGamePlayersAdded(boolean boolAllGamePlayersAdded){
-            this.boolAllGamePlayersAdded = boolAllGamePlayersAdded;
-            return this;
-        }
-
-        /**
-         * build boolean value boolGamePlayerAdded
-         * @param boolGamePlayerAdded Boolean that checks if atleast 1 player is added.
-         * @return StartupStateEntityBuilder
-         */
-        public StartupStateEntityBuilder boolGamePlayerAdded(boolean boolGamePlayerAdded){
-            this.boolGamePlayerAdded = boolGamePlayerAdded;
-            return this;
-        }
-
-        /**
-         * build boolean value boolAllCountriesPlaced
-         * @param boolAllCountriesPlaced check if all countries have been successfully populated
-         * @return StartupStateEntityBuilder
-         */
-        public StartupStateEntityBuilder boolAllCountriesPlaced(boolean boolAllCountriesPlaced){
-            this.boolAllCountriesPlaced = boolAllCountriesPlaced;
-            return this;
-        }
-
-        /**
-         * build boolean value boolArrayCountriesPlaced
-         * @param boolArrayCountriesPlaced Array of boolean that checks if all armies have been placed on all countries.
-         * @return StartupStateEntityBuilder
-         */
-        public StartupStateEntityBuilder boolArrayCountriesPlaced(boolean[] boolArrayCountriesPlaced){
-        	
-            this.boolArrayCountriesPlaced = boolArrayCountriesPlaced;
-            return this;
-        }
-
-        /**
-         * create the StartupStateEntity object
-         * @return new object of StartupStateEntity
-         */
-        public StartupStateEntity build(){
-            return new StartupStateEntity(boolCountriesPopulated, boolMapLoaded,
-                    boolAllGamePlayersAdded, boolGamePlayerAdded,
-                    boolAllCountriesPlaced, boolArrayCountriesPlaced);
-        }
-
+    public void setBoolArrayCountriesPlaced(boolean[] boolArrayCountriesPlaced) {
+        this.boolArrayCountriesPlaced = boolArrayCountriesPlaced;
     }
 
 }

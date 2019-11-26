@@ -1,9 +1,10 @@
 package com6441.team7.risc.api.model;
 
+import com6441.team7.risc.utils.builder.AbstractMapServiceBuilder;
+import com6441.team7.risc.utils.builder.ConcreteMapServiceBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.KosarajuStrongConnectivityInspector;
-import org.jgrapht.alg.interfaces.StrongConnectivityAlgorithm;
 import org.jgrapht.graph.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ import static java.util.Objects.isNull;
  *
  */
 public class MapService extends Observable {
-
+    private final AbstractMapServiceBuilder builder;
     /**
      * a set of countries
      */
@@ -49,6 +50,7 @@ public class MapService extends Observable {
      * Default Constructor
      */
     public MapService() {
+        builder = new ConcreteMapServiceBuilder();
     }
 
     /**
@@ -994,19 +996,6 @@ public class MapService extends Observable {
                 .findFirst();
     }
 
-    /**
-     * call MapStatusEntityBuilder to build the attributes and return MapStatusEntity
-     * @return mapSatusEntity
-     */
-    public MapStatusEntity getMapStatusEntity(){
-        return MapStatusEntity.MapStatusEntityBuilder.newInstance()
-                .continents(continents)
-                .countries(countries)
-                .continentCountriesMap(continentCountriesMap)
-                .adjacencyCountriesMap(adjacencyCountriesMap)
-                .gameState(gameState)
-                .build();
-    }
 
 
     /**
@@ -1065,4 +1054,30 @@ public class MapService extends Observable {
         setChanged();
         notifyObservers(mapStatusEntity);
     }
+
+    public AbstractMapServiceBuilder getBuilder() {
+        return builder;
+    }
+
+    /**
+     * call builder to construct map status entity
+     */
+    public void constructMapStatusEntity(){
+        builder.createNewMapStatusEntity();
+        builder.buildCountries(countries);
+        builder.buildContinents(continents);
+        builder.buildCountryContinentRelations(continentCountriesMap);
+        builder.buildAdjacencyCountries(adjacencyCountriesMap);
+        builder.buildGameState(gameState);
+    }
+
+    /**
+     * call MapStatusEntityBuilder to build the attributes and return MapStatusEntity
+     * @return mapSatusEntity
+     */
+    public MapStatusEntity getMapStatusEntity(){
+        constructMapStatusEntity();
+        return builder.getMapServiceEntity();
+    }
+
 }

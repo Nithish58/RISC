@@ -12,7 +12,8 @@ import org.junit.runners.Suite.SuiteClasses;
 				StartupGameControllerTest.class,
 				ReinforceGameControllerTest.class,
 				AttackGameControllerTest.class,
-				FortifyGameControllerTest.class})
+				FortifyGameControllerTest.class,
+				LoadGameControllerTest.class})
 public class TestSuiteController {
 
 }
