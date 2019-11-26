@@ -268,6 +268,12 @@ public class Country{
     }
 
     public void setSoldiers(int soldiers) {
+    	
+    	//Added to prevent int buffer from overflowing especially during cheater game phases
+    	if(soldiers>1000000) {
+    		this.soldiers=500;
+    		return;
+    	}
         this.soldiers = soldiers;
     }
 
