@@ -346,8 +346,12 @@ public class AttackGameController implements Controller {
 
 	}
 
+	/**
+	 * saving game at this end of this phase. 
+	 * @param mapService map details pulled from mapService
+	 * @param playerService player details pulled from playerService
+	 */
 	private void save(MapService mapService, PlayerService playerService){
-
 
 		MapStatusEntity mapStatusEntity = mapService.getMapStatusEntity();
 		PlayerStatusEntity playerStatusEntity = playerService.getPlayerStatusEntity();

@@ -369,11 +369,11 @@ public class StartupGameController implements Controller{
     
 	/**
 	 * for each string, call editPlayerFromUserInput method
-	 * @param s string array of editPlayer command. 
+	 * @param command string array of editPlayer command. 
 	 */
-	private void editPlayer(String[] s) {
+	private void editPlayer(String[] command) {
 		
-			 Arrays.stream(s).forEach(this::editPlayerFromUserInput);				
+			 Arrays.stream(command).forEach(this::editPlayerFromUserInput);				
 	
 	}
     
@@ -381,10 +381,10 @@ public class StartupGameController implements Controller{
 	 * if the command is add, call addPlayer()
 	 * if the command is remove, call removePlayer()
 	 * else throw exception
-	 * @param s command string
+	 * @param command command string
 	 */
-    private void editPlayerFromUserInput(String s) {
-        String[] commands = StringUtils.split(s, " ");
+    private void editPlayerFromUserInput(String command) {
+        String[] commands = StringUtils.split(command, " ");
         switch (convertFormat(commands[0])) {
             case "add":
                 addPlayer(commands);
@@ -393,7 +393,7 @@ public class StartupGameController implements Controller{
                 removePlayer(commands);
                 break;
             default:
-                throw new PlayerEditException("The gameplayer command " + s + " is not valid.");
+                throw new PlayerEditException("The gameplayer command " + command + " is not valid.");
         }
     }
     
@@ -401,21 +401,21 @@ public class StartupGameController implements Controller{
 	/**
 	 * validate each player info, if player info is valid, add it to the list of players
 	 * if not valid, throw an exception
-	 * @param s array of string commands
+	 * @param command array of string commands
 	 */
-	private void addPlayer(String[] s) {
+	private void addPlayer(String[] command) {
     	
     	if(playerService.getPlayerList().size()<MAX_NUM_PLAYERS) {
     		
         	try {
         		
-        		if(s.length!=3) {
+        		if(command.length!=3) {
         			phaseView.displayMessage("Invalid Add Command. Try again");
         			return;
         		}
         		
-        		String playerName=convertFormat(s[1]);
-        		String playerType=convertFormat(s[2]);
+        		String playerName=convertFormat(command[1]);
+        		String playerType=convertFormat(command[2]);
         		
         		boolean nameFound=playerService.checkPlayerExistance(playerName);
         		
@@ -449,13 +449,13 @@ public class StartupGameController implements Controller{
 	/**
 	 * validate player info, if player info is valid, remove it to the list of players
 	 * if not valid, throw an exception
-	 * @param s array of string commands
+	 * @param command array of string commands
 	 */
-	private void removePlayer(String[] s) {
+	private void removePlayer(String[] command) {
     	
     	try {
     		
-    		String playerName=convertFormat(s[1]);
+    		String playerName=convertFormat(command[1]);
     		
     		boolean playerRemoved=playerService.removePlayer(playerName);
     		
@@ -736,7 +736,7 @@ public class StartupGameController implements Controller{
 	
 	/**
 	 * automatically randomly place all remaining unplaced armies for all players
-	 * Triggers notification to playerservice observers using PlaceArmyWrapper
+	 * Triggers notification to playerService observers using PlaceArmyWrapper
 	 * Triggers notification to domination view after all armies have been placed
 	 */
 	public void placeAll() {
@@ -802,19 +802,19 @@ public class StartupGameController implements Controller{
 
 	/**
 	 * Create setter for boolMapLoadeded
-	 * @param b boolean
+	 * @param bool boolean
 	 */
-	public void setBoolMapLoaded(boolean b) {
-		this.boolMapLoaded = b;
+	public void setBoolMapLoaded(boolean bool) {
+		this.boolMapLoaded = bool;
 	}
 	
 	
 	/**
 	 * Create setter for boolCountriesPopulated
-	 * @param b boolean
+	 * @param bool boolean value
 	 */
-	public void setBoolCountriesPopulated(boolean b) {
-		this.boolCountriesPopulated = b;
+	public void setBoolCountriesPopulated(boolean bool) {
+		this.boolCountriesPopulated = bool;
 	}
 
 
