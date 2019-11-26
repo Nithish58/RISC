@@ -163,8 +163,8 @@ public class LoadGameControllerTest {
         playerService.setCommand(RiscCommand.PLACE_ALL.getName() + RiscCommand.PLACE_ARMY.getName());
         playerService.setListPlayers(playerList);
         playerService.setCurrentPlayer(player);
-        player.setPlayerCategory("HUMAN");
-        player2.setPlayerCategory("HUMAN");
+        player.generatePlayerCategory("HUMAN");
+        player2.generatePlayerCategory("HUMAN");
         playerService.setCurrentPlayerIndex(0);
 
 

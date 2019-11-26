@@ -105,43 +105,49 @@ public class Player{
      */
 	public Player(String name, PlayerCategory category){
     	this.name = name;
-    	this.playerCategory = category;
+    	this.setPlayerCategory(category);
 	}
-
-    /**
-     * Method to get type of player 
-     * @return Enum of Player category
-     */
-    public PlayerCategory getPlayerCategory(){
-        return playerCategory;
-    }
     
     /**
+	 * @return the playerCategory
+	 */
+	public PlayerCategory getPlayerCategory() {
+		return playerCategory;
+	}
+	
+	/**
+	 * @param playerCategory the playerCategory to set
+	 */
+	public void setPlayerCategory(PlayerCategory playerCategory) {
+		this.playerCategory = playerCategory;
+	}
+	
+	/**
      * Setter method for type of player
      * @param strCategory category of player in string format
      */
-    public void setPlayerCategory(String strCategory) {
+    public void generatePlayerCategory(String strCategory) {
     	
     	switch(strCategory) {
     		
     		case "aggressive":
-    			this.playerCategory=PlayerCategory.AGGRESSIVE;
+    			this.setPlayerCategory(PlayerCategory.AGGRESSIVE);
     			break;
   
     		case "random":
-    			this.playerCategory=PlayerCategory.RANDOM;
+    			this.setPlayerCategory(PlayerCategory.RANDOM);
     			break;
     			
     		case "cheater":
-    			this.playerCategory=PlayerCategory.CHEATER;
+    			this.setPlayerCategory(PlayerCategory.CHEATER);
     			break;
     			
     		case "benevolent":
-    			this.playerCategory=PlayerCategory.BENEVOLENT;
+    			this.setPlayerCategory(PlayerCategory.BENEVOLENT);
     			break;
     			
     		default:
-    			this.playerCategory=PlayerCategory.HUMAN;
+    			this.setPlayerCategory(PlayerCategory.HUMAN);
     			
     			break;
     	}

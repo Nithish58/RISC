@@ -317,7 +317,7 @@ public class PlayerService extends Observable {
 	 */
 	public Player addPlayer(String name, String type){
 		Player newPlayer=new Player(name);
-		newPlayer.setPlayerCategory(type);
+		newPlayer.generatePlayerCategory(type);
 		listPlayers.add(newPlayer);
 
 		//Add Player to Wrapper function and send wrapper function to observers

@@ -108,7 +108,7 @@ public class AggressiveStrategyTest {
 
 		Player currentPlayer = playerService.getCurrentPlayer();
 
-		currentPlayer.setPlayerCategory("aggressive");
+		currentPlayer.generatePlayerCategory("aggressive");
 
 		mapService.setState(GameState.REINFORCE);
 

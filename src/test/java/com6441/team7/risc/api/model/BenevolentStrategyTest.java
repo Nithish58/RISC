@@ -108,7 +108,7 @@ public class BenevolentStrategyTest {
 
 		Player currentPlayer = playerService.getCurrentPlayer();
 
-		currentPlayer.setPlayerCategory("benevolent");
+		currentPlayer.generatePlayerCategory("benevolent");
 
 		mapService.setState(GameState.REINFORCE);
 

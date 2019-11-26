@@ -96,11 +96,11 @@ public class CheaterStrategyTest {
 		
 		Player currentPlayer=playerService.getCurrentPlayer();
 		
-		currentPlayer.setPlayerCategory("benevolent");
+		currentPlayer.generatePlayerCategory("benevolent");
 		
 		Player nextPlayer=playerService.getNextPlayer();
 		
-		nextPlayer.setPlayerCategory("cheater");
+		nextPlayer.generatePlayerCategory("cheater");
 		
 		ArrayList<Integer> beforeCheaterReinforcement=
 				new ArrayList<Integer>();
@@ -137,17 +137,17 @@ public class CheaterStrategyTest {
 		//Player Keshav
 		Player currentPlayer=playerService.getCurrentPlayer();
 		
-		currentPlayer.setPlayerCategory("cheater");
+		currentPlayer.generatePlayerCategory("cheater");
 		
 		//Player Binsar
 		Player nextPlayer=playerService.getNextPlayer();
 		
-		nextPlayer.setPlayerCategory("benevolent");
+		nextPlayer.generatePlayerCategory("benevolent");
 		
 		//Player Bikas
 		nextPlayer=playerService.getNextPlayer();
 		
-		nextPlayer.setPlayerCategory("benevolent");
+		nextPlayer.generatePlayerCategory("benevolent");
 		
 		ArrayList<Country> countriesToBeTransferredList=new ArrayList<Country>();
 		
@@ -190,17 +190,17 @@ public class CheaterStrategyTest {
 		//Player Keshav
 		Player currentPlayer=playerService.getCurrentPlayer();
 		
-		currentPlayer.setPlayerCategory("cheater");
+		currentPlayer.generatePlayerCategory("cheater");
 		
 		//Player Binsar
 		Player nextPlayer=playerService.getNextPlayer();
 		
-		nextPlayer.setPlayerCategory("benevolent");
+		nextPlayer.generatePlayerCategory("benevolent");
 		
 		//Player Bikas
 		nextPlayer=playerService.getNextPlayer();
 		
-		nextPlayer.setPlayerCategory("benevolent");
+		nextPlayer.generatePlayerCategory("benevolent");
 		
 		ArrayList<Country> countriesToBeFortified =new ArrayList<Country>();
 		ArrayList<Integer> countrySoldiersBeforeFortification=new ArrayList<Integer>();

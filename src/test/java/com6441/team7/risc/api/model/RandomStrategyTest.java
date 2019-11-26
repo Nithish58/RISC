@@ -107,7 +107,7 @@ public class RandomStrategyTest {
 
 		Player currentPlayer = playerService.getCurrentPlayer();
 
-		currentPlayer.setPlayerCategory("random");
+		currentPlayer.generatePlayerCategory("random");
 
 		mapService.setState(GameState.REINFORCE);
 
