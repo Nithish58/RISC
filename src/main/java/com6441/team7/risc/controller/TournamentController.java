@@ -17,43 +17,79 @@ import com6441.team7.risc.utils.CommonUtils;
 import com6441.team7.risc.view.GameView;
 import com6441.team7.risc.view.PhaseView;
 
+/**
+ * 
+ * This class validates tournament command entered by user and launches the tournament
+ * It initialised tournament parameters as well
+ * However all the tournament logic is in PlayerService.class and Player.class
+ * @author Keshav
+ *
+ */
 public class TournamentController {
 
-	
+	/**
+	 * StartupController Reference
+	 */
 	private StartupGameController startupGameController;
-	
+	/**
+	 * PlayerService Reference
+	 */
 	private PlayerService playerService;
-	
+	/**
+	 * MapService Reference
+	 */
 	private MapService mapService;
-	
+	/**
+	 * list of maps entered by user which ARE VALID
+	 */
 	private ArrayList<String> mapList;
-	
-	private ArrayList<String> strPlayerList;
-	
+
+	/**
+	 * Phaseview Reference
+	 */
 	private GameView phaseView;
 	
+	/**
+	 * number of games - set by user
+	 */
 	private int numGames;
-	
+	/**
+	 * number of turns - set by user
+	 */
 	private int numTurns;
 	
+	/**
+	 * Array that keeps result until tournament over
+	 */
 	private String[][] arrResults;
 	
+	/**
+	 * List of valid player strategies
+	 */
 	private ArrayList<String> listPlayerStrategy;
-	
+	/**
+	 * Keeps track of what map is being played on.
+	 */
 	private int mapIndex;
+	/**
+	 * Keeps track of what game is being played on a particular map
+	 */
 	private int gameIndex;
 	 
 	
-	
+	/**
+	 * Constructor for Tournament Controller
+	 * @param command user command
+	 * @param sgc StartupGameController
+	 */
 	public TournamentController(String command, StartupGameController sgc) {
 	
 		initialiseTournamentVariables(sgc);
 		
-		//Convert Command To Lower Case for string checks
-		
+		//Convert Command To Lower Case for string checks		
 		command=command.toLowerCase();
 		
-		//launch Hardcoded Tournament
+		//launch Hardcoded Tournament if only "tournament" command entered
 		if(command.equalsIgnoreCase("tournament")) {
 			
 			initialiseTournamentHardcoded(sgc);
@@ -62,6 +98,7 @@ public class TournamentController {
 			return;
 		}
 		
+		//Validate Command
 		if(!validateTournamentConditions(command)) {
 			phaseView.displayMessage("Invalid Tournament Command!!");
 			return;
@@ -74,7 +111,9 @@ public class TournamentController {
 	}
 	
 
-	
+	/**
+	 * Method that launches tournament after all validations are met
+	 */
 	public void launchTournament() {
 		
 		arrResults=new String[mapList.size()][numGames];
@@ -111,7 +150,9 @@ public class TournamentController {
 	
 	
 	
-	
+	/**
+	 * Resets game states after every game played
+	 */
 	private void checkAndResetGameStates() {
 		
 		playerService.notifyPlayerServiceObservers("Resetting Game States");
@@ -143,7 +184,9 @@ public class TournamentController {
 		
 	}
 	
-	
+	/**
+	 * Removes existing players and is used as part of game reset before launching any new game
+	 */
 	private void checkAndRemoveExistingPlayers() {
 		
 		for(int i=0;i<listPlayerStrategy.size();i++) {
@@ -156,6 +199,10 @@ public class TournamentController {
 		
 	}
 	
+	/**
+	 * Initialise tournament variables such as mapservice, playerservice.
+	 * @param sgc StartupGameController 
+	 */
 	public void initialiseTournamentVariables(StartupGameController sgc){
 		
 		this.startupGameController=sgc;
@@ -171,10 +218,19 @@ public class TournamentController {
 		
 	}
 
+	/**
+	 * Setter method for Setting Game Result of a particular game on a particular map in the results array
+	 * @param strResult gameOutcome
+	 */
 	public void setResult(String strResult) {
 		arrResults[mapIndex][gameIndex]=strResult;
 	}
 	
+	/**
+	 * CHecks User Command for correct map format, player strategies. numgames and numTurns
+	 * @param command User command
+	 * @return true if all validations are met
+	 */
 	public boolean validateTournamentConditions(String command) {
 		
 		if(!(command.contains("-p")&&command.contains("-m")&&command.contains("-g")&&command.contains("-d"))) {
@@ -199,6 +255,7 @@ public class TournamentController {
 		
 		return true;
 	}
+	
 	/**
 	 * Validates Map Command to check if any valid map is inserted
 	 * @param command String command
@@ -235,6 +292,11 @@ public class TournamentController {
 		return true;		
 	}
 	
+	/**
+	 * Validate player params
+	 * @param command user command
+	 * @return true if any valid player strategy is entered
+	 */
 	public boolean validatePlayerCommand(String command) {
 		
 		String strPlayer;
@@ -273,7 +335,11 @@ public class TournamentController {
 		
 	}
 	
-	
+	/**
+	 * Validate number of games
+	 * @param command user command
+	 * @return true if valid number of games entered
+	 */
 	public boolean validateNumGames(String command) {
 		
 		String strNumGames;
@@ -308,6 +374,11 @@ public class TournamentController {
 		
 	}
 	
+	/**
+	 * Validate number of turns
+	 * @param command user command
+	 * @return true if valid number of turns entered
+	 */
 	public boolean validateNumTurns(String command) {
 		
 		String strNumTurns;
@@ -340,8 +411,12 @@ public class TournamentController {
 		
 	}
 	
-	
-public void initialiseTournamentHardcoded(StartupGameController sgc) {
+	/**
+	 * Initialise Hardcoded Values for tournament
+	 * These include mapNames.
+	 * @param sgc StartupGameController
+	 */
+	public void initialiseTournamentHardcoded(StartupGameController sgc) {
 		
 		
 		if (this.mapList == null) {
@@ -361,6 +436,11 @@ public void initialiseTournamentHardcoded(StartupGameController sgc) {
 		
 	}
 	
+	/**
+	 * Launch HardCoded Tournament Mode.
+	 * numTurns and numGames can be changed directly by modifying variables
+	 * No need to enter long command
+	 */
 	public void launchTournamentHardcoded() {
 		
 		//hardcoded for test purpose
@@ -404,6 +484,10 @@ public void initialiseTournamentHardcoded(StartupGameController sgc) {
 		
 	}
 	
+	/**
+	 * Resets Game states in Hardcoded Tournament mode
+	 * THis includes adding more players/
+	 */
 	private void checkAndResetGameStatesHardcoded() {
 		
 		playerService.notifyPlayerServiceObservers("Resetting Game States");
