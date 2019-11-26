@@ -230,6 +230,10 @@ public class Country{
     public void addSoldiers(int number){
         this.soldiers += number;
         
+        if(this.soldiers>100000) {
+        	this.soldiers=500;
+        }
+        
         //setChanged();
         //notifyObservers(this);
     }
