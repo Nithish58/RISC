@@ -148,13 +148,13 @@ public class PhaseView implements GameView {
     /**
      * whenever users input valid or non-valid, or changes in the model,
      * the update() will call and display changes to the phase view
-     * @param o observable o
+     * @param observable observable o
      * @param arg argument
      */
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Observable observable, Object arg) {
 
-        if(o instanceof PlayerService){
+        if(observable instanceof PlayerService){
             
         	//When player is changed
         	if(arg instanceof PlayerChangeWrapper) {       		
@@ -235,8 +235,10 @@ public class PhaseView implements GameView {
         
     }  //End of Update Method
 
-
-    
+    /**
+     * method to display tournament results 
+     * @param arg Used as tournament wrapper
+     */
     private void displayTournamentResults(Object arg) {
     	
     	TournamentWrapper tournamentWrapper= ((TournamentWrapper)arg);
@@ -471,12 +473,5 @@ public class PhaseView implements GameView {
     	
     	displayMessage(strMsg);
     }
-    
-    
-    //TRIAL METHOD...NOT YET USED...FOUND ON NET
-    public  void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-    
+
 }

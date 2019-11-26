@@ -48,7 +48,10 @@ public class CardExchangeView implements GameView{
         }
     }
 
-
+    /**
+     * Method to display which player got how many soldiers for exchanging cards
+     * @param arg to be cast as ReinforcedArmyAfterTradingCardWrapper
+     */
     private void displayReinforcedCard(Object arg){
 
         int number = ((ReinforcedArmyAfterTradingCardWrapper)arg).getSoldier();
@@ -56,6 +59,5 @@ public class CardExchangeView implements GameView{
 
         displayMessage("player " + player.getName() + ": receives " + number + " soldiers after exchanging cards");
     }
-
 
 }

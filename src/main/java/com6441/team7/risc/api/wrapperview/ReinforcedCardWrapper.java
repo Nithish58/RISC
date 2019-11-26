@@ -72,5 +72,4 @@ public class ReinforcedCardWrapper {
         this.player = player;
     }
 
-
 }

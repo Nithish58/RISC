@@ -155,7 +155,9 @@ public class  FortifyGameController implements Controller {
 
 	} // End of readCommand method
 
-
+	/**
+	 * saving game at this end of this phase. 
+	 */
 	private void saveGame() {
 
 		playerService.setCommand(RiscCommand.FORTIFY.getName());

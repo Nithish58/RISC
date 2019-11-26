@@ -7,6 +7,11 @@ import java.util.Set;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
+/**
+ * Class for Random strategy player 
+ * @author Nithish
+ *
+ */
 public class RandomStrategy implements StrategyPlayer{
 	
 	private PlayerService playerService;

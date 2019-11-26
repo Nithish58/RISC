@@ -8,7 +8,7 @@ import com6441.team7.risc.api.model.Country;
 public class PlayerFortificationWrapper {
 
 	/**
-	 * a refenrence of country
+	 * a reference of country
 	 */
 	Country fromCountry;
 
@@ -94,35 +94,39 @@ public class PlayerFortificationWrapper {
 
 	/**
 	 * set display message
-	 * @param str String
+	 * @param string String
 	 */
-	public void setFortificationDisplayMessage(String str) {
-		this.displayMessage=str;
+	public void setFortificationDisplayMessage(String string) {
+		this.displayMessage=string;
 	}
 
 	/**
-	 * set from country
-	 * @param c country
+	 * setter for fromCountry
+	 * @param country country
 	 */
-	public void setFromCountry(Country c) {
-		this.fromCountry=c;
+	public void setFromCountry(Country country) {
+		this.fromCountry=country;
 	}
 
 	/**
 	 * set to country
-	 * @param c country
+	 * @param country country
 	 */
-	public void setToCountry(Country c) {
-		this.toCountry=c;
+	public void setToCountry(Country country) {
+		this.toCountry=country;
 	}
 
-	public void setNumSoldiers(int i) {
-		this.numSoldiers=i;
+	/**
+	 * setter for numSoldiers
+	 * @param soldiers number of soldiers
+	 */
+	public void setNumSoldiers(int soldiers) {
+		this.numSoldiers=soldiers;
 		
 	}
 
-	public void setBooleanFortificationNone(boolean b) {
-		this.fortifyNone=b;
+	public void setBooleanFortificationNone(boolean bool) {
+		this.fortifyNone=bool;
 		
 	}
 	
