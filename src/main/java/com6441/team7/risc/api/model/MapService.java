@@ -557,7 +557,6 @@ public class MapService extends Observable {
      * remove countries in the neighboring list given a continent id
      *
      * @param id continent id
-     * @return
      */
     private void removeNeighboringCountryByContinentId(int id) {
         findCountryIdByContinentId(id)

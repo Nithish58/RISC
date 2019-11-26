@@ -159,7 +159,6 @@ public class RandomStrategyTest {
 	 * is the number of aggressive player's strongest country increases if there's
 	 * an adjacent owned country found or stays the same if there aren't any
 	 * 
-	 * @throws Exception on invalid
 	 */
 	@Test
 	public void test003_fortify() {

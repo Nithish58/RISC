@@ -59,8 +59,8 @@ public class App {
         playerService.addObserver(dominationView);
         
         phaseView.receiveCommand();
-
-      
+        
+        return;
         
     }
 }

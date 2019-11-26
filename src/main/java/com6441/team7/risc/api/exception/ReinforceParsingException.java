@@ -7,8 +7,8 @@ public class ReinforceParsingException extends RiscGameException {
 
     /**
      * constructor of ReinforceParsingException
-     * @param message String
-     * @param e Exception
+     * @param message to be passed/displayed in string format 
+     * @param e ReinforceParsingException happens when reinforcement command cannot be parsed correctly
      */
     public ReinforceParsingException(String message, Exception e) {
         super(message, e);
@@ -16,7 +16,7 @@ public class ReinforceParsingException extends RiscGameException {
 
     /**
      * constructor of ReinforceParsingException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public ReinforceParsingException(String message) {
         super(message);
@@ -24,7 +24,7 @@ public class ReinforceParsingException extends RiscGameException {
 
     /**
      * constructor of ReinforceParsingException
-     * @param e Exception
+     * @param e ReinforceParsingException happens when reinforcement command cannot be parsed correctly
      */
     public ReinforceParsingException(Exception e) {
         super(e);

@@ -7,7 +7,7 @@ public class ContinentParsingException extends RiscGameException{
 
     /**
      * constructor of ContinentParsingException
-     * @param rootCause Exception
+     * @param rootCause ContinentParsingException occurred when trying to parse continents from map file
      */
     public ContinentParsingException(Exception rootCause) {
         super(rootCause);
@@ -15,8 +15,8 @@ public class ContinentParsingException extends RiscGameException{
 
     /**
      * constructor of ContinentParsingException
-     * @param message String
-     * @param rootCause Exception
+     * @param message to be passed/displayed in string format 
+     * @param rootCause ContinentParsingException occurred when trying to parse continents from map file
      */
     public ContinentParsingException(String message, Exception rootCause) {
         super(message, rootCause);
@@ -24,7 +24,7 @@ public class ContinentParsingException extends RiscGameException{
 
     /**
      * constructor of ContinentParsingException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public ContinentParsingException(String message) {
         super(message);

@@ -6,7 +6,8 @@ import java.util.Set;
 import com6441.team7.risc.utils.CommonUtils;
 
 /**
- * This is the strategy class for Cheater players
+ * This is the strategy class for Cheater players. Implements from 
+ * {@link StrategyPlayer}
  * @author Binsar
  *
  */
@@ -21,7 +22,9 @@ public class CheaterStrategy implements StrategyPlayer{
 		this.playerService.notifyPlayerServiceObservers("Cheater Strategy");
 	}
 	
-	
+	/**
+	 * Cheater player doubles the number of armies in all its countries in reinforcement phase.
+	 */
 	@Override
 	public void reinforce() {
 		
@@ -34,6 +37,9 @@ public class CheaterStrategy implements StrategyPlayer{
 		
 	}
 	
+	/**
+	 * Cheater player automatically conquers all its neighbors of all its countries in attack phase.
+	 */
 	@Override
 	public void attack() {
 		
@@ -98,6 +104,9 @@ public class CheaterStrategy implements StrategyPlayer{
 		
 	}
 	
+	/**
+	 * Cheater player doubles armies whose neighbors belong to other players in fortification phase.
+	 */
 	@Override
 	public void fortify() {
 		
@@ -131,6 +140,10 @@ public class CheaterStrategy implements StrategyPlayer{
 		
 	}
 	
+	/**
+	 * Change in ownership of country each time its war is won aganst it.
+	 * @param toCountryAttack
+	 */
     public void transferCountryOwnership(Country toCountryAttack) {
 
     	//If country already belongs to player, do not transfer again.

@@ -571,9 +571,11 @@ public class StartupGameController implements Controller{
 	/**
 	 * Method that checks if number of players is valid before populating countries
 	 * Checks the following conditions:
+	 * <ul>
 	 * <li>If only 1 player present, player automatically wins</li>
 	 * <li>If no player present, cannot proceed to country population</li>
 	 * <li>If more than max num players present, cannot proceed to country population</li>
+	 * </ul>
 	 * @return true if number of players valid, else false.
 	 */
 	private boolean checkNumPlayersValid() {

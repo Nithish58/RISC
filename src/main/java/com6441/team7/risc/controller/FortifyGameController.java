@@ -172,13 +172,14 @@ public class  FortifyGameController implements Controller {
 	
 	/**
 	 * This method determines type of fortification:
+	 * <ul>
 	 * <li>It validates the command: if the command format is valid, it check the
 	 * command type</li>
 	 * <li>if the command is none, it exits reinforce phase</li>
 	 * <li>if the command is valid, validate the country info and soldier info, and
 	 * move the soldier from these two countries</li>
-	 * 
-	 * @param command
+	 * </ul>
+	 * @param command fortify command in string format
 	 */
 	private void determineFortificationAndFortify(String command) {
 

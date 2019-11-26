@@ -9,7 +9,8 @@ import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 /**
- * This is the strategy class for Aggressive players
+ * This is the strategy class for Aggressive players. Implements from 
+ * {@link StrategyPlayer}
  * 
  * @author Binsar
  *
@@ -27,7 +28,7 @@ public class AggressiveStrategy implements StrategyPlayer {
 
 	/**
 	 * In reinforcement phase, aggressive player pick the country with the largest
-	 * number of armies to be reinforced
+	 * number of armies to be reinforced.
 	 */
 	@Override
 	public void reinforce() {
@@ -51,6 +52,9 @@ public class AggressiveStrategy implements StrategyPlayer {
 		playerService.getMapService().setState(GameState.ATTACK);
 	}
 	
+	/**
+	 * In attack phase, aggressive player attacks with its strongest player until it cannot anymore.
+	 */
 	@Override
 	public void attack() {
 		
@@ -168,6 +172,9 @@ public class AggressiveStrategy implements StrategyPlayer {
 		
 	}
 
+	/**
+	 * In fortify phase, aggressive player aggregates its armies into current strongest country.
+	 */
 	@Override
 	public void fortify() {
 		// Fortification wrapper
@@ -242,7 +249,10 @@ public class AggressiveStrategy implements StrategyPlayer {
 		}
 	}
 
-
+	/**
+	 * Finds strongest country, that is country with largest number of armies
+	 * @return returns the strongest country
+	 */
 	public Country findMaxCountry() {
 		int maxArmy = -1; // Init local variable for maximum number of army
 		int maxCountryIndex = 0; // init local variable for the index of the country with the largest num of army
@@ -269,8 +279,8 @@ public class AggressiveStrategy implements StrategyPlayer {
 	
 	/**
 	 * This is for calculating aggressive country's reinforcements
-	 * @param player receives player param
-	 * @return number of calculated reinforced armies
+	 * @param player receives player whose reinforcement armies need to be calculated
+	 * @return number of reinforced armies calculated.
 	 */
     public int calculateReinforcedAggressiveArmies(Player player){
 

@@ -111,7 +111,7 @@ public class Player{
     
     /**
      * Setter method for type of player
-     * @param category of player
+     * @param strCategory category of player in string format
      */
     public void setPlayerCategory(String strCategory) {
     	
@@ -1034,7 +1034,7 @@ public class Player{
 
     /**
      * display cards owned by the player
-     * @param player who's card list we want to view
+     * @param p who's card list we want to view
      */
     private void  showCardsInfoPlayer(Player p){
 

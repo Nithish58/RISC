@@ -7,7 +7,7 @@ public class ContinentEditException extends RiscGameException{
 
     /**
      * constructor of ContinentEditException
-     * @param rootCause Exception
+     * @param rootCause ContinentEditException occurred when trying to edit continent
      */
     public ContinentEditException(Exception rootCause) {
         super(rootCause);
@@ -15,8 +15,8 @@ public class ContinentEditException extends RiscGameException{
 
     /**
      * constructor of ContinentEditException
-     * @param message String
-     * @param rootCause Exception
+     * @param message to be passed/displayed in string format 
+     * @param rootCause ContinentEditException occurred when trying to edit continent
      */
     public ContinentEditException(String message, Exception rootCause) {
         super(message, rootCause);
@@ -24,7 +24,7 @@ public class ContinentEditException extends RiscGameException{
 
     /**
      * constructor of ContinentEditException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public ContinentEditException(String message) {
         super(message);

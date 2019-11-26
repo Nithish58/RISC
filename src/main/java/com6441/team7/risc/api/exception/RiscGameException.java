@@ -7,8 +7,8 @@ public class RiscGameException extends RuntimeException {
 
     /**
      * constructor of RiscGameException
-     * @param message String
-     * @param e Exception
+     * @param message to be passed/displayed in string format 
+     * @param e name of exception, gives more context
      */
     public RiscGameException(String message, Exception e) {
         super(message, e);
@@ -16,7 +16,7 @@ public class RiscGameException extends RuntimeException {
 
     /**
      * constructor of RiscGameException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public RiscGameException(String message) {
         super(message);
@@ -24,7 +24,7 @@ public class RiscGameException extends RuntimeException {
 
     /**
      * constructor of RiscGameException
-     * @param e Exception
+     * @param e name of exception, gives more context
      */
     public RiscGameException(Exception e) {
         super(e);

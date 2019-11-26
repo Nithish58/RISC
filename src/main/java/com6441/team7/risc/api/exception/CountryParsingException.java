@@ -7,7 +7,7 @@ public class CountryParsingException extends RiscGameException{
 
     /**
      * constructor of CountryParsingException
-     * @param rootCause Exception
+     * @param rootCause CountryParsingException occurred when trying to parse countries from map file
      */
     public CountryParsingException(Exception rootCause) {
         super(rootCause);
@@ -15,8 +15,8 @@ public class CountryParsingException extends RiscGameException{
 
     /**
      * constructor of CountryParsingException
-     * @param message String
-     * @param rootCause Exception
+     * @param message to be passed/displayed in string format 
+     * @param rootCause CountryParsingException occurred when trying to parse countries from map file
      */
     public CountryParsingException(String message, Exception rootCause) {
         super(message, rootCause);
@@ -24,7 +24,7 @@ public class CountryParsingException extends RiscGameException{
 
     /**
      * constructor of CountryParsingException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public CountryParsingException(String message) {
         super(message);

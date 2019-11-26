@@ -7,8 +7,8 @@ public class CountryEditException extends RiscGameException {
 
     /**
      * constructor of CountryEditException
-     * @param message String
-     * @param e Exception
+     * @param message to be passed/displayed in string format 
+     * @param e CountryEditException happened when trying to edit countries in a map
      */
     public CountryEditException(String message, Exception e) {
         super(message, e);
@@ -16,7 +16,7 @@ public class CountryEditException extends RiscGameException {
 
     /**
      * constructor of CountryEditException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public CountryEditException(String message) {
         super(message);
@@ -24,7 +24,7 @@ public class CountryEditException extends RiscGameException {
 
     /**
      * constructor of CountryEditException
-     * @param e Exception
+     * @param e CountryEditException happened when trying to edit countries in a map
      */
     public CountryEditException(Exception e) {
         super(e);

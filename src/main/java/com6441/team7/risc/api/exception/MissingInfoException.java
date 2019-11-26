@@ -7,7 +7,8 @@ public class MissingInfoException extends RiscGameException {
 
     /**
      * constructor of MissingInfoException
-     * @param rootCause Exception
+     * @param rootCause MissingInfoException occurs when there is 
+     * insufficient information is available to carry out the operation
      */
     public MissingInfoException(Exception rootCause) {
         super(rootCause);
@@ -16,8 +17,9 @@ public class MissingInfoException extends RiscGameException {
 
     /**
      * constructor of MissingInfoException
-     * @param message String
-     * @param rootCause Exception
+     * @param message to be passed/displayed in string format 
+     * @param rootCause MissingInfoException occurs when there is 
+     * insufficient information is available to carry out the operation
      */
     public MissingInfoException(String message, Exception rootCause) {
         super(message, rootCause);
@@ -25,7 +27,7 @@ public class MissingInfoException extends RiscGameException {
 
     /**
      * constructor of MissingInfoException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public MissingInfoException(String message) {
         super(message);

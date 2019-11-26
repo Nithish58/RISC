@@ -42,7 +42,7 @@ public class AttackGameController implements Controller {
     private PlayerAttackWrapper playerAttackWrapper;
     
     /**
-     * Used to control gameflow. WHen it is set to true, only defend <numdice> command will be valid
+     * Used to control gameflow. WHen it is set to true, only defend numdice command will be valid
      */
     private AtomicBoolean boolDefenderDiceRequired;
 

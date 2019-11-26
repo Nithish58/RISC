@@ -112,7 +112,7 @@ public class Continent {
     /**
      * It will compare the continent with another continent
      * @param o object with which it will be compared.
-     * @return true or false depending upon comparision.
+     * @return true or false depending upon comparison.
      */
     @Override
     public boolean equals(Object o) {

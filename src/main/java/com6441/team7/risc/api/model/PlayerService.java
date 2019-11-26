@@ -303,10 +303,11 @@ public class PlayerService extends Observable {
 	}
 
 	/**
-	 * add a Player
+	 * add a Player. Notifies players when player added
+	 * @param type add different strategy type of player
 	 * @param name of the player
 	 * @return player added
-	 * Notifies players when player added
+	 * 
 	 */
 	public Player addPlayer(String name, String type){
 		Player newPlayer=new Player(name);

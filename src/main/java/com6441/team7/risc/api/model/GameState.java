@@ -16,7 +16,7 @@ public enum GameState {
     public String name;
 /**
  * Setter for GameState Value
- * @param name
+ * @param name set this gamestate as current state
  */
     GameState(String name){
         this.name = name;

@@ -7,8 +7,8 @@ public class MapInvalidException extends RiscGameException {
 
     /**
      * constructor of MapInvalidException
-     * @param message String
-     * @param e Exception
+     * @param message to be passed/displayed in string format 
+     * @param e MapInvalidException happened whenever map is tested for validation and failed
      */
     public MapInvalidException(String message, Exception e) {
         super(message, e);
@@ -16,7 +16,7 @@ public class MapInvalidException extends RiscGameException {
 
     /**
      * constructor of MapInvalidException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public MapInvalidException(String message) {
         super(message);
@@ -24,7 +24,7 @@ public class MapInvalidException extends RiscGameException {
 
     /**
      * constructor of MapInvalidException
-     * @param e Exception
+     * @param e MapInvalidException happened whenever map is tested for validation and failed
      */
     public MapInvalidException(Exception e) {
         super(e);

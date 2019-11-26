@@ -8,7 +8,8 @@ import java.util.Set;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 /**
- * This is the strategy class for Benevolent players
+ * This is the strategy class for Benevolent players. Implements from 
+ * {@link StrategyPlayer}
  * 
  * @author Binsar
  *
@@ -24,6 +25,9 @@ public class BenevolentStrategy implements StrategyPlayer {
 		this.playerService.notifyPlayerServiceObservers("Benevolent Strategy");
 	}
 
+	/**
+	 * In reinforcement phase, benevolent player protects its weakest country.
+	 */
 	@Override
 	public void reinforce() {
 
@@ -59,6 +63,9 @@ public class BenevolentStrategy implements StrategyPlayer {
 
 	}
 
+	/**
+	 * In attack phase, benevolent player never attacks
+	 */
 	@Override
 	public void attack() {
 		playerService.notifyPlayerServiceObservers("Benevolent ends attack phase");
@@ -66,6 +73,9 @@ public class BenevolentStrategy implements StrategyPlayer {
 		player.endAttackPhase(playerService);
 	}
 
+	/**
+	 * In fortification phase, benevolent player fortifies its current weakest country and moves to next phase.
+	 */
 	@Override
 	public void fortify() {
 		// Fortification wrapper
@@ -147,7 +157,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 	
 	/**
 	 * This is for calculating benevolent country's reinforcements
-	 * @param player receives player param
+	 * @param player receives player whose reinforcement armies need to be calculated.
 	 * @return number of calculated reinforced armies
 	 */
     public int calculateReinforcedBenevolentArmies(Player player){

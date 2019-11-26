@@ -170,7 +170,7 @@ public class MapServiceTest {
 
     /**
      * create valid continent, countries and neighboring countries and add it to the mapService
-     * @return
+     * @return returns mapservice where details are added in.
      */
     private MapService createValidContinentCountryNeighbor() {
         Continent continent1 = new Continent(1, "asia" , 5);
@@ -204,8 +204,9 @@ public class MapServiceTest {
 
     /**
      * create valid neighboring information
-     * @return map
-     * @throws Exception
+     * @throws Exception when creating or adding them to existing countries is invalid map
+     * @return returns neighboring country map in key value pairs - 
+     * where keys are country id, values are set of neighboring country ids
      */
     private Map<Integer, Set<Integer>> createValidNeighboringCountries() throws Exception{
         Map<Integer, Set<Integer>> neighboringCountryMap = new HashMap<>();
@@ -227,7 +228,7 @@ public class MapServiceTest {
     /**
      * add three continents to continentSet in mapService
      * @return a set of continents
-     * @throws Exception
+     * @throws Exception when creating or adding them to existing continent set is invalid
      */
     private Set<Continent> createValidContinents() throws Exception{
         Set<Continent> continentSet = new HashSet<>();
@@ -245,7 +246,7 @@ public class MapServiceTest {
     /**
      * add four countries to countrySet in mapService
      * @return a set of countries
-     * @throws Exception
+     * @throws Exception when creating or adding them to existing country set is invalid 
      */
     private Set<Country> createValidCountries() throws Exception{
         Set<Country> countrySet = new HashSet<>();

@@ -15,7 +15,7 @@ public class PlayerEditException extends RiscGameException{
 
     /**
      * constructor of PlayerEditException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      * @param rootCause Exception
      */
     public PlayerEditException(String message, Exception rootCause) {
@@ -24,7 +24,7 @@ public class PlayerEditException extends RiscGameException{
 
     /**
      * constructor of PlayerEditException
-     * @param message String
+     * @param message to be passed/displayed in string format 
      */
     public PlayerEditException(String message) {
         super(message);
