@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Observable;
 
 import com6441.team7.risc.api.model.GameState;
+import com6441.team7.risc.api.wrapperview.TournamentWrapper;
 import com6441.team7.risc.controller.*;
 import com6441.team7.risc.controller.MapLoaderController;
 
@@ -48,9 +49,14 @@ public class PhaseViewTest implements GameView{
     private GameState gameState;
 
     /**
-     * an instance of Object
+     * an instance of Object used to retrieve results
      */
     private Object obj;
+    
+    /**
+     * Used to retrieve Tournament Results for TournamentControllerTest
+     */
+    private TournamentWrapper tournamentWrapper;
 
     /**
      * Empty string which display message
@@ -79,7 +85,13 @@ public class PhaseViewTest implements GameView{
         if (arg instanceof GameState) {                    
         	this.gameState = (GameState) arg;
             return;
-        }	
+        }
+        
+        if(arg instanceof TournamentWrapper) {
+        	this.tournamentWrapper= (TournamentWrapper) arg;
+        }
+        
+        
 	}
 
     /**
@@ -88,6 +100,14 @@ public class PhaseViewTest implements GameView{
      */
 	public Object getReturnedObject() {
 		return obj;
+	}
+	
+	/**
+	 * Getter method to retrieve tournament wrapper
+	 * @return
+	 */
+	public TournamentWrapper getTournamentWrapperForTest() {
+		return this.tournamentWrapper;
 	}
 
     /**
@@ -166,4 +186,29 @@ public class PhaseViewTest implements GameView{
 	public String getStrDisplayMessage() {
 		return strDisplayMessage;
 	}
+	
+	/**
+	 * Method to display tournament Results in Test
+	 * @param arg
+	 */
+    private void displayTournamentResults(Object arg) {
+    	
+    	TournamentWrapper tournamentWrapper= ((TournamentWrapper)arg);
+    	
+    	String[][] arrResults=tournamentWrapper.getTournamentResult();
+    	
+    	for(int i=0;i<arrResults.length;i++) {
+    		
+    		String strResult="\n\n"+tournamentWrapper.getMapList().get(i)+"\t\t";
+    		
+    		for(int j=0;j<arrResults[i].length;j++) {
+    			
+    			strResult+=arrResults[i][j]+"\t";    			
+    		}
+    		
+    		displayMessage(strResult);
+    	}
+    	
+    	displayMessage("Tournament Ends.");
+    }
 }

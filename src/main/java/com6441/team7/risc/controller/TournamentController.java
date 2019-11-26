@@ -75,6 +75,12 @@ public class TournamentController {
 	 * Keeps track of what game is being played on a particular map
 	 */
 	private int gameIndex;
+	
+	/**
+	 * Used to prevent end of game when tests are being carried out
+	 * Helps Analyse and Evaluate Results
+	 */
+	private boolean boolTournamentTestOn;
 	 
 	
 	/**
@@ -85,6 +91,7 @@ public class TournamentController {
 	public TournamentController(String command, StartupGameController sgc) {
 	
 		initialiseTournamentVariables(sgc);
+	
 		
 		//Convert Command To Lower Case for string checks		
 		command=command.toLowerCase();
@@ -143,8 +150,12 @@ public class TournamentController {
 		
 		playerService.notifyPlayerServiceObservers(new TournamentWrapper(arrResults,mapList));
 		
-		//End Game
+		//End Game when tournament tests not being carried out
+		if(!boolTournamentTestOn)
 		System.exit(0);
+		
+		else playerService.notifyPlayerServiceObservers("Tournament Ends.");
+
 		
 	}
 	
@@ -215,6 +226,8 @@ public class TournamentController {
 		
 		this.mapIndex=0;
 		this.gameIndex=0;
+		
+		this.boolTournamentTestOn=false;
 		
 	}
 
@@ -479,7 +492,8 @@ public class TournamentController {
 		
 		playerService.notifyPlayerServiceObservers(new TournamentWrapper(arrResults,mapList));
 		
-		//End Game
+		//End Game when tournament tests not being carried out
+		if(!boolTournamentTestOn)
 		System.exit(0);
 		
 	}
@@ -515,6 +529,65 @@ public class TournamentController {
 		startupGameController.setBoolCountriesPopulated(false);
 		
 		playerService.initialiseDeckCards();		
+		
+	}
+	
+	/**
+	 * Getter method for boolTournamentTestOn
+	 * @return true when tournament tests being done
+	 */
+	public boolean getBooleanTournamentTest() {
+		return this.boolTournamentTestOn;
+	}
+	
+	/**
+	 * Setter method for boolTournamentTestOn
+	 * @param b boolean value set to true when tournament tests being carried out
+	 */
+	public void setBooleanTournamentTest(boolean b) {
+		this.boolTournamentTestOn=b;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Constructor for Tournament Controller
+	 * @param command user command
+	 * @param sgc StartupGameController
+	 */
+	public TournamentController(String command, StartupGameController sgc, boolean b) {
+	
+		initialiseTournamentVariables(sgc);
+		
+		this.boolTournamentTestOn=true;
+	
+		
+		//Convert Command To Lower Case for string checks		
+		command=command.toLowerCase();
+		
+		//launch Hardcoded Tournament if only "tournament" command entered
+		if(command.equalsIgnoreCase("tournament")) {
+			
+			initialiseTournamentHardcoded(sgc);
+			
+			launchTournamentHardcoded();
+			return;
+		}
+		
+		//Validate Command
+		if(!validateTournamentConditions(command)) {
+			phaseView.displayMessage("Invalid Tournament Command!!");
+			return;
+		}
+		
+		//All tournament validations met
+		//Can now launch tournament
+		launchTournament();
 		
 	}
 	

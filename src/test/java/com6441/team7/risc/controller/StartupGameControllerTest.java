@@ -56,6 +56,11 @@ public class StartupGameControllerTest {
 	 LoadGameController loadGameController;
 	 
 	 /**
+	  * Tournament Controller object
+	  */
+	 TournamentController tournamentController;
+	 
+	 /**
 	  * list of different controllers
 	  */
 	 List<Controller> controllerList;

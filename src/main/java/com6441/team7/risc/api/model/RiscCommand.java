@@ -43,7 +43,8 @@ public enum RiscCommand {
 	EXIT("exit"),
     LOADGAME("loadgame"),
     SAVEGAME("savegame"),
-    EXITLOADGAME("exitloadgame");
+    EXITLOADGAME("exitloadgame"),
+    TEST_TOURNAMENT("testtournament");
 
 
     /**

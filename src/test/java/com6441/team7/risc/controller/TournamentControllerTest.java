@@ -14,6 +14,7 @@ import com6441.team7.risc.api.model.GameState;
 import com6441.team7.risc.api.model.MapService;
 import com6441.team7.risc.api.model.Player;
 import com6441.team7.risc.api.model.PlayerService;
+import com6441.team7.risc.api.wrapperview.TournamentWrapper;
 import com6441.team7.risc.view.PhaseViewTest;
 
 /**
@@ -56,6 +57,11 @@ public class TournamentControllerTest {
       * Controller for Attack phase
       */
      AttackGameController attackController ;
+     
+     /**
+      * Controller for loadgame
+      */
+     LoadGameController loadGameController;
 	 
 	 /**
 	  * list of different controllers
@@ -71,18 +77,145 @@ public class TournamentControllerTest {
 	  */
 	@Before public void beforeEachTest() {
 		createObjects();
-	}
-	
-	/**
-	 * Tests is tournament conditions are valid
-	 * @throws Exception  on invalid
-	 */
-	@Test public void test001_validateTournamentConditions() throws Exception {
-		assertTrue(true);
+		loadValidMap("ameroki.map");
+		
+		//Set boolTounamentOn to true in Tournament Controller to prevent end of game after result and allow evaluation
+		
 		
 	}
 	
+	/**
+	 * Tests if tournament conditions are valid
+	 * Also tests all benevolent strategies for tounament
+	 * Expected Result: All Games should end in draw
+	 * @throws Exception  on invalid
+	 */
+	@Test public void test001_validTournamentConditions_AllBenevolent() throws Exception {
+		
+		//Context
+		//Adding 3 benevolent players, 5 games, 3 maps, 50 turns
+		phaseViewTest.receiveCommand("testtournament -M ameroki.map Africa.map luca.map -P benevolent benevolent benevolent"
+				+" -G 5 -D 50");
+		
+		TournamentWrapper tournamentWrapper=phaseViewTest.getTournamentWrapperForTest();
+		
+    	String[][] arrResults=tournamentWrapper.getTournamentResult();
+    	
+    	int countDraws=0;
+    	
+    	for(int i=0;i<arrResults.length;i++) {
+    		
+    		String strResult="\n\n"+tournamentWrapper.getMapList().get(i)+"\t\t";
+    		
+    		for(int j=0;j<arrResults[i].length;j++) {
+    			
+    			if(arrResults[i][j].equalsIgnoreCase("draw")) countDraws++;
+    			    			
+    		} 		
+    	}
+		
+		//Evaluation: Number of draws should be equal to total number of games played
+    	assertEquals(countDraws,(arrResults[1].length*arrResults.length));
+		
+	}
 	
+	/**
+	 * Tests if humans are allowed to participate in tournament
+	 * Expected: Tournament should not run when there are only humans.
+	 * When there are humans, tournament should ignore them.
+	 */
+	@Test public void test002_addingInvalidHumanPlayers() {
+		
+		//Context
+		//Adding 3 human players, 5 games, 3 maps, 50 turns
+		
+		String strInvalidPlayerCommand="testtournament -M ameroki.map Africa.map luca.map -P human human human"
+				+" -G 5 -D 50";
+		
+		//Method Call
+		phaseViewTest.receiveCommand(strInvalidPlayerCommand);
+		
+		//Evaluation
+		assertFalse(startupGameController.getTournamentController().validatePlayerCommand(strInvalidPlayerCommand));
+		
+	}
+	
+	/**
+	 * Tests if invalid map files are allowed to take part in tournament
+	 * Expected: Tournament should not run when there are no valid map files.
+	 * When there are invalid map files, tournament should ignore them.
+	 */
+	@Test public void test003_invalidMapFiles() {
+		
+		//Context
+		//Adding 3 valid players, 5 games, 3 invalid maps, 50 turns
+		
+		String strInvalidMapCommand="testtournament -M mauritius.map APP.map invalidTestMap.map -P benevolent cheater cheater"
+				+" -G 5 -D 50";
+		
+		//Method Call
+		phaseViewTest.receiveCommand(strInvalidMapCommand);
+		
+		//Evaluation
+		assertFalse(startupGameController.getTournamentController().validateMapCommand(strInvalidMapCommand));
+		
+	}
+	
+	/**
+	 * Test if cheater wins tournament atleast 1
+	 * Expected: Given number of turns (1000) we set for cheater,
+	 * it should win atleast once, else something is wrong either with cheater or tournament mode as a whole
+	 */
+	@Test public void test004_cheaterWinTournament() {
+		
+		//Context
+		//Adding 1 cheater player, 5 games, 3 maps, 1000 turns
+		phaseViewTest.receiveCommand("testtournament -M ameroki.map Africa.map luca.map -P benevolent cheater benevolent"
+				+" -G 5 -D 1000");
+		
+		TournamentWrapper tournamentWrapper=phaseViewTest.getTournamentWrapperForTest();
+		
+    	String[][] arrResults=tournamentWrapper.getTournamentResult();
+    	
+    	int countCheater=0;
+    	
+    	for(int i=0;i<arrResults.length;i++) {
+    		
+    		String strResult="\n\n"+tournamentWrapper.getMapList().get(i)+"\t\t";
+    		
+    		for(int j=0;j<arrResults[i].length;j++) {
+    			
+    			if(!arrResults[i][j].equalsIgnoreCase("draw")) countCheater++;
+    			    			
+    		} 		
+    	}
+		
+		//Evaluation: Cheater should win atleast 1 of them
+    	assertTrue(countCheater>0);
+		
+	}
+	
+	/**
+	 * Test if tournament goes to completion with any kind of player
+	 * Cheater excluded
+	 * Expected Result: Array Table Result should not be null
+	 */
+	@Test public void test005_testTournamentCompletion() {
+		
+		//Context
+		//Adding 1 kind of each player except cheater, 5 games, 3 maps, 50 turns
+		phaseViewTest.receiveCommand("testtournament -M ameroki.map Africa.map luca.map -P benevolent random aggressive human"
+				+" -G 5 -D 50");
+		
+		TournamentWrapper tournamentWrapper=phaseViewTest.getTournamentWrapperForTest();
+		
+    	String[][] arrResults=tournamentWrapper.getTournamentResult();
+    
+    	
+    	//Evaluation: Results table should not be null
+    	assertNotNull(arrResults);
+		
+	}
 	
 	
 	/**
@@ -98,6 +231,7 @@ public class TournamentControllerTest {
 
 		mapLoaderController = new MapLoaderController(mapService);
 		startupGameController = new StartupGameController(mapLoaderController, playerService);
+		loadGameController=new LoadGameController(mapService,playerService);
         reinforceGameController = new ReinforceGameController(playerService);
         fortifyGameController = new FortifyGameController(playerService);
         attackController = new AttackGameController(playerService);
@@ -107,6 +241,7 @@ public class TournamentControllerTest {
         controllerList.add(reinforceGameController);
         controllerList.add(fortifyGameController);
         controllerList.add(attackController);
+        controllerList.add(loadGameController);
 		
 		phaseViewTest.addController(controllerList);
 
@@ -115,7 +250,7 @@ public class TournamentControllerTest {
         reinforceGameController.setView(phaseViewTest);
         fortifyGameController.setView(phaseViewTest);
         attackController.setView(phaseViewTest);
-
+        loadGameController.setView(phaseViewTest);
 		
 
 		mapService.addObserver(phaseViewTest);
@@ -132,7 +267,10 @@ public class TournamentControllerTest {
 	  	public void loadValidMap(String mapName) {
 	  		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase
 		
+	  		phaseViewTest.receiveCommand("exitloadgame");
+	  		
 	  		phaseViewTest.receiveCommand("loadmap " + mapName); // Load ameroki map
+	  		
 	}
 
 	  	
@@ -151,6 +289,8 @@ public class TournamentControllerTest {
 		public void removePlayer(String name) {
 			phaseViewTest.receiveCommand("gameplayer -remove " + name);
 		}
+		
+		
   	
 	  	
 }

@@ -102,6 +102,8 @@ public class StartupGameController implements Controller{
 	 * a reference of phaseView
 	 */
 	private GameView phaseView;
+	
+	private TournamentController tournamentController;
 
 
 
@@ -259,7 +261,7 @@ public class StartupGameController implements Controller{
         	break;
         	
         case TOURNAMENT:
-        	new TournamentController(command,this);
+        	tournamentController=new TournamentController(command,this);
         	break;
         	
         case SHOW_PLAYER:
@@ -293,6 +295,10 @@ public class StartupGameController implements Controller{
         	
         case EXIT:
         	CommonUtils.endGame(phaseView);
+        	break;
+        	
+        case TEST_TOURNAMENT:
+        	tournamentController=new TournamentController(command, this,true);
         	break;
 
 		case SAVEGAME:
@@ -910,6 +916,14 @@ public class StartupGameController implements Controller{
 	 */
 	public GameView getPhaseViewSGC() {
 		return phaseView;
+	}
+	
+	/**
+	 * Getter Method to get Tournament Controller
+	 * @return tournamentController reference
+	 */
+	public TournamentController getTournamentController() {
+		return this.tournamentController;
 	}
 	
 }   //END OF CLASS
