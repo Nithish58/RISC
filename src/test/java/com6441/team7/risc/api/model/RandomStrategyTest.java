@@ -18,7 +18,7 @@ import com6441.team7.risc.view.PhaseViewTest;
 
 /**
  *
- * This is the test class for storing player information.
+ * This is the test class for RandomStrategy class
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -183,6 +183,9 @@ public class RandomStrategyTest {
 
 	}
 	
+	/**
+	 * Testing fortify command with none option for random player.  
+	 */
 	@Test
 	public void test004_fortifyNone() {
 		System.out.println("Random fortify none");

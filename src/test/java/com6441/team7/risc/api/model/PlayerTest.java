@@ -24,7 +24,7 @@ import com6441.team7.risc.view.PhaseViewTest;
 public class PlayerTest {
 
 	/**
-	 * View which outputs test strings and has some other additonal functionalities
+	 * View which outputs test strings and has some other additional functionalities
 	 * than the normal phaseView
 	 */
 	PhaseViewTest phaseViewTest;
@@ -770,7 +770,7 @@ public class PlayerTest {
 	}
 	
 	/**
-	 * Tests if attackmove is required after conquering a country
+	 * Tests if attackMove is required after conquering a country
 	 * The test passes if the result returns true
 	 * @throws Exception on invalid
 	 */
@@ -836,8 +836,8 @@ public class PlayerTest {
 	}
 
 	/**
-	 * Method to load a map. Method first exits from editmapphase by sending command
-	 * exitmapedit. Then command to loadmap is sent.
+	 * Method to load a map. Method first exits from editMapPhase by sending command
+	 * exitMapEdit. Then command to loadMap is sent.
 	 *
 	 * @param mapName receives map name
 	 */

@@ -48,7 +48,7 @@ public class AggressiveStrategy implements StrategyPlayer {
 		//player.reinforceArmy(randomCountry.getCountryName(), numArmies, playerService.getMapService());
 		playerService.reinforceArmy(player, maxCountry.getCountryName(), numReinforcementArmies);
 		
-		//End Fortification and Move to Attack Phase
+		//End Reinforcement Phase and Move to Attack Phase
 		playerService.getMapService().setState(GameState.ATTACK);
 	}
 	

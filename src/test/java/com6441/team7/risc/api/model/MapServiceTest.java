@@ -8,7 +8,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 /**
- * the tests for MapService class
+ * the tests for MapService class, different tests on operations on map
  */
 public class MapServiceTest {
 	
@@ -20,7 +20,7 @@ public class MapServiceTest {
 
     /**
      * Method called before each test method.
-     * Instantiates a mapservice object
+     * Instantiates a mapService object
      * @throws Exception on invalid
      */
     @Before

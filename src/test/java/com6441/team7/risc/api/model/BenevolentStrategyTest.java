@@ -26,7 +26,7 @@ import com6441.team7.risc.view.PhaseViewTest;
 public class BenevolentStrategyTest {
 
 	/**
-	 * View which outputs test strings and has some other additonal functionalities
+	 * View which outputs test strings and has some other additional functionalities
 	 * than the normal phaseView
 	 */
 	PhaseViewTest phaseViewTest;
@@ -90,8 +90,8 @@ public class BenevolentStrategyTest {
 
 		loadValidMap("luca.map");
 
-		addAggressivePlayer("Keshav");
-		addAggressivePlayer("Binsar");
+		addBenevolentPlayer("Keshav");
+		addBenevolentPlayer("Binsar");
 
 		phaseViewTest.receiveCommand("populatecountries");
 		phaseViewTest.receiveCommand("placeall");
@@ -99,9 +99,8 @@ public class BenevolentStrategyTest {
 	}
 
 	/**
-	 * Testing the attack method for aggressive player. The test passes if the
-	 * either sides lose soldier or no targets found in the adjacency list of the
-	 * attacker's adjacency list
+	 * Testing the reinforce method for benevolent player. The test passes if the
+	 * reinforcement armies are added to weakest country.
 	 */
 	@Test
 	public void test001_reinforce() {
@@ -130,9 +129,8 @@ public class BenevolentStrategyTest {
 	}
 
 	/**
-	 * Testing the aggressive attack method. 
-	 * The expected result is the total number of soldiers of either side's
-	 * soldiers decrease or there are no adjacent target countries found
+	 * Testing the attack method for benevolent player. The test passes if the
+	 * benevolent player can attack correctly, that is never attack, and moves to next phase.
 	 * 
 	 * @throws Exception on invalid
 	 */
@@ -152,9 +150,9 @@ public class BenevolentStrategyTest {
 	}
 	
 	/**
-	 * Testing the fortify none method. 
-	 * The expected result is the total number of soldiers of either side's
-	 * soldiers decrease or there are no adjacent target countries found
+	 * Testing the fortify method for benevolent player. The test passes if the
+	 * benevolent player can fortify the weakest country that can be fortified correctly, 
+	 * that is neighbors with spare armies, and moves to next phase.
 	 * 
 	 * @throws Exception on invalid
 	 */
@@ -204,7 +202,7 @@ public class BenevolentStrategyTest {
 	 * 
 	 * @param name of player
 	 */
-	public void addAggressivePlayer(String name) {
+	public void addBenevolentPlayer(String name) {
 		phaseViewTest.receiveCommand("gameplayer -add " + name + " human");
 	}
 
@@ -268,8 +266,8 @@ public class BenevolentStrategyTest {
 
 		loadValidMap("ameroki.map");
 
-		addAggressivePlayer("Keshav");
-		addAggressivePlayer("Binsar");
+		addBenevolentPlayer("Keshav");
+		addBenevolentPlayer("Binsar");
 
 		phaseViewTest.receiveCommand("populatecountries");
 		phaseViewTest.receiveCommand("placeall");
