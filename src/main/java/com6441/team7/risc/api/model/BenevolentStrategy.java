@@ -16,9 +16,20 @@ import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
  */
 public class BenevolentStrategy implements StrategyPlayer {
 
+	/**
+	 * player service for specific player functions
+	 */
 	private PlayerService playerService;
+	
+	/**
+	 * Player object for player list and details.
+	 */
 	private Player player;
 
+	/**
+	 * {@link BenevolentStrategy} class constructor 
+	 * @param playerService PlayerService to be passed for details.
+	 */
 	public BenevolentStrategy(PlayerService playerService) {
 		this.playerService = playerService;
 		this.player = playerService.getCurrentPlayer();
