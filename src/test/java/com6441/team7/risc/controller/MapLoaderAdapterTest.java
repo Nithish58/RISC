@@ -69,7 +69,7 @@ public class MapLoaderAdapterTest {
         
 		System.out.printf("==========%nBeginning of method%n==========%n");
 		
-		mapname = "ameroki.map";
+		mapname = "Aden.map";
 		
 		System.out.println("Map name is : "+mapname);
 		
@@ -513,25 +513,40 @@ public class MapLoaderAdapterTest {
 	 * Expected: Duplicate countries not added and map remains valid.
 	 * @throws Exception on invalid IO
 	 */
-//	@Ignore
 	@Test
 	public void test014_validateDuplicateCountry() throws Exception {
 		
-		addCountry("japan", "azio");
+		//Retrieve the continent where the country will be added
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+		
+		//Get the first country from the set and set the first one to be deleted
+		Set<Country> countriesFromService = mapLoaderController.getMapService().getCountries();
+		Iterator<Country> countryIterator = countriesFromService.iterator();
+		Country country = countryIterator.next();
+		String countryName = country.getCountryName();
+		
+		addCountry(countryName, continentName);
 		
 		assertTrue(mapLoaderController.getMapService().isMapValid());
 	}
 	
 	/**
 	 * Test for unconnected map. 
-	 * Add country Mauritius to continent afrori. Do not add any neighbours. 
+	 * Add country Mauritius to the first continent. Do not add any neighbours. 
 	 * Expected: Map must be invalid.
 	 * @throws Exception on invalid IO
 	 */
 	@Test public void test015_invalidUnconnectedCountriesMap() throws Exception {
 		
+		//Retrieve the continent where the country will be added
+		Optional<Continent> continentFromService = mapLoaderController.getMapService().getContinentById(1);
+		Continent continent = continentFromService.get();
+		String continentName = continent.getName();
+		
 		//Context: add unconnected country without neighbours
-		addCountry("Mauritius","afrori");
+		addCountry("Mauritius",continentName);
 		
 		//Evaluation
 		assertFalse(mapLoaderController.getMapService().isMapValid());
