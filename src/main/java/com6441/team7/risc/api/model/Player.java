@@ -1909,6 +1909,13 @@ public class Player{
     public void instantiatePlayerCountryListForLoading() {
     	this.countryPlayerList=new ArrayList<Country>();
     }
+    
+	public boolean isBoolDrawCard() {
+		return boolDrawCard;
+	}
+	public void setBoolDrawCard(boolean boolDrawCard) {
+		this.boolDrawCard = boolDrawCard;
+	}
 
 }
 
