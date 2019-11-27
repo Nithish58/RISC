@@ -258,22 +258,7 @@ public class StartupGameControllerTest {
 			  assertEquals(strOutput,strDisplayMessage);
 	  }
 	  
-	/*
-	 * @Test public void test009_checkOnePlayerWinsGame() {
-	 *  //Context
-	 * addPlayer("Keshav");
-	 * 
-	 * //Method call
-	 * phaseViewTest.receiveCommand("populatecountries");
-	 * 
-	 * //Evaluation 
-	 * String strOutput="Game Ends"; String
-	 * strDisplayMessage=phaseViewTest.getStrDisplayMessage();
-	 * 
-	 * assertEquals(strOutput,strDisplayMessage); }
-	 */
-	  
-	  
+	 
 	  /**
 	   * Test whether country is populated without adding players
 	   * Context: loadmap but do not add any players.
@@ -318,11 +303,7 @@ public class StartupGameControllerTest {
 		  phaseViewTest.receiveCommand("placearmy "+countryName);
 		  
 		 assertEquals((currentPlayer.getArmies()+1),initialNumPlayerArmiesRemaining);
-		assertEquals((initialNumCountrySoldiers+1),randomPlayerCountry.getSoldiers().intValue());
-		  
-		  //assertTrue(previousPlayer.getArmies()+1==initialNumPlayerArmiesRemaining);
-		  //assertTrue(initialNumCountrySoldiers+1==previousPlayer.getCountryPlayerList().get(0).getSoldiers());
-		  
+		 assertEquals((initialNumCountrySoldiers+1),randomPlayerCountry.getSoldiers().intValue());
 		  
 	  }
 	  
