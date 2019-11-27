@@ -10,14 +10,16 @@ public enum GameState {
     REINFORCE("reinforce"),
     ATTACK("attack"),
     FORTIFY("fortify");
-/**
- * value of different gamestates
- */
+	
+	/**
+	 * value of different gamestates
+	 */
     public String name;
-/**
- * Setter for GameState Value
- * @param name set this gamestate as current state
- */
+    
+    /**
+     * Setter for GameState Value
+     * @param name set this gamestate as current state
+     */
     GameState(String name){
         this.name = name;
     }
@@ -26,10 +28,10 @@ public enum GameState {
      * default constructor
      */
     GameState(){}
-/**
- * Getter method for Gamestate value
- * @return state value
- */
+    /**
+     * Getter method for Gamestate value
+     * @return state value
+     */
     public String getName(){
         return name;
     }

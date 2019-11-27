@@ -49,7 +49,9 @@ public class AggressiveStrategy implements StrategyPlayer {
 
 	/**
 	 * In reinforcement phase, aggressive player pick the country with the largest
-	 * number of armies to be reinforced.
+	 * number of armies to be reinforced after card exchange is performed. 
+	 * Then, the method to reinforce the player's country is performed.
+	 * Afterwards, the game state is set to ATTACK phase.
 	 */
 	@Override
 	public void reinforce() {
@@ -75,6 +77,10 @@ public class AggressiveStrategy implements StrategyPlayer {
 	
 	/**
 	 * In attack phase, aggressive player attacks with its strongest player until it cannot anymore.
+	 * First, a list of attacker's countries is retrieved and sorted based on the number of
+	 * soldiers on each country from the highest number to the lowest.
+	 * The game iterates through the sorted list and each country is checked for any existing adjacent
+	 * country that belongs to other players. If any exists, the aggressive player attacks them.
 	 */
 	@Override
 	public void attack() {
