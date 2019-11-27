@@ -79,13 +79,14 @@ public class CheaterStrategyTest {
 	 */
 	PlayerAttackWrapper playerAttackWrapper;
 	/**
-	 * AggressiveStrategy class This will be used for testing
+	 * CheaterStrategy class This will be used for testing
 	 */
 	CheaterStrategy cheaterStrategy;
 
 	/**
 	 * Testing reinforcement method for cheater player. Test passes 
-	 * if armies of player doubles on all its countries. or if cheater has no countries
+	 * if armies of player doubles on all its countries. or if cheater has no countries.
+	 * Here, the players are set as cheater and benevolent, respectively.
 	 */
 	@Test
 	public void test001_reinforce() {
@@ -128,6 +129,7 @@ public class CheaterStrategyTest {
 	 * Testing attack method for cheater player. Test passes if
 	 * all the neighbors of player's countries are conquered or in rare cases,
 	 *  no countries adjacent to cheater player countries.
+	 *  Here, the players are set as cheater and benevolent, respectively.
 	 */
 	@Test
 	public void test002_attack() {
@@ -181,6 +183,7 @@ public class CheaterStrategyTest {
 	/**
 	 * Testing fortify method of cheater player. Test passes if number of armies on countries 
 	 * who have neighbors, which belong to different player, have doubled.
+	 * Here, the players are set as cheater and benevolent, respectively.
 	 */
 	@Test
 	public void test003_fortify() {
@@ -271,7 +274,7 @@ public class CheaterStrategyTest {
 	}
 
 	/**
-	 * Method that sends command to add a player It is set to cheater as to
+	 * Method that sends command to add a player. It is set to human as to
 	 * avoid running automated game after army placement The strategy is set right
 	 * before every test
 	 * 
@@ -282,7 +285,7 @@ public class CheaterStrategyTest {
 	}
 	
 	/**
-	 * Method that sends command to add a player It is set to benevolent as to
+	 * Method that sends command to add a player. It is set to human as to
 	 * avoid running automated game after army placement The strategy is set right
 	 * before every test
 	 * 
