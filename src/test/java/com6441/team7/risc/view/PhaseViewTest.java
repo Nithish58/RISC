@@ -104,7 +104,7 @@ public class PhaseViewTest implements GameView{
 	
 	/**
 	 * Getter method to retrieve tournament wrapper
-	 * @return
+	 * @return the tourmanent wrapper
 	 */
 	public TournamentWrapper getTournamentWrapperForTest() {
 		return this.tournamentWrapper;

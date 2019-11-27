@@ -559,6 +559,7 @@ public class TournamentController {
 	 * Constructor for Tournament Controller
 	 * @param command user command
 	 * @param sgc StartupGameController
+	 * @param b boolean for tournament test
 	 */
 	public TournamentController(String command, StartupGameController sgc, boolean b) {
 	
