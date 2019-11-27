@@ -9,7 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-				MapLoaderAdapterTest.class,
+				MapLoaderControllerTest.class,
 				StartupGameControllerTest.class,
 				ReinforceGameControllerTest.class,
 				AttackGameControllerTest.class,

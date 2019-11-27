@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
  * tests for mapLoader Controller
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MapLoaderAdapterTest {
+public class MapLoaderControllerTest {
 
     /**
      * a reference of mapLoaderController
