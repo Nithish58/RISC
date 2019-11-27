@@ -80,7 +80,12 @@ public class AggressiveStrategy implements StrategyPlayer {
 	 * First, a list of attacker's countries is retrieved and sorted based on the number of
 	 * soldiers on each country from the highest number to the lowest.
 	 * The game iterates through the sorted list and each country is checked for any existing adjacent
-	 * country that belongs to other players. If any exists, the aggressive player attacks them.
+	 * country that belongs to other players. 
+	 * If any exists, the aggressive player attacks it.
+	 * If the aggressive player's country does not have enough soldiers after each attack, the game
+	 * move the his/her next strongest country and repeat the steps until further attacks are no longer possible.
+	 * If the aggressive player's country successfully conquers a country, it will fortify to that conquered country
+	 * and then move on to attack other countries in the adjacency list.
 	 */
 	@Override
 	public void attack() {
@@ -201,6 +206,10 @@ public class AggressiveStrategy implements StrategyPlayer {
 
 	/**
 	 * In fortify phase, aggressive player aggregates its armies into current strongest country.
+	 * The aggressive player searches for the country with the highest number of soldiers.
+	 * Then, the player traverses the country's adjacency list for any neighbor that belongs to him/her.
+	 * If any is found, it will fortify the strongest country's soldiers. 
+	 * If fortification conditions are not possible, the player skips the fortification phase.
 	 */
 	@Override
 	public void fortify() {
