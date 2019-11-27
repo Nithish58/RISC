@@ -159,6 +159,7 @@ public class DominateParser implements IDominationParser {
         mapService.printCountryInfo();
         mapService.printContinentInfo();
         mapService.printNeighboringCountryInfo();
+
     }
 
     /**

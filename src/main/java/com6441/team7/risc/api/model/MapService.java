@@ -55,6 +55,11 @@ public class MapService extends Observable {
     private GameState gameState = GameState.LOAD_MAP;
 
     /**
+     * the object of stringBuilder
+     */
+    private StringBuilder sb = new StringBuilder();
+
+    /**
      * Default Constructor
      */
     public MapService() {
@@ -804,31 +809,40 @@ public class MapService extends Observable {
      * To print the country information
      */
     public void printCountryInfo() {
-        System.out.println("[Country]");
-        countries.forEach(
-                country -> {
-                    System.out.print(country.getId() + " ");
-                    System.out.print(country.getCountryName() + " ");
-                    System.out.print(country.getContinentIdentifier() + " ");
-                    System.out.print(country.getCoordinateX() + " ");
-                    System.out.println(country.getCoordinateY());
-                    System.out.println("\n");
-                }
-        );
 
+        sb.append("[Country]");
+        sb.append("\n");
+
+        countries.forEach(country -> {
+            sb.append(country.getId())
+                    .append(" ")
+                    .append(country.getCountryName())
+                    .append(" ")
+                    .append(country.getContinentIdentifier())
+                    .append(" ")
+                    .append(country.getCoordinateX())
+                    .append(" ")
+                    .append(country.getCoordinateY())
+                    .append("\n");
+        });
     }
 
     /**
      * To print the continent information
      */
     public void printContinentInfo() {
-        System.out.println("[Continent]");
+        sb.append("[Continent]");
+        sb.append("\n");
+
         continents.forEach(continent -> {
-            System.out.print(continent.getId() + " ");
-            System.out.print(continent.getName() + " ");
-            System.out.print(continent.getContinentValue() + " ");
-            System.out.println("\n");
+            sb.append(continent.getId())
+                    .append(" ")
+                    .append(continent.getName())
+                    .append(" ")
+                    .append(continent.getContinentValue())
+                    .append("\n");
         });
+
 
     }
 
@@ -836,10 +850,18 @@ public class MapService extends Observable {
      * To print the neighboring country information
      */
     public void printNeighboringCountryInfo() {
-        System.out.println("[Border]");
+        sb.append("[Border]");
+        sb.append("\n");
+
         for (Map.Entry<Integer, Set<Integer>> entry : adjacencyCountriesMap.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
+            sb.append(entry.getKey() + " : " + entry.getValue())
+                    .append("\n");
         }
+
+        setChanged();
+        notifyObservers(sb);
+        sb.setLength(0);
+
     }
 
     /**

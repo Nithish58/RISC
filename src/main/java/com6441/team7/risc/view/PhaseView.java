@@ -232,8 +232,22 @@ public class PhaseView implements GameView {
             return;
         }
 
+        if(arg instanceof StringBuilder){
+            displayMapInformation(arg);
+            return;
+        }
+
         
     }  //End of Update Method
+
+    /**
+     * print map information
+     * @param arg
+     */
+    private void displayMapInformation(Object arg) {
+        StringBuilder sb = (StringBuilder) arg;
+        displayMessage(arg.toString());
+    }
 
     /**
      * method to display tournament results 
