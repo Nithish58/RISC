@@ -840,6 +840,12 @@ public class PlayerService extends Observable {
 		this.listPlayers = listPlayers;
 	}
 
+	/**
+	 * Construct playerServiceEntity
+	 * by making the builder create new PlayerServiceEntity,
+	 * build list of players, build command, build current player,
+	 * and build current player index.
+	 */
 	public void constructPlayerServiceEntity(){
 		builder.createNewPlayerServiceEntity();
 		builder.buildListPlayers(listPlayers);
