@@ -25,7 +25,7 @@ public abstract class AbstractPlayerServiceBuilder {
 
     /**
      * get the object of playerStatusEntity
-     * @return
+     * @return the player status entity
      */
     public PlayerStatusEntity getPlayerStatusEntity(){
         return playerStatusEntity;

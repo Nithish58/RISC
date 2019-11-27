@@ -53,9 +53,14 @@ public abstract class AbstractStartUpStateBuilder {
 
     /**
      * build buildBoolAllCountriesPlaced
-     * @param isBoolAllCountriesPlaced
+     * @param isBoolAllCountriesPlaced is the boolean value for isBoolAllCountriesPlaced
      */
     public abstract void buildBoolAllCountriesPlaced(boolean isBoolAllCountriesPlaced);
+    
+    /**
+     * 
+     * @param boolArrayCountriesPlaced is the array of bolean values for boolArrayCountriesPlaced
+     */
     public abstract void buildBoolArrayCountriesPlaced(boolean[] boolArrayCountriesPlaced);
 
 }

@@ -46,6 +46,9 @@ public class BenevolentStrategy implements StrategyPlayer {
 
 	/**
 	 * In reinforcement phase, benevolent player protects its weakest country.
+	 * First, the player sorts his/her country list by number of soldiers on each country
+	 * from the lowest to the highest after doing reinforcement calculation.
+	 * Then, it retrieve the one from the first index and then reinforce it.
 	 */
 	@Override
 	public void reinforce() {
@@ -83,7 +86,7 @@ public class BenevolentStrategy implements StrategyPlayer {
 	}
 
 	/**
-	 * In attack phase, benevolent player never attacks
+	 * In attack phase, benevolent player never attacks and skips to the fortification phase.
 	 */
 	@Override
 	public void attack() {
@@ -94,6 +97,12 @@ public class BenevolentStrategy implements StrategyPlayer {
 
 	/**
 	 * In fortification phase, benevolent player fortifies its current weakest that can be fortified country and moves to next phase.
+	 * First, the player sorts his/her country list by number of soldiers on each country
+	 * from the lowest to the highest after doing reinforcement calculation.
+	 * Then, the game iterates through the list to find the country with the lowest 
+	 * number of soldiers that has neighbors in the adjacency list
+	 * that belongs the same player. 
+	 * If it exists, the neighbor country will support the aforementioned country by fortifying it. 
 	 */
 	@Override
 	public void fortify() {
