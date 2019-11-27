@@ -65,8 +65,6 @@ public class MapLoaderAdapterTest {
         
         mapLoaderController.setView(view);
         
-        //Binsar variables
-        
 		System.out.printf("==========%nBeginning of method%n==========%n");
 		
 		mapname = "Aden.map";
@@ -98,8 +96,6 @@ public class MapLoaderAdapterTest {
        
         
     }
-    
-    //BINSAR'S TESTS
 
 	/**
 	 * mapname is for setting the name of the map file to be loaded.
