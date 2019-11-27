@@ -303,7 +303,14 @@ public class CheaterStrategyTest {
 	}
 
 	/**
-	 * Method that instantiates all required objects before testing
+	 * Method that instantiates all required objects before testing.
+	 * Here the mapService, playerService, phaseView for test, controllerList,
+	 * mapLoaderController, startupGameController, loadGameController, reinforceGameController,
+	 * fortifyGameController, attackController are all instantiated here.
+	 * Then, the controllers are added to the controller list.
+	 * Afterwards, the controller list is added to the phase view for testing followed 
+	 * by each controller setting the their view and the player service and map service
+	 * adding their observer.
 	 */
 	public void createObjects() {
 
