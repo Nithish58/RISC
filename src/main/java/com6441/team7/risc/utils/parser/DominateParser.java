@@ -130,11 +130,6 @@ public class DominateParser implements IDominationParser {
         });
 
         return stringBuilder.toString();
-//        return mapService.getCountries()
-//                .stream()
-//                .map(Country::toString)
-//                .reduce(String::concat)
-//                .orElseThrow(RuntimeException::new);
     }
 
     /**
