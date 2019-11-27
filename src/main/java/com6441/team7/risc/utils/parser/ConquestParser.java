@@ -29,6 +29,9 @@ import static java.util.Objects.isNull;
  *
  */
 public class ConquestParser implements IConquestParser {
+	/**
+	 * Mapgraph reference
+	 */
     private MapGraph mapGraph;
     /**
      * generates id for continents
