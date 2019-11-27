@@ -125,6 +125,10 @@ public class PlayerFortificationWrapper {
 		
 	}
 
+	/**
+	 * set boolean value of fortifyNone
+	 * @param bool fortifyNone
+	 */
 	public void setBooleanFortificationNone(boolean bool) {
 		this.fortifyNone=bool;
 		

@@ -15,6 +15,9 @@ import java.util.*;
  */
 public class PlayerService extends Observable {
 
+	/**
+	 * the builder to build the data in PlayerService
+	 */
 	private final AbstractPlayerServiceBuilder builder;
 	
 	/**
@@ -45,6 +48,9 @@ public class PlayerService extends Observable {
 	private Stack<Card> deckCards;
 
 
+	/**
+	 * boolean value to check if the country conquered during the attacking phase
+	 */
 	private boolean countryConqueredDuringAttackPhase;
 
 	/**

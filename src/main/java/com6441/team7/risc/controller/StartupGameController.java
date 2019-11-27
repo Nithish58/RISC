@@ -44,7 +44,10 @@ import com6441.team7.risc.api.exception.PlayerEditException;
  *
  */
 public class StartupGameController implements Controller{
-	
+
+	/**
+	 * a builder for build startupStateEntity
+	 */
 	private final AbstractStartUpStateBuilder builder;
 	
     /**
@@ -314,9 +317,9 @@ public class StartupGameController implements Controller{
         default:
             throw new IllegalArgumentException("cannot recognize this command");
 
-        } //End of switch    	
+        }
         
-    } //End of readcommand function
+    }
 
 
     
@@ -578,7 +581,7 @@ public class StartupGameController implements Controller{
 				
 				playerService.setCurrentPlayerIndex(0);
 		
-	}  //End of PopulateCountries
+	}
 	
 	/**
 	 * Method that checks if number of players is valid before populating countries
@@ -594,7 +597,7 @@ public class StartupGameController implements Controller{
 		int numPlayers=playerService.getPlayerList().size();
 		phaseView.displayMessage("NumPlayers: "+numPlayers);
 		
-		//CHECK IF ONLY 1 PLAYER: PLAYER WINS
+
 		if(numPlayers==1) {
 			phaseView.displayMessage("PLAYER "+playerService.getPlayerList()
 											.get(0).getName()+" WINS");
@@ -640,8 +643,7 @@ public class StartupGameController implements Controller{
 	 * @param numArmies number of initial armies allocated
 	 */
 	private void assignInitialArmies(int numArmies) {
-		
-		//DOCUMENT SUBJECT OF OBSERVABLE CLASS AND METHODS THAT NOTIFY OBSERVERS
+
 		
 		for(Player p: playerService.getPlayerList()) {
 			p.setArmies(numArmies);
@@ -898,7 +900,7 @@ public class StartupGameController implements Controller{
 	public void setBoolAllCountriesPlaced(boolean boolAllCountriesPlaced) {
 		this.boolAllCountriesPlaced = boolAllCountriesPlaced;
 	}
-	//Keeps track of which players have placed all their armies
+
 
 	/**
 	 * set array of boolean values of boolArrayCountriesPlaced
@@ -935,13 +937,21 @@ public class StartupGameController implements Controller{
 		builder.buildBoolAllCountriesPlaced(boolAllCountriesPlaced);
 	}
 
+	/**
+	 * build the startupStateEntity
+	 * @return startUpStateEntity
+	 */
 	public StartupStateEntity getStartUpStateEntity(){
 		constructStartUpStateEntity();
 		return builder.getStartupStateEntity();
 	}
 
+	/**
+	 * get the builder
+	 * @return builder
+	 */
 	public AbstractStartUpStateBuilder getBuilder() {
 		return builder;
 	}
 	
-}   //END OF CLASS
+}

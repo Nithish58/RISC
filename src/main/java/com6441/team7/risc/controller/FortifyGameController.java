@@ -151,9 +151,9 @@ public class  FortifyGameController implements Controller {
 		default:
 			throw new IllegalArgumentException("Cannot recognize this command in Fortification Phase. Try Again");
 
-		} // End of switch
+		}
 
-	} // End of readCommand method
+	}
 
 	/**
 	 * saving game at this end of this phase. 
@@ -236,7 +236,7 @@ public class  FortifyGameController implements Controller {
 			return;
 		}
 
-	} // End of method
+	}
 
 	
-} // End of class
+}

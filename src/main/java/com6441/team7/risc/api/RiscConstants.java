@@ -10,7 +10,6 @@ public final class RiscConstants {
      */
     private RiscConstants(){}
 
-    //End of Line https://knowledge.ni.com/KnowledgeArticleDetails?id=kA00Z0000019KZDSA2
     /**
      * a static final reference for end of line
      */

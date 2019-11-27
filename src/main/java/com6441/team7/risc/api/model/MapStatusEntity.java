@@ -99,22 +99,42 @@ public class MapStatusEntity {
     }
 
 
+    /**
+     * set the countries
+     * @param countries the countries information of the map
+     */
     public void setCountries(Set<Country> countries){
         this.countries = countries;
     }
 
+    /**
+     * set the continents
+     * @param continents the continents information of the map
+     */
     public void setContinents(Set<Continent> continents) {
         this.continents = continents;
     }
 
+    /**
+     * set adjacencyCountriesMap
+     * @param adjacencyCountriesMap the adjacent countries
+     */
     public void setAdjacencyCountriesMap(Map<Integer, Set<Integer>> adjacencyCountriesMap) {
         this.adjacencyCountriesMap = adjacencyCountriesMap;
     }
 
+    /**
+     * set the continentCountriesMap
+     * @param continentCountriesMap the continent and corresponding countries information
+     */
     public void setContinentCountriesMap(Map<Integer, Set<Integer>> continentCountriesMap) {
         this.continentCountriesMap = continentCountriesMap;
     }
 
+    /**
+     * set the game state
+     * @param gameState state of the game
+     */
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }

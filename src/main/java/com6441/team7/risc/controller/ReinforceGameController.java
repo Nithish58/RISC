@@ -30,7 +30,10 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * 
  */
 public class ReinforceGameController implements Controller{
-	
+
+    /**
+     * the builder to build ReinforceController state
+     */
 	private final AbstractReinforceStateBuilder builder;
 	
     /**
@@ -104,8 +107,6 @@ public class ReinforceGameController implements Controller{
                 break;
                 
             case SHOW_PLAYER:
-                // showPlayerFortificationPhase(player); (PREVIOUSLY IN BUILD 1)
-            	//Left the commented code out to explain to TA in Build 2
             	
                 MapDisplayUtils.showPlayer(playerService.getMapService(), playerService, phaseView);
                 break;
@@ -115,12 +116,12 @@ public class ReinforceGameController implements Controller{
                 break;
 
             case SHOW_PLAYER_ALL_COUNTRIES:
-                // showPlayerAllCountriesFortification();
+
                 MapDisplayUtils.showPlayerAllCountries(playerService.getMapService(), playerService, phaseView);
                 break;
 
             case SHOW_PLAYER_COUNTRIES:
-                // showPlayerCountriesFortification();
+
                 MapDisplayUtils.showPlayerCountries(playerService.getMapService(), playerService, phaseView);
                 break;
 
@@ -336,8 +337,6 @@ public class ReinforceGameController implements Controller{
     private void createCardExchangeView(){
         cardExchangeView = new CardExchangeView();
         playerService.addObserver(cardExchangeView);
-        
-        //showCardsInfo(playerService.getCurrentPlayer().getCardList(),cardExchangeView);
     }
 
 
@@ -423,8 +422,6 @@ public class ReinforceGameController implements Controller{
 
         playerService.removeCards(player, cardList);
         reinforcedArmies += playerService.calculateReinforcedArmyByTradingCards(player);
-        //cardExchangeView.displayMessage("the reinforced armies received from card exchange is " + player.getTradeInTimes() * 5);
-       
         showCardsInfo(player.getCardList(), cardExchangeView);
     }
 
@@ -476,13 +473,21 @@ public class ReinforceGameController implements Controller{
             phaseView.displayMessage("the number of reinforced armies are " + reinforcedArmies);
         }
     }
-    
+
+
+    /**
+     * construct the ReinforceStateEntity
+     */
     public void constructReinforceStateEntity(){
         builder.createNewReinforceStateEntity();
         builder.buildBooleanExchangeCardOver(exchangeCardOver);
         builder.buildReinforceArmyNumber(reinforcedArmies);
     }
 
+    /**
+     * get constructed reinforcedStateEntity
+     * @return reinforcedStateEntity
+     */
     public ReinforceStateEntity getReinforcedStateEntity(){
         constructReinforceStateEntity();
         return builder.getReinforceStateEntity();

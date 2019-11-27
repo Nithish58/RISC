@@ -179,10 +179,7 @@ public class LoadGameController implements Controller{
         playerService.setCurrentPlayer(playerStatusEntity.getCurrentPlayer());
         playerService.setListPlayers(playerStatusEntity.getListPlayers());
         playerService.setCurrentPlayerIndex(playerStatusEntity.getCurrentPlayerIndex());
-        
-        // playerService.getPlayerList().forEach(player -> player.updateCountryPlayerList(mapService));
 
-        //Added By Keshav
         
            for(Player p:playerService.getPlayerList()) {
         	   
@@ -216,8 +213,7 @@ public class LoadGameController implements Controller{
         StartupStateEntity startupStateEntity = objectMapper.treeToValue(entity.get(StartupStateEntity.class.getSimpleName()), StartupStateEntity.class);
         Optional.ofNullable(startupStateEntity).ifPresent(status -> startupGameController.setStatus(status));
    
-        //Added by Keshav
-		//Keeps track of which players have placed all their armies
+
 		boolean[] boolArrayCountriesPlaced=new boolean[playerService.getPlayerList().size()];
 		
 		for(int i=0;i<playerService.getPlayerList().size();i++) {

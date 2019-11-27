@@ -52,8 +52,14 @@ public class PlayerAttackWrapper {
 	boolean boolAttackMoveOver;
 
 
-
+	/**
+	 * boolean value to validate if defenderDiceRequired
+	 */
 	AtomicBoolean boolDefenderDiceRequired;
+
+	/**
+	 * boolean value to validate if attackMoveRequired
+	 */
 	AtomicBoolean boolAttackMoveRequired;
 
 	/**
@@ -71,7 +77,7 @@ public class PlayerAttackWrapper {
 		this.toCountry=to;
 		this.boolAllOut=false;
 		
-		this.boolAttackOver=false; //for display purposes in view
+		this.boolAttackOver=false;
 		
 	}
 
