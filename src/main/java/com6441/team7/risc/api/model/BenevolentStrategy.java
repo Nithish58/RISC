@@ -30,6 +30,11 @@ public class BenevolentStrategy implements StrategyPlayer {
 	private Player player;
 
 	/**
+	 * A default constructor for benevolent strategy
+	 */
+	public BenevolentStrategy() {}
+	
+	/**
 	 * {@link BenevolentStrategy} class constructor 
 	 * @param playerService PlayerService to be passed for details.
 	 */

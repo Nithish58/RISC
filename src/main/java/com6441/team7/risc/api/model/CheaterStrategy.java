@@ -27,6 +27,11 @@ public class CheaterStrategy implements StrategyPlayer{
 	private Player player;
 	
 	/**
+	 * A default constructor for cheater strategy
+	 */
+	public CheaterStrategy() {}
+	
+	/**
 	 * {@link CheaterStrategy} class constructor 
 	 * @param playerService PlayerService to be passed for details.
 	 */

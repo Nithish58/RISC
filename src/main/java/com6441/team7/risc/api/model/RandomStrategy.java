@@ -28,6 +28,11 @@ public class RandomStrategy implements StrategyPlayer{
 	private Player player;
 	
 	/**
+	 * A default constructor for random strategy
+	 */
+	public RandomStrategy() {}
+	
+	/**
 	 * RandomStrategy class constructor 
 	 * @param playerService PlayerService to be passed for details.
 	 */
