@@ -19,6 +19,9 @@ import static java.util.Objects.isNull;
  */
 public class MapService extends Observable {
 
+    /**
+     * builder to build the data in mapService
+     */
 	private final AbstractMapServiceBuilder builder;
 	
     /**
@@ -693,7 +696,6 @@ public class MapService extends Observable {
      */
     public Optional<Country> getCountryById(int id) {
 
-        //Modified By Keshav
         for (Country c : countries) {
             if (c.getId() == id) return Optional.of(c);
         }
@@ -909,7 +911,7 @@ public class MapService extends Observable {
     }
 
 
-    //-------------------------------reinforcement functions-------------------------------ewikxz
+    //-------------------------------reinforcement functions-------------------------------//
 
 
     /**
@@ -1058,8 +1060,12 @@ public class MapService extends Observable {
         setChanged();
         notifyObservers(mapStatusEntity);
     }
-    
 
+
+    /**
+     * get the object of builder
+     * @return builder
+     */
     public AbstractMapServiceBuilder getBuilder() {
         return builder;
     }

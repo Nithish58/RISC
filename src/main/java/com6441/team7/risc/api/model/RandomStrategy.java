@@ -191,21 +191,37 @@ public class RandomStrategy implements StrategyPlayer{
 		
 	}
 
+	/**
+	 * get the playerService
+	 * @return playerService
+	 */
 	@JsonIgnore
 	public PlayerService getPlayerService() {
 		return playerService;
 	}
 
+	/**
+	 * set the playerService
+	 * @param playerService store player information
+	 */
 	@JsonIgnore
 	public void setPlayerService(PlayerService playerService) {
 		this.playerService = playerService;
 	}
 
+	/**
+	 * get the player
+	 * @return player
+	 */
 	@JsonIgnore
 	public Player getPlayer() {
 		return player;
 	}
 
+	/**
+	 * set the player
+	 * @param player player
+	 */
 	@JsonIgnore
 	public void setPlayer(Player player) {
 		this.player = player;

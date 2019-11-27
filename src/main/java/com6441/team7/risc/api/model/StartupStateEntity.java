@@ -122,26 +122,52 @@ public class StartupStateEntity {
         return boolArrayCountriesPlaced;
     }
 
+
+    /**
+     * set boolean value of boolCountriesPopulated
+     * @param boolCountriesPopulated validate if countries been populated
+     */
     public void setBoolCountriesPopulated(boolean boolCountriesPopulated) {
         this.boolCountriesPopulated = boolCountriesPopulated;
     }
-    
+
+    /**
+     * set the boolean value of boolCountriesPopulated
+     * @param boolMapLoaded validate if countries been populated
+     */
     public void setBoolMapLoaded(boolean boolMapLoaded) {
         this.boolMapLoaded = boolMapLoaded;
     }
 
+
+    /**
+     * set boolean value of allGamePlayersAdded
+     * @param boolAllGamePlayersAdded validate if all players have been added
+     */
     public void setBoolAllGamePlayersAdded(boolean boolAllGamePlayersAdded) {
         this.boolAllGamePlayersAdded = boolAllGamePlayersAdded;
     }
 
+    /**
+     * set boolean value of boolGamePlayersAdded
+     * @param boolGamePlayerAdded validate if at least 1 player has been added
+     */
     public void setBoolGamePlayerAdded(boolean boolGamePlayerAdded) {
         this.boolGamePlayerAdded = boolGamePlayerAdded;
     }
 
+    /**
+     * set boolean value of boolAllCountriesPlaced
+     * @param boolAllCountriesPlaced validate if all countries has been placed with armies
+     */
     public void setBoolAllCountriesPlaced(boolean boolAllCountriesPlaced) {
         this.boolAllCountriesPlaced = boolAllCountriesPlaced;
     }
 
+    /**
+     * set boolean value of boolArrayCountriesPlaced
+     * @param boolArrayCountriesPlaced array to store if the countries that been placed with armies
+     */
     public void setBoolArrayCountriesPlaced(boolean[] boolArrayCountriesPlaced) {
         this.boolArrayCountriesPlaced = boolArrayCountriesPlaced;
     }

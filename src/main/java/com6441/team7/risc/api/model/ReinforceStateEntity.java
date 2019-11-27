@@ -47,10 +47,19 @@ public class ReinforceStateEntity {
         return reinforcedArmies;
     }
 
+
+    /**
+     * set the boolean value of exchangeCardOver
+     * @param exchangeCardOver if the card has been exchanged
+     */
     public void setExchangeCardOver(boolean exchangeCardOver) {
         this.exchangeCardOver = exchangeCardOver;
     }
-    
+
+    /**
+     * set reinforce army number
+     * @param reinforcedArmies the number of armies to be reinforced
+     */
     public void setReinforcedArmies(int reinforcedArmies) {
         this.reinforcedArmies = reinforcedArmies;
     }

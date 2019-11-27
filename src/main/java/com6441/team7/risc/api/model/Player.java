@@ -58,6 +58,10 @@ public class Player{
     private ArrayList<Country> countryPlayerList;
 
 
+    /**
+     * update countryPlayerList
+     * @param mapService stores map information
+     */
 	public void updateCountryPlayerList(MapService mapService){
 		
 		
@@ -108,14 +112,14 @@ public class Player{
     	this.setPlayerCategory(category);
 	}
     
-    /**
+    /** get the player category
 	 * @return the playerCategory
 	 */
 	public PlayerCategory getPlayerCategory() {
 		return playerCategory;
 	}
 	
-	/**
+	/** set the player category
 	 * @param playerCategory the playerCategory to set
 	 */
 	public void setPlayerCategory(PlayerCategory playerCategory) {
@@ -485,9 +489,7 @@ public class Player{
     }
 
     
-    
-    //by Keshav
-    //Exchange cards for automated strategies
+
     /**
      * Exchange cards for automated strategies
      * @param playerService exchange card on player service
@@ -627,19 +629,6 @@ public class Player{
     }
     
     
-    
-    //We need to move getConqueredCountriesNumber method and getReinforcedArmyByConqueredContinents here in the player itself.
-    //You used mapservice for the above 2 methods
-    //Just pass playerService as reference in the reinfController when calling player.reinforceArmy....
-    //Then from playerService just get mapService 
-    // Check out fortification controller for example
-
-    
-    //By Keshav
-    
-    
-
-
 
 
     //----------------------------------ATTACK--------------------------------------------------
@@ -1648,8 +1637,6 @@ public class Player{
 
     //--------------------------------------FORTIFICATION--------------------------------------------------
 
-    // Private members for Fortification
-
     /**
      * a reference of from Country of fortification
      */
@@ -1918,10 +1905,19 @@ public class Player{
     public void instantiatePlayerCountryListForLoading() {
     	this.countryPlayerList=new ArrayList<Country>();
     }
-    
+
+    /**
+     * get the boolean value boolDrawCard
+     * @return boolDrawCard
+     */
 	public boolean isBoolDrawCard() {
 		return boolDrawCard;
 	}
+
+    /**
+     * set the boolean value boolDrawCard
+     * @param boolDrawCard true if draws a card, false if not
+     */
 	public void setBoolDrawCard(boolean boolDrawCard) {
 		this.boolDrawCard = boolDrawCard;
 	}

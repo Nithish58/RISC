@@ -139,18 +139,17 @@ public class TournamentController {
 				
 				startupGameController.populateCountries();
 				
-				startupGameController.placeAll(); //Starts automation	
+				startupGameController.placeAll();
 				
 				checkAndRemoveExistingPlayers();
 				
-			} //End of Game Iteration
+			}
 			
-		}	//End of Map Iteration	
+		}
 		
 		
 		playerService.notifyPlayerServiceObservers(new TournamentWrapper(arrResults,mapList));
-		
-		//End Game when tournament tests not being carried out
+
 		if(!boolTournamentTestOn)
 		System.exit(0);
 		
@@ -382,7 +381,7 @@ public class TournamentController {
 			phaseView.displayMessage("Invalid Num Format");
 		}
 		
-		return true; //Valid Num Games
+		return true;
 		
 		
 	}
@@ -420,7 +419,7 @@ public class TournamentController {
 			phaseView.displayMessage("Invalid Num Format");
 		}
 		
-		return true; //Valid Num Turns
+		return true;
 		
 	}
 	
@@ -485,9 +484,9 @@ public class TournamentController {
 				playerService.removePlayer("d");				
 				playerService.removePlayer("e");
 				
-			} //End of Game Iteration
+			}
 			
-		}	//End of Map Iteration	
+		}
 		
 		
 		playerService.notifyPlayerServiceObservers(new TournamentWrapper(arrResults,mapList));

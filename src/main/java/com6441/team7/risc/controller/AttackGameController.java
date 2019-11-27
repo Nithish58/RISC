@@ -318,9 +318,10 @@ public class AttackGameController implements Controller {
 
     		
     		return;
-    	} // End of If
+    	}
     	
-    }  //End of validate attack method
+    }
+
 
 	/**
 	 * call mapService and set the state to fortify
@@ -329,6 +330,10 @@ public class AttackGameController implements Controller {
 		mapService.setState(GameState.FORTIFY);
 	}
 
+
+	/**
+	 * save the game state if user enter save game in attack phase
+	 */
 	private void saveGame() {
 
 		if(boolDefenderDiceRequired.get()){

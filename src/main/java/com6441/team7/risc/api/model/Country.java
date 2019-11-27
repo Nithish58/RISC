@@ -304,10 +304,4 @@ public class Country{
                 coordinateY + EOL;
     }
     
-	/*
-	 * @Override public void addObserver(Observer observer) {
-	 * 
-	 * super.addObserver(observer); }
-	 */
-    
 }

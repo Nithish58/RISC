@@ -18,6 +18,10 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * It calls the methods in mapService.
  */
 public class MapLoaderController implements Controller {
+
+    /**
+     * the map category
+     */
     private MapCategory mapCategory;
 
     /**

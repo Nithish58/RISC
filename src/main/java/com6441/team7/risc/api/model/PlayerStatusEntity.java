@@ -84,19 +84,35 @@ public class PlayerStatusEntity {
     public String getCommand() {
         return command;
     }
-    
+
+    /**
+     * set the list of players
+     * @param listPlayers the list of players
+     */
     public void setListPlayers(ArrayList<Player> listPlayers) {
         this.listPlayers = listPlayers;
     }
 
+    /**
+     * set the current player
+     * @param currentPlayer current player
+     */
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * set the current player index
+     * @param currentPlayerIndex index of current player
+     */
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         this.currentPlayerIndex = currentPlayerIndex;
     }
-    
+
+    /**
+     * set the command
+     * @param command game command
+     */
     public void setCommand(String command) {
         this.command = command;
     }

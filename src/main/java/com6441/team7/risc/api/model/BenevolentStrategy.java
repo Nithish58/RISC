@@ -192,21 +192,39 @@ public class BenevolentStrategy implements StrategyPlayer {
         return reinforcedArmies;
     }
 
+
+	/**
+	 * get reference of playerService
+	 * @return playService
+	 */
 	@JsonIgnore
 	public PlayerService getPlayerService() {
 		return playerService;
 	}
 
+	/**
+	 * set value of playerService
+	 * @param playerService stores player information
+	 */
 	@JsonIgnore
 	public void setPlayerService(PlayerService playerService) {
 		this.playerService = playerService;
 	}
 
+	/**
+	 * get the object of player
+	 * @return player
+	 */
 	@JsonIgnore
 	public Player getPlayer() {
 		return player;
 	}
 
+
+	/**
+	 * set the player
+	 * @param player player
+	 */
 	@JsonIgnore
 	public void setPlayer(Player player) {
 		this.player = player;
