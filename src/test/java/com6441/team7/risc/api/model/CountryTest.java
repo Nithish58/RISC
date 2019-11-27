@@ -24,7 +24,8 @@ public class CountryTest {
     private Country country;
 
     /**
-     *
+     * This method is called before every test method is performed.
+     * Here, a country is defined before every test.
      */
     @Before
     public void beginTest() {
