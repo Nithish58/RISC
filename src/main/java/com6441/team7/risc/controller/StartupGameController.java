@@ -102,7 +102,7 @@ public class StartupGameController implements Controller{
 	private MapService mapService;
 
 	/**
-	 * a reference of plaerService
+	 * a reference of playerService
 	 */
 	private PlayerService playerService;
 
@@ -111,6 +111,9 @@ public class StartupGameController implements Controller{
 	 */
 	private GameView phaseView;
 	
+	/**
+	 * reference to tournament controller
+	 */
 	private TournamentController tournamentController;
 
 
@@ -831,7 +834,10 @@ public class StartupGameController implements Controller{
 		this.boolCountriesPopulated = bool;
 	}
 
-
+	/**
+	 * Setter for boolean values from StartupStateEntity
+	 * @param startupStateEntityobject from which details are pulled
+	 */
 	public void setStatus(StartupStateEntity startupStateEntity){
 		this.boolCountriesPopulated = startupStateEntity.isBoolCountriesPopulated();
 		this.boolMapLoaded = startupStateEntity.isBoolMapLoaded();
@@ -927,6 +933,9 @@ public class StartupGameController implements Controller{
 		return this.tournamentController;
 	}
 	
+	/**
+	 * Create a new startup state entity with new boolean values
+	 */
 	public void constructStartUpStateEntity(){
 		builder.createNewStartUpStateEntity();
 		builder.buildBoolMapLoaded(boolMapLoaded);

@@ -4,10 +4,25 @@ package com6441.team7.risc.api.model;
  * This class stores player category
  */
 public enum PlayerCategory {
+	/**
+	 * Aggressive
+	 */
     AGGRESSIVE("aggressive"),
+    /**
+     * Random
+     */
     RANDOM("random"),
+    /**
+     * Cheater
+     */
     CHEATER("cheater"),
+    /**
+     * Benevolent
+     */
     BENEVOLENT("benevolent"),
+    /**
+     * Human
+     */
     HUMAN("human");
 
     /**

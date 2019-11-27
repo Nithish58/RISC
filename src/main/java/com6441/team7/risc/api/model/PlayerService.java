@@ -863,9 +863,4 @@ public class PlayerService extends Observable {
 		constructPlayerServiceEntity();
 		return builder.getPlayerStatusEntity();
 	}
-
-
-
-
 }
-

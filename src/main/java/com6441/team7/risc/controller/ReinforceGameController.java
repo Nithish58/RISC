@@ -24,8 +24,7 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
  * <li>Get new armies depending on number of countries the player owned divided by 3, rounded down</li>
  * <li>Get new armies to player according to continent's control value,
  * iff the player own all the countries of an continent.</li>
- * <li></li>
- * </ul>
+ * </ul><p>
  * <b>Note: In any case, the minimum number of reinforcement armies is 3. </b>
  * 
  */

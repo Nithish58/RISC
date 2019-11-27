@@ -28,29 +28,24 @@ public class PlayerAttackWrapper {
 	/**
 	 * the number of dice from defender
 	 */
-
 	int numDiceDefender;
 
 	/**
 	 * boolean value to validate if allout
 	 */
-
 	boolean boolAllOut;
 
 	/**
 	 * boolean value to validate if attack is over
 	 * Used for display purposes
 	 */
-
 	boolean boolAttackOver;
 	
 	/**
 	 * boolean value to validate if attackmove is over
 	 * Used for display purposes
 	 */
-
 	boolean boolAttackMoveOver;
-
 
 	/**
 	 * boolean value to validate if defenderDiceRequired
