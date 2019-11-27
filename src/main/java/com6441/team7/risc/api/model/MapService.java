@@ -120,9 +120,6 @@ public class MapService extends Observable {
                 .map(Continent::getId)
                 .findFirst()
                 .ifPresent(continentId -> continentCountriesMap.get(continentId).add(countryId));
-
-        //   view.displayMessage("country " + country.getCountryName() + " is successfully added.");
-
     }
 
     /**
@@ -158,8 +155,6 @@ public class MapService extends Observable {
         if (!continentCountriesMap.containsKey(continent.getId())) {
             continentCountriesMap.put(continent.getId(), new HashSet<>());
         }
-
-        // view.displayMessage("continent " + continent.getCountryName() + " is successfully added.");
 
     }
 
@@ -202,7 +197,6 @@ public class MapService extends Observable {
         addNeighboringCountry(countryId, neghboringCountryId);
         addNeighboringCountry(neghboringCountryId, countryId);
 
-        //  view.displayMessage("Neighboring countries " + country + " " + neighboringCountry + " is successfully added.");
     }
 
     /**
@@ -238,8 +232,6 @@ public class MapService extends Observable {
         adjacencyCountriesMap.get(neghboringCountryId).remove(countryId);
 
         directedGraph.removeEdge(countryId, neghboringCountryId);
-
-        //view.displayMessage("neighboring country " + neighboringCountry + " is sucessfully removed from " + country);
 
     }
 
