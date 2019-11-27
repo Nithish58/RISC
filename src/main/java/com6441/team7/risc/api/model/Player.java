@@ -32,7 +32,6 @@ public class Player{
     /**
      * list of cards a player has
      */
-
     private List<Card> cardList;
 
     /**
@@ -70,15 +69,6 @@ public class Player{
 	
 		  countryPlayerList.add(c); }
 		  }
-		 
-		
-		/*
-		 * List<Country> countries = mapService.getCountries().stream() .filter(country
-		 * -> country.getPlayer().getName().equalsIgnoreCase(name))
-		 * .collect(Collectors.toList());
-		 * 
-		 * countryPlayerList.addAll(countries);
-		 */
 	    	    		 	    
     }
     /**
@@ -154,9 +144,7 @@ public class Player{
     			this.setPlayerCategory(PlayerCategory.HUMAN);
     			
     			break;
-    	}
-    		
-   
+    	}	
     	
     }
 
@@ -176,10 +164,6 @@ public class Player{
     public void setName(String name) {
         this.name = name;
     }
-
-
-
-
 
     /**
      * add the country to the countryPlayerList
