@@ -15,6 +15,7 @@ import java.util.List;
  *
  */
 public class App {
+	
     /**
      * The main method of Risc game
      * @param args default argument of main method

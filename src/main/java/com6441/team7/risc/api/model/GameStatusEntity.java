@@ -29,4 +29,9 @@ public class GameStatusEntity {
      * a list of entities
      */
     private List<Object> entities;
+    
+    /**
+     * Empty constructor
+     */
+    public GameStatusEntity() {	}
 }

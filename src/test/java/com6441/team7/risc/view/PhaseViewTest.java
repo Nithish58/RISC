@@ -189,7 +189,7 @@ public class PhaseViewTest implements GameView{
 	
 	/**
 	 * Method to display tournament Results in Test
-	 * @param arg
+	 * @param arg Object to be used as wrapper for TournamentWrapper
 	 */
     private void displayTournamentResults(Object arg) {
     	

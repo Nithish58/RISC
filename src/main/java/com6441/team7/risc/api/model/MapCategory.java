@@ -4,8 +4,17 @@ package com6441.team7.risc.api.model;
  * This class stores map category
  */
 public enum  MapCategory {
+	/**
+	 * Conquest
+	 */
     CONQUEST("conquest"),
+    /**
+     * Domination
+     */
     DOMINATION("domination"),
+    /**
+     * Unknown
+     */
     UNKNOWN("unknown");
 
     /**

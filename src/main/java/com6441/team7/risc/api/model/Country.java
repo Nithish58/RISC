@@ -263,14 +263,26 @@ public class Country{
                 && Objects.equals(countryName, country.countryName);
     }
 
+    /**
+     * setter for country ID
+     * @param id of country
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * setter for country name
+     * @param countryName updated name of country
+     */
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }
 
+    /**
+     * setter for number of soldiers 
+     * @param soldiers to be updated
+     */
     public void setSoldiers(int soldiers) {
     	
     	//Added to prevent int buffer from overflowing especially during cheater game phases

@@ -4,8 +4,17 @@ package com6441.team7.risc.api.model;
  * This class stores card category
  */
 public enum Card {
+	/**
+	 * Infantry 
+	 */
     INFANTRY("infantry"),
+    /**
+     * Cavalry
+     */
     CAVALRY("cavalry"),
+    /**
+     * Artillery
+     */
     ARTILLERY("artillery");
 
     /**

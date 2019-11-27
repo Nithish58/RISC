@@ -25,4 +25,9 @@ public class MapGraph {
     public void setMapGraph(String mapGraph) {
         this.mapGraph = mapGraph;
     }
+    
+    /**
+     * Empty constructor
+     */
+    public MapGraph() {	}
 }

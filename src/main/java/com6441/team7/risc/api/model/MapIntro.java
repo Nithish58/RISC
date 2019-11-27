@@ -25,4 +25,11 @@ public class MapIntro {
     public void setMapIntro(String mapIntro) {
         this.mapIntro = mapIntro;
     }
+    
+    /**
+     * Empty constructor
+     */
+    public MapIntro() {
+		
+	}
 }
