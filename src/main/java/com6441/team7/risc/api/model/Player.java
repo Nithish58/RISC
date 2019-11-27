@@ -222,12 +222,14 @@ public class Player{
     /**
      * strategy player
      */
+    @JsonIgnore
     private StrategyPlayer strategy;
     
     /**
      * sets strategy
      * @param strategy strategy to be set
      */
+    @JsonIgnore
     public void setStrategy(StrategyPlayer strategy) {
     	
     	this.strategy = strategy;
@@ -238,6 +240,7 @@ public class Player{
      * gets strategy
      * @return returns strategy
      */
+    @JsonIgnore
     public StrategyPlayer getStrategy() {
     	return strategy;
     }

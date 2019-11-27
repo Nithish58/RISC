@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com6441.team7.risc.api.model.*;
 import com6441.team7.risc.api.model.StartupStateEntity;
 import com6441.team7.risc.view.GameView;
@@ -128,6 +129,7 @@ public class LoadGameController implements Controller{
     public void loadGame(File saveGameFile) throws IOException {
         ObjectMapper objectMapper =new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         JsonNode entity = objectMapper.readValue(saveGameFile, JsonNode.class);
 
         loadMapStatusEntity(entity);

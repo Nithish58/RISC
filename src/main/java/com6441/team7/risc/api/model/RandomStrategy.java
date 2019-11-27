@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
@@ -17,11 +18,13 @@ public class RandomStrategy implements StrategyPlayer{
 	/**
 	 * player service for specific player functions
 	 */
+	@JsonIgnore
 	private PlayerService playerService;
 	
 	/**
 	 * Player object for player list and details.
 	 */
+	@JsonIgnore
 	private Player player;
 	
 	/**
@@ -181,5 +184,25 @@ public class RandomStrategy implements StrategyPlayer{
 		
 		player.fortify(playerService, playerFortificationWrapper);
 		
+	}
+
+	@JsonIgnore
+	public PlayerService getPlayerService() {
+		return playerService;
+	}
+
+	@JsonIgnore
+	public void setPlayerService(PlayerService playerService) {
+		this.playerService = playerService;
+	}
+
+	@JsonIgnore
+	public Player getPlayer() {
+		return player;
+	}
+
+	@JsonIgnore
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 }

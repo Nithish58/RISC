@@ -3,6 +3,7 @@ package com6441.team7.risc.api.model;
 import java.util.ArrayList;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com6441.team7.risc.utils.CommonUtils;
 
 /**
@@ -16,11 +17,13 @@ public class CheaterStrategy implements StrategyPlayer{
 	/**
 	 * player service for specific player functions
 	 */
+	@JsonIgnore
 	private PlayerService playerService;
 	
 	/**
 	 * Player object for player list and details.
 	 */
+	@JsonIgnore
 	private Player player;
 	
 	/**
@@ -174,5 +177,24 @@ public class CheaterStrategy implements StrategyPlayer{
         		" (PreviousOwner: "+previousOwnerName+")");
         
     }
-	
+
+	@JsonIgnore
+	public PlayerService getPlayerService() {
+		return playerService;
+	}
+
+	@JsonIgnore
+	public void setPlayerService(PlayerService playerService) {
+		this.playerService = playerService;
+	}
+
+	@JsonIgnore
+	public Player getPlayer() {
+		return player;
+	}
+
+	@JsonIgnore
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 }

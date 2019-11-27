@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
@@ -20,13 +21,17 @@ public class AggressiveStrategy implements StrategyPlayer {
 	/**
 	 * player service for specific player functions
 	 */
+	@JsonIgnore
 	private PlayerService playerService;
 	
 	/**
 	 * Player object for player list and details.
 	 */
+	@JsonIgnore
 	private Player player;
 
+
+	public AggressiveStrategy(){}
 	/**
 	 * {@link AggressiveStrategy} class constructor 
 	 * @param playerService PlayerService to be passed for details.
@@ -306,6 +311,24 @@ public class AggressiveStrategy implements StrategyPlayer {
         return reinforcedArmies;
     }
 
+
+    @JsonIgnore
+	public PlayerService getPlayerService() {
+		return playerService;
+	}
+
+	@JsonIgnore
+	public void setPlayerService(PlayerService playerService) {
+		this.playerService = playerService;
+	}
+	@JsonIgnore
+	public Player getPlayer() {
+		return player;
+	}
+	@JsonIgnore
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 }
 
 
