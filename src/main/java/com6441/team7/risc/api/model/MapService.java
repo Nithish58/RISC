@@ -220,10 +220,6 @@ public class MapService extends Observable {
             adjacencyCountriesMap.put(countryId, neighboringCountrySet);
         }
 
-
-        //***IN YOUR IF STATEMENT...shouldnt you add this as well:
-        //adjacencyCountriesMap.get(neghboringCountryId).add(countryId);
-
     }
 
     /**
@@ -742,6 +738,11 @@ public class MapService extends Observable {
         return adjacencyCountriesMap;
     }
 
+    /**
+     * Get a country's adjacency set
+     * @param countryId is the id of the country
+     * @return the adjacency set of the country
+     */
     public Set<Integer> getAdjacencyCountries(int countryId) {
         return adjacencyCountriesMap.get(countryId);
     }
