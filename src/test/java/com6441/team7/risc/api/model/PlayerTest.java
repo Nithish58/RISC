@@ -45,9 +45,10 @@ public class PlayerTest {
 	 * Controller for startup phase
 	 */
 	StartupGameController startupGameController;
-	
+	/**
+	 * Controller for loading the game
+	 */
 	LoadGameController loadGameController;
-	
 	/**
 	 * Controller for Reinforcement phase
 	 */
