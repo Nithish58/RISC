@@ -106,6 +106,10 @@ public class CheaterStrategy implements StrategyPlayer{
 		
 		//Check if cheater is winner
 		if(player.getCountryPlayerList().size()==playerService.getMapService().getCountries().size()) {
+			
+			  playerService.notifyPlayerServiceObservers(player.getName()+" WINS.");
+
+			
         	if(playerService.getBoolTournamentMode()) {
         		playerService.setBoolPlayerWinner(true);
         		playerService.setPlayerWinner(player);
