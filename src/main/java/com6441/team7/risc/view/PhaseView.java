@@ -246,7 +246,7 @@ public class PhaseView implements GameView {
 
     /**
      * print map information
-     * @param arg
+     * @param arg to be wrapped into stringBuilder for it to be displayed
      */
     private void displayMapInformation(Object arg) {
         StringBuilder sb = (StringBuilder) arg;
