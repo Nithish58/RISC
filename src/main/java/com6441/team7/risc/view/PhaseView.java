@@ -221,6 +221,7 @@ public class PhaseView implements GameView {
                 return;
             }
             
+            //For displaying tournament results
             if(arg instanceof TournamentWrapper) {
             	displayTournamentResults(arg);
             }

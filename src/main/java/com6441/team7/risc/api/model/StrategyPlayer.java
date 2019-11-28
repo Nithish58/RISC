@@ -2,7 +2,7 @@ package com6441.team7.risc.api.model;
 
 /**
  * Strategy interface. Used in strategy pattern, for aggressive, benevolent, cheater, random
- * @author Nithish
+ * @author Keshav
  *
  */
 public interface StrategyPlayer {

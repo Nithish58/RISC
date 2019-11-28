@@ -19,6 +19,8 @@ import static com6441.team7.risc.api.RiscConstants.WHITESPACE;
 
 /**
  * This class handles functionality of loading the game and exiting loading game
+ * 
+ * @author Jenny XinjieZheng
  */
 public class LoadGameController implements Controller{
     /**
@@ -113,6 +115,7 @@ public class LoadGameController implements Controller{
                 File file = new File(fileName);
                 loadGame(file);
                 break;
+                
             case EXITLOADGAME:
                 exitLoadGame();
                 break;

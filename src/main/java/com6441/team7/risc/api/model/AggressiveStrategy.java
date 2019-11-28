@@ -10,7 +10,7 @@ import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 /**
- * This is the strategy class for Aggressive players. Implements from 
+ * This is the strategy class for Aggressive players. Inherits from 
  * {@link StrategyPlayer}
  * 
  * @author Binsar

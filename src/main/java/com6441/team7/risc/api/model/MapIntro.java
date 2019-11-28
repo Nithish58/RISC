@@ -27,7 +27,7 @@ public class MapIntro {
     }
     
     /**
-     * Empty constructor
+     * Default constructor
      */
     public MapIntro() {
 		

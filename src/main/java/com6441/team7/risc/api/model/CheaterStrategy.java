@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com6441.team7.risc.utils.CommonUtils;
 
 /**
- * This is the strategy class for Cheater players. Implements from 
+ * This is the strategy class for Cheater players. Inherits from 
  * {@link StrategyPlayer}
- * @author Binsar
+ * @author Keshav
  *
  */
 public class CheaterStrategy implements StrategyPlayer{
@@ -107,8 +107,7 @@ public class CheaterStrategy implements StrategyPlayer{
 		//Check if cheater is winner
 		if(player.getCountryPlayerList().size()==playerService.getMapService().getCountries().size()) {
 			
-			  playerService.notifyPlayerServiceObservers(player.getName()+" WINS.");
-
+			 playerService.notifyPlayerServiceObservers(player.getName()+" WINS.");
 			
         	if(playerService.getBoolTournamentMode()) {
         		playerService.setBoolPlayerWinner(true);

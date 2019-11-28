@@ -22,6 +22,7 @@ import com6441.team7.risc.view.PhaseView;
  * This class validates tournament command entered by user and launches the tournament
  * It initialized tournament parameters as well
  * However all the tournament logic is in PlayerService.class and Player.class
+ * 
  * @author Keshav
  *
  */
@@ -330,8 +331,6 @@ public class TournamentController {
 			if(s.equalsIgnoreCase("random")||s.equalsIgnoreCase("aggressive")||
 				s.equalsIgnoreCase("cheater")||s.equalsIgnoreCase("benevolent")){
 					
-					//String strName="Player "+ arrStrStrategy[i]+" "+(i+1);
-					//playerService.addPlayer(strName, arrStrStrategy[i]);
 					listPlayerStrategy.add(arrStrStrategy[i]);
 					validPlayerFound=true;
 				}
@@ -436,11 +435,11 @@ public class TournamentController {
 		}	
 		
 		//Hardcoded:
-		mapList.add("ameroki.map");
-		mapList.add("Aden.map");
-		mapList.add("roman_empire.map");
-		mapList.add("Africa.map");
-		mapList.add("luca.map");
+		mapList.add("ameroki.map");  //domination
+		mapList.add("Aden.map");     //conquest
+		mapList.add("roman_empire.map");  //domination
+		mapList.add("Africa.map");   //conquest
+		mapList.add("luca.map");	//domination
 		
 		playerService.setBoolTournamentMode(true);		
 		
@@ -455,9 +454,10 @@ public class TournamentController {
 	 */
 	public void launchTournamentHardcoded() {
 		
-		//hardcoded for test purpose
+		//hardcoded for tournament hardcoded purpose
 		numTurns = 1000;
-		//hardcoded for test purpose 
+		
+		//hardcoded for tournament hardcoded purpose 
 		numGames = 5;
 		
 		arrResults=new String[mapList.size()][numGames];
@@ -499,7 +499,7 @@ public class TournamentController {
 	
 	/**
 	 * Resets Game states in Hardcoded Tournament mode
-	 * This includes adding more players/
+	 * This includes adding players again
 	 */
 	private void checkAndResetGameStatesHardcoded() {
 		
@@ -513,7 +513,6 @@ public class TournamentController {
 		playerService.setPlayerWinner(null);
 		
 		//ResetPlayers
-		//checkAndRemoveExistingPlayers();
 		
 		playerService.addPlayer("a", "benevolent");								
 		playerService.addPlayer("b", "aggressive");				

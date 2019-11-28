@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 /**
- * This is the strategy class for Benevolent players. Implements from 
+ * This is the strategy class for Benevolent players. Inherits from 
  * {@link StrategyPlayer}
  * 
  * @author Binsar

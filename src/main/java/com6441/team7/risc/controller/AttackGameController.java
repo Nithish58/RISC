@@ -18,7 +18,8 @@ import com6441.team7.risc.view.GameView;
 /**
  * The Attack phase
  * This class basically validate the commands from the players
- * and call the methods in the Player to implement attacking and defending
+ * and call the methods Player.class during Attack Phase
+ * @author Keshav
  *
  */
 public class AttackGameController implements Controller {
@@ -137,8 +138,9 @@ public class AttackGameController implements Controller {
 		case SAVEGAME:
 			saveGame();
 			break;
+			
     	default:
-            throw new IllegalArgumentException("cannot recognize this command");
+            throw new IllegalArgumentException("cannot recognize this command in Attack Phase");
     	
     	}
     	  	
@@ -248,7 +250,6 @@ public class AttackGameController implements Controller {
     	if(arrCommand.length==2 && arrCommand[1].equalsIgnoreCase("-noattack")) {
     		
     		playerService.getCurrentPlayer().endAttackPhase(playerService);
-    		//switchToFortification();
     		
     		return;
     	}
@@ -337,11 +338,12 @@ public class AttackGameController implements Controller {
 	private void saveGame() {
 
 		if(boolDefenderDiceRequired.get()){
-			phaseView.displayMessage("the game can not be saved now");
+			phaseView.displayMessage("the game can not be saved now. finish entering num defender dice first.");
 			return;
 		}
+		
 		if(playerService.getCurrentPlayer().getBoolAttackMoveRequired()) {
-			phaseView.displayMessage("the game can not be saved now");
+			phaseView.displayMessage("the game can not be saved now. Finish attackmove and try again.");
 			return;
 		}
 		
