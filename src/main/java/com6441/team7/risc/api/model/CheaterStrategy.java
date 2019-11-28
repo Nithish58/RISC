@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com6441.team7.risc.utils.CommonUtils;
 
 /**
- * This is the strategy class for Cheater players. Implements from 
+ * This is the strategy class for Cheater players. Inherits from 
  * {@link StrategyPlayer}
- * @author Binsar
+ * @author Keshav
  *
  */
 public class CheaterStrategy implements StrategyPlayer{

@@ -27,7 +27,7 @@ public class MapGraph {
     }
     
     /**
-     * Empty constructor
+     * Default constructor
      */
     public MapGraph() {	}
 }

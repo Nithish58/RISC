@@ -10,7 +10,7 @@ import com6441.team7.risc.api.wrapperview.PlayerFortificationWrapper;
 
 /**
  * Class for Random strategy player 
- * @author Nithish
+ * @author Keshav
  *
  */
 public class RandomStrategy implements StrategyPlayer{
