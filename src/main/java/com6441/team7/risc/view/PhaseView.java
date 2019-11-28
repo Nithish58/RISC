@@ -56,6 +56,9 @@ public class PhaseView implements GameView {
      */
     private Controller attackController;
 
+    /**
+     * a reference of loadController
+     */
     private Controller loadController;
 
     /**
