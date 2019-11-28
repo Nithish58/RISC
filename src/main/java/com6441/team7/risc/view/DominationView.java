@@ -68,38 +68,3 @@ public class DominationView implements GameView {
 } //end of class
 
 
-
-
-
-
-
-/*
-* if(o instanceof Player) {
-* 
-* //Player returned as arg when numArmies updated if(arg instanceof Player) {
-* String playerName=((Player) arg).getCountryName(); int numArmies=((Player)
-* arg).getArmies();
-* System.out.println(playerName+" has "+numArmies+" armies."); return; }
-* 
-* //Country returned as arg when country assigned to player if(arg instanceof
-* Country) { String countryName=((Country) arg).getCountryName(); String
-* playerName=((Country) arg).getPlayer().getCountryName();
-* 
-* System.out.println(playerName+" now owns "+countryName); return; }
-* 
-* }
-* 
-* 
-* if(o instanceof Country) {
-* 
-* //Country returned as arg when numSoldiers updated if(arg instanceof Country)
-* { String countryName=((Country) arg).getCountryName(); int
-* numSoldiers=((Country) arg).getSoldiers();
-* 
-* System.out.println(countryName+" has "+numSoldiers+" soldiers."); }
-* 
-* }
-
-*/
-
-

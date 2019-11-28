@@ -836,7 +836,7 @@ public class StartupGameController implements Controller{
 
 	/**
 	 * Setter for boolean values from StartupStateEntity
-	 * @param startupStateEntityobject from which details are pulled
+	 * @param startupStateEntity object from which details are pulled
 	 */
 	public void setStatus(StartupStateEntity startupStateEntity){
 		this.boolCountriesPopulated = startupStateEntity.isBoolCountriesPopulated();

@@ -34,7 +34,10 @@ public class MapIntroTest {
 		mapIntro = new MapIntro();
 	}
 
-
+	/**
+	 * Before every test, map intro is set.
+	 * @throws Exception on invalid
+	 */
 	@Before
 	public void setUp() throws Exception {
 		mapIntroStr = "intro";

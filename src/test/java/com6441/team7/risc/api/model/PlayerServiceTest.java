@@ -13,7 +13,7 @@ import com6441.team7.risc.api.wrapperview.PlayerAttackWrapper;
 import com6441.team7.risc.view.PhaseViewTest;
 
 /**
- * Tests for PlayerService class. 
+ * Tests for PlayerService class.
  *
  */
 public class PlayerServiceTest {
@@ -40,12 +40,12 @@ public class PlayerServiceTest {
 	 * Controller for startup phase
 	 */
 	StartupGameController startupGameController;
-	
+
 	/**
 	 * Controller for loading game
 	 */
 	LoadGameController loadGameController;
-	
+
 	/**
 	 * Controller for Reinforcement phase
 	 */
@@ -106,42 +106,40 @@ public class PlayerServiceTest {
 		String name = playerService.getCurrentPlayerName();
 		assertTrue(playerService.removePlayer(name));
 	}
-	
-	
-	  
-	  /** Testing switch player method Evaluation: should switch player and then
-	  return to first player of list (round-robin) when switch player has been
-	  called by last player.
-	  */
-	  @Test public void test003_switchNextPlayer() {	
-		  
-	  //context
-		Player nextPlayer=playerService.getNextPlayer();
-		String nextPlayerName=nextPlayer.getName();
-	  
-	  //Method call
+
+	/**
+	 * Testing switch player method Evaluation: should switch player and then return
+	 * to first player of list (round-robin) when switch player has been called by
+	 * last player.
+	 */
+	@Test
+	public void test003_switchNextPlayer() {
+
+		// context
+		Player nextPlayer = playerService.getNextPlayer();
+		String nextPlayerName = nextPlayer.getName();
+
+		// Method call
 		playerService.switchNextPlayer();
-	  
-	  //Evaluation
-		String currentPlayerName=playerService.getCurrentPlayerName();
-	  
-	  assertEquals(currentPlayerName,nextPlayerName);
-	  
-	  //Context to test round-robin player
-	  Player  nextNextPlayer=playerService.getNextPlayer();
-	  String  nextNextPlayerName=nextNextPlayer.getName();
-	  
-	  //Method call
-	  playerService.switchNextPlayer();
-	  
-	  currentPlayerName=playerService.getCurrentPlayerName();
-	  
-	  //Evaluation currentPlayerName=playerService.getCurrentPlayerName();
-	  assertEquals(currentPlayerName,nextNextPlayerName);
-	  
-	  
-	  }
-	 
+
+		// Evaluation
+		String currentPlayerName = playerService.getCurrentPlayerName();
+
+		assertEquals(currentPlayerName, nextPlayerName);
+
+		// Context to test round-robin player
+		Player nextNextPlayer = playerService.getNextPlayer();
+		String nextNextPlayerName = nextNextPlayer.getName();
+
+		// Method call
+		playerService.switchNextPlayer();
+
+		currentPlayerName = playerService.getCurrentPlayerName();
+
+		// Evaluation currentPlayerName=playerService.getCurrentPlayerName();
+		assertEquals(currentPlayerName, nextNextPlayerName);
+
+	}
 
 	/**
 	 * Method to load a map. Method first exits from editMapPhase by sending command
@@ -151,9 +149,9 @@ public class PlayerServiceTest {
 	 */
 	public void loadValidMap(String mapName) {
 		phaseViewTest.receiveCommand("exitmapedit"); // Exit Map Editing Phase
-		
+
 		phaseViewTest.receiveCommand("exitloadgame");
-		
+
 		phaseViewTest.receiveCommand("loadmap " + mapName); // Load ameroki map
 	}
 
@@ -188,7 +186,7 @@ public class PlayerServiceTest {
 
 		mapLoaderController = new MapLoaderController(mapService);
 		startupGameController = new StartupGameController(mapLoaderController, playerService);
-		loadGameController=new LoadGameController(mapService,playerService);
+		loadGameController = new LoadGameController(mapService, playerService);
 		reinforceGameController = new ReinforceGameController(playerService);
 		fortifyGameController = new FortifyGameController(playerService);
 		attackController = new AttackGameController(playerService);
@@ -214,121 +212,3 @@ public class PlayerServiceTest {
 
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- * 
- * /** Testing switch player method Evaluation: should switch player and then
- * return to first player of list (round-robin) when switch player has been
- * called by last player.
- * 
- * @Test public void test003_switchNextPlayer() {
- * 
- * //context Player nextPlayer=playerService.getNextPlayer(); String
- * nextPlayerName=nextPlayer.getName();
- * 
- * //Method call playerService.switchNextPlayer();
- * 
- * //Evaluation String currentPlayerName=playerService.getCurrentPlayerName();
- * 
- * assertEquals(currentPlayerName,nextPlayerName);
- * 
- * //Context to test round-robin player Player
- * nextNextPlayer=playerService.getNextPlayer(); String
- * nextNextPlayerName=nextNextPlayer.getName();
- * 
- * //Method call playerService.switchNextPlayer();
- * 
- * //Evaluation currentPlayerName=playerService.getCurrentPlayerName();
- * assertEquals(currentPlayerName,nextNextPlayerName);
- * 
- * 
- * }
- */

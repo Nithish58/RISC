@@ -33,7 +33,7 @@ import static org.junit.Assert.assertTrue;
  * tests for mapLoader Controller
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class MapLoaderAdapterTest {
+public class MapLoaderControllerTest {
 
     /**
      * a reference of mapLoaderController
@@ -64,8 +64,6 @@ public class MapLoaderAdapterTest {
         view = new PhaseView();
         
         mapLoaderController.setView(view);
-        
-        //Binsar variables
         
 		System.out.printf("==========%nBeginning of method%n==========%n");
 		
@@ -98,8 +96,6 @@ public class MapLoaderAdapterTest {
        
         
     }
-    
-    //BINSAR'S TESTS
 
 	/**
 	 * mapname is for setting the name of the map file to be loaded.
