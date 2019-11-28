@@ -416,7 +416,7 @@ public class FortifyGameControllerTest {
 	 * Also Game should remain in FORTIFICATION phase and there should be no changed to countries input. 
 	 */
 	@Test public void test008_validFortificationDifferentPlayerTurn() {
-		//Context
+				//Context
 				
 				Player nextPlayer=playerService.getNextPlayer();
 				

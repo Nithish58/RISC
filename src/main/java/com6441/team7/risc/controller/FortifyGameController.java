@@ -21,6 +21,8 @@ import org.apache.commons.lang3.StringUtils;
  * checks whether fortification criteria are met. It then carries out
  * fortification After fortification, it updates gamestate to reinforcement and
  * switches to next player
+ * 
+ * @author Keshav
  */
 public class  FortifyGameController implements Controller {
 
@@ -121,22 +123,22 @@ public class  FortifyGameController implements Controller {
 			break;
 
 		case SHOW_MAP:
-			// startupGameController.showMapFull();
+			
 			MapDisplayUtils.showMapFullPopulated(mapService, phaseView);
 			break;
 
 		case SHOW_PLAYER:
-			// showPlayerFortificationPhase(player);
+			
 			MapDisplayUtils.showPlayer(mapService, playerService, phaseView);
 			break;
 
 		case SHOW_PLAYER_ALL_COUNTRIES:
-			// showPlayerAllCountriesFortification();
+			
 			MapDisplayUtils.showPlayerAllCountries(mapService, playerService, phaseView);
 			break;
 
 		case SHOW_PLAYER_COUNTRIES:
-			// showPlayerCountriesFortification();
+			
 			MapDisplayUtils.showPlayerCountries(mapService, playerService, phaseView);
 			break;
 

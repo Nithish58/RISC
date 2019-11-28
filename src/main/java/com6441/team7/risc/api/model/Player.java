@@ -760,6 +760,7 @@ public class Player{
         //If boolAllOut is chosen
         //boolAllOut is set to true in playerAttackWrapper by GameController.We retrieve and
         //check this boolean here.
+        
         if(boolAllOut) {
             attackAllOut(playerService);
             return;
@@ -959,6 +960,7 @@ public class Player{
         //Check if all of the defender's soldiers have been eliminated
         //If the defender lost all soldiers in his/her country, the attacker conquered the country
         //checkDefenderPushedOut();
+        
         checkDefenderOwnership();
 
         playerService.evaluateWorldDomination();
@@ -990,6 +992,8 @@ public class Player{
                 
                 if (checkPlayerWin()) {
                 	
+                	//If tournament mode is on...game must not end
+                	
                 	if(playerService.getBoolTournamentMode()) {
                 		playerService.setBoolPlayerWinner(true);
                 		playerService.setPlayerWinner(attacker);
@@ -1013,10 +1017,6 @@ public class Player{
      * Triggers notif to show attack cards after transfer
      */
     public void transferCardsFromDefenderToAttacker() {
-
-        /*
-         * for(int i=0;i<4;i++) { defender.addCard(Card.INFANTRY); }  //FOR TESTING ONLY
-         */
 
         if(defender.getCardList().size()==0) {
             playerService.notifyPlayerServiceObservers("\nDefender has no cards to be transferred.");
@@ -1071,8 +1071,6 @@ public class Player{
      */
     public boolean checkDefenderPushedOut() {
         strSendAttackInfoToObservers="";
-        //if (!(fromCountryAttack.getPlayer().getCountryName().equals(toCountryAttack.getPlayer().getCountryName())) && toCountryAttack.getSoldiers()==0)
-        //if ((toCountryAttack.getSoldiers().equals(0))) {
 
         if(defenderPushedOut()) {
 
@@ -1108,6 +1106,7 @@ public class Player{
 		 
 
         strSendAttackInfoToObservers+="\nCountry not conquered.";
+        
         //notify after attack info to observers
         playerService.notifyPlayerServiceObservers(strSendAttackInfoToObservers);
 
@@ -1378,7 +1377,7 @@ public class Player{
                 (toCountryAttack.getPlayer().getName())) {
 
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //this.playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nCountries belong to same player";
             this.boolAttackValidationMet=false;
         }
@@ -1393,7 +1392,7 @@ public class Player{
 
         if(isAttackerLastManStanding()) {
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //this.playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nNot enough soldiers in origin country";
             this.boolAttackValidationMet=false;
         }
@@ -1406,7 +1405,7 @@ public class Player{
     public void checkAttackerMaxDiceNumValidity() {
         if(numDiceAttacker>MAX_ATTACKER_DICE_NUM) {
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //this.playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nAttacker should not throw more than 3 dices";
             this.boolAttackValidationMet=false;
         }
@@ -1418,7 +1417,7 @@ public class Player{
     public void checkAttackerDiceNumValidity() {
         if(numDiceAttacker>=fromCountryAttack.getSoldiers()) {
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //this.playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nAttacker number of dices invalid.";
             this.boolAttackValidationMet=false;
         }
@@ -1430,7 +1429,7 @@ public class Player{
     private void checkAttackerMinDiceNumValidity() {
         if(numDiceAttacker<1) {
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //this.playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nAttacker should throw at least 1 dice";
             this.boolAttackValidationMet=false;
         }
@@ -1443,7 +1442,7 @@ public class Player{
     public void checkDefenderMaxDiceNumValidity() {
         if(numDiceDefender>MAX_DEFENDER_DICE_NUM) {
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nDefender should not throw more than 2 dices";
             this.boolAttackValidationMet=false;
             this.boolDefendDiceRequired.set(true);
@@ -1456,7 +1455,7 @@ public class Player{
     public void checkDefenderDiceNumValidity() {
         if(numDiceDefender>toCountryAttack.getSoldiers()) {
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nDefender should throw number of dices"
                     + " that is less or equal than the number of soldiers";
             this.boolAttackValidationMet=false;
@@ -1470,7 +1469,7 @@ public class Player{
     private void checkDefenderMinDiceNumValidity() {
         if(numDiceDefender<1) {
             //The message will be sent to the playerAttackWrapper when the notification method is created there
-            //playerAttackWrapper.setAttackDisplayMessage
+
             strSendAttackInfoToObservers+="\nDefender should throw at least 1 dice";
             this.boolAttackValidationMet=false;
             this.boolDefendDiceRequired.set(true);
@@ -1615,7 +1614,7 @@ public class Player{
         this.boolAttackMoveRequired=false;
         this.boolAttackOver=false;
         this.boolCountryConquered=false;
-        //this.boolDefendDiceRequired.set(false);
+
     }
 
 
@@ -1906,5 +1905,5 @@ public class Player{
 		this.boolDrawCard = boolDrawCard;
 	}
 
-}
+}  //End of Player Class
 

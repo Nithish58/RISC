@@ -3,7 +3,7 @@ package com6441.team7.risc.api.wrapperview;
 import java.util.ArrayList;
 /**
  * Class for tournament wrapper
- * @author Nithish
+ * @author Keshav
  *
  */
 public class TournamentWrapper {

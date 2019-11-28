@@ -234,6 +234,9 @@ public class Country{
         	this.soldiers=500;
         }
         
+        
+        //Commented out code left for demo purposes
+        
         //setChanged();
         //notifyObservers(this);
     }
@@ -244,6 +247,8 @@ public class Country{
      */
     public void removeSoldiers(int number){
         this.soldiers -= number;
+        
+        //Commented out code left for demo purposes
         
         //setChanged();
         //notifyObservers(this);

@@ -44,11 +44,6 @@ public class DominationView implements GameView {
     public void update(Observable o, Object arg) {
     	
         if(o instanceof PlayerService){
-
-            //TODO: o.getTotalArmies();
-            //TODO: o.getOccupiedCountriesPercentage();
-            //TODO: o.getOccupiedContinents();
-            //TODO: call displayMessge to display messages
         	
         	if(arg instanceof ArrayList) {
         		ArrayList<PlayerDominationWrapper> list=((ArrayList<PlayerDominationWrapper>)arg);

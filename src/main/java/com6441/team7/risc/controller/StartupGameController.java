@@ -765,12 +765,14 @@ public class StartupGameController implements Controller{
     		while(p.getArmies()>0) {
     			
     			//random placement + decrement random range size TO AVOID COLLISIONS
+    			
     			int randomIndex=ThreadLocalRandom.current().nextInt(0,p.getCountryPlayerList().size());
     			
     			p.getCountryPlayerList().get(randomIndex).addSoldiers(1);
     			p.reduceArmy(1);
     			
     			//Notify Observers - Same as placeArmy
+    			
     			PlayerPlaceArmyWrapper playerPlaceArmyWrapper
     			=new PlayerPlaceArmyWrapper(p,p.getCountryPlayerList().get(randomIndex));
     			

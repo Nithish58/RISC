@@ -87,6 +87,8 @@ public class PhaseViewTest implements GameView{
             return;
         }
         
+        //TO get Array of Results for Tournament
+        //Used for Testing
         if(arg instanceof TournamentWrapper) {
         	this.tournamentWrapper= (TournamentWrapper) arg;
         }
